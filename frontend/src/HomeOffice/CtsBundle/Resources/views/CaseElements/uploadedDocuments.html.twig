@@ -1,0 +1,66 @@
+{% if not allowRemove is defined %}
+    {% set allowRemove = false %}
+{% endif %}
+
+<table class="table-document">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Added</th>
+            {% if allowRemove == true %}
+                <th>Action</th>
+                <th>View&nbsp;in</th>
+            {% else %}
+                <th>View document</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for document in case.caseDocuments if not filterTypes is defined or document.documentType in filterTypes %}
+            {% set docPath = path(document.canDownloadDirect ? 'homeoffice_cts_document_downloaddirect' : 'homeoffice_cts_document_downloadpdf', {
+                'documentNodeRef' : document.getNodeId
+            }) %}
+
+            <tr data-node-ref="{{ document.nodeId }}">
+                <td>
+                    <a href="{{ docPath }}" target="_blank">{{ document.name }}</a><br>
+                    {{ document.documentType }}
+                </td>
+                <td>
+                    {{ document.createdDate|date('d/m/Y') }}<br>
+                    {{ document.createdDate|date('ga') }}
+                </td>
+                {% if allowRemove == true %}
+                    <td>
+                        <a href="#" class="document-remove" data-value="{{ document.nodeId }}">Remove</a>
+                    </td>
+                    <td>
+                        <a href="{{ docPath }}" data-filename="{{ document.name }}" class="activate-document-tab">Tab</a><br>
+                        <a href="{{ docPath }}" data-filename="{{ document.name }}" class="activate-document-frame">Side bar</a>
+                    </td>
+                {% else %}
+                    <td>
+                        <a href="{{ docPath }}" data-filename="{{ document.name }}" class="activate-document-tab">Document tab</a><br>
+                        <a href="{{ docPath }}" data-filename="{{ document.name }}" class="activate-document-frame">Side bar</a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="{% if allowRemove == true %}4{% else %}3{% endif %}">
+                    <i class="no-documents-warning">There are no documents</i>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="hidden">
+    {% if form['removeDocument'] is defined %}
+        {{ form_widget(form['removeDocument']) }}
+    {% endif %}
+
+    {% if form['documentToRemove'] is defined %}
+        {{ form_widget(form['documentToRemove']) }}
+    {% endif %}
+</div>

@@ -1,0 +1,74 @@
+<div class="form-group">
+    {{ form_label(form.thirdPartyTypeOfCorrespondent) }}
+    {{ form_widget(form.thirdPartyTypeOfCorrespondent, {'attr': {'class': 'chosen thirdPartyTypeOfRepresentativeTrigger'}}) }}
+</div>
+
+<div class="thirdPartyTypeOfRepresentativeToggle">
+    <div class="form-group">
+        {{ form_label(form.thirdPartyCorrespondentTypeOfRepresentative) }}
+        {{ form_widget(form.thirdPartyCorrespondentTypeOfRepresentative) }}
+    </div>
+    <div class="thirdPartyConsentToggle">
+        <div class="form-group">
+            {{ form_label(form.thirdPartyCorrespondentConsentAttached) }}
+            {{ form_widget(form.thirdPartyCorrespondentConsentAttached) }}
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    {{ form_label(form.thirdPartyCorrespondentReplyTo) }}
+    {{ form_widget(form.thirdPartyCorrespondentReplyTo) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.thirdPartyCorrespondentTitle) }}
+    {{ form_widget(form.thirdPartyCorrespondentTitle) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.thirdPartyCorrespondentForename) }}
+    {{ form_widget(form.thirdPartyCorrespondentForename) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.thirdPartyCorrespondentSurname) }}
+    {{ form_widget(form.thirdPartyCorrespondentSurname) }}
+</div>
+
+<div class="form-group">
+    <a href="#" class="copyAddress" data-source="correspondent" data-form="{{ form.vars.name }}" data-target="thirdPartyCorrespondent">Same as first address</a>
+</div>
+
+<div class="form-group">
+    {{ form_label(form.thirdPartyCorrespondentPostcode) }}
+    {{ form_widget(form.thirdPartyCorrespondentPostcode) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.thirdPartyCorrespondentAddressLine1) }}
+    {{ form_widget(form.thirdPartyCorrespondentAddressLine1) }}
+</div>
+
+<div class="form-group">
+    {{ form_widget(form.thirdPartyCorrespondentAddressLine2) }}
+</div>
+
+<div class="form-group">
+    {{ form_widget(form.thirdPartyCorrespondentAddressLine3) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.thirdPartyCorrespondentCountry) }}
+    {{ form_widget(form.thirdPartyCorrespondentCountry) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.thirdPartyCorrespondentTelephone) }}
+    {{ form_widget(form.thirdPartyCorrespondentTelephone) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.thirdPartyCorrespondentEmail) }}
+    {{ form_widget(form.thirdPartyCorrespondentEmail) }}
+</div>

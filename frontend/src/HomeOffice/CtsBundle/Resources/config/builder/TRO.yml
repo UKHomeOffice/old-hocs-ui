@@ -1,0 +1,30 @@
+services:
+    home_office_cts.form.builder.tro_create:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Create\TRO
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: TROCreate }
+
+    home_office_cts.form.builder.tro_draft:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Draft\TRO
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: TRODraft }
+
+    home_office_cts.form.builder.tro_approve:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Approve\TRO
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: TROApprove }
+
+    home_office_cts.form.builder.tro_signoff:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Signoff\TRO
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: TROSignoff }
+
+    home_office_cts.form.builder.tro_dispatch:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Dispatch\TRO
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: TRODispatch }

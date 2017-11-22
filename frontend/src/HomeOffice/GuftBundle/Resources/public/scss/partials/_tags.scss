@@ -1,0 +1,104 @@
+
+@mixin tag-variant($color) {
+  background-color: $color;
+  @if lightness($color) < 50% {
+    color: $white;
+
+    &:link,
+    &:hover,
+    &:focus,
+    &:visited {
+      color: $white;
+    }
+  } @else {
+    color: $text-colour;
+
+    &:link,
+    &:hover,
+    &:focus,
+    &:visited {
+      color: $text-colour;
+    }
+  }
+
+  &[href] {
+    &:hover,
+    &:focus {
+      background-color: darken($color, 10%);
+    }
+  }
+}
+.tag {
+  display: inline;
+  padding: .4em .6em .3em;
+  font-size: 75%;
+  font-weight: bold;
+  line-height: 1;
+  color: $white;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+
+  // [converter] extracted a& to a.tag
+
+  // Empty tags collapse automatically (not available in IE8)
+  &:empty {
+    display: none;
+  }
+
+  // Quick fix for tags in buttons
+  .btn & {
+    position: relative;
+    top: -1px;
+  }
+}
+
+// Add hover effects, but only for links
+a.tag {
+  &:hover,
+  &:focus {
+    color: $orange-25;
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+// Colors
+// Contextual variations (linked tags get darker on :hover)
+
+.tag-default {
+  @include tag-variant($grey-3);
+}
+
+.tag-primary {
+  @include tag-variant($govuk-blue);
+}
+
+.tag-success {
+  @include tag-variant($button-colour);
+}
+
+.tag-info {
+  @include tag-variant($grey-3);
+}
+
+.tag-notice {
+  @include tag-variant($yellow);
+}
+
+.tag-warning {
+  @include tag-variant($orange);
+}
+
+.tag-yellow {
+  @include tag-variant($yellow);
+}
+
+.tag-danger {
+  @include tag-variant($red);
+}
+
+.tag-purple {
+  @include tag-variant($purple);
+}

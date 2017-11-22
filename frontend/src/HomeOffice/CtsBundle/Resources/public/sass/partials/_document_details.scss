@@ -1,0 +1,115 @@
+.detailed-document-table {
+  float: left;
+  margin-bottom: $vertical-rhythm;
+  font-size: #{(13/$base-font-assumption)};
+
+  table {
+      width: 1200px;
+      
+      a {
+        color: $dark-blue;
+      }
+
+      th, td {
+        height: 25px;
+        padding: 1px $table-cell-horizontal-padding;
+        text-align: left;
+        vertical-align: middle;
+        
+        &.version-number {
+          white-space: nowrap;
+          width: 25px - (2 * $table-cell-horizontal-padding);
+        }
+        &.type {
+          width: 105px - (2 * $table-cell-horizontal-padding);
+        }
+        &.name a{
+          text-decoration: underline;
+        }
+        &.added {
+          width: 140px - (2 * $table-cell-horizontal-padding);
+        }
+        &.add-version {
+          text-align: center;
+          width: 92px - (2 * $table-cell-horizontal-padding);
+            
+          div {
+            padding-top: 4px;
+            display: inline-block;
+            white-space: nowrap;
+          }
+            
+          label, input {
+            display: inline;
+          }
+        }
+        &.delete {
+          width: 70px - (2 * $table-cell-horizontal-padding);
+        }
+      }
+
+      th {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        background: $panel-bg-colour-alt1;
+        border: 1px solid $dark-grey;
+      }
+
+      td {
+        background: white;
+        border: 1px solid $case-table-border-grey;
+      }
+      
+      tr {
+        &.even td {
+          background-color: $table-stripe-bg;
+        }
+
+        &.selected-version td {
+          background-color: #CCCDCF;
+          font-weight: bold;
+          border-bottom-width: 0px;
+        }
+
+        &.version td {
+          background-color: #F1F8FC;
+          border-top-width: 0px;
+          border-bottom-width: 0px;
+          padding-left: 13px;
+          padding-top: 4px;
+        }
+
+        &.last td {
+          border-bottom-width: 1px;
+        }
+        
+      }
+    }
+}
+  
+.document-delete-button {
+  margin-left: 0px;
+}
+  
+.add_version_form {
+  display: inline-block;
+
+  label {
+      float: left;
+      font-size: #{(23/$base-font-assumption)}em;
+      padding: 0;
+      padding-top: 4px;
+      padding-left: 8px;
+      padding-right: 8px;
+      background-color: $button-bg-normal;
+      color: white;
+      cursor: pointer;
+  }
+
+  button {
+        float: left;
+        font-size: $small;
+        margin-left: 4px;
+        margin-right: 0;
+    }
+}

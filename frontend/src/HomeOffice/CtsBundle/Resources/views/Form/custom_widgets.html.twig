@@ -1,0 +1,90 @@
+{% block form_widget -%}
+    {% if errors|length > 0 %}<div class="individual error">{{ errors }}</div>{% endif %}
+    {% if compound %}
+        {{- block('form_widget_compound') -}}
+    {% else %}
+        {{- block('form_widget_simple') -}}
+    {% endif %}
+{%- endblock form_widget %}
+
+{% block datetime_widget -%}
+    {% spaceless %}
+        {% if widget == 'single_text' %}
+            {{ block('form_widget_simple') }}
+        {% elseif disabled %}
+            {% if value.date %}
+                <span>{{ "%02d"|format(value.date.day) }}/{{ "%02d"|format(value.date.month) }}/{{ value.date.year }}
+                    <br>{{ "%02d"|format(value.time.hour) }}:{{ "%02d"|format(value.time.minute) }}
+                </span>
+            {% else %}
+                <span>-</span>
+            {% endif %}
+        {% else %}
+            {% if errors|length > 0 %}<div class="individual error">{{ errors }}</div>{% endif %}
+            <div {{ block('widget_container_attributes') }}>
+                {{ form_widget(form.date.day) }}
+                {{ form_widget(form.date.month) }}
+                {{ form_widget(form.date.year) }}
+                {{ form_widget(form.time.hour) }}
+                {{ form_widget(form.time.minute) }}
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{%- endblock datetime_widget %}
+
+{% block date_widget -%}
+    {% spaceless %}
+        {% if widget == 'single_text' %}
+            {{ block('form_widget_simple') }}
+        {% elseif disabled %}
+            {% if value.day %}
+            <span>{{ "%02d"|format(value.day) }}/{{ "%02d"|format(value.month) }}/{{ value.year }}</span>
+            {% else %}
+                <span>-</span>
+            {% endif %}
+        {% else %}
+            {% if errors|length > 0 %}<div class="individual error">{{ errors }}</div>{% endif %}
+        <div {{ block('widget_container_attributes') }}>
+            {{ form_widget(form.day) }}
+            {{ form_widget(form.month) }}
+            {{ form_widget(form.year) }}
+        </div>
+        {% endif %}
+    {% endspaceless %}
+{%- endblock date_widget %}
+
+{% block choice_widget -%}{% spaceless %}
+    {% if errors|length > 0 %}<div class="individual error">{{ errors }}</div>{% endif %}
+    {% if disabled %}
+        <span>{{ value }}</span>
+    {% elseif expanded %}
+        {{ block('choice_widget_expanded') }}
+    {% else %}
+        {{ block('choice_widget_collapsed') }}
+    {% endif %}
+{% endspaceless %}{%- endblock choice_widget %}
+
+{% block form_widget_simple -%}
+    {% spaceless %}
+        {% if disabled %}
+            {% if value is not empty %}
+                <span>{{ value }}</span>
+            {% else %}
+                <span>-</span>
+            {% endif %}
+        {% else %}
+            {% set type = type|default('text') %}
+            <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        {% endif %}
+    {% endspaceless %}
+{%- endblock form_widget_simple %}
+
+{% block textarea_widget -%}
+    {% if errors|length > 0 %}<div class="individual error">{{ errors }}</div>{% endif %}
+    <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+{%- endblock textarea_widget %}
+
+{% block password_widget -%}
+    {% if errors|length > 0 %}<div class="individual error">{{ errors }}</div>{% endif %}
+    <input type="password" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock password_widget %}

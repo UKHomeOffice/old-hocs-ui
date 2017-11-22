@@ -1,0 +1,187 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Create{% endblock %}
+
+{% block metaTitle %}HMPO Collective Case {{ case.urn }}{% endblock %}
+
+{% block overviewReturn %}{% endblock %}
+{% block overviewReject %}{% endblock %}
+{% block returnButton %}{% endblock %}
+
+{% block guftForm %}
+    <h2>Case details</h2>
+
+    <div class="form-group">
+        <label class="form-label">Case type</label>
+        <div class="form-read correspondenceType">{{ constant('HomeOffice\\AlfrescoApiBundle\\Service\\CaseCorrespondenceSubType::'~case.correspondenceType) }}</div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.departureDateFromUK) }}
+        {{ form_widget(form.departureDateFromUK) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.hardCopyReceived) }}
+        {{ form_widget(form.hardCopyReceived) }}
+    </div>
+
+    {% include 'HomeOfficeCtsBundle:Builder:groups/linkedCase.html.twig' with {'form': form.linkedCases} %}
+
+    <div class="form-group">
+        {{ form_label(form['priority']) }}
+        {{ form_widget(form['priority']) }}
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+        {{ form_label(form['correspondingName']) }}
+        <small>For example, the school</small> <br>
+        {{ form_widget(form['correspondingName']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['numberOfChildren']) }}
+        {{ form_widget(form['numberOfChildren']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['countryOfDestination']) }}
+        {{ form_widget(form['countryOfDestination']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['otherCountriesToBeVisited']) }}
+        {{ form_widget(form['otherCountriesToBeVisited']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['countriesToBeTravelledThrough']) }}
+        {{ form_widget(form['countriesToBeTravelledThrough']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['arrivingDateInUK']) }}
+        {{ form_widget(form['arrivingDateInUK']) }}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">{{ form['individualHousehold'].vars.label }}</label>
+        {{ form_widget(form['individualHousehold']) }}
+    </div>
+
+    <div class="form-group leadersAddressAboardToggle">
+        {{ form_label(form['leadersAddressAboard']) }}
+        {{ form_widget(form['leadersAddressAboard']) }}
+    </div>
+
+    <h3>Address to which any correspondence and passport should be sent</h3>
+
+    <div class="form-group">
+        {{ form_label(form['correspondentAddressLine1']) }}
+        {{ form_widget(form['correspondentAddressLine1']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(form['correspondentAddressLine2']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(form['correspondentAddressLine3']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['correspondentPostcode']) }}
+        {{ form_widget(form['correspondentPostcode']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['correspondentEmail']) }}
+        {{ form_widget(form['correspondentEmail']) }}
+    </div>
+
+    <h3>Party leader</h3>
+
+    <div class="form-group">
+        {{ form_label(form['partyLeaderLastName']) }}
+        {{ form_widget(form['partyLeaderLastName']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['partyLeaderOtherNames']) }}
+        {{ form_widget(form['partyLeaderOtherNames']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['partyLeaderPassportNumber']) }}
+        {{ form_widget(form['partyLeaderPassportNumber']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['partyLeaderPassportIssuedAt']) }}
+        {{ form_widget(form['partyLeaderPassportIssuedAt']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['partyLeaderPassportIssuedOn']) }}
+        {{ form_widget(form['partyLeaderPassportIssuedOn']) }}
+    </div>
+
+    <h3>Party leader deputy</h3>
+
+    <div class="form-group">
+        {{ form_label(form['partyLeaderDeputyLastName']) }}
+        {{ form_widget(form['partyLeaderDeputyLastName']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['partyLeaderDeputyOtherNames']) }}
+        {{ form_widget(form['partyLeaderDeputyOtherNames']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['partyLeaderDeputyPassportNumber']) }}
+        {{ form_widget(form['partyLeaderDeputyPassportNumber']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['partyLeaderDeputyPassportIssuedAt']) }}
+        {{ form_widget(form['partyLeaderDeputyPassportIssuedAt']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['partyLeaderDeputyPassportIssuedOn']) }}
+        {{ form_widget(form['partyLeaderDeputyPassportIssuedOn']) }}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">{{ form['feeIncluded'].vars.label }}</label>
+        {{ form_widget(form['feeIncluded']) }}
+    </div>
+
+    <div class="form-group deliveryTypeToggle">
+        <label class="form-label">{{ form['deliveryType'].vars.label }}</label>
+        {{ form_widget(form['deliveryType']) }}
+    </div>
+
+    <hr>
+    <div class="form-group">
+        {% if caseIsStep(case, 'create') %}
+            {% if form.Next is defined %}
+                {{ form_widget(form.Next, { 'label': 'Send to draft'}) }}
+            {% endif %}
+        {% endif %}
+
+        {% if form.save is defined %}
+            {{ form_widget(form.save) }}
+        {% endif %}
+
+        {% if form.saveAndCreateLetter is defined %}
+            {{ form_widget(form.saveAndCreateLetter) }}
+        {% endif %}
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,55 @@
+<div class="advanced-search-fields TRO-search" {% if advancedSearchType != null and advancedSearchType != 'TRO' %}style="display: none;"{% endif %}>
+    <h2>Advanced search - DCU Treat Official</h2>
+    <fieldset class="search_fields1">
+        <div class="dateField">
+            <span class="prelude">Received:</span>
+            <span class="inset-label">{{ form_label(searchByForm['troReceivedDateFrom']) }}</span>
+            {{ form_widget(searchByForm['troReceivedDateFrom'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="dateField">
+            <span class="inset-label">{{ form_label(searchByForm['troReceivedDateTo']) }}</span>
+            {{ form_widget(searchByForm['troReceivedDateTo'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="preDateField">
+            {{ form_label(searchByForm['troPriority']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['troPriority']) }}
+            </div>
+        </div>
+        <div class="preDateField">
+            {{ form_label(searchByForm['troCopyToNo10']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['troCopyToNo10']) }}
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="search_fields2">
+        <div class="advanced-search-sub-title">
+            <span>Correspondent details</span>
+        </div>
+        <div>
+            {{ form_label(searchByForm['troCorrespondentFirstName']) }}
+            {{ form_widget(searchByForm['troCorrespondentFirstName']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['troCorrespondentSurname']) }}
+            {{ form_widget(searchByForm['troCorrespondentSurname']) }}
+        </div>
+    </fieldset>
+    <fieldset class="search_fields3 last">
+        <div class="advanced-search-sub-title">
+        </div>
+        <div>
+            {{ form_label(searchByForm['troCorrespondentPostcode']) }}
+            {{ form_widget(searchByForm['troCorrespondentPostcode']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['troCorrespondentEmail']) }}
+            {{ form_widget(searchByForm['troCorrespondentEmail']) }}
+        </div>
+        <div class="button-holder">
+            <span class="button">{{form_widget(searchByForm['clearTro'])}}</span>
+            <span class="button default">{{ form_widget(searchByForm['searchButtonTro']) }}</span>
+        </div>
+    </fieldset>
+</div>

@@ -1,0 +1,52 @@
+{% if searchByForm['exportButton'] is defined %}
+    <div class="generate-report">
+        <span class="button" {% if ctsSearchResults|length == 0 %}style="display:none"{% endif %}>{{form_widget(searchByForm['exportButton'])}}</span>
+    </div>
+{% endif %}
+{% if ctsSearchResults|length > 0 %}
+    <table class="results-table">
+        <tr>
+            <th id="hrn-column">HRN</th>
+             {% if orderByField == 'c.cts:caseResponseDeadline' %}
+                <th class="sorted {% if orderByDirection == 'DESC' %} reverse{% endif %}" id="date-column">
+                    {% if searchByForm['orderByDeadline'] is defined %}
+                        {{ form_widget(searchByForm['orderByDeadline']) }}
+                    {% else %}
+                        Deadline
+                    {% endif %}
+                </th>
+            {% else %}
+                <th id="date-column">Deadline</th>
+            {% endif %}
+            <th>Name/Member</th>
+            <th id="unit-column">Unit</th>
+            <th id="topic-column">Topic</th>
+            <th id="owner-column">Owner</th>
+            <th id="task-column">Task</th>
+            <th id="details-column">More details</th>
+        </tr>
+        {% for ctsCase in ctsSearchResults %}
+            <tr>
+                <td>
+                    {% include 'HomeOfficeCtsBundle:Search:_hrnResultsColumn.html.twig' %}
+                </td>
+                <td>
+                    {% if ctsCase.caseResponseDeadline is defined %}
+                        {{ ctsHelper.formatDateTimeToDate(ctsCase.caseResponseDeadline) }}
+                    {% endif %}
+                </td>
+                <td class="results-td-block"><div><span>{{ ctsCase.canonicalCorrespondent }}</span></div></td>
+                <td>{{ ctsCase.markupUnit }}</td>
+                <td>{{ ctsCase.markupTopic }}</td>
+                <td>{{ ctsCase.caseOwner }}</td>
+                <td>{{ ctsCase.caseTask }} {% if ctsCase.caseStatus is defined %}({{ ctsCase.caseStatus }}){% endif %}</td>
+                <td class="results-td-block more-details">{{ ctsCase.generateMoreDetailsColumnForSearch | raw }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% include "HomeOfficeCtsBundle:Pagination:controls.html.twig" with {'displayedResultCount': ctsSearchResults|length } %}
+{% elseif searchPerformed %}
+    <div class="search-no-results">
+        <span>No results found.</span>
+    </div>
+{% endif %}

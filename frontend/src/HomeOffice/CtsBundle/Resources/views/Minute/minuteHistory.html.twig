@@ -1,0 +1,39 @@
+<ul class="display_ul">
+    {% for caseMinute in ctsCase.caseMinutes %}
+        <li class="display_li">
+            <div>
+                <h3 class="number tt">{{ "%03d"|format(loop.length-loop.index0) }}</h3>
+                <p class="datetime">
+                    {{ caseMinute.minuteDateTime|date("d/m/y H:i:s", "Europe/London") }}
+                </p>
+            </div>
+            {% if caseMinute.minuteQaReviewOutcomes %}
+                <div>
+                    <p class="minute">
+                    {{ caseMinute.task|default('Reviewed') }}: Quality Review Outcomes
+                    </p>
+                    <p class="minute">
+                    {% set outcomes = caseMinute.minuteQaReviewOutcomes|split(',') %}
+                        {% for outcome in outcomes %}
+                            {{ outcome|trim }}<br/>
+                        {% endfor %}
+                    </p>
+                    <br/>
+                    <p class="minute">
+                        Note - "{{ caseMinute.minuteContent|raw|nl2br }}"
+                    </p>
+                </div>
+            {% else %}
+                <div>
+                    <h3 class="person">{{ caseMinute.minuteUpdatedBy }}</h3>
+                    <p class="minute">
+                        {{ caseMinute.minuteContent|raw|nl2br }}
+                    </p>
+                </div>
+            {% endif %}
+
+        </li>
+    {% endfor %}
+</ul>
+
+<span class="button"><a href="{{ path('homeoffice_cts_case_viewminutes', { 'nodeRef': ctsCase.getNodeId }) }}" class="printMinutes">Print minutes</a></span>

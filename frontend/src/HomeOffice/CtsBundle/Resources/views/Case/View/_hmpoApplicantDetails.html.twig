@@ -1,0 +1,57 @@
+<div class="panel wide page-chunk" id="applicant_details">
+    <h2>Applicant</h2>
+    <div class="page-chunk basic_details">
+        <p>
+            <label>Reply to:</label>
+            <span>
+                {% if ctsCase.replyToApplicant %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </span>
+        </p>
+        <p>
+            <label>Title:</label>
+            <span>{{ ctsCase.applicantTitle }}</span>
+        </p>
+        <p>
+            <label>Forename:</label>
+            <span>{{ ctsHelper.wordWrap(ctsCase.applicantForename, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <label>Surname:</label>
+            <span>{{ ctsHelper.wordWrap(ctsCase.applicantSurname, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <label>Telephone:</label>
+            <span>{{ ctsCase.applicantTelephone }}</span>
+        </p>
+        <p>
+            <label>Email:</label>
+            <span><a href="mailto:{{ ctsCase.applicantEmail }}" title="{{ ctsCase.applicantEmail }}">{{ ctsCase.applicantEmail[:19] }}{% if ctsCase.applicantEmail[20:] %}&hellip;{%  endif %}</a></span>
+        </p>
+    </div>
+    <div class="page-chunk basic_details_2">
+        <p>
+            <label>Address:</label>
+            <span>{{ ctsHelper.wordWrap(ctsCase.applicantAddressLine1, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <span class="spacer"></span>
+            <span>{{ ctsHelper.wordWrap(ctsCase.applicantAddressLine2, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <span class="spacer"></span>
+            <span>{{ ctsHelper.wordWrap(ctsCase.applicantAddressLine3, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <label>Postcode:</label>
+            <span>{{ ctsCase.applicantPostcode }}</span>
+        </p>
+        <p>
+            <label>Country:</label>
+            <span>{{ ctsCase.applicantCountry }}</span>
+        </p>
+    </div>
+</div>

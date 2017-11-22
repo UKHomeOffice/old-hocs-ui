@@ -1,0 +1,24 @@
+<div id="panels" class="sibling-group">
+    
+    {% include "HomeOfficeCtsBundle:Case/View:_caseOverview.html.twig" %}
+    
+    <div id="deadline" class="panel alt2 page-chunk">
+        <h2>Deadline <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.caseResponseDeadline)|default('-') }}</span></h2>
+        
+        {% if ctsCase.hmpoStage != null and ctsCase.hmpoStage == 'MP complaint' %}
+            <h3>Targets</h3>
+            {% spaceless %}{# compatibilty mode bug #}
+            <p>
+                <label>Draft</label>
+                <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.draftResponseTarget)|default('-') }}</span>
+            </p>
+            <p>
+                <label>Dispatch</label>
+                <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.dispatchTarget)|default('-') }}</span>
+            </p>
+            {% endspaceless %}
+        {% endif %}
+        
+        
+    </div>
+</div>

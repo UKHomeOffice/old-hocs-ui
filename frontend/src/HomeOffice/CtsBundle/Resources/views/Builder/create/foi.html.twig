@@ -1,0 +1,146 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Create{% endblock %}
+
+{% block metaTitle %}FOI Case {{ case.urn }}{% endblock %}
+
+{% block guftForm %}
+    <h2>Case details</h2>
+
+    <div class="form-group">
+        <label class="form-label">Case type</label>
+        <div class="form-read correspondenceType">{{ constant('HomeOffice\\AlfrescoApiBundle\\Service\\CaseCorrespondenceSubType::'~case.correspondenceType) }}</div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['dateReceived']) }}
+        {{ form_widget(form['dateReceived']) }}
+    </div>
+
+    {% if form['channel'] is defined %}
+        <div class="form-group">
+            <label class="form-label">{{ form['channel'].vars.label }}</label>
+            {{ form_widget(form['channel']) }}
+        </div>
+    {% endif %}
+
+    <div class="form-group">
+        {{ form_label(form['hoCaseOfficer']) }}
+        {{ form_widget(form['hoCaseOfficer']) }}
+    </div>
+
+    {% if form['icoComplaintOfficer'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['icoComplaintOfficer']) }}
+            {{ form_widget(form['icoComplaintOfficer']) }}
+        </div>
+    {% endif %}
+
+    {% if form['icoReference'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['icoReference']) }}
+            {{ form_widget(form['icoReference']) }}
+        </div>
+    {% endif %}
+
+    {% if form['enforcementNoticeNeeded'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['enforcementNoticeNeeded']) }}
+            {{ form_widget(form['enforcementNoticeNeeded']) }}
+        </div>
+    {% endif %}
+
+    {% if form['enforcementNoticeDeadline'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['enforcementNoticeDeadline']) }}
+            {{ form_widget(form['enforcementNoticeDeadline']) }}
+        </div>
+    {% endif %}
+
+    {% include 'HomeOfficeCtsBundle:Builder:groups/linkedCase.html.twig' with {'form': form.linkedCases} %}
+
+    {#{% include 'HomeOfficeCtsBundle:Builder:groups/appealsCase.html.twig' with {'form': form.appealsCases} %}#}
+
+    <div class="form-group">
+        {{ form_label(form['priority']) }}
+        {{ form_widget(form['priority']) }}
+    </div>
+    <hr>
+
+    <h2>Original correspondence</h2>
+    <div class="documentTable panel"
+         data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+         data-allow-remove="false"
+         data-filter-types="Original"
+    >
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+            'allowRemove': false,
+            'filterTypes': ['Original'],
+        } %}
+    </div>
+
+    {% if caseIsStep(case, 'create') %}
+        <div class="form-group">
+            {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form['document']} %}
+        </div>
+    {% endif %}
+    <hr>
+
+    <h2>Requestor details</h2>
+    <div class="form-group">
+        {{ form_label(form['correspondentTitle']) }}
+        {{ form_widget(form['correspondentTitle']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['correspondentForename']) }}
+        {{ form_widget(form['correspondentForename']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['correspondentSurname']) }}
+        {{ form_widget(form['correspondentSurname']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['correspondentPostcode']) }}
+        {{ form_widget(form['correspondentPostcode']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['correspondentAddressLine1']) }}
+        {{ form_widget(form['correspondentAddressLine1']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(form['correspondentAddressLine2']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(form['correspondentAddressLine3']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['correspondentCountry']) }}
+        {{ form_widget(form['correspondentCountry']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['correspondentTelephone']) }}
+        {{ form_widget(form['correspondentTelephone']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['correspondentEmail']) }}
+        {{ form_widget(form['correspondentEmail']) }}
+    </div>
+
+    {% if caseIsStep(case, 'create') %}
+        <hr>
+        {% include 'HomeOfficeCtsBundle:Builder:groups/markup.html.twig' %}
+    {% elseif form['save'] is defined and form['correspondentEmail'].vars.read_only == false %}
+        {{ form_widget(form['save']) }}
+    {% endif %}
+{% endblock %}

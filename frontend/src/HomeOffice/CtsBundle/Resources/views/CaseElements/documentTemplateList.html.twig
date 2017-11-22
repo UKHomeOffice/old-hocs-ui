@@ -1,0 +1,29 @@
+{% if documentTemplates|length > 0 %}
+    <hr>
+    <h2>Templates</h2>
+
+    <div class="panel">
+        <table>
+            <tr>
+                <th>Template name</th>
+                <th>Download</th>
+            </tr>
+            {% for documentTemplate in documentTemplates %}
+                <tr>
+                    <td>{{ documentTemplate.templateName }}</td>
+                    <td>
+                        {% if documentTemplate.wordDoc %}
+                            <a href="{{ path('homeoffice_cts_documenttemplates_download', { 'nodeRef' : documentTemplate.getNodeId, 'caseNodeRef' : case.getNodeId }) }}">
+                                {{ documentTemplate.name }}
+                            </a>
+                        {% else %}
+                            <a href="{{ path('homeoffice_cts_documenttemplate_downloadfromcase', { 'caseNodeRef' : case.getNodeId, 'documentNodeRef' : documentTemplate.getNodeId }) }}">
+                                {{ documentTemplate.name }}
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endif %}

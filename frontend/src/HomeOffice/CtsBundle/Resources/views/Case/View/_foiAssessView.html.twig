@@ -1,0 +1,19 @@
+<div id="foi-assess" class="panel medium page-chunk">
+    <h2>Assess</h2>
+    <div>
+        <p>
+            <label>Exemptions:</label>
+            <span>{{ ctsCase.getExemptionsString }}</span>
+        </p>
+        <p class="last">
+            <label>Suitable for disclosure:</label>
+            <span>
+                {% if ctsCase.foiDisclosure %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </span>
+        </p>
+    </div>
+</div>

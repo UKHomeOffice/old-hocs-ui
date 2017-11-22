@@ -1,0 +1,65 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block metaTitle %}
+    Add New Standard Line
+{% endblock %}
+
+{% block bc %}
+    <section class="grid-row">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li><a href="{{ path('homeoffice_cts_standardlines_index') }}">Manage Standard Lines</a></li>
+                <li>Add New Standard Line</li>
+            </ol>
+        </nav>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <a name="content_top"></a>
+    <section class="grid-row">
+        <div class="column-two-thirds">
+            <h2>Add new standard line</h2>
+
+            {{ form_start(form, {'attr': {'class': 'form-ajax', 'novalidate' : 'novalidate' } }) }}
+                <div class="form-group">
+                    {{ form_label(form['name']) }}
+                    {{ form_widget(form['name']) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form['reviewDate']) }}
+                    {{ form_widget(form['reviewDate']) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form['associatedUnit']) }}
+                    {{ form_widget(form['associatedUnit'], {'attr': {
+                        'class': 'chosen associatedUnit',
+                        'data-refresh-url': path('homeoffice_cts_caseelements_topicsbyunit')
+                    }}) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form['associatedTopic']) }}
+                    {{ form_widget(form['associatedTopic'], {'attr': {'class': 'chosen associatedTopic'}}) }}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ form['file'].vars.id }}">Document</label>
+                    {{ form_widget(form['file']) }}
+                    <button class="button-tertiary toggleFile" data-toggle="#{{ form['file'].vars.id }}">Browse</button>
+                    <span class="uploadFileName"></span>
+                </div>
+
+                {{ form_widget(form['save'], {'label': 'Add Standard Line', 'attr': {'class': 'button'}}) }}
+                <a href="{{ path('homeoffice_cts_standardlines_index') }}" class="button button-secondary">Cancel</a>
+
+                {{ form_widget(form._token) }}
+            {{ form_end(form, {'render_rest': false}) }}
+        </div>
+    </section>
+{% endblock %}

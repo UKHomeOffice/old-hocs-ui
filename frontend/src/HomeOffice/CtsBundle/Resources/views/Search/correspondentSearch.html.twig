@@ -1,0 +1,16 @@
+{% extends "::base.html.twig" %}
+
+{% block bodyClass %}search{% endblock %}
+
+{% block breadcrumb_trail %}
+    <li>Correspondent search</li>
+{% endblock %}
+
+{% block title %}Correspondent search{% endblock %}
+
+{% block searchButton %}{% endblock %}
+
+{% block body %}
+    {% include "HomeOfficeCtsBundle:Search:correspondentSearchByFields.html.twig" %}
+    {% include "HomeOfficeCtsBundle:Search:searchResultsTable.html.twig" %}
+{% endblock %}

@@ -1,0 +1,42 @@
+{% form_theme ctsCaseDocumentForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+{% set errorPresent = not ctsCaseDocumentForm.vars.valid
+                    or (documentErrorMsg is defined and documentErrorMsg != null) %}
+
+<div class="global error" {% if not errorPresent %}style="display: none;"{% endif %}>
+    {% if errorPresent %}
+        {% if documentErrorMsg is defined and documentErrorMsg != null %}
+            {{ documentErrorMsg }}
+        {% else %}
+            Errors found on form.
+        {% endif %}
+    {% endif %}
+</div>
+<div id="document-form">
+{{ form_start(ctsCaseDocumentForm, {'attr': {'novalidate' : 'novalidate', 'data-ajax-message' : 'Uploading...' } }) }}
+
+    {{ form_errors(ctsCaseDocumentForm) }}
+    <fieldset id="doc_upload" class="panel medium">
+        <h3>Add document</h3>
+            <div>
+                {{ form_label(ctsCaseDocumentForm['documentType']) }}
+                {{ form_widget(ctsCaseDocumentForm['documentType']) }}
+            </div>
+            <div class="textarea">
+                {{ form_label(ctsCaseDocumentForm['documentDescription']) }}
+                {{ form_widget(ctsCaseDocumentForm['documentDescription']) }}
+            </div>
+            <div class="file-upload">
+                {{ form_label(ctsCaseDocumentForm['file']) }}
+                {{ form_widget(ctsCaseDocumentForm['file']) }}
+            </div>
+            <div>
+                <label>&nbsp;</label>
+                <span class="default button as-control">{{ form_widget(ctsCaseDocumentForm['addDocument']) }}</span>
+            </div>
+            <div class="last">
+                <span>* Mandatory fields</span>
+            </div>
+    </fieldset>
+
+{{ form_end(ctsCaseDocumentForm) }}
+</div>

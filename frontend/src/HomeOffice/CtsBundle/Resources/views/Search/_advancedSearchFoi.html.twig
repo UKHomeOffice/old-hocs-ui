@@ -1,0 +1,65 @@
+<div class="advanced-search-fields FOI-search" {% if advancedSearchType != null and advancedSearchType != 'FOI' %}style="display: none;"{% endif %}>
+    <h2>Advanced search - FOI</h2>
+    <fieldset class="search_fields1">
+        <div class="dateField">
+            <span class="prelude">Received:</span>
+            <span class="inset-label">{{ form_label(searchByForm['foiReceivedDateFrom']) }}</span>
+            {{ form_widget(searchByForm['foiReceivedDateFrom'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="dateField">
+            <span class="inset-label">{{ form_label(searchByForm['foiReceivedDateTo']) }}</span>
+            {{ form_widget(searchByForm['foiReceivedDateTo'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="preDateField">
+            {{ form_label(searchByForm['foiHoCaseOfficer']) }}
+            {{ form_widget(searchByForm['foiHoCaseOfficer']) }}
+        </div>
+    </fieldset>
+    <fieldset class="search_fields2">
+        <div class="advanced-search-sub-title">
+            <span>Requestor details</span>
+        </div>
+        <div>
+            {{ form_label(searchByForm['foiRequestorFirstName']) }}
+            {{ form_widget(searchByForm['foiRequestorFirstName']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['foiRequestorSurname']) }}
+            {{ form_widget(searchByForm['foiRequestorSurname']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['foiRequestorPostcode']) }}
+            {{ form_widget(searchByForm['foiRequestorPostcode']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['foiRequestorEmail']) }}
+            {{ form_widget(searchByForm['foiRequestorEmail']) }}
+        </div>
+    </fieldset>
+    <fieldset class="search_fields3 last">
+        <div class="advanced-search-sub-title">
+        </div>
+        <div class="foiSpacer">
+            {{ form_label(searchByForm['foiIsEir']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['foiIsEir']) }}
+            </div>
+        </div>
+        <div class="foiSpacer">
+            {{ form_label(searchByForm['foiMinisterSignOff']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['foiMinisterSignOff']) }}
+            </div>
+        </div>
+        <div class="foiSpacer">
+            {{ form_label(searchByForm['foiDisclosure']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['foiDisclosure']) }}
+            </div>
+        </div>
+        <div class="button-holder">
+            <span class="button">{{form_widget(searchByForm['clearFoi'])}}</span>
+            <span class="button default">{{ form_widget(searchByForm['searchButtonFoi']) }}</span>
+        </div>
+    </fieldset>
+</div>

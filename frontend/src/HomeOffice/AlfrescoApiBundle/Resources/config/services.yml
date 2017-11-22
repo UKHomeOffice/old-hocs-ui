@@ -1,0 +1,414 @@
+parameters:
+    home_office_alfresco_api.guzzle_client.class: GuzzleHttp\Client
+
+    home_office_alfresco_api.ticket.repository.class: HomeOffice\AlfrescoApiBundle\Repository\TicketRepository
+
+    home_office_alfresco_api.person.repository.class: HomeOffice\AlfrescoApiBundle\Repository\PersonRepository
+    home_office_alfresco_api.person.factory.class: HomeOffice\AlfrescoApiBundle\Factory\PersonFactory
+
+    home_office_alfresco_api.unit.factory.class: HomeOffice\AlfrescoApiBundle\Factory\UnitFactory
+    home_office_alfresco_api.team.factory.class: HomeOffice\AlfrescoApiBundle\Factory\TeamFactory
+    home_office_alfresco_api.permissions.factory.class: HomeOffice\AlfrescoApiBundle\Factory\PermissionsFactory
+
+    home_office_alfresco_api.cts_case.repository.class: HomeOffice\AlfrescoApiBundle\Repository\CtsCaseRepository
+    home_office_alfresco_api.cts_case.factory.class: HomeOffice\AlfrescoApiBundle\Factory\Polyfill\CtsCaseFactory
+
+    home_office_alfresco_api.cts_case_document.repository.class: HomeOffice\AlfrescoApiBundle\Repository\CtsCaseDocumentRepository
+    home_office_alfresco_api.cts_case_document.factory.class: HomeOffice\AlfrescoApiBundle\Factory\CtsCaseDocumentFactory
+
+    home_office_alfresco_api.cts_case_document_template.repository.class: HomeOffice\AlfrescoApiBundle\Repository\CtsCaseDocumentTemplateRepository
+    home_office_alfresco_api.cts_case_document_template.factory.class: HomeOffice\AlfrescoApiBundle\Factory\CtsCaseDocumentTemplateFactory
+
+    home_office_alfresco_api.cts_case_standard_line.repository.class: HomeOffice\AlfrescoApiBundle\Repository\CtsCaseStandardLineRepository
+    home_office_alfresco_api.cts_case_standard_line.factory.class: HomeOffice\AlfrescoApiBundle\Factory\CtsCaseStandardLineFactory
+
+    home_office_alfresco_api.bulk_document.repository.class: HomeOffice\AlfrescoApiBundle\Repository\BulkDocumentRepository
+    home_office_alfresco_api.bulk_document.factory.class: HomeOffice\AlfrescoApiBundle\Factory\BulkDocumentFactory
+
+    home_office_alfresco_api.cts_workflow.repository.class: HomeOffice\AlfrescoApiBundle\Repository\CtsWorkflowRepository
+
+    home_office_alfresco_api.cts_case_tso_feed_upload.repository.class: HomeOffice\AlfrescoApiBundle\Repository\CtsCaseTsoFeedUploadRepository
+
+    home_office_alfresco_api.cts_lists.repository.class: HomeOffice\AlfrescoApiBundle\Repository\CtsListsRepository
+
+    home_office_alfresco_api.cts_case_minute.repository.class: HomeOffice\AlfrescoApiBundle\Repository\CtsCaseMinuteRepository
+    home_office_alfresco_api.cts_case_minute.factory.class: HomeOffice\AlfrescoApiBundle\Factory\CtsCaseMinuteFactory
+
+    home_office_alfresco_api.cts_case_search.repository.class: HomeOffice\AlfrescoApiBundle\Repository\CtsCaseSearchRepository
+    home_office_alfresco_api.cts_case_search.factory.class: HomeOffice\AlfrescoApiBundle\Factory\CtsCaseSearchFactory
+
+    home_office_alfresco_api.cts_help_document.repository.class: HomeOffice\AlfrescoApiBundle\Repository\CtsHelpDocumentRepository
+    home_office_alfresco_api.cts_help_document.factory.class: HomeOffice\AlfrescoApiBundle\Factory\CtsHelpDocumentFactory
+
+    home_office_alfresco_api.cts_case.atom_helper.class: HomeOffice\AlfrescoApiBundle\Service\AtomHelper
+    home_office_alfresco_api.cts_case.cts_helper.class: HomeOffice\AlfrescoApiBundle\Service\CTSHelper
+    home_office_alfresco_api.cts_case.query_helper.class: HomeOffice\AlfrescoApiBundle\Service\QueryHelper
+
+    home_office_alfresco_api.consumer.super_search.statement: HomeOffice\AlfrescoApiBundle\Consumer\SuperSearch\Statement
+
+services:
+    home_office_alfresco_api.guzzle_client:
+        class: %home_office_alfresco_api.guzzle_client.class%
+        arguments: [ base_url: %home_office_alfresco_api.endpoint% ]
+        public: false
+
+    home_office_alfresco_api.list_guzzle_client:
+        class: %home_office_alfresco_api.guzzle_client.class%
+        arguments: [ base_url: %home_office_alfresco_api.list_endpoint% ]
+        public: false
+
+    home_office_alfresco_api.person.repository:
+        class: %home_office_alfresco_api.person.repository.class%
+        arguments:
+            - @home_office_alfresco_api.guzzle_client
+            - @home_office_alfresco_api.person.factory
+            - @home_office_alfresco_api.unit.factory
+            - @home_office_alfresco_api.team.factory
+            - @home_office_alfresco_api.permissions.factory
+            - @process_manager_token_storage
+            - @home_office.list_service
+
+    home_office_alfresco_api.person.factory:
+        class: %home_office_alfresco_api.person.factory.class%
+        public: false
+
+    home_office_alfresco_api.unit.factory:
+        class: %home_office_alfresco_api.unit.factory.class%
+        public: false
+
+    home_office_alfresco_api.team.factory:
+        class: %home_office_alfresco_api.team.factory.class%
+        public: false
+
+    home_office_alfresco_api.permissions.factory:
+        class: %home_office_alfresco_api.permissions.factory.class%
+        public: false
+
+    home_office_alfresco_api.ticket.repository:
+        class: %home_office_alfresco_api.ticket.repository.class%
+        arguments:
+            - @home_office_alfresco_api.guzzle_client
+            - @logger
+
+    home_office_alfresco_api.cts_case.repository:
+        class: %home_office_alfresco_api.cts_case.repository.class%
+        arguments:
+            - @home_office_alfresco_api.guzzle_client
+            - @home_office_alfresco_api.cts_case.factory
+            - @process_manager_token_storage
+            - @home_office_alfresco_api.cts_case.atom_helper
+            - @home_office_alfresco_api.cts_case.cts_helper
+            - @home_office_alfresco_api.cts_case.query_helper
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - %home_office_alfresco_api.cts_case_properties%
+            - %home_office_alfresco_api.cts_case_permissions%
+            - @session
+            - @home_office_list.handler
+
+    home_office_alfresco_api.cts_case_document.repository:
+        class: %home_office_alfresco_api.cts_case_document.repository.class%
+        arguments:
+            - @home_office_alfresco_api.guzzle_client
+            - @home_office_alfresco_api.cts_case_document.factory
+            - @process_manager_token_storage
+            - @home_office_alfresco_api.cts_case.atom_helper
+            - @home_office_alfresco_api.cts_case.query_helper
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - %home_office_alfresco_api.cts_case_document_properties%
+            - @home_office_alfresco_api.person.repository
+            - @logger
+
+    home_office_alfresco_api.cts_case_document_template.repository:
+        class: %home_office_alfresco_api.cts_case_document_template.repository.class%
+        arguments:
+            - @home_office_alfresco_api.guzzle_client
+            - @home_office_alfresco_api.cts_case_document_template.factory
+            - @process_manager_token_storage
+            - @home_office_alfresco_api.cts_case.atom_helper
+            - @home_office_alfresco_api.cts_case.query_helper
+            - @home_office_alfresco_api.cts_case.cts_helper
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - %home_office_alfresco_api.cts_case_document_template_properties%
+
+    home_office_alfresco_api.cts_case_document.populator:
+        class: HomeOffice\AlfrescoApiBundle\Service\DocumentPopulator\DocumentPopulator
+
+    home_office_alfresco_api.bulk_document.repository:
+        class: %home_office_alfresco_api.bulk_document.repository.class%
+        arguments:
+            - @home_office_alfresco_api.guzzle_client
+            - @process_manager_token_storage
+            - @home_office_alfresco_api.cts_case.atom_helper
+            - @home_office_alfresco_api.cts_case.query_helper
+            - @home_office_alfresco_api.cts_case.cts_helper
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - %home_office_alfresco_api.cts_case_bulk_create_document_properties%
+
+    home_office_alfresco_api.bulk_document.factory:
+        class: %home_office_alfresco_api.bulk_document.factory.class%
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+
+    home_office_alfresco_api.cts_case_standard_line.repository:
+        class: %home_office_alfresco_api.cts_case_standard_line.repository.class%
+        arguments:
+            - @home_office_alfresco_api.guzzle_client
+            - @home_office_alfresco_api.cts_case_standard_line.factory
+            - @process_manager_token_storage
+            - @home_office_alfresco_api.cts_case.atom_helper
+            - @home_office_alfresco_api.cts_case.query_helper
+            - @home_office_alfresco_api.cts_case.cts_helper
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - %home_office_alfresco_api.cts_case_standard_line_properties%
+            - @home_office_alfresco_api.cts_case_document.repository
+
+    home_office_alfresco_api.cts_workflow.repository:
+        class: %home_office_alfresco_api.cts_workflow.repository.class%
+        arguments:
+            - @home_office_alfresco_api.guzzle_client
+            - @process_manager_token_storage
+            - %home_office_alfresco_api.alfresco_qname_prefix%
+            - @logger
+
+    home_office_alfresco_api.cts_case_tso_feed_upload.repository:
+        class: %home_office_alfresco_api.cts_case_tso_feed_upload.repository.class%
+        arguments:
+            - @home_office_alfresco_api.guzzle_client
+            - @process_manager_token_storage
+
+    home_office_alfresco_api.cts_lists.repository:
+        class: %home_office_alfresco_api.cts_lists.repository.class%
+        arguments:
+            - @home_office_alfresco_api.guzzle_client
+            - @process_manager_token_storage
+            - @home_office_alfresco_api.person.factory
+            - @home_office_alfresco_api.unit.factory
+            - @home_office_alfresco_api.team.factory
+
+    home_office_alfresco_api.cts_case_minute.repository:
+        class: %home_office_alfresco_api.cts_case_minute.repository.class%
+        arguments:
+            - @home_office_alfresco_api.guzzle_client
+            - @home_office_alfresco_api.cts_case_minute.factory
+            - @process_manager_token_storage
+            - @home_office_alfresco_api.cts_case.cts_helper
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - @logger
+
+    home_office_alfresco_api.cts_case_search.repository:
+        class: %home_office_alfresco_api.cts_case_search.repository.class%
+        arguments:
+            - @home_office_alfresco_api.guzzle_client
+            - @home_office_alfresco_api.cts_case.factory
+            - @process_manager_token_storage
+            - @home_office_alfresco_api.cts_case.atom_helper
+            - @home_office_alfresco_api.cts_case.query_helper
+            - @home_office_alfresco_api.cts_case.cts_helper
+            - %home_office_alfresco_api.cts_case_properties%
+            - %home_office_alfresco_api.cts_case_permissions%
+            - @session
+
+    home_office_alfresco_api.cts_help_document.repository:
+        class: %home_office_alfresco_api.cts_help_document.repository.class%
+        arguments:
+            - @home_office_alfresco_api.guzzle_client
+            - @process_manager_token_storage
+            - @home_office_alfresco_api.cts_case.atom_helper
+            - @home_office_alfresco_api.cts_help_document.factory
+            - %home_office_alfresco_api.cts_help_document_properties%
+
+    home_office_alfresco_api.cts_help_document.factory:
+        class: %home_office_alfresco_api.cts_help_document.factory.class%
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+
+    home_office_alfresco_api.cts_case.factory:
+        class: %home_office_alfresco_api.cts_case.factory.class%
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - @home_office_alfresco_api.cts_case.cts_helper
+        public: false
+
+    home_office_alfresco_api.cts_case_document.factory:
+        class: %home_office_alfresco_api.cts_case_document.factory.class%
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        public: false
+
+    home_office_alfresco_api.cts_case_document_template.factory:
+        class: %home_office_alfresco_api.cts_case_document_template.factory.class%
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+
+    home_office_alfresco_api.cts_case_standard_line.factory:
+        class: %home_office_alfresco_api.cts_case_standard_line.factory.class%
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+
+    home_office_alfresco_api.cts_case_minute.factory:
+        class: %home_office_alfresco_api.cts_case_minute.factory.class%
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        public: false
+
+    home_office_alfresco_api.cts_case_search.factory:
+        class: %home_office_alfresco_api.cts_case_search.factory.class%
+        public: false
+
+    home_office_alfresco_api.cts_case.atom_helper:
+        class: %home_office_alfresco_api.cts_case.atom_helper.class%
+        arguments:
+            - %home_office_alfresco_api.cts_namespace%
+            - @home_office_alfresco_api.cts_case.cts_helper
+            - @logger
+
+    home_office_alfresco_api.cts_case.cts_helper:
+        class: %home_office_alfresco_api.cts_case.cts_helper.class%
+        arguments:
+            - @security.context
+            - @home_office_list.handler
+
+    home_office_alfresco_api.cts_case.query_helper:
+        class: %home_office_alfresco_api.cts_case.query_helper.class%
+        arguments:
+            - %home_office_alfresco_api.cts_case_properties%
+
+    home_office_alfresco_api.cts_case.progress_helper:
+        class: HomeOffice\AlfrescoApiBundle\Service\CaseProgressHelper
+
+    home_office_alfresco_api.cts_case.document_type_helper:
+        class: HomeOffice\AlfrescoApiBundle\Service\CaseDocumentTypeHelper
+
+    home_office_alfresco_api.cts_case.approval_helper:
+        class: HomeOffice\AlfrescoApiBundle\Service\CaseApprovalHelper
+
+    process_manager.person.repository:
+        alias: home_office_alfresco_api.person.repository
+
+    process_manager.ticket.repository:
+        alias: home_office_alfresco_api.ticket.repository
+
+    home_office_alfresco_api.mapper.abstract_mapper:
+      class: HomeOffice\AlfrescoApiBundle\Mapper\AbstractMapper
+      abstract: true
+
+    home_office_alfresco_api.mapper.makup_unit:
+      class: HomeOffice\AlfrescoApiBundle\Mapper\MarkupUnit
+      parent: home_office_alfresco_api.mapper.abstract_mapper
+
+    home_office_alfresco_api.mapper.super_search:
+      class: HomeOffice\AlfrescoApiBundle\Mapper\SuperSearch
+      parent: home_office_alfresco_api.mapper.abstract_mapper
+
+    home_office_alfresco_api.consumer.abstract_consumer:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\AbstractConsumer
+      abstract: true
+      arguments:
+        - "@home_office_alfresco_api.guzzle_client"
+        - "@process_manager_token_storage"
+
+    home_office_alfresco_api.consumer.list_abstract_consumer:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\AbstractConsumer
+      abstract: true
+      arguments:
+        - "@home_office_alfresco_api.list_guzzle_client"
+        - "@process_manager_token_storage"
+
+    home_office_alfresco_api.consumer.message_of_the_day:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\MessageOfTheDay
+      parent: home_office_alfresco_api.consumer.abstract_consumer
+
+    home_office_alfresco_api.consumer.cts_case:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\CtsCase
+      parent: home_office_alfresco_api.consumer.abstract_consumer
+
+    home_office_alfresco_api.consumer.cts_case.minutes:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\CtsCase\Minutes
+      parent: home_office_alfresco_api.consumer.abstract_consumer
+
+    home_office_alfresco_api.consumer.todo_list:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\TodoList
+      parent: home_office_alfresco_api.consumer.abstract_consumer
+      arguments:
+        - "@home_office_alfresco_api.mapper.makup_unit"
+
+    home_office_alfresco_api.consumer.forgotten_password:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\ForgottenPassword
+      parent: home_office_alfresco_api.consumer.abstract_consumer
+
+    home_office_alfresco_api.consumer.super_search.statement:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\SuperSearch\Statement
+
+    home_office_alfresco_api.consumer.super_search.statement.mapper:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\SuperSearch\Mapper
+      parent: home_office_alfresco_api.consumer.super_search.statement
+
+    home_office_alfresco_api.consumer.super_search.connector:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\SuperSearch\Connector
+      parent: home_office_alfresco_api.consumer.abstract_consumer
+      arguments:
+        - "@home_office_alfresco_api.mapper.super_search"
+
+    home_office_alfresco_api.consumer.super_search.count:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\SuperSearch\Count
+      parent: home_office_alfresco_api.consumer.abstract_consumer
+
+    home_office_alfresco_api.consumer.repository_info:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\RepositoryInfo
+      parent: home_office_alfresco_api.consumer.abstract_consumer
+
+    home_office_alfresco_api.consumer.super_search:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\SuperSearch
+      arguments:
+        - "@home_office_alfresco_api.consumer.super_search.statement.mapper"
+        - "@home_office_alfresco_api.consumer.super_search.connector"
+        - "@home_office_alfresco_api.consumer.super_search.count"
+        - "@home_office_alfresco_api.consumer.repository_info"
+        - "@session"
+
+    home_office_alfresco_api.consumer.email_preferences:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\EmailPreferences
+      parent: home_office_alfresco_api.consumer.abstract_consumer
+      calls:
+        - [setUser, ["@=service('security.context').getToken().getUser()"]]
+
+# Topics
+    home_office_alfresco_api.consumer.topic:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\TopicConsumer
+      parent: home_office_alfresco_api.consumer.list_abstract_consumer
+      public: false
+
+    home_office_alfresco_api.service.topic:
+      class: HomeOffice\AlfrescoApiBundle\Service\Topic\TopicService
+      arguments:
+        - "@home_office_alfresco_api.consumer.topic"
+
+# Dashboard
+    home_office_alfresco_api.consumer.dashboard:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\Dashboard
+      parent: home_office_alfresco_api.consumer.abstract_consumer
+      public: false
+
+    home_office_alfresco_api.service.dashboard:
+      class: HomeOffice\AlfrescoApiBundle\Service\Dashboard\Dashboard
+      arguments:
+        - "@home_office_alfresco_api.consumer.dashboard"
+
+# Reports
+    home_office_alfresco_api.consumer.reports:
+      class: HomeOffice\AlfrescoApiBundle\Consumer\Reports
+      parent: home_office_alfresco_api.consumer.abstract_consumer
+

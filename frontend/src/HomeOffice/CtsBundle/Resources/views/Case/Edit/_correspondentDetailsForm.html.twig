@@ -1,0 +1,60 @@
+<div id="constituent_details" class="panel wide">
+    <h2>{{ title }}</h2>
+    <fieldset class="basic_details">
+        {% if ctsCase.mpRef is defined %}
+            <div>
+                {{ form_label(ctsCaseForm['mpRef']) }}
+                {{ form_widget(ctsCaseForm['mpRef']) }}
+            </div>
+        {% endif %}
+        <div>
+            {{ form_label(ctsCaseForm['correspondentTitle']) }}
+            {{ form_widget(ctsCaseForm['correspondentTitle']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['correspondentForename']) }}
+            {{ form_widget(ctsCaseForm['correspondentForename']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['correspondentSurname']) }}
+            {{ form_widget(ctsCaseForm['correspondentSurname']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['correspondentTelephone']) }}
+            {{ form_widget(ctsCaseForm['correspondentTelephone']) }}
+        </div>
+        <div class="last">
+            {{ form_label(ctsCaseForm['correspondentEmail']) }}
+            {{ form_widget(ctsCaseForm['correspondentEmail']) }}
+        </div>
+    </fieldset>
+    <fieldset class="basic_details_2">
+        <div class="button-after-input{% if ctsCase.mpRef is defined %} push-down{% endif %}">
+            {{ form_label(ctsCaseForm['correspondentPostcode']) }}
+            {{ form_widget(ctsCaseForm['correspondentPostcode']) }}
+            <a class="button find_address"><span>Find address</span></a>
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['correspondentAddressLine1']) }}
+            {{ form_widget(ctsCaseForm['correspondentAddressLine1']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['correspondentAddressLine2']) }}
+            {{ form_widget(ctsCaseForm['correspondentAddressLine2']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['correspondentAddressLine3']) }}
+            {{ form_widget(ctsCaseForm['correspondentAddressLine3']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['correspondentCountry']) }}
+            {{ form_widget(ctsCaseForm['correspondentCountry']) }}
+        </div>
+        <div class="full_width_label last">
+            <div class="spot-control">
+                {{ form_widget(ctsCaseForm['replyToNumberTenCopy']) }}
+                {{ form_label(ctsCaseForm['replyToNumberTenCopy']) }}
+            </div>
+        </div>
+    </fieldset>
+</div>

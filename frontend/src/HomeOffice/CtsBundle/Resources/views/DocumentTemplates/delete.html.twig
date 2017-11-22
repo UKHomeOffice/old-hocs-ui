@@ -1,0 +1,16 @@
+<div class="modal">
+    <h2>Delete Template</h2>
+
+    <p>
+        Deleting this template cannot be undone.<br>
+        Are you sure you would like to continue?
+    </p>
+
+    <form action="{{ path('homeoffice_cts_documenttemplates_delete', { 'nodeRef': template.nodeId }) }}" method="post" class="form-ajax">
+        <input class="button" type="submit" value="Delete Template">
+
+        <a href="#close-modal" rel="modal:close" class="button button-secondary right">Cancel</a>
+    </form>
+</div>
+
+

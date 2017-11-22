@@ -1,0 +1,29 @@
+<div id="foi-pit" class="panel medium page-chunk">
+    <h2>Public interest test (PIT)</h2>
+    <div>
+        <p {% if not ctsCase.pitExtension %}class="last"{% endif %}>
+            <label>Extension:</label>
+            <span>
+                {% if ctsCase.pitExtension %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </span>
+        </p>
+        {% if ctsCase.pitExtension %}
+            <p>
+                <label>Letter sent:</label>
+                <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.pitLetterSentDate) }}</span>
+            </p>
+            <p class="double-height">
+                <label>Extended deadline:</label>
+                <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.caseResponseDeadline)|default('-') }}</span>
+            </p>
+            <p class="last">
+                <label>Qualified exemptions:</label>
+                <span>{{ ctsCase.getPitQualifiedExemptionsString }}</span>
+            </p>
+        {% endif %}
+    </div>
+</div>

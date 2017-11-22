@@ -1,0 +1,44 @@
+
+
+parameters:
+    ft_config.enabled:  false # gets overridden
+    ft_config.class:    HomeOffice\GuftBundle\Config
+    ft_config.title:    "Report me a lost or stolen passport"
+    ft_config.theme:    global
+    ft_config.breadcrumb:
+        ['home' => '/', 'styleguide' => '/styleguide']
+    ft_config.sidebar:
+        Passports:
+          -
+            - Get a passport for your child
+            - https://www.gov.uk/get-a-child-passport
+          -
+            - Get a passport urgently
+            - https://www.gov.uk/get-a-passport-urgently
+          -
+            - Renew or replace your adult passport
+            - https://www.gov.uk/renew-adult-passport
+          -
+            - More
+            - https://www.gov.uk/browse/abroad/passports
+            - Passports
+        Elsewhere on GOV.UK:
+          -
+            - Contact the po-lice
+            - https://www.gov.uk/contact-police
+    ft_config.hide_breadcrumb: false
+    ft_config.hide_sidebar: false
+
+
+
+services:
+    ft_config:
+        class:          "%ft_config.class%"
+        arguments:
+          - "%ft_config.title%"
+          - "%ft_config.theme%"
+          - "%ft_config.breadcrumb%"
+          - "%ft_config.sidebar%"
+          - "%ft_config.hide_breadcrumb%"
+          - "%ft_config.hide_sidebar%"
+

@@ -1,0 +1,48 @@
+
+    <h2>Grouped</h2>
+    {% if ctsCase.isGroupedSlave is defined and ctsCase.isGroupedSlave %}
+        <div>
+            <span>This case is a dependent grouped case.</span>
+        </div>
+    {% else %}
+        {% if groupedCaseError is defined and groupedCaseError != null %}
+            <div class="cases_error">
+                <span>{{ groupedCaseError|nl2br }}</span>
+            </div>
+        {% endif %}
+        {% if grouped is defined and grouped %}
+            <div class="group_cases_info">
+                <span>Grouped case, master shown.</span>
+            </div>
+        {% endif %}
+        {% if ctsCase.groupedCases|length > 0 %}
+            <div>
+                <ul class="case_list">
+                    {% for groupedCase in ctsCase.groupedCases %}
+                        {% if editable %}
+                            <li>
+                                <a href="{{ path('homeoffice_cts_case_view', { 'nodeRef' : groupedCase.getNodeId }) }}">
+                                    UIN: {{ groupedCase.uin }}
+                                </a>
+                                <span class="button as-link">
+                                    {{ form_widget(ctsCaseForm['removeGroupedCase' ~ '_' ~ groupedCase.nodeId]) }}
+                                </span>
+                            </li>
+                        {% else %}
+                            <li>
+                                UIN: {{ groupedCase.uin }}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if editable %}
+            <div class="form-group">
+                {{ form_label(ctsCaseForm['uinsToGroup']) }}
+                {{ form_widget(ctsCaseForm['uinsToGroup']) }}
+                {{ form_widget(ctsCaseForm['addGroupedCases']) }}
+            </div>
+        {% endif %}
+    {% endif %}
+

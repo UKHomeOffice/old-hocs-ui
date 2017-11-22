@@ -1,0 +1,105 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}View case {{ ctsViewCaseForm.vars.data.urn }}{% endblock %}
+
+{% block bodyClass %}case view-case {{ ctsCase.correspondenceType }}{% if allocateUserForm != null %} allocate{% endif %}{% endblock %}
+
+{% block breadcrumb_trail %}
+    {% if ctsCase.caseStatus == statuses['NEW_CASE'] %}
+        <li>View case</li>
+    {% elseif ctsCase.caseStatus == statuses['DRAFT'] %}
+        <li>Draft Response case</li>
+    {% elseif ctsCase.caseStatus == statuses['APPROVALS'] %}
+        <li>Approval case</li>
+    {% elseif ctsCase.caseStatus == statuses['OBTAIN_SIGNOFF'] %}
+        <li>Sign-off case</li>
+    {% elseif ctsCase.caseStatus == statuses['DISPATCH'] %}
+        <li>Dispatch case</li>
+    {% endif %}
+{% endblock %}
+{% block control_surround_start %}
+    {{ form_start(ctsViewCaseForm) }}
+{% endblock %}
+{% block sub_controls %}
+    {% if ctsViewCaseForm['DeleteButton'] is defined %}
+        <li>
+            <span class="subaction" id="delete-button">{{ form_widget(ctsViewCaseForm['DeleteButton']) }}</span>
+        </li>
+    {% endif %}
+{% endblock %}
+{% block primary_controls %}
+    {% if ctsCase.canUpdateProperties %}
+        <span class="default action"><a href="{{ path('homeoffice_cts_case_edit', { 'nodeRef' : ctsCase.getNodeId }) }}">Edit</a></span>
+    {% endif %}
+    {% include "HomeOfficeCtsBundle:Case/Workflow:workflowActions.html.twig" %}
+{% endblock %}
+{% block control_surround_end %}
+    {{ form_end(ctsViewCaseForm) }}
+{% endblock %}
+{% block body %}
+    <div id="col1">
+
+    {% set errorPresent = not ctsViewCaseForm.vars.valid
+                        or (errorMsg is defined and errorMsg != null)
+                        or (documentErrorMsg is defined and documentErrorMsg != null) %}
+
+    <div class="global error" {% if not errorPresent %}style="display: none;"{% endif %}>
+        {% if errorPresent %}
+            {% if errorMsg is defined and errorMsg != null %}{{ errorMsg|nl2br }}{% else %}Errors found on form.{% endif %}
+        {% endif %}
+    </div>
+    
+    {% if allocateUserForm != null %}
+        {% include "HomeOfficeCtsBundle:Case:allocation.html.twig" %}
+    {% endif %}
+    
+    {% if ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'DCU' or ctsCase.correspondenceType == 'UTEN'%}
+        {% include "HomeOfficeCtsBundle:Case/View:caseViewMinisterial1.html.twig" %}
+    {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'PQ' %}
+        {% include "HomeOfficeCtsBundle:Case/View:caseViewPq1.html.twig" %}
+    {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'FOI' %}
+        {% if ctsCase.correspondenceType == 'FOI' %}
+            {% include "HomeOfficeCtsBundle:Case/View:caseViewFoi1.html.twig" %}
+        {% else %}{# complaint #}
+            {% include "HomeOfficeCtsBundle:Case/View:caseViewFoiComplaint1.html.twig" %}
+        {% endif %}
+    {% elseif ctsCase.correspondenceType == 'IMCB' or ctsCase.correspondenceType == 'IMCM' %}
+        {% include "HomeOfficeCtsBundle:Case/View:caseViewUkvi1.html.twig" %}
+    {% elseif ctsCase.correspondenceType == 'COM' %}
+        {% include "HomeOfficeCtsBundle:Case/View:caseViewHmpoCom1.html.twig" %}
+    {% elseif ctsCase.correspondenceType == 'GEN' %}
+        {% include "HomeOfficeCtsBundle:Case/View:caseViewHmpoGen1.html.twig" %}
+    {% endif %}
+    </div>
+
+    <div id="col2">
+        {% if ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'DCU' or ctsCase.correspondenceType == 'UTEN'%}
+            {% include "HomeOfficeCtsBundle:Case/View:caseViewMinisterial2.html.twig" %}
+        {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'PQ' %}
+            {% include "HomeOfficeCtsBundle:Case/View:caseViewPq2.html.twig" %}
+        {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'FOI' %}
+            {% if ctsCase.correspondenceType == 'FOI' %}
+                {% include "HomeOfficeCtsBundle:Case/View:caseViewFoi2.html.twig" %}
+            {% else %}{# complaint #}
+                {% include "HomeOfficeCtsBundle:Case/View:caseViewFoiComplaint2.html.twig" %}
+            {% endif %}
+        {% elseif ctsCase.correspondenceType == 'IMCB' or ctsCase.correspondenceType == 'IMCM'%}
+            {% include "HomeOfficeCtsBundle:Case/View:caseViewUkvi2.html.twig" %}
+        {% elseif ctsCase.correspondenceType == 'COM' %}
+            {% include "HomeOfficeCtsBundle:Case/View:caseViewHmpoCom2.html.twig" %}
+        {% elseif ctsCase.correspondenceType == 'GEN' %}
+            {% include "HomeOfficeCtsBundle:Case/View:caseViewHmpoGen2.html.twig" %}
+        {% endif %}
+
+        {% include "HomeOfficeCtsBundle:Document:documentList.html.twig" %}
+        {% include "HomeOfficeCtsBundle:Document:documentUploadView.html.twig" %}
+        {% include "HomeOfficeCtsBundle:DocumentTemplate:documentTemplateList.html.twig" %}
+
+        {% if ctsCase.correspondenceType == 'FOI' %}
+            {% include "HomeOfficeCtsBundle:Case/View:caseViewFoi3.html.twig" %}
+        {% elseif ctsCase.correspondenceType == 'COM' %}
+            {% include "HomeOfficeCtsBundle:Case/View:caseViewHmpoCom3.html.twig" %}
+        {% endif %}
+        
+    </div>
+{% endblock %}

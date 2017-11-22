@@ -1,0 +1,56 @@
+<div id="filter_minutes">
+    <h2>Filter minutes:</h2>
+        <fieldset id="filter-minutes">
+            <div class='filter-options-container'>
+                <input type="hidden" value="{{ app.request.attributes.get('_route_params').nodeRef }}" name="nodeRef" />
+                <span>
+                    <label for="manual_minutes">Manual</label>
+                    <input
+                        type="checkbox"
+                        id="manual_minutes"
+                        value="manual"
+                        name="filters[]"
+                        class="filters-option"
+                        {% if ctsCaseMinuteFilters.manual is defined %}
+                            checked="checked"
+                        {% endif %}
+                    />
+                </span>
+
+                <span>
+                    <label for="system_minutes">System</label>
+                    <input
+                        type="checkbox"
+                        id="system_minutes"
+                        value="system"
+                        name="filters[]"
+                        class="filters-option"
+                        {% if ctsCaseMinuteFilters.system is defined %}
+                            checked="checked"
+                        {% endif %}
+                    />
+                </span>
+            </div>
+            <div>
+                <a
+                    href="{{ path('homeoffice_cts_case_view', { 'nodeRef' : ctsCase.nodeId }) }}?filters[]=manual#filter_minutes"
+                    class="minutes-no-js"
+                >
+                    Manual Minutes
+                </a>
+                <a
+                    href="{{ path('homeoffice_cts_case_view', { 'nodeRef' : ctsCase.nodeId }) }}?filters[]=system#filter_minutes"
+                    class="minutes-no-js"
+                >
+                    System Minutes
+                </a>
+                <a
+                    href="{{ path('homeoffice_cts_case_view', { 'nodeRef' : ctsCase.nodeId }) }}?filters[]=manual&filters[]=system#filter_minutes"
+                    class="minutes-no-js"
+                >
+                    All Minutes
+                </a>
+            </div>
+
+        </fieldset>
+</div>

@@ -1,0 +1,31 @@
+<h3>Group with another case</h3>
+
+{% if case.isGroupedSlave is defined and case.isGroupedSlave %}
+    <div class="form-group">
+        <span>This case is a dependent grouped case.</span>
+    </div>
+
+    {% do form.setRendered %}
+{% else %}
+    {% if grouped is defined and grouped %}
+        <div class="group_cases_info">
+            <span>Grouped case, master shown.</span>
+        </div>
+    {% endif %}
+
+    <div class="form-group">
+        {% if not form['uinsToGroup'].vars.read_only %}
+            {{ form_label(form['uinsToGroup']) }}
+            {{ form_widget(form['uinsToGroup'], {'attr': { 'class': 'reset' }}) }}
+            {{ form_widget(form['addGroupedCase']) }}
+        {% else %}
+            {% do form['addGroupedCase'].setRendered %}
+            {% do form['uinsToGroup'].setRendered %}
+            {% do form['groupedCaseToRemove'].setRendered %}
+        {% endif %}
+
+        <div class="groupedCaseTable">
+            {% include 'HomeOfficeCtsBundle:CaseElements:groupedCasesTable.html.twig' with { 'case': case } %}
+        </div>
+    </div>
+{% endif %}

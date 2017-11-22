@@ -1,0 +1,57 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Manage templates{% endblock %}
+
+{% block bodyClass %}queue{% endblock %}
+
+{% block breadcrumb_trail %}
+    <li>Manage templates</li>
+{% endblock %}
+
+{% block primary_controls %}
+    <span class="default action"><a href="{{ path('homeoffice_cts_documenttemplate_add') }}">Add new template</a></span>
+{% endblock %}
+
+{% block body %}
+    {% if documentTemplateError %}
+        <div>{{ documentTemplateError }}</div>
+    {% endif %}
+    
+    <h2>Templates</h2>
+
+    {% if documentTemplates|length > 0 %}
+        <table class="results-table" id="template_list" summary="Available templates">
+            <tr>
+                <th class="filename">File name</th>
+                <th class="template-name">Template name</th>
+                <th class="type">Case type</th>
+                <th class="date-added">Added</th>
+                <th class="date-valid-from">Valid from</th>
+                <th class="date-valid-to">Valid to</th>
+                <th class="edit">Edit</th>
+                <th class="delete">Delete</th>
+            </tr>
+            {% for documentTemplate in documentTemplates %}
+                <tr>
+                    <td class="filename"><a href="{{ path('homeoffice_cts_documenttemplate_download', { 'documentNodeRef' : documentTemplate.getNodeId }) }}">{{ documentTemplate.name }}</a></td>
+                    <td class="template-name">{{ documentTemplate.templateName }}</td>
+                    <td class="type">{{ correspondenceSubTypes[documentTemplate.appliesToCorrespondenceType] }}</td>
+                    <td class="date-added">{{ documentTemplate.createdDate }}</td>
+                    <td class="date-valid-from">{{ ctsHelper.formatDateTimeToDate(documentTemplate.validFromDate) }}</td>
+                    <td class="date-valid-to">{{ ctsHelper.formatDateTimeToDate(documentTemplate.validToDate) }}</td>
+                    <td class="edit">
+                        <a href="{{ path('homeoffice_cts_documenttemplate_edit', { 'nodeRef' : documentTemplate.getNodeId }) }}">Edit</a>
+                    </td>
+                    <td class="delete">
+                        {{ form_start(documentTemplate.getDeleteForm(), { 'action': path('homeoffice_cts_documenttemplate_delete'), 'method': 'POST', 'attr': {'class': 'doc-template-delete-form'} }) }}
+                            <input type="hidden" name="_method" value="DELETE" />
+                        {{ form_end(documentTemplate.deleteForm) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div>No templates</div>
+    {% endif %}
+
+{% endblock %}

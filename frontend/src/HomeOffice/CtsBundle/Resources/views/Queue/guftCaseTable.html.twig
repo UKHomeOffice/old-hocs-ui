@@ -1,0 +1,108 @@
+<div id="ajax-todo">
+<section class="grid-row">
+{% if ctsQueue|length > 0 %}
+    <table class="todo-queue" summary="{% if summary is defined %}{{ summary }}{% endif %}">
+        <tr>
+            <th>Case ID</th>
+            {% if orderByField == 'caseResponseDeadline' %}
+                {% if orderByDirection == 'DESC' %}
+                    <th class="sorted desc">
+                        <a href="{{
+                            path('homeoffice_cts_home_home',
+                            app.request.query.all|merge( {'orderBy': 'deadlineDate', 'orderDirection': 'ASC' } ))
+                        }}">
+                            <span class="mobile-hide">Final </span>deadline
+                        </a>
+                    </th>
+                {% else %}
+                    <th class="sorted asc">
+                        <a href="{{
+                            path('homeoffice_cts_home_home',
+                            app.request.query.all|merge( {'orderBy': 'deadlineDate', 'orderDirection': 'DESC' } ))
+                        }}">
+                            <span class="mobile-hide">Final </span>deadline
+                        </a>
+                    </th>
+                {% endif %}
+            {% else %}
+                <th>
+                    <a href="{{
+                        path('homeoffice_cts_home_home',
+                        app.request.query.all|merge( {'orderBy': 'deadlineDate', 'orderDirection': 'DESC' } ))
+                    }}">
+                        <span class="mobile-hide">Final </span>deadline
+                    </a>
+                </th>
+            {% endif %}
+            <th>Name / Member</th>
+            <th>Unit</th>
+            <th>Topic</th>
+            <th>Status</th>
+            {% if queueValue=='unitQueue' or queueValue=='teamQueue' %}
+                <th>Owner</th>
+            {% endif %}
+        </tr>
+        {% for ctsCase in ctsQueue.ctsCases %}
+        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+            <td> 
+                {% include 'HomeOfficeCtsBundle:Search/Guft:_hrnResultsColumn.html.twig' %}
+            </td>
+            <td> 
+                {% if ctsCase.case.caseResponseDeadline is defined %} 
+                    {{ ctsCase.case.caseResponseDeadline|date('d/m/Y') }} 
+                {% endif %} 
+            </td>
+            <td>
+                {% if ctsCase.case.canonicalCorrespondent is defined %}
+                    {{ ctsCase.case.canonicalCorrespondent }}
+                {% endif %}
+            </td>
+            <td>{% if ctsCase.case.markupUnit is defined %}
+                    {{ ctsCase.case.markupUnit }}
+                {% endif %}
+            </td>
+            <td>{% if ctsCase.case.markupTopic is defined %}
+                    {{ ctsCase.case.markupTopic }}
+                {% endif %}
+            </td>
+            <td>
+                {{ ctsCase.case.caseStatus }} ({{ ctsCase.case.caseTask }})
+                {% if ctsCase.case.caseOverdueFlag is defined and ctsCase.case.caseOverdueFlag == true %}
+                    <span class="tag tag-danger">Overdue</span>
+                {% endif %}
+                {% if ctsCase.case.returnedCount is defined and ctsCase.case.returnedCount > 0 %}
+                    <span class="tag tag-purple">Redraft requested</span>
+                {% endif %}
+                {% if ctsCase.case.priority is defined and ctsCase.case.priority == true %}
+                    <span class="tag tag-yellow">Priority</span>
+                {% endif %}
+
+            </td>
+            {% if queueValue=='unitQueue' or queueValue=='teamQueue' %}
+                <td>
+                {% if ctsCase.case.assignedUser is not defined or
+                        (ctsCase.case.assignedUser is defined and ctsCase.case.assignedUser == "") %}
+                    <p><a data-username="{{ app.user.username }}" href="{{ path('homeoffice_cts_home_allocatetome', app.request.query.all|merge( {'nodeRef' : ctsCase.case.id } ) ) }}" class="allocation-link">Allocate to Me</a></p>
+                {% endif %}
+                {% if ctsCase.case.assignedUser is defined %}
+                    {{ ctsCase.case.assignedUser }}
+                {% elseif ctsCase.case.assignedTeam is defined %}
+                    {{ userAndTeamList[ctsCase.case.assignedTeam] }}
+                {% elseif ctsCase.case.assignedUnit is defined %}
+                    {{ userAndTeamList[ctsCase.case.assignedUnit] }}
+                {% endif %}
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+    <br/>
+    {% include "HomeOfficeCtsBundle:Pagination:guftControls.html.twig"
+        with {'displayedResultCount': ctsQueue|length, 'class': 'todo_paginate' } %}
+
+{% else %}
+    <div class="queue-no-results">
+        <span>Nothing to show in this queue.</span>
+    </div>
+{% endif %}
+    </section>
+</div>

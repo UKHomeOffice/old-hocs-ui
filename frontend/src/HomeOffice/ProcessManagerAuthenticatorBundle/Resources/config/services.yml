@@ -1,0 +1,47 @@
+parameters:
+    home_office_process_manager_authenticator.authenticator.class: HomeOffice\ProcessManagerAuthenticatorBundle\Security\Authenticator
+    home_office_process_manager_authenticator.user_provider.class: HomeOffice\ProcessManagerAuthenticatorBundle\Security\UserProvider
+    home_office_process_manager_authenticator.token_storage.class: HomeOffice\ProcessManagerAuthenticatorBundle\Security\SessionTicketStorage
+
+services:
+    home_office_process_manager_authenticator.authenticator:
+        class: %home_office_process_manager_authenticator.authenticator.class%
+        arguments: [@process_manager.ticket.repository, @logger]
+        tags:
+            -  { name: home_office_process_manager_interface.authentication_provider }
+
+    process_manager_authenticator:
+            alias: home_office_process_manager_authenticator.authenticator
+
+    home_office_process_manager_authenticator.token_storage:
+        class: %home_office_process_manager_authenticator.token_storage.class%
+        arguments: [@session]
+        tags:
+            - { name: home_office_process_manager_interface.authentication_listener }
+
+    process_manager_token_storage:
+            alias: home_office_process_manager_authenticator.token_storage
+
+    home_office_process_manager_authenticator.user_provider:
+        class: %home_office_process_manager_authenticator.user_provider.class%
+        arguments: [ @process_manager.person.repository ]
+
+    process_manager_user_provider:
+        alias: home_office_process_manager_authenticator.user_provider
+        
+    process_manager.handler.ticket_authentication:
+        class: HomeOffice\ProcessManagerAuthenticatorBundle\Handler\TicketAuthenticationHandler
+        arguments:
+            - @security.context
+            - @router
+            - @process_manager_token_storage
+            - @home_office_alfresco_api.ticket.repository
+            - @home_office_alfresco_api.person.repository
+            - @home_office_alfresco_api.cts_case.cts_helper
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    process_manager.ajax.authentication.listener:
+        class: HomeOffice\ProcessManagerAuthenticatorBundle\EventListener\AjaxAuthenticationListener
+        tags:
+          - { name: kernel.event_listener, event: kernel.exception, method: onCoreException, priority: 1000 }

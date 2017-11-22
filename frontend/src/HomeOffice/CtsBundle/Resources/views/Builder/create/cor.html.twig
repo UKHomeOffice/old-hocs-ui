@@ -1,0 +1,93 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Create{% endblock %}
+
+{% block metaTitle %}HMPO Correspondence Case {{ case.urn }}{% endblock %}
+
+{% block guftForm %}
+    <h2>Case details</h2>
+
+    <div class="form-group">
+        <label class="form-label">Case type</label>
+        <div class="form-read correspondenceType">{{ constant('HomeOffice\\AlfrescoApiBundle\\Service\\CaseCorrespondenceSubType::'~case.correspondenceType) }}</div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.dateReceived) }}
+        {{ form_widget(form.dateReceived) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.caseResponseDeadline) }}
+        {{ form_widget(form.caseResponseDeadline) }}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">{{ form.channel.vars.label }}</label>
+        {{ form_widget(form.channel) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.officeOfOrigin) }}
+        {{ form_widget(form.officeOfOrigin) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.passportNumber) }}
+        {{ form_widget(form.passportNumber) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.applicationNumber) }}
+        {{ form_widget(form.applicationNumber) }}
+    </div>
+
+    {% include 'HomeOfficeCtsBundle:Builder:groups/linkedCase.html.twig' with {'form': form.linkedCases} %}
+
+    <div class="form-group">
+        {{ form_label(form['priority']) }}
+        {{ form_widget(form['priority']) }}
+    </div>
+    <hr>
+
+    <h2>Original correspondence</h2>
+    <div class="documentTable panel"
+         data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+         data-allow-remove="false"
+    >
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+            'allowRemove': false
+        } %}
+    </div>
+
+    {% if caseIsStep(case, 'create') %}
+        <div class="form-group">
+            {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form['document']} %}
+        </div>
+    {% endif %}
+    <hr>
+
+    <h2>Correspondent</h2>
+    {% include 'HomeOfficeCtsBundle:Builder:groups/correspondent/primary.html.twig' %}
+
+
+    <label><a class="{% if not case.hasSecondaryCorrespondent %}secondaryCorrespondentTrigger{% endif %} noUnderline" href="#">Second Correspondent</a></label>
+    <div class="{% if not case.hasSecondaryCorrespondent %}secondaryCorrespondentToggle hidden{% endif %}">
+        {% include 'HomeOfficeCtsBundle:Builder:groups/correspondent/secondary.html.twig' %}
+
+        <label><a class="{% if not case.hasTertiaryCorrespondent %}tertiaryCorrespondentTrigger{% endif %} noUnderline" href="#">Third Correspondent</a></label>
+        <div class="{% if not case.hasSecondaryCorrespondent %}tertiaryCorrespondentToggle hidden{% endif %}">
+            {% include 'HomeOfficeCtsBundle:Builder:groups/correspondent/tertiary.html.twig' %}
+        </div>
+    </div>
+
+    {% if caseIsStep(case, 'create') %}
+        <hr>
+        {% include 'HomeOfficeCtsBundle:Builder:groups/markup.html.twig' %}
+    {% elseif case.caseStatus in ['Create','Draft'] and form['save'] is defined %}
+        <hr>
+        {{ form_widget(form['save']) }}
+    {% endif %}
+{% endblock %}

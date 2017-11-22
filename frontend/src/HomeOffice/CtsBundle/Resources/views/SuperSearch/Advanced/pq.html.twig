@@ -1,0 +1,51 @@
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+<h2>Advanced search - PQ</h2>
+
+<div class="form-group">
+    <label class="form-label">{{ form['caseType'].vars.label }}</label>
+    {{ form_widget(form['caseType']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['uin']) }}
+    {{ form_widget(form['uin']) }}
+</div>
+
+<div class="form-group">
+    <label class="form-label">
+        {{ form['keyword'].vars.label }}<br>
+        Searches text in question and response fields
+    </label>
+    {{ form_widget(form['keyword']) }}
+</div>
+
+<div class="form-group">
+    <label class="form-label">Order paper (OP) date</label>
+    {{ form_widget(form['opDate']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['member']) }}
+    {{ form_widget(form['member']) }}
+</div>
+
+<div class="form-group">
+    <label class="form-label">{{ form['receivedType'].vars.label }}</label>
+    {{ form_widget(form['receivedType']) }}
+</div>
+
+<div class="form-group">
+    <label class="form-label">{{ form['roundRobin'].vars.label }}</label>
+    {{ form_widget(form['roundRobin']) }}
+</div>
+
+<div class="form-group">
+    <label class="form-label">{{ form['signedBy'].vars.label }}</label>
+    {{ form_widget(form['signedBy']) }}
+</div>
+
+<div class="form-group">
+    <label class="form-label">{{ form['reviewedBy'].vars.label }}</label>
+    {{ form_widget(form['reviewedBy']) }}
+</div>

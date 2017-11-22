@@ -1,0 +1,94 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Edit Case {{ ctsCaseForm.vars.data.urn }} {% endblock %}
+
+{% block bodyClass %}case {{ ctsCase.correspondenceType }}{% endblock %}
+
+{% block breadcrumb_trail %}
+    <li>Edit case {{ ctsCaseForm.vars.data.urn }}</li>
+{% endblock %}
+
+{% block first %}
+    {{ form_start(ctsCaseForm, {'attr': {'novalidate' : 'novalidate' } }) }}
+{% endblock %}
+
+{%  block primary_controls %}
+    <span class="default action" id="save-button">{{ form_widget(ctsCaseForm['Save1']) }}</span>
+{% endblock %}
+
+{% block primary_controls_footer %}
+    <span class="default action">{{ form_widget(ctsCaseForm['Save2']) }}</span>
+{% endblock %}
+
+{% block body %}
+    <div id="col1">
+    {% set errorPresent = (not ctsCaseForm.vars.valid
+                            or (errorMsg is defined and errorMsg != null)
+                            or (documentErrorMsg is defined and documentErrorMsg != null)
+                            or (groupedCaseError is defined and groupedCaseError != null)
+                            or (linkedCaseError is defined and linkedCaseError != null))
+                            and (saveWarningMessage is defined or saveWarningMessage == null) %}
+
+    <div class="global error" {% if not errorPresent %}style="display: none;"{% endif %}>
+        {% if errorPresent %}
+            {% if errorMsg is defined and errorMsg != null %}{{ errorMsg|nl2br }}{% else %}Errors found on form.{% endif %}
+        {% endif %}
+    </div>
+
+    {% if ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'DCU' or ctsCase.correspondenceType == 'UTEN' %}
+        {% include "HomeOfficeCtsBundle:Case/Edit:caseformMinisterial1.html.twig" %}
+    {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'PQ' %}
+        {% include "HomeOfficeCtsBundle:Case/Edit:caseformPq1.html.twig" %}
+    {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'FOI' %}
+        {% if ctsCase.correspondenceType == 'FOI' %}
+            {% include "HomeOfficeCtsBundle:Case/Edit:caseformFoi1.html.twig" %}
+        {% else %}{# complaint #}
+            {% include "HomeOfficeCtsBundle:Case/Edit:caseFormFoiComplaint1.html.twig" %}
+        {% endif %}
+    {% elseif ctsCase.correspondenceType == 'IMCB' or ctsCase.correspondenceType == 'IMCM'%}
+        {% include "HomeOfficeCtsBundle:Case/Edit:caseformUkvi1.html.twig" %}
+    {% elseif ctsCase.correspondenceType == 'COM' %}
+        {% include "HomeOfficeCtsBundle:Case/Edit:caseformHmpoCom1.html.twig" %}
+    {% elseif ctsCase.correspondenceType == 'GEN' %}
+        {% include "HomeOfficeCtsBundle:Case/Edit:caseformHmpoGen1.html.twig" %}
+    {% endif %}
+    </div>
+    <div id="col2">
+        {% if ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'DCU' or ctsCase.correspondenceType == 'UTEN'%}
+            {% include "HomeOfficeCtsBundle:Case/Edit:caseformMinisterial2.html.twig" %}
+        {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'PQ' %}
+            {% include "HomeOfficeCtsBundle:Case/Edit:caseformPq2.html.twig" %}
+        {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'FOI' %}
+            {% if ctsCase.correspondenceType == 'FOI' %}
+                {% include "HomeOfficeCtsBundle:Case/Edit:caseformFoi2.html.twig" %}
+            {% else %}{# complaint #}
+                {% include "HomeOfficeCtsBundle:Case/Edit:caseFormFoiComplaint2.html.twig" %}
+            {% endif %}
+        {% elseif ctsCase.correspondenceType == 'GEN' %}
+            {% include "HomeOfficeCtsBundle:Case/Edit:caseformHmpoGen2.html.twig" %}
+        {% elseif ctsCase.correspondenceType == 'IMCB' or ctsCase.correspondenceType == 'IMCM'%}
+            {% include "HomeOfficeCtsBundle:Case/Edit:caseformUkvi2.html.twig" %}
+        {% elseif ctsCase.correspondenceType == 'COM' %}
+            {% include "HomeOfficeCtsBundle:Case/Edit:caseformHmpoCom2.html.twig" %}
+        {% elseif ctsCase.correspondenceType == 'GEN' %}
+            {% include "HomeOfficeCtsBundle:Case/Edit:caseformHmpoGen2.html.twig" %}
+        {% endif %}
+
+        {% include "HomeOfficeCtsBundle:Document:documentList.html.twig" %}
+        {% include "HomeOfficeCtsBundle:Document:documentUpload.html.twig" %}
+        {% include "HomeOfficeCtsBundle:DocumentTemplate:documentTemplateList.html.twig" %}
+        
+        {% if ctsCase.correspondenceType == 'FOI' %}
+            {% include "HomeOfficeCtsBundle:Case/Edit:caseformFoi3.html.twig" %}
+        {% elseif ctsCase.correspondenceType == 'COM' %}
+            {% include "HomeOfficeCtsBundle:Case/Edit:caseformHmpoCom3.html.twig" %}
+        {% endif %}
+    </div>
+        
+    {% if saveWarningMessage is not null and saveWarningMessage is defined  %}
+        <div id="save_warning_message">{{saveWarningMessage|nl2br}}</div>
+    {% endif %}
+
+{% endblock %}
+
+{% block last %}{{ form_end(ctsCaseForm) }}{% endblock %}

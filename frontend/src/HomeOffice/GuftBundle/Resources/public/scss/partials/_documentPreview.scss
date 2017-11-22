@@ -1,0 +1,117 @@
+#page-container {
+  .column-document-preview {
+    display: none;
+  }
+}
+
+body.document-preview {
+  #global-header .header-wrapper,
+  #global-header-bar,
+  #page-container {
+    max-width: $site-width + ($site-width/2);
+  }
+
+  .column-two-thirds {
+    float: left;
+    width: 50%;
+  }
+
+  .column-sidebar {
+    display: none;
+  }
+
+  .column-document-preview {
+    display: block !important;
+
+    .document-preview {
+      clear: both;
+    }
+
+    @include media(tablet) {
+      display: none;
+    }
+  }
+}
+
+
+#doc_preview {
+  position: relative;
+}
+
+#doc_preview_container {
+  margin-bottom: $gutter-half;
+}
+
+.img-preview {
+  position: relative;
+  height: 490px;
+  background-color: $grey-4;
+  border: 1px solid $grey-1;
+  padding: 5px;
+}
+
+.viewer {
+  -ms-touch-action: none;
+}
+
+.iviewer_common {
+  position:absolute;
+  bottom:10px;
+  border: 1px  solid #000;
+  height: 28px;
+  z-index: 5000;
+}
+
+.iviewer_cursor {
+  cursor: url(/bundles/guft/images/iviewer/hand.cur) 6 8, pointer;
+}
+
+.iviewer_drag_cursor {
+  cursor: url(/bundles/guft/images/iviewer/grab.cur) 6 8, pointer;
+}
+
+.iviewer_button {
+  width: 28px;
+  cursor: pointer;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.iviewer_zoom_in {
+  left: 20px;
+  background: url(/bundles/guft/images/iviewer/iviewer.zoom_in.gif) center center no-repeat;
+}
+
+.iviewer_zoom_out {
+  left: 55px;
+  background: url(/bundles/guft/images/iviewer/iviewer.zoom_out.gif) center center no-repeat;
+}
+
+.iviewer_zoom_zero {
+  left: 90px;
+  background: url(/bundles/guft/images/iviewer/iviewer.zoom_zero.gif) center center no-repeat;
+}
+
+.iviewer_zoom_fit {
+  left: 125px;
+  background: url(/bundles/guft/images/iviewer/iviewer.zoom_fit.gif) center center no-repeat;
+}
+
+.iviewer_zoom_status {
+  left: 160px;
+  font: 1em/28px Sans;
+  color: $black;
+  background-color: $white;
+  text-align: center;
+  width: 60px;
+}
+
+.iviewer_rotate_left {
+  left: 227px;
+  background: $white url(/bundles/guft/images/iviewer/iviewer.rotate_left.png) center center no-repeat;
+}
+
+.iviewer_rotate_right {
+  left: 262px;
+  background: $white url(/bundles/guft/images/iviewer/iviewer.rotate_right.png) center center no-repeat;
+}

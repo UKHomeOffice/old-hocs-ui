@@ -1,0 +1,69 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block title %}Bulk Create Case{% endblock %}
+
+{% block content %}
+<section class="grid-row">
+    <div class="column-two-thirds">
+        <ol>
+            <li>Choose case type from available options.</li>
+            <li>Browse and select one or more original documents.</li>
+            <li>Select the team to allocate the cases to.</li>
+            <li>Click the 'Upload' button.</li>
+            <li>Files are uploaded and processed.</li>
+            <li>Once complete files are processed further in the background, to create cases.</li>
+            <li>View any failures that occurred whilst attempting to create cases.</li>
+        </ol>
+
+        {{ form_start(form, { 'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="form-group">
+                {{ form_label(form['correspondenceType']) }}
+                {{ form_widget(form['correspondenceType']) }}
+            </div>
+
+            <div class="form-group" data-path="{{ path('homeoffice_cts_bulkcase_assignee') }}">
+                {{ form_label(form['assignedUnit']) }}
+                {{ form_widget(form['assignedUnit']) }}
+            </div>
+
+            <div class="form-group" data-path="{{ path('homeoffice_cts_bulkcase_assignee') }}">
+                {{ form_label(form['assignedTeam']) }}
+                {{ form_widget(form['assignedTeam']) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form['assignedUser']) }}
+                {{ form_widget(form['assignedUser']) }}
+            </div>
+
+            <div class="form-group file-upload">
+                {{ form_widget(form['files'], {'attr': { 'data-url' : path('homeoffice_cts_bulkcase_upload') } }) }}
+                <button class="button-tertiary toggleFile" data-toggle="#{{ form['files'].vars.id }}">
+                    Browse
+                </button>
+            </div>
+
+            <div class="form-group">
+                {{ form_widget(form['UploadAndCreate']) }}
+            </div>
+
+            <div>
+                <div id="progress">
+                    <span class="progress-pct">0%</span>
+                    <div class="bar"></div>
+                </div>
+            </div>
+            <br>
+
+            <div class="form-group">
+                <a href="{{ path('homeoffice_cts_bulkcase_create') }}" class="button">Start again</a>
+            </div>
+            <br>
+
+            <div id="files" class="files"></div>
+        {{ form_end(form) }}
+    </div>
+</section>
+{% endblock %}

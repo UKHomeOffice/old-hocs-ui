@@ -1,0 +1,60 @@
+/* Typography */
+
+b,
+strong {
+  font-weight: 600;
+}
+
+blockquote {
+  border-left: 2px solid $govuk-blue;
+  padding-left: $gutter-half;
+  background-color: $grey-4;
+}
+
+ul.blank, ol.blank {
+  list-style-type: none;
+}
+
+ol.li {
+  list-style-type: decimal;
+}
+
+ul.inline, ol.inline {
+  overflow: hidden;
+  display: block
+}
+
+ul.inline li:first-child, ol.inline li:first-child {
+  padding-left: 0
+}
+
+ul.inline li, ol.inline li {
+  float: left;
+  padding: 0 10px
+}
+
+.code-header {
+  color: $white;
+  text-transform: uppercase;
+  display: block;
+  background: $grey-1;
+  border-radius: 3px 3px 0 0;
+  border: 2px solid $black;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600
+}
+
+.code-sample {
+  display: block;
+  background: $grey-4;
+  border-radius: 0 0 3px 3px;
+  border: 1px solid $grey-2;
+  border-top: 0;
+  padding: 10px;
+  margin: 0 0 30px
+}
+
+.noUnderline {
+  text-decoration: none;
+}

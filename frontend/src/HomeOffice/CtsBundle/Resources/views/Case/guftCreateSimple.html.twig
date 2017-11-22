@@ -1,0 +1,27 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% block bc %}
+    <section class="grid-row">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>Initiate case</li>
+            </ol>
+        </nav>
+    </section>
+{% endblock %}
+
+{% block title %}{% endblock %}
+{% block metaTitle %}Initiate case{% endblock %}
+
+{% block content %}
+    <section class="grid-row">
+        {% include 'HomeOfficeCtsBundle:CaseElements:progressbar.html.twig' with {step: 'create', case: null} %}
+    </section>
+
+    {% include "HomeOfficeCtsBundle:Case:guftCaseEntryForm.html.twig" %}
+{% endblock %}
+
+
+
+

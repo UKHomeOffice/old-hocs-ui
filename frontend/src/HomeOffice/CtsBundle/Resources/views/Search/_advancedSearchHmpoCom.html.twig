@@ -1,0 +1,55 @@
+<div class="advanced-search-fields COM-search" {% if advancedSearchType != null and advancedSearchType != 'COM' %}style="display: none;"{% endif %}>
+    <h2>Advanced search - HMPO Complaint</h2>
+    <fieldset class="search_fields1">
+        <div class="dateField">
+            <span class="prelude">Received:</span>
+            <span class="inset-label">{{ form_label(searchByForm['comReceivedDateFrom']) }}</span>
+            {{ form_widget(searchByForm['comReceivedDateFrom'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="dateField">
+            <span class="inset-label">{{ form_label(searchByForm['comReceivedDateTo']) }}</span>
+            {{ form_widget(searchByForm['comReceivedDateTo'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="preDateField multi-selector">
+            {{ form_label(searchByForm['comComplaintStage']) }}
+            {{ form_widget(searchByForm['comComplaintStage']) }}
+        </div>
+    </fieldset>
+    <fieldset class="search_fields2">
+        <div class="advanced-search-sub-title">
+            <span>Correspondent / complainant / applicant details</span>
+        </div>
+        <div>
+            {{ form_label(searchByForm['comFirstName']) }}
+            {{ form_widget(searchByForm['comFirstName']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['comSurname']) }}
+            {{ form_widget(searchByForm['comSurname']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['comPostcode']) }}
+            {{ form_widget(searchByForm['comPostcode']) }}
+        </div>
+    </fieldset>
+    <fieldset class="search_fields3 last">
+        <div class="advanced-search-sub-title">
+        </div>
+        <div>
+            {{ form_label(searchByForm['comEmail']) }}
+            {{ form_widget(searchByForm['comEmail']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['comPassportNumber']) }}
+            {{ form_widget(searchByForm['comPassportNumber']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['comApplicationNumber']) }}
+            {{ form_widget(searchByForm['comApplicationNumber']) }}
+        </div>
+        <div class="button-holder">
+            <span class="button">{{form_widget(searchByForm['clearCom'])}}</span>
+            <span class="button default">{{ form_widget(searchByForm['searchButtonCom']) }}</span>
+        </div>
+    </fieldset>
+</div>

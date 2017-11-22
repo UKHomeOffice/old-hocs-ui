@@ -1,0 +1,58 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Signoff{% endblock %}
+
+{% block metaTitle %}Signoff PQ case {{ case.urn }}{% endblock %}
+
+{% block guftForm %}
+    <h2>Question</h2>
+    <h3>Question (asked by {{ case.member }})</h3>
+    <p>{{ case.questionText }}</p>
+    <hr>
+
+    <div class="editResponseToggle">
+        <h2>
+            Response
+            {% if caseIsStep(case, 'signOff') %}<a href="#" class="editResponseTrigger">Edit</a>{% endif %}
+        </h2>
+        <p class="{% if caseIsStep(case, 'signOff') %}editResponseToggle {% endif %}answerTextDisplay">{{ case.answerText }}</p>
+    </div>
+
+    {% if caseIsStep(case, 'signOff') %}
+        <div class="editResponseToggle hidden">
+            <h2>Response <a href="#" class="editResponseSave">Save</a></h2>
+            <div class="form-group">
+                {{ form_widget(form['answerText']) }}
+                {{ form_widget(form['editAnswer']) }}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="form-group">
+        {% include 'HomeOfficeCtsBundle:CaseElements:supportingDocuments.html.twig' with {
+        'case': case,
+        'form': caseIsStep(case, 'signOff') ? form['removeDocument']: null
+        } %}
+    </div>
+
+    {% if caseIsStep(case, 'signOff') %}
+        {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form['newDocument'] } %}
+        <hr>
+    {% endif %}
+
+    {% if form['Approve'] is defined %}
+        <div class="form-group">
+            <label class="form-label">
+                <strong>{{ case.caseTask }}</strong><br>
+                {{ case.caseOwner }}
+            </label>
+
+            {% if form['Approve'] is defined %}
+                {{ form_widget(form['Approve']) }}
+                {{ form_widget(form['Reject'], { 'attr': { 'class': 'button-secondary' }}) }}
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,104 @@
+    <div id="correspondence_details" class="panel wide">
+    <h2>Case details</h2>
+    <div class="page-chunk basic_details">
+        <div class="text-only-widget">
+            <label>Case type:</label>
+            <span>{{ ctsCase.correspondenceType }} &ndash; {{ caseTypeText }}</span>
+        </div>
+        <div{% if ctsCase.correspondenceType == 'FTC' %} class="last"{% endif %}>
+            <label>Date received:</label>
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.dateReceived) }}</span>
+        </div>
+        {% if ctsCase.correspondenceType == 'FLT' or ctsCase.correspondenceType== 'FUT' %}
+            <div>
+                <label>TSOL rep:</label>
+                <span>{{ ctsCase.tsolRep }}</span>
+            </div>
+            <div>
+                <label>Tribunal outcome:</label>
+                <span>{{ ctsCase.tribunalOutcome }}</span>
+            </div>
+            <div class="last">
+                <label>Tribunal outcome date:</label>
+                <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.tribunalOutcomeDate) }}</span>
+            </div>
+        {% endif %}
+        {% if ctsCase.correspondenceType == 'FSC' %}
+            <div class="last long-label">
+                <label>New information released:</label>
+                <span>{{ ctsHelper.formatBooleanToYesOrNo(ctsCase.newInformationReleased) }}</span>
+            </div>
+        {% endif %}
+        {% if ctsCase.correspondenceType == 'FTCI' %}
+            <div class="long-label">
+                <label>Enforcement / information notice needed:</label>
+                <span>{{ ctsHelper.formatBooleanToYesOrNo(ctsCase.enforcementNoticeNeeded) }}</span>
+            </div>
+            <div class="last">
+                <label>Enforcement notice deadline:</label>
+                <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.enforcementNoticeDeadline) }}</span>
+            </div>
+        {% endif %}
+        {%  if ctsCase.correspondenceType == 'FSCI' %}
+            <div>
+                <label>ICO complaint officer:</label>
+                <span>{{ ctsCase.icoComplaintOfficer }}</span>
+            </div>
+            <div class="last">
+                <label>ICO outcome:</label>
+                <span>{{ ctsHelper.formatBooleanToYesOrNo(ctsCase.icoOutcome) }}</span>
+            </div>
+        {% endif %}
+    </div>
+    <div class="page-chunk basic_details_2">
+        <div class="dateField">
+            <label>Response date:</label>
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.responseDate) }}</span>
+        </div>
+        <div{% if ctsCase.correspondenceType == 'FTC' %} class="last"{% endif %}>
+            <label>HO case officer:</label>
+            <span>{{ ctsCase.hoCaseOfficer }}</span>
+        </div>
+        {% if ctsCase.correspondenceType == 'FLT' or ctsCase.correspondenceType== 'FUT' %}
+            <div>
+                <label>Appellant:</label>
+                <span>{{ ctsCase.appellant }}</span>
+            </div>
+            <div class="last">
+                <label>HO joined:</label>
+                <span>{{ ctsHelper.formatBooleanToYesOrNo(ctsCase.hoJoined) }}</span>
+            </div>
+        {% endif %}
+        {% if ctsCase.correspondenceType == 'FSC' %}
+            <div class="last">
+                <label>Complex:</label>
+                <span>{{ ctsHelper.formatBooleanToYesOrNo(ctsCase.complex) }}</span>
+            </div>
+        {% endif %}
+        {% if ctsCase.correspondenceType == 'FTCI' or ctsCase.correspondenceType == 'FSCI' %}
+            <div{% if ctsCase.correspondenceType == 'FTCI' %} class="last"{% endif %}>
+                <label>ICO reference:</label>
+                <span>{{ ctsCase.icoReference }}</span>
+            </div>
+        {% endif %}
+        {%  if ctsCase.correspondenceType == 'FSCI' %}
+            <div class="last">
+                <label>ICO outcome date:</label>
+                <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.icoOutcomeDate) }}</span>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% include "HomeOfficeCtsBundle:Case:linkedCaseList.html.twig" with { 'editable' : false, 'wide' : true } %}
+
+{% include 'HomeOfficeCtsBundle:Case/View:_correspondentDetailsFoi.html.twig' with { 'title' : 'Requestor details' }  %}
+
+{% include "HomeOfficeCtsBundle:Case/View:_markupView.html.twig" %}
+
+<div class="panel wide page-chunk" id="minutes_history">
+    <h2>Minutes history</h2>
+    {% include "HomeOfficeCtsBundle:Minute:minuteAdd.html.twig" with { 'minuteForm': ctsCaseMinuteForm, 'addFormTag': true }  %}
+    {% include "HomeOfficeCtsBundle:Minute:minuteFilter.html.twig" %}
+    {% include "HomeOfficeCtsBundle:Minute:minuteHistory.html.twig" %}
+</div>

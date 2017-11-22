@@ -1,0 +1,2 @@
+{% extends case.correspondenceType in ['FSC', 'FSCI'] ? '' : '@HomeOfficeCts/Builder/groups/markUp/AllocateToDraft.html.twig' %}
+{#We don't extend the AllocateToDraft tempalte for FSI and FSCI as they include the Original Decision Upheld temaplte and this would duplicate it.#}

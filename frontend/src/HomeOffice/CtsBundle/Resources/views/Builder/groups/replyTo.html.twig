@@ -1,0 +1,39 @@
+<h2>Reply to</h2>
+
+{% if form.correspondentIsMemberOfParliament is defined %}
+    <div class="form-group">
+        <div class="group">
+            <label class="form-label">{{ form.correspondentIsMemberOfParliament.vars.label }}</label>
+            {{ form_widget(form.correspondentIsMemberOfParliament) }}
+        </div>
+{% endif %}
+
+
+{% if form.member is defined %}
+    <div class="memberParliamentToggle {% if form.correspondentIsMemberOfParliament is defined %}hidden{% endif %}">
+        {% include 'HomeOfficeCtsBundle:Builder:groups/memberOfParliament.html.twig' %}
+    </div>
+{% endif %}
+
+{% if form.correspondentTitle is defined %}
+    {% if correspondentHidden %}
+        <div class="correspondentToggle {% if form.correspondentIsMemberOfParliament is defined %}hidden{% endif %}">
+            {% include 'HomeOfficeCtsBundle:Builder:groups/correspondent.html.twig' %}
+        </div>
+    {% else %}
+        <div>
+            {% include 'HomeOfficeCtsBundle:Builder:groups/correspondent.html.twig' %}
+        </div>
+    {% endif %}
+{% endif %}
+        
+{% if form.correspondentIsMemberOfParliament is defined %}
+    </div>
+{% endif %}
+
+{% if form.homeSecretaryReply is defined %}
+    <div class="form-group">
+        {{ form_label(form.homeSecretaryReply) }}
+        {{ form_widget(form.homeSecretaryReply) }}
+    </div>
+{% endif %}

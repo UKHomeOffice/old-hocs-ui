@@ -1,0 +1,119 @@
+<table summary="Documents attached to case {{ ctsCase.getUrn }}">
+        <tr>
+            <th class="version">Version</th>
+            <th class="type">Type</th>
+            <th class="name">Name</th>
+            <th class="description">Description</th>
+            <th class="added">Added</th>
+            <th class="add-version">Add Version</th>
+            {% if ctsCase.canDeleteObject %}
+                <th class="delete">Delete</th>
+            {% endif %}
+        </tr>
+        {% for caseDocument in ctsCase.caseDocuments %}
+            {% set openClosed = '' %}
+            {% set versionLink = '' %}
+            {% set closeVersionsHref = path('homeoffice_cts_document_getdocumentlist', { 'nodeRef' : ctsCase.getNodeId }) %}
+            {% set showVersionsHref = path('homeoffice_cts_document_getdocumentlist',
+                                            { 'nodeRef' : ctsCase.getNodeId,
+                                              'documentRefForVersion' : caseDocument.getNodeId }
+                                            )
+            %}
+            {% if documentRefForVersion != null and documentRefForVersion == caseDocument.getNodeId and documentVersions != null %}
+                {% set showVersioning = true %}
+                {% set openClosed = 'open' %}
+                {% set versionLink %}
+                <a href="{{ closeVersionsHref }}" data-closeversions="{{ closeVersionsHref }}" data-showversions="{{ showVersionsHref }}">
+                    <span class="openClosed"><span class="a11y">{{ openClosed }}</span></span>
+                </a>
+                {% endset %}
+            {% else %}
+                {% set showVersioning = false %}
+                {% if caseDocument.versionNumber != '1.0' %}
+                    {% set openClosed = 'closed' %}
+                    {% set versionLink %}
+                    <a href="{{ showVersionsHref }}" data-closeversions="{{ closeVersionsHref }}" data-showversions="{{ showVersionsHref }}">
+                        <span class="openClosed"><span class="a11y">{{ openClosed }}</span></span>
+                    </a>
+                    {% endset %}
+                {% endif %}
+            {% endif %}
+            {% if showVersioning %}
+            <tr class="selected-version {{ openClosed }}" id="tr_{{ caseDocument.getNodeId }}">
+            {% else %}
+            <tr class="{{ cycle(['even','odd'],loop.index) }} {{ openClosed }}" id="tr_{{ caseDocument.getNodeId }}">
+            {% endif %}
+                <td class="version-number">
+                    {{ caseDocument.versionNumber }}
+                    {{ versionLink }}
+                </td>
+                <td class="type">{{ caseDocument.documentType }}</td>
+                <td class="name">
+                    <a href="{{ path('homeoffice_cts_document_download', {'caseNodeRef' :  caseNodeRef,
+                                                                          'documentNodeRef' : caseDocument.getNodeId }
+                    )}}" target="_blank">{{ caseDocument.name }}</a>
+                </td>
+                <td class="description">{{ caseDocument.documentDescription }}</td>
+                <td class="added">{{ ctsHelper.formatAtomStringToDateTime(caseDocument.lastModificationDate) }}</td>
+                <td class="add-version">
+                    {{ form_start(
+                        caseDocument.getAddVersionForm(),
+                            { 'action': path('homeoffice_cts_document_uploaddocumentversion', { 'documentNodeRef' :  caseDocument.getNodeId }),
+                              'method': 'POST',
+                              'attr': { 'class': 'add_version_form',
+                                        'data-ajax-message' : 'Uploading...' } }
+                        )
+                    }}
+                    {% if documentRefForVersion != null %}<input type="hidden" name="documentRefForVersion" value="{{ documentRefForVersion }}" />{% endif %}
+                    {{ form_end(caseDocument.addVersionForm) }}
+                </td>
+            {% if ctsCase.canDeleteObject %}
+                <td class="delete">
+                    {% set deleteForm = caseDocument.getDeleteForm() %}
+                    {{ form_start(
+                        deleteForm,
+                            {
+                                'action': path('homeoffice_cts_document_delete', { 'documentNodeRef' :  caseDocument.getNodeId }),
+                                'method': 'POST',
+                                'attr': { 'class': 'doc_delete_form',
+                                'data-ajax-message' : 'Deleting...',
+                                'data-confirmation-message' : 'Are you sure you want to delete this document and all its versions?' }
+                            }
+                        )
+                    }}
+                    <span class="button as-link document-delete-button">{{ form_widget(deleteForm['delete']) }}</span>
+                    <input type="hidden" name="_method" value="DELETE" />
+                    {% if documentRefForVersion != null %}<input type="hidden" name="documentRefForVersion" value="{{ documentRefForVersion }}" />{% endif %}
+                    {{ form_end(deleteForm) }}
+                </td>
+            {% endif %}
+            </tr>
+
+            {% if showVersioning %}
+                {% set counter = 1 %}
+                {% for versionDocument in documentVersions %}
+                    {% if counter != 1 %}
+                        <tr class="version tr_{{ caseDocument.getNodeId }}{% if documentVersions|length == counter %} last{% endif %}">
+                            <td class="version-number">{{ versionDocument.versionNumber }}</td>
+                            <td class="type"></td>
+                            <td class="name"><a href="{{ path('homeoffice_cts_document_downloadversion', { 'fileVersionUrl' :  versionDocument.fileVersionUrl, 'documentNodeRef' : versionDocument.getNodeId, 'documentName' : versionDocument.name }) }}">{{ versionDocument.name }}</a> </td>
+                            <td class="description"></td>
+                            <td class="added">{{ ctsHelper.formatAtomStringToDateTime(versionDocument.lastModificationDate) }}</td>
+                            <td class="add-version"></td>
+                            {% if ctsCase.canDeleteObject %}
+                                <td class="delete"></td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                    {% set counter = counter + 1 %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        {% if ctsCase.caseDocuments|length == 0 %}
+        <tr>
+            <td colspan="7">
+                There are no attached documents.
+            </td>
+        </tr>
+        {% endif %}
+    </table>

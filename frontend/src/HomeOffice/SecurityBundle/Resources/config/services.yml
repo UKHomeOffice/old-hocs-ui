@@ -1,0 +1,16 @@
+parameters:
+    home_office_security.access.cts_case_voter.class: HomeOffice\SecurityBundle\Security\Authorization\Voter\CtsCaseVoter
+    home_office_security.access.person_voter.class: HomeOffice\SecurityBundle\Security\Authorization\Voter\PersonVoter
+
+services:
+    home_office_security.access.cts_case_voter:
+        class:      %home_office_security.access.cts_case_voter.class%
+        public:     false
+        tags:
+           - { name: security.voter }
+           
+    home_office_security.access.person_voter:
+        class:      %home_office_security.access.person_voter.class%
+        public:     false
+        tags:
+           - { name: security.voter }

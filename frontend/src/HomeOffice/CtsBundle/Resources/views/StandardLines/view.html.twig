@@ -1,0 +1,57 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% block metaTitle %}
+    Standard Lines
+{% endblock %}
+
+{% block bc %}
+    <section class="grid-row">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>Standard Lines for {{ caseType }}</li>
+            </ol>
+        </nav>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section class="grid-row">
+        <div class="column-full">
+            <h2>Standard Lines for {{ caseType }}</h2>
+            <table class="standard-lines-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Unit</th>
+                    <th>Topic</th>
+                    <th>Valid From</th>
+                    <th>Valid To</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for standardLine in standardLines %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('homeoffice_cts_standardlines_download', {'id': standardLine.nodeId}) }}">
+                                {{ standardLine.name }}
+                            </a>
+                        </td>
+                        <td>{{ getUnitName(standardLine.associatedUnit) }}</td>
+                        <td>{{ standardLine.associatedTopic }}</td>
+                        <td>{{ toDateTime(standardLine.createdDate) }}</td>
+                        <td>
+                            {{ toDate(standardLine.reviewDate) }}
+                            {% if standardLine.reviewRequired %}
+                                <span class="tag tag-danger">Expired</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="7">There are no standard lines</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

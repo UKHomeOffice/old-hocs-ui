@@ -1,0 +1,30 @@
+services:
+    home_office_cts.form.builder.flt_create:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Create\FLT
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FLTCreate }
+
+    home_office_cts.form.builder.flt_draft:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Draft\FLT
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FLTDraft }
+
+    home_office_cts.form.builder.flt_approve:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Approve\FLT
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FLTApprove }
+
+    home_office_cts.form.builder.flt_signoff:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Signoff\FLT
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FLTSignoff }
+
+    home_office_cts.form.builder.flt_dispatch:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Dispatch\FLT
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FLTDispatch }

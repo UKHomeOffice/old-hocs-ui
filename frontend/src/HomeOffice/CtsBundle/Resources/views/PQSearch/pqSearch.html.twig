@@ -1,0 +1,39 @@
+{% extends "::base.html.twig" %}
+
+{% block bodyClass %}search{% endblock %}
+
+{% block breadcrumb_trail %}
+    <li>Parliamentary Questions search</li>
+    <a href="pqSearch.html.twig"></a>
+{% endblock %}
+
+{% block title %}PQ Search{% endblock %}
+
+{% block body %}
+    {% form_theme searchByForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+    {{ form_start(searchByForm, {'attr': {'novalidate' : 'novalidate' } }) }}
+        <div id="search_details" class="panel huge">
+            <h2>Parliamentary Questions search</h2>
+            {{ form_widget(searchByForm['skipValue'], {'attr': {'value' : skip} }) }}
+            <input type="hidden" id="uinValue" value="">
+            <div class="global-search-fields">
+                <fieldset id="filter_field" class="search_fields1">
+                    {{ form_label(searchByForm['pqType']) }}
+                    <div class="spot-control with-inner">
+                        {{ form_widget(searchByForm['pqType']) }}
+                    </div>
+                    <div class="preDateField">
+                        {{ form_label(searchByForm['uin']) }}
+                        {{ form_widget(searchByForm['uin']) }}
+                    </div>
+                </fieldset>
+                <fieldset class="search_fields3 last">
+                    <div class="button-holder">
+                        <span class="button default" data-target="{{ path('homeoffice_cts_pqsearch_pqsearchajax') }}"><input type="button" id="gs_pqSearchButton" value="Search"></span>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    {% include "HomeOfficeCtsBundle:PQSearch:pqSearchResultsTable.html.twig" %}
+    {{ form_end(searchByForm) }}
+{% endblock %}

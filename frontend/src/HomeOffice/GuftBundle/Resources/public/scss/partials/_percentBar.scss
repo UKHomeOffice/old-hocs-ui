@@ -1,0 +1,52 @@
+#progress {
+
+  display:none;
+  border: 1px solid $grey-1;
+  clear:both;
+  width: 75%;
+
+  .progress-pct {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    float:left;
+    width: 100%;
+    text-align: center;
+  }
+
+  .bar {
+    width: 0%;
+    height: 18px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: $green;
+  }
+
+}
+
+#files {
+
+  span {
+    display: block;
+    margin-top: $gutter;
+  }
+  .failure {
+    color: $red;
+  }
+  .success {
+    color: $green;
+  }
+
+}
+
+#complete-actions {
+  display: none;
+}
+
+.error-instructions, .no-results {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.results-table {
+  margin-bottom: 20px;
+}

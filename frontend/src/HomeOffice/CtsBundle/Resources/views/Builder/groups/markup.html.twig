@@ -1,0 +1,24 @@
+  {% if not hideTitle is defined %}
+    <h2>{{ markupTitle is defined ? markupTitle : 'Markup' }}</h2>
+{% endif %}
+
+{% if not disableDecision is defined %}
+    {% set disableDecision = false %}
+{% endif %}
+
+<div class="form-group">
+    {{ form_label(form.markupDecision) }}
+    {{ form_widget(form.markupDecision, {'attr': {'disabled': disableDecision}}) }}
+</div>
+
+
+{% for decision in form.markupDecision.vars.choices %}
+    {% set NextDecisions = nextDecisions() %}
+    {% if decision.label not in NextDecisions or includedNext is not defined %}
+        {% if decision.label in NextDecisions %}
+            {% set includedNext = true %}
+        {% endif %}
+
+        {% include 'HomeOfficeCtsBundle:Builder:groups/markUp/' ~ decision.label|title|replace({' ': ''}) ~ '.html.twig' ignore missing %}
+    {% endif %}
+{% endfor %}

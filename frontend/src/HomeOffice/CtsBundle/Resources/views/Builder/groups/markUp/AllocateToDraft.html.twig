@@ -1,0 +1,99 @@
+<div class="markupAllocateToggle">
+    {% include 'HomeOfficeCtsBundle:Builder:groups/markupTopics.html.twig' %}
+
+     {% if form['markupUnit'] is defined %}
+             <div class="form-group">
+                 {{ form_label(form['markupUnit']) }}
+                 {{ form_widget(form['markupUnit']) }}
+             </div>
+     {% endif %}
+
+    {% if form['markupTeam'] is defined %}
+        <div class="form-group">
+            {{ form_label(form.markupTeam) }}
+            {{ form_widget(form.markupTeam) }}
+        </div>
+    {% endif %}
+
+    {% if form['markupMinister'] is defined %}
+        <div class="form-group">
+            {{ form_label(form.markupMinister) }}
+            {{ form_widget(form.markupMinister) }}
+        </div>
+    {% endif %}
+
+    {% if form['reviewedBySpads'] is defined or form['reviewedByPermSec'] is defined or form['signedByHomeSec'] is defined %}
+        <label class="form-label">Requires review by</label>
+        <div class="form-group">
+            {% if form['reviewedBySpads'] is defined %}
+                {{ form_widget(form['reviewedBySpads']) }}
+                {{ form_label(form['reviewedBySpads']) }}
+            {% endif %}
+
+            {% if form['reviewedByPermSec'] is defined %}
+                {{ form_widget(form['reviewedByPermSec']) }}
+                {{ form_label(form['reviewedByPermSec']) }}
+            {% endif %}
+
+            {% if form['signedByHomeSec'] is defined %}
+                {{ form_widget(form['signedByHomeSec']) }}
+                {{ form_label(form['signedByHomeSec']) }}
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if alwaysShowExemptions is not defined %}
+        <div class="markupExemptionsToggle">
+    {% endif %}
+        {% if form['exemptions'] is defined %}
+            <div class="form-group">
+                {{ form_label(form['exemptions']) }}
+                {{ form_widget(form['exemptions']) }}
+            </div>
+        {% endif %}
+    {% if alwaysShowExemptions is not defined %}
+        </div>
+    {% endif %}
+
+    {% if form['allocateTo'] is defined and caseIsStep(case, 'create') %}
+        <hr>
+        <h2>Allocate for draft</h2>
+
+        {% include 'HomeOfficeCtsBundle:Builder:groups/allocate.html.twig' %}
+
+        {% if form['Next'] is defined %}
+            {{ form_widget(form['Next'], { 'label': 'Send to draft'}) }}
+        {% endif %}
+
+        {% if form['SendMarkupCaseToDraft'] is defined %}
+            {{ form_widget(form['SendMarkupCaseToDraft'], { 'label': 'Send to draft'}) }}
+        {% endif %}
+
+        {% if form['save'] is defined %}
+            {{ form_widget(form['save']) }}
+        {% endif %}
+    {% endif %}
+
+    {% if form['allocateTo'] is defined and caseIsStep(case, 'draft') %}
+        <hr>
+        <h2>Allocate to QA review</h2>
+
+        {% include 'HomeOfficeCtsBundle:Builder:groups/allocate.html.twig' %}
+
+        {% if form['Next'] is defined %}
+            {{ form_widget(form['Next'], { 'label': 'Submit for approval' }) }}
+        {% endif %}
+
+        {% if form['SendForQA'] is defined %}
+            {{ form_widget(form['SendForQA'], { 'label': 'Submit for approval' }) }}
+        {% endif %}
+
+        {% if form['SendForQAReview'] is defined %}
+            {{ form_widget(form['SendForQAReview'], { 'label': 'Submit for approval' }) }}
+        {% endif %}
+
+        {% if form['save'] is defined %}
+            {{ form_widget(form['save']) }}
+        {% endif %}
+    {% endif %}
+</div>

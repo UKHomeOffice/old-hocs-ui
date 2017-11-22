@@ -1,0 +1,17 @@
+body.system-error {
+    
+  h2 {
+    font-size: #{(40/$base-font-assumption)}em;
+    color: $black;
+    text-align: center;
+    margin: $vertical-rhythm 0;
+  }
+  
+  p {
+    margin-bottom: $vertical-rhythm;
+    text-align: center;
+    color: $black;
+    font-size: $larger;
+  }
+  
+}

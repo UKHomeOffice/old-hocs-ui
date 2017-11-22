@@ -1,0 +1,586 @@
+parameters:
+    home_office_cts.form.type.allocation.class: HomeOffice\CtsBundle\Form\Type\AllocateUserType
+    home_office_cts.form.type.view_case_type.class: HomeOffice\CtsBundle\Form\Type\CtsViewCaseType
+    home_office_cts.form.cts_form.resolved_type_factory.class: HomeOffice\CtsBundle\Form\CtsResolvedFormTypeFactory
+    home_office_cts.form.cts_form.factory.class: Symfony\Component\Form\FormFactory
+    home_office_cts.controller.cts_controller.class: HomeOffice\CtsBundle\Controller\CtsController
+    home_office_cts.routing.ssl_redirects: true
+
+services:
+
+    home_office_cts.form.cts_form.factory:
+        class: %home_office_cts.form.cts_form.factory.class%
+        arguments:
+            - @form.registry
+            - @home_office_cts.form.cts_form.resolved_type_factory
+
+    home_office_cts.form.cts_form.resolved_type_factory:
+        class: %home_office_cts.form.cts_form.resolved_type_factory.class%
+
+    home_office_cts.form.abstract:
+        class: HomeOffice\CtsBundle\Form\GuftType\GuftFormType
+        abstract: true
+        arguments:
+            - "@home_office_alfresco_api.cts_case.repository"
+            - "@home_office_alfresco_api.cts_workflow.repository"
+
+    home_office_cts.form.basetype:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\BaseType
+        abstract: true
+        calls:
+            - [setContainer, ["@service_container"]]
+
+# Super Search Form Types
+    home_office_cts.form.super_search.all:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\SuperSearch
+        arguments:
+            - "@home_office_list.handler"
+            - "@home_office.list_service"
+            - "@home_office_alfresco_api.service.topic"
+            - "@router"
+
+    home_office_cts.form.super_search.pq:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\SuperSearch\PQ
+        parent: "home_office_cts.form.super_search.all"
+
+    home_office_cts.form.super_search.ukvi:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\SuperSearch\UKVI
+        parent: "home_office_cts.form.super_search.all"
+
+    home_office_cts.form.super_search.dcu:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\SuperSearch\DCU
+        parent: "home_office_cts.form.super_search.all"
+
+    home_office_cts.form.super_search.foi:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\SuperSearch\FOI
+        parent: "home_office_cts.form.super_search.all"
+
+    home_office_cts.form.super_search.hmpo:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\SuperSearch\HMPO
+        parent: "home_office_cts.form.super_search.all"
+
+    home_office_cts.form.email_preferences:
+        class: HomeOffice\CtsBundle\Form\GuftType\EmailPreferencesType
+        arguments:
+            - "@home_office_list.handler"
+            - "@home_office_alfresco_api.consumer.email_preferences"
+        calls:
+            - [setUser, ["@=service('security.context').getToken().getUser()"]]
+        tags:
+          - { name: form.type, alias: EmailPreferences }
+
+    home_office_cts.form.email_preferences.child:
+        class: HomeOffice\CtsBundle\Form\GuftType\EmailPreferencesChildType
+        tags:
+          - { name: form.type, alias: EmailPreferencesChild }
+
+
+# FOI Case Form Types
+
+
+
+    home_office_cts.form.case_validator:
+        class: HomeOffice\CtsBundle\Form\Validator\CaseValidator
+        public: false
+        arguments:
+            - "@home_office_cts.form.expression_langauge"
+
+    home_office_cts.form.expression_langauge:
+        class: HomeOffice\CtsBundle\Form\Validator\ExpressionLanguage
+        public: false
+
+# DCU MINISTERIAL CASE FORM TYPES
+    home_office_cts.form.cts_dcu_ministerial_case_create:
+        class: HomeOffice\CtsBundle\Form\GuftType\CreateType\CtsDcuMinisterialCaseCreateType
+        arguments:
+            - "@home_office_list.handler"
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+        tags:
+            - { name: form.type, alias: CtsDcuMinisterialCaseCreate }
+
+    home_office_cts.form.cts_dcu_ministerial_case_draft:
+        class: HomeOffice\CtsBundle\Form\GuftType\DraftType\CtsDcuMinisterialCaseDraftType
+        arguments:
+            - "@home_office_list.handler"
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+        tags:
+            - { name: form.type, alias: CtsDcuMinisterialCaseDraft }
+
+    home_office_cts.form.cts_dcu_ministerial_case_approve:
+        class: HomeOffice\CtsBundle\Form\GuftType\ApproveType\CtsDcuMinisterialCaseApproveType
+        arguments:
+            - "@home_office_list.handler"
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+        tags:
+            - { name: form.type, alias: CtsDcuMinisterialCaseApprove }
+
+    home_office_cts.form.cts_dcu_ministerial_case_signoff:
+        class: HomeOffice\CtsBundle\Form\GuftType\SignOffType\CtsDcuMinisterialCaseSignOffType
+        arguments:
+            - "@home_office_list.handler"
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+        tags:
+            - { name: form.type, alias: CtsDcuMinisterialCaseSignOff }
+
+    home_office_cts.form.cts_dcu_ministerial_case_dispatch:
+        class: HomeOffice\CtsBundle\Form\GuftType\DispatchType\CtsDcuMinisterialCaseDispatchType
+        arguments:
+            - "@home_office_list.handler"
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+        tags:
+            - { name: form.type, alias: CtsDcuMinisterialCaseDispatch }
+
+    home_office_cts.form.cts_dcu_ministerial_case_replyto:
+        class: HomeOffice\CtsBundle\Form\GuftType\ReplyToType\CtsDcuMinisterialCaseReplyTo
+        parent: home_office_cts.form.abstract
+        arguments:
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+            - "@home_office_list.handler"
+        tags:
+            - { name: form.type, alias: CtsDcuMinisterialCaseReplyTo }
+
+
+# DCU TREAT OFFICAL CASE FORM TYPES
+    home_office_cts.form.cts_dcu_treat_official_case_create:
+        class: HomeOffice\CtsBundle\Form\GuftType\CreateType\CtsDcuTreatOfficialCaseCreateType
+        arguments:
+            - "@home_office_list.handler"
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+        tags:
+            - { name: form.type, alias: CtsDcuTreatOfficialCaseCreate }
+
+    home_office_cts.form.cts_dcu_treat_official_case_draft:
+        class: HomeOffice\CtsBundle\Form\GuftType\DraftType\CtsDcuTreatOfficialCaseDraftType
+        arguments:
+            - "@home_office_list.handler"
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+        tags:
+            - { name: form.type, alias: CtsDcuTreatOfficialCaseDraft }
+
+    home_office_cts.form.cts_dcu_treat_official_case_approve:
+        class: HomeOffice\CtsBundle\Form\GuftType\ApproveType\CtsDcuTreatOfficialCaseApproveType
+        arguments:
+            - "@home_office_list.handler"
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+        tags:
+            - { name: form.type, alias: CtsDcuTreatOfficialCaseApprove }
+
+    home_office_cts.form.cts_dcu_treat_official_case_dispatch:
+        class: HomeOffice\CtsBundle\Form\GuftType\DispatchType\CtsDcuTreatOfficialCaseDispatchType
+        arguments:
+            - "@home_office_list.handler"
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+        tags:
+            - { name: form.type, alias: CtsDcuTreatOfficialCaseDispatch }
+
+    home_office_cts.form.cts_dcu_treat_official_case_replyto:
+        class: HomeOffice\CtsBundle\Form\GuftType\ReplyToType\CtsDcuTreatOfficialCaseReplyToType
+        parent: home_office_cts.form.abstract
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+            - "@home_office_list.handler"
+        tags:
+            - { name: form.type, alias: CtsDcuTreatOfficialCaseReplTo }
+
+
+# PQ CASE FORM TYPES
+    home_office_cts.form.cts_pq_case_create:
+        class: HomeOffice\CtsBundle\Form\GuftType\CreateType\CtsPqCaseCreateType
+        parent: home_office_cts.form.abstract
+        tags:
+            - { name: form.type, alias: CtsPqCaseCreate }
+
+    home_office_cts.form.cts_pq_case_draft:
+        class: HomeOffice\CtsBundle\Form\GuftType\DraftType\CtsPqCaseDraftType
+        parent: home_office_cts.form.abstract
+        tags:
+            - { name: form.type, alias: CtsPqCaseDraft }
+
+    home_office_cts.form.cts_pq_case_approve:
+        class: HomeOffice\CtsBundle\Form\GuftType\ApproveType\CtsPqCaseApproveType
+        parent: home_office_cts.form.abstract
+        arguments:
+            - "@home_office_list.handler"
+        tags:
+            - { name: form.type, alias: CtsPqCaseApprove }
+
+    home_office_cts.form.cts_pq_case_signoff:
+        class: HomeOffice\CtsBundle\Form\GuftType\SignOffType\CtsPqCaseSignOffType
+        parent: home_office_cts.form.abstract
+        tags:
+            - { name: form.type, alias: CtsPqCaseSignOff }
+
+    home_office_cts.form.cts_pq_case_dispatch:
+        class: HomeOffice\CtsBundle\Form\GuftType\DispatchType\CtsPqCaseDispatchType
+        parent: home_office_cts.form.abstract
+        arguments:
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+            - "@home_office_list.handler"
+        tags:
+            - { name: form.type, alias: CtsPqCaseDispatch }
+
+    home_office_cts.form.cts_pq_case_replyto:
+        class: HomeOffice\CtsBundle\Form\GuftType\ReplyToType\CtsPqCaseReplyToType
+        parent: home_office_cts.form.abstract
+        arguments:
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+            - "@home_office_list.handler"
+        tags:
+            - { name: form.type, alias: CtsPqCaseReplyTo }
+
+# UKVI CASE FORM TYPES
+    home_office_cts.form.cts_ukvi_case_create:
+        class: HomeOffice\CtsBundle\Form\GuftType\CreateType\CtsUkviCaseCreateType
+        parent: home_office_cts.form.abstract
+        tags:
+            - { name: form.type, alias: CtsUkviCaseCreate }
+
+    home_office_cts.form.cts_ukvi_case_draft:
+        class: HomeOffice\CtsBundle\Form\GuftType\DraftType\CtsUkviCaseDraftType
+        parent: home_office_cts.form.abstract
+        tags:
+            - { name: form.type, alias: CtsUkviCaseDraft }
+
+    home_office_cts.form.cts_ukvi_case_approve:
+        class: HomeOffice\CtsBundle\Form\GuftType\ApproveType\CtsUkviCaseApproveType
+        parent: home_office_cts.form.abstract
+        tags:
+            - { name: form.type, alias: CtsUkviCaseApprove }
+
+    home_office_cts.form.cts_ukvi_case_signoff:
+        class: HomeOffice\CtsBundle\Form\GuftType\SignOffType\CtsUkviCaseSignOffType
+        parent: home_office_cts.form.abstract
+        tags:
+            - { name: form.type, alias: CtsUkviCaseSignOff }
+
+    home_office_cts.form.cts_ukvi_case_replyto:
+        class: HomeOffice\CtsBundle\Form\GuftType\ReplyToType\CtsUkviCaseReplyToType
+        parent: home_office_cts.form.abstract
+        arguments:
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+            - "@home_office_list.handler"
+        tags:
+            - { name: form.type, alias: CtsUkviCaseReplyTo }
+
+    home_office_cts.form.cts_ukvi_case_dispatch:
+        class: HomeOffice\CtsBundle\Form\GuftType\DispatchType\CtsUkviCaseDispatchType
+        parent: home_office_cts.form.abstract
+        arguments:
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+            - "@home_office_list.handler"
+        tags:
+            - { name: form.type, alias: CtsUkviCaseDispatch }
+
+# UKVI-No10 CASE FORM TYPES
+    home_office_cts.form.cts_no10_case_create:
+        class: HomeOffice\CtsBundle\Form\GuftType\CreateType\CtsNo10CaseCreateType
+        parent: home_office_cts.form.abstract
+        tags:
+            - { name: form.type, alias: CtsNo10CaseCreate }
+
+    home_office_cts.form.cts_no10_case_draft:
+        class: HomeOffice\CtsBundle\Form\GuftType\DraftType\CtsNo10CaseDraftType
+        parent: home_office_cts.form.abstract
+        tags:
+            - { name: form.type, alias: CtsNo10CaseDraft }
+
+    home_office_cts.form.cts_no10_case_approve:
+        class: HomeOffice\CtsBundle\Form\GuftType\ApproveType\CtsNo10CaseApproveType
+        parent: home_office_cts.form.abstract
+        tags:
+            - { name: form.type, alias: CtsNo10CaseApprove }
+
+    home_office_cts.form.cts_no10_case_signoff:
+        class: HomeOffice\CtsBundle\Form\GuftType\SignOffType\CtsNo10CaseSignOffType
+        parent: home_office_cts.form.abstract
+        tags:
+            - { name: form.type, alias: CtsNo10CaseSignOff }
+
+    home_office_cts.form.cts_no10_case_replyto:
+        class: HomeOffice\CtsBundle\Form\GuftType\ReplyToType\CtsNo10CaseReplyToType
+        parent: home_office_cts.form.abstract
+        arguments:
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+            - "@home_office_list.handler"
+        tags:
+            - { name: form.type, alias: CtsNo10CaseReplyTo }
+
+    home_office_cts.form.cts_no10_case_dispatch:
+        class: HomeOffice\CtsBundle\Form\GuftType\DispatchType\CtsNo10CaseDispatchType
+        parent: home_office_cts.form.abstract
+        arguments:
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+            - "@home_office_list.handler"
+        tags:
+            - { name: form.type, alias: CtsNo10CaseDispatch }
+
+# GENERIC CASE FORM TYPES
+
+    home_office_cts.form.cts_case_transitions:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsCaseTransitionsType
+        tags:
+            - { name: form.type, alias: CtsCaseTransitions }
+
+    home_office_cts.form.cts_case_minute:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsCaseMinuteType
+        tags:
+            - { name: form.type, alias: CtsCaseMinute }
+
+    home_office_cts.form.cts_case_appeals:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Common\Appeals
+        tags:
+            - { name: form.type, alias: Appeals }
+
+    home_office_cts.form.cts_case_new_document:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Common\NewDocument
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - "@home_office_alfresco_api.cts_case.document_type_helper"
+        tags:
+            - { name: form.type, alias: NewDocument }
+
+    home_office_cts.form.cts_case_document:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsCaseDocumentType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - "@home_office_alfresco_api.cts_case.document_type_helper"
+        tags:
+            - { name: form.type, alias: CtsCaseDocument }
+
+    home_office_cts.form.cts_case_document_remove:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsCaseDocumentRemoveType
+        tags:
+            - { name: form.type, alias: CtsCaseDocumentRemove }
+
+    home_office_cts.form.cts_case_linked:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsCaseLinkedType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        tags:
+            - { name: form.type, alias: CtsCaseLinked }
+
+    home_office_cts.form.cts_case_grouped:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsCaseGroupedType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        tags:
+            - { name: form.type, alias: CtsCaseGrouped }
+
+    home_office_cts.form.cts_case_markup:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsCaseMarkUpType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        tags:
+            - { name: form.type, alias: CtsCaseMarkUp }
+
+    home_office_cts.form.cts_case_markup.allocate:
+        class: HomeOffice\CtsBundle\Form\GuftType\MarkUpType\MarkUpAllocateType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+            - "@home_office_list.handler"
+        tags:
+            - { name: form.type, alias: MarkUpAllocate }
+
+    home_office_cts.form.cts_case_markup.no_reply_needed:
+        class: HomeOffice\CtsBundle\Form\GuftType\MarkUpType\MarkUpNoReplyNeededType
+        tags:
+            - { name: form.type, alias: MarkUpNoReplyNeeded }
+
+    home_office_cts.form.cts_case_markup.exemptions:
+        class: HomeOffice\CtsBundle\Form\GuftType\MarkUpType\MarkUpExemptionType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+            - "@home_office_list.handler"
+        tags:
+            - { name: form.type, alias: MarkUpExemption }
+
+    home_office_cts.form.cts_case_markup.refer_to_ogd:
+        class: HomeOffice\CtsBundle\Form\GuftType\MarkUpType\MarkUpReferToOGDType
+        tags:
+            - { name: form.type, alias: MarkUpReferToOGD }
+
+    home_office_cts.form.cts_case_markup.refer_to_dcu:
+        class: HomeOffice\CtsBundle\Form\GuftType\MarkUpType\MarkUpReferToDCUType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+            - "@home_office_list.handler"
+        tags:
+            - { name: form.type, alias: MarkUpReferToDCU }
+
+    home_office_cts.form.cts_case_topics:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsCaseTopicsType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - "@home_office_alfresco_api.service.topic"
+        tags:
+            - { name: form.type, alias: CtsCaseTopics }
+
+    home_office_cts.form.cts_case_allocate:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsCaseAllocateType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - "@home_office_list.handler"
+            - "@home_office_alfresco_api.cts_lists.repository"
+        tags:
+            - { name: form.type, alias: CtsCaseAllocate }
+
+    home_office_cts.form.cts_case_reallocate:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsCaseReallocateType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+            - "@home_office_list.handler"
+            - "@home_office_alfresco_api.cts_lists.repository"
+        tags:
+            - { name: form.type, alias: CtsCaseReallocate }
+
+    home_office_cts.form.cts_case_return:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsCaseReturnType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        tags:
+            - { name: form.type, alias: CtsCaseReturn }
+
+    home_office_cts.form.cts_case_reject:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsCaseRejectType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        tags:
+            - { name: form.type, alias: CtsCaseReject }
+
+    home_office_cts.form.cts_case_cancel:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsCaseCancelType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        tags:
+            - { name: form.type, alias: CtsCaseCancel }
+
+    home_office_cts.form.document_template:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsDocumentTemplateType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        tags:
+            - { name: form.type, alias: CtsDocumentTemplate }
+
+    home_office_cts.form.standard_line_search:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsStandardLineSearchType
+        arguments:
+            - "@home_office.list_service"
+            - "@home_office_alfresco_api.service.topic"
+
+    home_office_cts.form.standard_line:
+        class: HomeOffice\CtsBundle\Form\GuftType\CtsStandardLineType
+        arguments:
+            - "@home_office.list_service"
+            - "@home_office_alfresco_api.service.topic"
+        tags:
+            - { name: form.type, alias: CtsStandardLine }
+
+    twig.extension.mandatory_case_field_extension:
+      class: HomeOffice\CtsBundle\Twig\MandatoryCaseFieldExtension
+      public: true
+      tags:
+          - { name: twig.extension }
+
+    twig.extension.email_extension:
+      class: HomeOffice\CtsBundle\Twig\EmailExtension
+      public: true
+      tags:
+          - { name: twig.extension }
+
+    twig.extension.case_progress_extension:
+      class: HomeOffice\CtsBundle\Twig\CaseProgressExtension
+      arguments:
+          - "@home_office_alfresco_api.cts_case.progress_helper"
+      tags:
+          - { name: twig.extension }
+
+    twig.extension.case_approval_extension:
+      class: HomeOffice\CtsBundle\Twig\CaseApprovalExtension
+      arguments:
+          - "@home_office_alfresco_api.cts_case.approval_helper"
+          - "@home_office_alfresco_api.cts_case.progress_helper"
+      tags:
+          - { name: twig.extension }
+
+    twig.extension.case_correspondent_type_extension:
+      class: HomeOffice\CtsBundle\Twig\CaseCorrespondentTypeExtension
+      tags:
+          - { name: twig.extension }
+
+    twig.extension.markup_decisions_extension:
+      class: HomeOffice\CtsBundle\Twig\MarkupDecisionsExtension
+      tags:
+          - { name: twig.extension }
+
+    twig.extension.unit_extension:
+      class: HomeOffice\CtsBundle\Twig\UnitExtension
+      arguments:
+          - "@home_office.list_service"
+      tags:
+          - { name: twig.extension }
+
+    twig.extension.date_extension:
+      class: HomeOffice\CtsBundle\Twig\DateExtension
+
+      tags:
+          - { name: twig.extension }
+
+    app.router:
+        class: HomeOffice\CtsBundle\Routing\Router
+        decorates: router
+        arguments: ["@app.router.inner", "@request_stack", "%home_office_cts.routing.ssl_redirects%"]
+
+    home_office_cts.form.ajax_response_builder:
+        class: HomeOffice\CtsBundle\Form\AjaxResponseBuilder
+        arguments:
+            - "@form_error_serializer"
+            - "@router"
+            - "@templating"
+
+    form_error_serializer:
+        class: HomeOffice\CtsBundle\Form\FormErrorSerializer
+        public: false
+
+    home_office_cts.form.builder.base_type:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\BaseType
+        abstract: true
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+
+imports:
+    - { resource: builder/common.yml }
+    - { resource: builder/COL.yml }
+    - { resource: builder/MIN.yml }
+    - { resource: builder/TRO.yml }
+    - { resource: builder/DTEN.yml }
+    - { resource: builder/FOI.yml }
+    - { resource: builder/FSC.yml }
+    - { resource: builder/FTC.yml }
+    - { resource: builder/FSCI.yml }
+    - { resource: builder/FTCI.yml }
+    - { resource: builder/COM1.yml }
+    - { resource: builder/COM2.yml }
+    - { resource: builder/DGEN.yml }
+    - { resource: builder/GNR.yml }
+    - { resource: transitions.yml }

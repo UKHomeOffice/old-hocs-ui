@@ -1,0 +1,21 @@
+<table class="results-table">
+    <tr id="search-results-head">
+        <th id="hrn-column">UIN</th>
+        <th id="date-column">Deadline</th>
+        <th>Name/Member</th>
+        <th id="unit-column">Unit</th>
+        <th id="topic-column">Topic</th>
+        <th id="owner-column">Owner</th>
+        <th id="task-column">Task</th>
+    </tr>
+</table>
+<div id="page-controls" class="page-controls">
+        <ul>
+            <li id="search-results-prev" class="previous">
+                <span data-target="{{ path('homeoffice_cts_pqsearch_pqsearchajax') }}"><input type="button" id="gs_pqPagePrevious" value="Previous"></span>
+            </li>
+            <li id="search-results-next" class="next">
+                <span data-target="{{ path('homeoffice_cts_pqsearch_pqsearchajax') }}"><input type="button" id="gs_pqPageNext" value="Next"></span>
+            </li>
+        </ul>
+</div>

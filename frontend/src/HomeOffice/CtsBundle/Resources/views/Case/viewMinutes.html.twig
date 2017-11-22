@@ -1,0 +1,33 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Minutes for case {{ ctsCase.urn }}{% endblock %}
+
+{% block bodyClass %}case view-case printminutes scriptoff{% endblock %}
+
+{% block breadcrumb_trail %}
+    <li>View case {{ ctsCase.urn }}</li>
+{% endblock %}
+
+{% block body %}
+<div id="minutes_history" class="panel wide">
+    <h2>Minutes history</h2>
+    <ul>
+        {% for caseMinute in ctsCase.caseMinutes %}
+            <li>
+                <div>
+                    <h3 class="number">{{ "%03d"|format(loop.length-loop.index0) }}</h3>
+                    <p class="datetime">
+                        {{ ctsHelper.formatAtomStringToDateTime(caseMinute.minuteDateTime) }}
+                    </p>
+                </div>
+                <div>
+                    <h3 class="person">{{ caseMinute.minuteUpdatedBy }}</h3>
+                    <p class="minute">
+                        {{ caseMinute.minuteContent|raw|nl2br }}
+                    </p>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

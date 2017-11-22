@@ -1,0 +1,44 @@
+<div id="correspondent_search_details" class="panel huge">
+
+    <h2>Correspondent search</h2>
+    {% form_theme searchByForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+    {{ form_start(searchByForm, {'attr': {'novalidate' : 'novalidate' } }) }}
+    <fieldset id="filter_field">
+         <div class="preDateField">
+            {{ form_label(searchByForm['replyForename']) }}
+            {{ form_widget(searchByForm['replyForename']) }}
+        </div>
+         <div class="dateField">
+            {{ form_label(searchByForm['dateCreatedFrom']) }}
+            {{ form_widget(searchByForm['dateCreatedFrom'],
+                { 'attr' : { 'class' : 'dateSelect' } }
+            )}}
+        </div>
+        <div class="dateField">
+            {{ form_label(searchByForm['dateCreatedTo']) }}
+            {{ form_widget(searchByForm['dateCreatedTo'],
+                { 'attr' : { 'class' : 'dateSelect' } }
+            )}}
+        </div>
+       
+    </fieldset>
+    <fieldset class="correspondent_search_fields2 last">
+        <div>
+            {{ form_label(searchByForm['replySurname']) }}
+            {{ form_widget(searchByForm['replySurname']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['postcode']) }}
+            {{ form_widget(searchByForm['postcode']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['email']) }}
+            {{ form_widget(searchByForm['email']) }}
+        </div>
+        <div class="correspondent-button-holder last">
+            <span class="button">{{form_widget(searchByForm['clear'])}}</span>
+            <span class="button default">{{ form_widget(searchByForm['searchButton']) }}</span>
+        </div>
+    </fieldset>
+        {{ form_end(searchByForm) }}
+</div>

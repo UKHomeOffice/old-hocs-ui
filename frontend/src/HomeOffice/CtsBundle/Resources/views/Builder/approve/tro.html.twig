@@ -1,0 +1,67 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Approve{% endblock %}
+
+{% block metaTitle %}Approve DCU Treat Official Case {{ case.urn }}{% endblock %}
+
+{% block guftForm %}
+    <h2>Original correspondence</h2>
+    <p>Correspondent: {{ case.correspondentFullname }}</p>
+
+    <div class="panel">
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+            'filterTypes': ['Original']
+        } %}
+    </div>
+    <hr>
+
+    <h2>Response</h2>
+
+    <label class="form-label">Document(s)</label>
+    <div class="documentTable panel"
+         data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+         data-filter-types="Original attachments,Contribution,Background note,Response,Other"
+         data-allow-remove="{{ caseIsStep(case, 'approve') ? "true" : "false" }}"
+    >
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+        'filterTypes': ['Original attachments', 'Contribution', 'Background note', 'Response', 'Other'],
+        'allowRemove': caseIsStep(case, 'approve')
+        } %}
+    </div>
+
+    {% if caseIsStep(case, 'approve') %}
+        <div class="form-group">
+            {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form['document']} %}
+        </div>
+    {% endif %}
+    <hr>
+
+    <h2>Approval</h2>
+    <div class="form-group">
+        {% if form.SendQAReviewForDispatch is defined %}
+            <label class="form-label">QA Review</label>
+            {% if caseIsStep(case, 'approve') %}
+                {{ form_widget(form.SendQAReviewForDispatch) }}
+                {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+            {% else %}
+                <label class="form-label form-approved">Approved</label>
+            {% endif %}
+        {% endif %}
+
+        {% if form.ApproveNRR is defined %}
+            {% if caseIsStep(case, 'ogd') %}
+                <label class="form-label">Approve Transfer<br>{{ case.ogdName }}</label>
+                {{ form_widget(form.ApproveNRR, { 'label': 'Approve' }) }}
+                {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+            {% elseif caseIsStep(case, 'nfa') %}
+                <label class="form-label">No Reply Needed</label>
+                {{ form_widget(form.ApproveNRR, { 'label': 'Approve' }) }}
+                {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+            {% else %}
+                <label class="form-label form-approved">Approved</label>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

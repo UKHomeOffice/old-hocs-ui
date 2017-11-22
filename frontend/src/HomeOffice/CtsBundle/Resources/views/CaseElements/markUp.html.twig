@@ -1,0 +1,150 @@
+{% if case.getShortName() == 'CtsFoiCase' or case.getShortName() == 'CtsFoiComplaintCase' %}
+    <h2>Outcome</h2>
+{% else %}
+    <h2>Mark up</h2>
+{% endif %}
+
+<div class="form-group">
+    {{ form_label(form['markupDecision']) }}
+    {{ form_widget(form['markupDecision']) }}
+</div>
+
+{% if form['Allocate'] is defined %}
+    <div class="markupAllocateToggle">
+
+        {% if form['Allocate']['markupUnit'] is defined %}
+            <div class="form-group">
+                {{ form_label(form['Allocate']['markupUnit']) }}
+                {{ form_widget(form['Allocate']['markupUnit']) }}
+            </div>
+        {% endif %}
+
+        {% if form['Allocate']['topics'] is defined %}
+            {% include 'HomeOfficeCtsBundle:CaseElements:topics.html.twig' with { 'form': form['Allocate']['topics']}  %}
+        {% endif %}
+
+        {% if form['Allocate']['markupTeam'] is defined %}
+            <div class="form-group">
+                {{ form_label(form['Allocate']['markupTeam']) }}
+                {{ form_widget(form['Allocate']['markupTeam']) }}
+            </div>
+        {% endif %}
+
+        {% if form['Allocate']['markupMinister'] is defined %}
+            <div class="form-group">
+                {{ form_label(form['Allocate']['markupMinister']) }}
+                {{ form_widget(form['Allocate']['markupMinister']) }}
+            </div>
+        {% endif %}
+
+        {% if form['Allocate']['reviewedBySpads'] is defined or form['Allocate']['reviewedByPermSec'] is defined or form['Allocate']['signedByHomeSec'] is defined %}
+            <label class="form-label">Requires review by</label>
+            <div class="form-group">
+                {{ form_widget(form['Allocate']['reviewedBySpads']) }}
+                {{ form_label(form['Allocate']['reviewedBySpads']) }}
+
+                {{ form_widget(form['Allocate']['reviewedByPermSec']) }}
+                {{ form_label(form['Allocate']['reviewedByPermSec']) }}
+
+                {{ form_widget(form['Allocate']['signedByHomeSec']) }}
+                {{ form_label(form['Allocate']['signedByHomeSec']) }}
+            </div>
+        {% endif %}
+        {% if form['Allocate']['exemptions'] is defined %}
+            {{ form_label(form['Allocate']['exemptions']) }}
+            {{ form_widget(form['Allocate']['exemptions']) }}
+        {% endif %}
+        {% if allocate is defined and caseIsStep(case, 'create') %}
+            <hr>
+            {% include 'HomeOfficeCtsBundle:CaseElements:allocate.html.twig' with {
+                'form': allocate,
+                'title': 'Allocate for draft',
+                'transitions': transitions
+            } %}
+        {% endif %}
+
+        <hr />
+
+        {% if allocate is defined and caseIsStep(case, 'draft') and (
+            case.getShortName() == 'CtsFoiCase' or case.getShortName() == 'CtsFoiComplaintCase'
+        ) %}
+            {% include 'HomeOfficeCtsBundle:CaseElements:allocate.html.twig' with {
+                'form': allocate,
+                'title': 'Allocate to QA review',
+                'transitions': transitions
+            } %}
+
+
+            {% include 'HomeOfficeCtsBundle:CaseElements:transitions.html.twig' with {
+                'form': transitions
+            } %}
+        {% endif %}
+    </div>
+{% endif %}
+
+{% if form['NoReplyNeeded'] is defined %}
+    <div class="markupCancelToggle">
+        {% if form['NoReplyNeeded']['markupCancelDetails'] is defined %}
+            <div class="form-group">
+                {{ form_label(form['NoReplyNeeded']['markupCancelDetails']) }}
+                {{ form_widget(form['NoReplyNeeded']['markupCancelDetails']) }}
+            </div>
+        {% endif %}
+
+        {% if form['NoReplyNeeded']['closeCancel'] is defined %}
+            <div class="form-group">
+                {{ form_label(form['NoReplyNeeded']['closeCancel']) }}
+                {{ form_widget(form['NoReplyNeeded']['closeCancel']) }}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% if form['ReferToOGD'] is defined %}
+    <div class="markupReferToggle">
+        {% if form['ReferToOGD']['ogdName'] is defined %}
+            <div class="form-group">
+                {{ form_label(form['ReferToOGD']['ogdName']) }}
+                {{ form_widget(form['ReferToOGD']['ogdName']) }}
+            </div>
+        {% endif %}
+
+        {% if form['ReferToOGD']['closeRefer'] is defined %}
+            <div class="form-group">
+                {{ form_label(form['ReferToOGD']['closeRefer']) }}
+                {{ form_widget(form['ReferToOGD']['closeRefer']) }}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% if form['ReferToDCU'] is defined %}
+    <div class="markupReferToggle">
+        {% if form['ReferToDCU']['odgName'] is defined %}
+            <div class="form-group">
+                {{ form_label(form['ReferToDCU']['odgName']) }}
+                {{ form_widget(form['ReferToDCU']['odgName']) }}
+            </div>
+        {% endif %}
+
+        {% if form['ReferToDCU']['markupUnit'] is defined %}
+            <div class="form-group">
+                {{ form_label(form['ReferToDCU']['markupUnit']) }}
+                {{ form_widget(form['ReferToDCU']['markupUnit']) }}
+            </div>
+        {% endif %}
+
+        {% if form['ReferToDCU']['closeRefer'] is defined %}
+            <div class="form-group">
+                {{ form_label(form['ReferToDCU']['closeRefer']) }}
+                {{ form_widget(form['ReferToDCU']['closeRefer']) }}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% do form.setRendered %}
+
+{% if allocate is defined %}
+    {% do allocate.setRendered %}
+{% endif %}

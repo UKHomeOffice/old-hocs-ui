@@ -1,0 +1,9 @@
+<fieldset id="panels" class="sibling-group">
+
+    {% include 'HomeOfficeCtsBundle:Case/Edit:_caseOverview.html.twig' %}
+
+    <div id="deadline" class="panel alt2 page-chunk">
+        <h2>Deadline <span>{{ form_widget(ctsCaseForm['caseResponseDeadline']) }}</span></h2>   
+    </div>
+</fieldset>
+{% include "HomeOfficeCtsBundle:Case/Script:_topicListScript.html.twig" %}

@@ -1,0 +1,105 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% block metaTitle %}
+    Standard Lines
+{% endblock %}
+
+{% block bc %}
+    <section class="grid-row">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>Manage Standard Lines</li>
+            </ol>
+        </nav>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section class="grid-row">
+        <div class="column-two-thirds">
+            <h2>Search for standard lines</h2>
+        </div>
+        <div class="column-third">
+            <a class="button button-tertiary right" href="{{ path('homeoffice_cts_standardlines_new') }}">Add new standard line</a>
+        </div>
+    </section>
+
+    <section class="grid-row">
+        {{ form_start(form, {'method': 'GET'}) }}
+            <div class="column-third">
+                {{ form_label(form['associatedUnit']) }}
+                {{ form_widget(form['associatedUnit'], {'attr': {
+                    'class': 'chosen-full associatedUnit',
+                    'data-refresh-url': path('homeoffice_cts_caseelements_topicsbyunit'),
+                    'data-allow-empty-search': 1
+                }}) }}
+            </div>
+            <div class="column-third">
+                {{ form_label(form['associatedTopic']) }}
+                {{ form_widget(form['associatedTopic'], {'attr': {'class': 'chosen-full associatedTopic'}}) }}
+            </div>
+            <div class="column-third">
+                {{ form_label(form['name']) }}
+                {{ form_widget(form['name'], {'attr': {'class': 'form-control form-control-full'}}) }}
+            </div>
+            <div class="column-full">
+                <ul class="blank">
+                    <li>
+                        <button type="submit" class="button button-right">Apply filters</button>
+                    </li>
+                    <li>
+                        <a class="button button-secondary button-right" href="{{ path('homeoffice_cts_standardlines_index') }}">Clear</a>
+                    </li>
+                </ul>
+            </div>
+        {{ form_end(form) }}
+    </section>
+
+    <section class="grid-row">
+        <div class="column-full">
+            <table class="standard-lines-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Unit</th>
+                        <th>Topic</th>
+                        <th>Valid From</th>
+                        <th>Valid To</th>
+                        <th colspan="2">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for standardLine in standardLines %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('homeoffice_cts_standardlines_download', {'id': standardLine.nodeId}) }}">
+                                    {{ standardLine.name }}
+                                </a>
+                            </td>
+                            <td>{{ getUnitName(standardLine.associatedUnit) }}</td>
+                            <td>{{ standardLine.associatedTopic }}</td>
+                            <td>{{ toDateTime(standardLine.createdDate) }}</td>
+                            <td>
+                                {{ toDate(standardLine.reviewDate) }}
+                                {% if standardLine.reviewRequired %}
+                                    <span class="tag tag-danger">Expired</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('homeoffice_cts_standardlines_edit', {'id': standardLine.nodeId}) }}">Edit</a>
+                            </td>
+                            <td>
+                                <a class="button-modal" data-href="{{ path('homeoffice_cts_standardlines_delete', {'id': standardLine.nodeId}) }}" href="#">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="8">There are no standard lines</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

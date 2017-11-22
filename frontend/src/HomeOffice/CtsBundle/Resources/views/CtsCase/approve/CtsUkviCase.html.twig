@@ -1,0 +1,128 @@
+{% extends "HomeOfficeCtsBundle:CtsCase:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Approve{% endblock %}
+
+{% block metaTitle %}Approve UKVI Case {{ case.urn }}{% endblock %}
+
+{% block overviewReturn %}{% endblock %}
+
+{% block tab1 %}
+    <a name="form_top"></a>
+    {{ form_start(form, {'attr': {'class': 'form-ajax', 'data-casetype': case.correspondenceType}}) }}
+        <h2>Original correspondence</h2>
+        <p>Member: {{ case.member }}</p>
+
+        <div class="panel">
+            {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+                'filterTypes': ['Original']
+            } %}
+        </div>
+        <hr>
+
+        <h2>Response</h2>
+
+        <label class="form-label">Document(s)</label>
+        <div class="documentTable panel"
+             data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+             data-filter-types="Original attachments,Contribution,Background note,Response,Other"
+             data-allow-remove="{{ caseIsStep(case, 'approve') ? 'true' : 'false' }}"
+        >
+            {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+                'filterTypes': ['Original attachments', 'Contribution', 'Background note', 'Response', 'Other'],
+                'allowRemove': caseIsStep(case, 'approve') ? true : false
+            } %}
+        </div>
+
+        {% if form['document'] is defined %}
+            {% if caseIsStep(case, 'approve') %}
+                <div class="form-group">
+                    {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with {
+                        'form': form['document']
+                    } %}
+                </div>
+            {% endif %}
+            {% do form['document'].setRendered %}
+        {% endif %}
+        <hr>
+
+        <h2>Approval</h2>
+
+        {% if case.caseStatus == 'NFA' or case.markupDecision == 'No reply needed' %}
+            {% include 'HomeOfficeCtsBundle:CtsCase:approve/partials/noFurtherAction.html.twig' %}
+        {% elseif case.caseStatus == 'OGD' or case.markupDecision == 'Refer to OGD' %}
+            {% include 'HomeOfficeCtsBundle:CtsCase:approve/partials/ogdAction.html.twig' %}
+        {% else %}
+            {% if caseIsStep(case, 'approve') %}
+                {% if form.transitions['SendForDispatch'] is defined %}
+                    <div class="form-group">
+                        <label class="form-label"><strong>QA Review</strong></label>
+                        {{ form_widget(form.transitions['SendForDispatch']) }}
+
+                        {% if form['transitions']['Reject'] is defined %}
+                            <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_return', { 'nodeRef': case.nodeId }) }}">
+                                {{ form['transitions']['Reject'].vars.label }}
+                            </button>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                {% if form.transitions['SendForCQTApproval'] is defined %}
+                    <div class="form-group">
+                        <label class="form-label"><strong>QA Review</strong></label>
+                        {{ form_widget(form.transitions['SendForCQTApproval']) }}
+
+                        {% if form['transitions']['Reject'] is defined %}
+                            <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_return', { 'nodeRef': case.nodeId }) }}">
+                                {{ form['transitions']['Reject'].vars.label }}
+                            </button>
+                        {% endif %}
+                    </div>
+
+                    {% if case.correspondenceType == 'IMCM' %}
+                        <div class="form-group">
+                            <label class="form-label"><strong>Central Quality Team</strong></label>
+                            <input type="button" value="Approve" class="button" disabled>
+                            <input type="button" value="Return" class="button button-secondary" disabled>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if form.transitions['SendForPrivateOfficeApproval'] is defined %}
+                    <div class="form-group">
+                        <label class="form-label"><strong>QA Review</strong></label>
+                        <label class="form-label form-approved">Approved</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"><strong>Central Quality Team</strong></label>
+                        {{ form_widget(form.transitions['SendForPrivateOfficeApproval']) }}
+
+                        {% if form['transitions']['Reject'] is defined %}
+                            <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_return', { 'nodeRef': case.nodeId }) }}">
+                                {{ form['transitions']['Reject'].vars.label }}
+                            </button>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% else %}
+                {% if not caseIsStep(case, 'approve') %}
+                    <div class="form-group">
+                        <label class="form-label"><strong>QA Review</strong></label>
+                        <label class="form-label form-approved">Approved</label>
+                    </div>
+                    {% if case.correspondenceType == 'IMCM' %}
+                        <div class="form-group">
+                            <label class="form-label"><strong>Central Quality Team</strong></label>
+                            <label class="form-label form-approved">Approved</label>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+        {% do form['transitions'].setRendered %}
+
+    {{ form_end(form) }}
+{% endblock %}

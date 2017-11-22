@@ -1,0 +1,20 @@
+{% extends "::base.html.twig" %}
+
+{% block bodyClass %}search{% endblock %}
+
+{% block breadcrumb_trail %}
+    <li>Global search</li>
+    <a href="globalSearchByFields.html.twig"></a>
+{% endblock %}
+
+{% block title %}Global search{% endblock %}
+
+{% block searchButton %}{% endblock %}
+
+{% block body %}
+    {% form_theme searchByForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+    {{ form_start(searchByForm, {'attr': {'novalidate' : 'novalidate' } }) }}
+        {% include "HomeOfficeCtsBundle:Search:globalSearchByFields.html.twig" %}
+        {% include "HomeOfficeCtsBundle:Search:searchResultsTable.html.twig" %}
+    {{ form_end(searchByForm) }}
+{% endblock %}

@@ -1,0 +1,51 @@
+<div id="reply_to" class="panel wide">
+    <h2>Reply to</h2>
+    <fieldset class="basic_details">
+        <div class="stop_list member_list" data-stop_list_type="members">{{ form_label(ctsCaseForm['member']) }}
+            {{ form_widget(ctsCaseForm['member']) }}
+        </div>
+
+        <div class="full_width_label stop_list_div{% if (not displayMemberStopListIcon) %} collapsed{% endif %}">
+            <div class="stop_list_label">Stop list <b class="icon"></b></div>
+        </div>
+
+        <div>
+            {{ form_label(ctsCaseForm['mpRef']) }}
+            {{ form_widget(ctsCaseForm['mpRef']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['replyToName']) }}
+            {{ form_widget(ctsCaseForm['replyToName']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['replyToTelephone']) }}
+            {{ form_widget(ctsCaseForm['replyToTelephone']) }}
+        </div>
+        <div class="last">
+            {{ form_label(ctsCaseForm['replyToEmail']) }}
+            {{ form_widget(ctsCaseForm['replyToEmail']) }}
+        </div>
+    </fieldset>
+    <fieldset class="basic_details_2">
+        <div class="button-after-input cts_case_member_postcode">{{ form_label(ctsCaseForm['replyToPostcode']) }}
+            {{ form_widget(ctsCaseForm['replyToPostcode']) }}<a class="button find_address"><span>Find address</span></a>
+        </div>
+        <div class="cts_case_member_address_line_1">
+            {{ form_label(ctsCaseForm['replyToAddressLine1']) }}
+            {{ form_widget(ctsCaseForm['replyToAddressLine1']) }}
+        </div>
+        <div class="cts_case_member_address_line_2">
+            {{ form_label(ctsCaseForm['replyToAddressLine2']) }}
+            {{ form_widget(ctsCaseForm['replyToAddressLine2']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['replyToAddressLine3']) }}
+            {{ form_widget(ctsCaseForm['replyToAddressLine3']) }}    
+        </div>
+        <div class="cts_case_member_country last">
+            {{ form_label(ctsCaseForm['replyToCountry']) }}
+            {{ form_widget(ctsCaseForm['replyToCountry']) }}
+        </div>
+    </fieldset>
+</div>
+{% include "HomeOfficeCtsBundle:Case/Script:_memberReplyToDetailsScript.html.twig" %}

@@ -1,0 +1,71 @@
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+<h2>Advanced search - DCU</h2>
+
+<div class="form-group">
+    <label class="form-label">{{ form['caseType'].vars.label }}</label>
+    {{ form_widget(form['caseType']) }}
+</div>
+
+<div class="form-group">
+    <label class="form-label">Received<br>{{ form_label(form['dateReceivedFrom']) }}</label>
+    {{ form_widget(form['dateReceivedFrom']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['dateReceivedTo']) }}
+    {{ form_widget(form['dateReceivedTo']) }}
+</div>
+
+<div class="form-group">
+    <label class="form-label">{{ form['priority'].vars.label }}</label>
+    {{ form_widget(form['priority']) }}
+</div>
+
+<div class="form-group">
+    <label class="form-label">{{ form['advice'].vars.label }}</label>
+    {{ form_widget(form['advice']) }}
+</div>
+
+<h2>Reply to details</h2>
+<div class="form-group">
+    {{ form_label(form['member']) }}
+    {{ form_widget(form['member']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['mpReference']) }}
+    {{ form_widget(form['mpReference']) }}
+</div>
+
+<div class="form-group">
+    <label class="form-label">{{ form['homeSecretaryReply'].vars.label }}</label>
+    {{ form_widget(form['homeSecretaryReply']) }}
+</div>
+
+<div class="form-group">
+    <label class="form-label">{{ form['replyToNumberTenCopy'].vars.label }}</label>
+    {{ form_widget(form['replyToNumberTenCopy']) }}
+</div>
+
+<h2>Constituent details</h2>
+
+<div class="form-group">
+    {{ form_label(form['correspondentForename']) }}
+    {{ form_widget(form['correspondentForename']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['correspondentSurname']) }}
+    {{ form_widget(form['correspondentSurname']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['correspondentPostcode']) }}
+    {{ form_widget(form['correspondentPostcode']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['correspondentEmail']) }}
+    {{ form_widget(form['correspondentEmail']) }}
+</div>

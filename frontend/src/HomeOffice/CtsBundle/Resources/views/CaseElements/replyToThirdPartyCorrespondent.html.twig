@@ -1,0 +1,65 @@
+<label><a class="replyToThirdPartyCorrespondentTrigger noUnderline" href="#">Third Party (Optional)</a></label>
+
+<div class="replyToThirdPartyCorrespondentToggle hidden">
+    {% if form['thirdPartyCorrespondentTitle'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['thirdPartyCorrespondentTitle']) }}
+            {{ form_widget(form['thirdPartyCorrespondentTitle']) }}
+        </div>
+    {% endif %}
+
+    {% if form['thirdPartyCorrespondentForename'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['thirdPartyCorrespondentForename']) }}
+            {{ form_widget(form['thirdPartyCorrespondentForename']) }}
+        </div>
+    {% endif %}
+
+    {% if form['thirdPartyCorrespondentSurname'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['thirdPartyCorrespondentSurname']) }}
+            {{ form_widget(form['thirdPartyCorrespondentSurname']) }}
+        </div>
+    {% endif %}
+
+    {% if form['thirdPartyCorrespondentPostcode'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['thirdPartyCorrespondentPostcode']) }}
+            {{ form_widget(form['thirdPartyCorrespondentPostcode']) }}
+        </div>
+    {% endif %}
+
+    {% if form['thirdPartyCorrespondentAddressLine1'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['thirdPartyCorrespondentAddressLine1']) }}
+            {{ form_widget(form['thirdPartyCorrespondentAddressLine1']) }}
+        </div>
+        <div class="form-group">
+            {{ form_widget(form['thirdPartyCorrespondentAddressLine2']) }}
+        </div>
+        <div class="form-group">
+            {{ form_widget(form['thirdPartyCorrespondentAddressLine3']) }}
+        </div>
+    {% endif %}
+
+    {% if form['thirdPartyCorrespondentCountry'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['thirdPartyCorrespondentCountry']) }}
+            {{ form_widget(form['thirdPartyCorrespondentCountry']) }}
+        </div>
+    {% endif %}
+
+    {% if form['thirdPartyCorrespondentTelephone'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['thirdPartyCorrespondentTelephone']) }}
+            {{ form_widget(form['thirdPartyCorrespondentTelephone']) }}
+        </div>
+    {% endif %}
+
+    {% if form['thirdPartyCorrespondentEmail'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['thirdPartyCorrespondentEmail']) }}
+            {{ form_widget(form['thirdPartyCorrespondentEmail']) }}
+        </div>
+    {% endif %}
+</div>

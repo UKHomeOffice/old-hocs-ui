@@ -1,0 +1,69 @@
+{% set data = chart.getElementsBySelection(selectBy) %}
+{% set tableData = chart.getTableData(data, groupBy) %}
+
+<h2>
+    {% if selectBy.field == 'caseType' %}
+        {{ constant('HomeOffice\\AlfrescoApiBundle\\Service\\CaseCorrespondenceType::'~selectBy.value) }}
+    {% elseif selectBy.field == 'correspondenceType' %}
+        {{ constant('HomeOffice\\AlfrescoApiBundle\\Service\\CaseCorrespondenceSubType::'~selectBy.value) }}
+    {% else %}
+        {{ selectBy.value }}
+    {% endif %}
+</h2>
+
+{% include 'HomeOfficeCtsBundle:Dashboard:chart.html.twig' with {
+    'position': 'open'
+} %}
+
+{% include 'HomeOfficeCtsBundle:Dashboard:chart.html.twig' with {
+    'position': 'openAndOverdue'
+} %}
+
+{% include 'HomeOfficeCtsBundle:Dashboard:chart.html.twig' with {
+    'position': 'returned'
+} %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Task List</th>
+            <th>Open</th>
+            <th>Overdue at stage</th>
+            <th>Returned</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for group, positions in tableData %}
+            <tr {% if tableLimit is defined and loop.index > tableLimit %}class="hidden dashboardTableToggle"{% endif %}>
+                <td><span class="key" style="background-color:{{ chart.color(loop.index0) }}"></span>
+                    {% if ((positions.open + positions.openAndOverdue + positions.returned) > 0 ) %}
+                        <a
+                            href="{{ path('homeoffice_cts_supersearch_results',
+                            searchParams|merge({(''~groupBy): group, 'dashboard': true })) }}">
+                            {{ group }}
+                        </a>
+                    {%  else %}
+                        {{ group }}
+                    {% endif %}
+                </td>
+                <td>{{ positions.open }}</td>
+                <td>{{ positions.openAndOverdue }}</td>
+                <td>{{ positions.returned }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    {% if tableLimit is defined and tableData|length > tableLimit %}
+        <tfoot>
+            <tr class="dashboardTableToggle">
+                <td colspan="4">
+                    <a href="#" class="dashboardTableTrigger">Show all details</a>
+                </td>
+            </tr>
+            <tr class="dashboardTableToggle hidden">
+                <td colspan="4">
+                    <a href="#" class="dashboardTableTrigger">Show fewer details</a>
+                </td>
+            </tr>
+        </tfoot>
+    {% endif %}
+</table>

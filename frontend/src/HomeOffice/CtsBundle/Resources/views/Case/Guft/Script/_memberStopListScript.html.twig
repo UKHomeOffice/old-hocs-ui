@@ -1,0 +1,6 @@
+<script type="text/javascript">
+    var stopLists = {'members': {}, 'topics' : {}};
+    {% for member in stopList %}
+    stopLists.members['{{ member }}'] = true;
+    {% endfor %}
+</script>

@@ -1,0 +1,138 @@
+<div id="overview" class="panel">
+    <h2>Overview</h2>
+
+    {% if case.uin is defined %}
+        <p>
+            <strong>UIN</strong><br>
+            {{ case.uin }}
+        </p>
+    {% endif %}
+
+    {% if case.urn %}
+        <p>
+            <strong>Case ID</strong><br>
+            {{ case.urn }}
+        </p>
+    {% endif %}
+
+    {% if case.foiIsEir is defined and case.foiIsEir %}
+        <p>
+            <strong>EIR applies</strong>
+        </p>
+    {% endif %}
+
+    {% if case.pitExtension is defined and case.pitExtension %}
+        <p>
+            <strong>Public Interest Test Extension applies</strong>
+        </p>
+    {% endif %}
+    <p>
+        <strong>Case status</strong><br>
+        {{ case.caseStatus }} ({{ case.caseTask }})
+
+        {% if case.priority is defined and case.priority %}
+            <br><span class="tag tag-notice">Priority</span>
+        {% endif %}
+    </p>
+
+    {% if case.caseOwner %}
+        <p>
+            <strong>Owner</strong><br>
+            {{ case.caseOwner }}
+        </p>
+    {% endif %}
+
+    {% if case.shortName == 'CtsHmpoCollCase' and case.feeIncluded is defined %}
+        <p>
+            <strong>Delivery</strong><br>
+            {% if case.feeIncluded == false %}
+                No fee
+            {% elseif case.deliveryType is defined %}
+                {{ case.deliveryType }}
+            {% endif %}
+        </p>
+    {% endif %}
+
+    {% if case.reviewRequired is defined and case.reviewRequired == true %}
+        <p>
+            <strong>Requires review by</strong><br>
+            {{ case.reviewedBySpads ? 'Special advisor<br>' : '' }}
+            {{ case.reviewedByPermSec ? 'Permanent secretary<br>' : '' }}
+            {{ case.signedByHomeSec ? 'Home secretary<br>' : '' }}
+        </p>
+    {% endif %}
+
+    {% if case.shortName in ['CtsFoiCase', 'CtsFoiComplaintCase'] and case.foiMinisterSignOff %}
+        <p>
+            <strong>Requires Review By</strong><br />
+            {{ case.answeringMinister }}
+        </p>
+    {% endif %}
+
+    {% if case.markupMinister is defined and case.markupMinister %}
+        <p>
+            <strong>Sign off Minister</strong><br>
+            {{ case.markupMinister }}
+        </p>
+    {% endif %}
+
+    {% if case.markupTopic %}
+        <p>
+            <strong>Topics</strong><br />
+            {{ case.markupTopic }}
+            {% if case.secondaryTopic %}
+                <br />{{ case.secondaryTopic }}
+            {% endif %}
+        </p>
+    {% endif %}
+
+    {% if
+    (case.acpoConsultation is defined and case.acpoConsultation) or
+    (case.nslgConsultation is defined and case.nslgConsultation) or
+    (case.royalsConsultation is defined and case.royalsConsultation) or
+    (case.roundRobinAdviceConsultation is defined and case.roundRobinAdviceConsultation) or
+    (case.cabinetOfficeConsultation is defined and case.cabinetOfficeConsultation)
+    %}
+        <p>
+            <strong>Consultations</strong><br>
+            {% if case.acpoConsultation %}
+                National Police Chief’s Council (NPCC)<br>
+            {% endif %}
+            {% if case.cabinetOfficeConsultation %}
+                Cabinet Office (clearing house)<br>
+            {% endif %}
+            {% if case.nslgConsultation %}
+                National Security Liaison Group (NSLG)<br>
+            {% endif %}
+            {% if case.royalsConsultation %}
+                Royals<br>
+            {% endif %}
+            {% if case.roundRobinAdviceConsultation %}
+                Round robin advice<br>
+            {% endif %}
+        </p>
+    {% endif %}
+
+    {% if case.linkedCases is defined and case.linkedCases %}
+        <p>
+            <strong>Linked cases</strong><br>
+            {% for linkedCase in case.linkedCases %}
+                <a href="{{ path('homeoffice_cts_case_view', {'nodeRef': linkedCase.nodeId}) }}">{{ linkedCase.urn }}</a><br>
+            {% endfor %}
+        </p>
+    {% endif %}
+
+    {% if case.groupedCases is defined and case.groupedCases %}
+        <p>
+            <strong>Grouped cases</strong><br>
+            {% for groupedCase in case.groupedCases %}
+                <a href="{{ path('homeoffice_cts_case_view', {'nodeRef': groupedCase.nodeId}) }}">{{ groupedCase.urn }}</a><br>
+            {% endfor %}
+        </p>
+    {% endif %}
+
+</div>
+
+<script>
+    var overviewRefreshRoute = '{{ path('homeoffice_cts_caseelements_overview', { 'nodeRef': case.nodeId }) }}';
+</script>

@@ -1,0 +1,35 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Upload Cases{% endblock %}
+
+{% block bodyClass %}upload{% endblock %}
+
+{% block breadcrumb_trail %}
+    <li>Upload Cases</li>
+{% endblock %}
+
+{% block body %}
+    {% form_theme uploadForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+    {{ form_start(uploadForm, {'attr': {'novalidate' : 'novalidate' } }) }}
+
+    {% if (validationCssClass != null and validationMessage != null) %}
+        <div class="global {{validationCssClass}}">
+                {{ validationMessage|nl2br }}
+        </div>
+    {% endif %}
+
+    <div id="document-form">
+        <fieldset id="case_upload" class="panel medium">
+
+            <div>
+                {{ form_label(uploadForm.file) }}
+                {{ form_widget(uploadForm.file) }}
+            </div>
+            <div>
+                <label>&nbsp;</label>
+                <span class="as-control default button">{{ form_widget(uploadForm.uploadButton) }}</span>
+            </div>
+        </fieldset>
+    {{ form_end(uploadForm) }}
+    </div>
+{% endblock %}

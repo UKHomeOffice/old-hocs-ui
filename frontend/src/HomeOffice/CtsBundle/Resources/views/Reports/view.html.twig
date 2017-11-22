@@ -1,0 +1,25 @@
+{% extends '@HomeOfficeCts/Reports/index.html.twig' %}
+
+{% block reportList %}
+
+<div class="column-two-thirds">
+    <br><h2>Documents</h2>
+
+    <div class="panel">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            {% for report in reports %}
+                <tr>
+                    <td>{{ report.name }}</td>
+                    <td><a href="{{ path('homeoffice_cts_reports_download', report) }}">Download</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

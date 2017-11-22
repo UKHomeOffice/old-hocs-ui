@@ -1,0 +1,116 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% form_theme ctsCaseForm 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block bc %}{% endblock  %}
+
+{% block title %}Edit Case {{ ctsCaseForm.vars.data.urn }} {% endblock %}
+
+{% block content %}
+
+    <section class="grid-row">
+        <section class="column-two-thirds">
+            {{ render(controller('HomeOfficeCtsBundle:CaseElements:progressbar')) }}
+        </section>
+    </section>
+    <section class="grid-row">
+        {{ form_start(ctsCaseForm, {'attr': {'novalidate' : 'novalidate' } }) }}
+        <section class="column-two-thirds">
+            <div id="tabs">
+                <ul>
+                    <li>
+                        <a href="#tabs-1" data-toggle="tab">Case</a>
+                    </li>
+                    <li>
+                        <a href="#tabs-2" data-toggle="tab">Minutes</a>
+                    </li>
+                    <li>
+                        <a href="#tabs-3" data-toggle="tab">Documents</a>
+                    </li>
+                </ul>
+
+                <div id="tabs-1">
+                    <section>
+                        {% set errorPresent = (not ctsCaseForm.vars.valid
+                        or (errorMsg is defined and errorMsg != null)
+                        or (documentErrorMsg is defined and documentErrorMsg != null)
+                        or (groupedCaseError is defined and groupedCaseError != null)
+                        or (linkedCaseError is defined and linkedCaseError != null))
+                        and (saveWarningMessage is defined or saveWarningMessage == null) %}
+
+                        <div class="global error" {% if not errorPresent %}style="display: none;"{% endif %}>
+                            {% if errorPresent %}
+                                {% if errorMsg is defined and errorMsg != null %}{{ errorMsg|nl2br }}{% else %}Errors found on form.{% endif %}
+                            {% endif %}
+                        </div>
+
+                        {% if ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'DCU' or ctsCase.correspondenceType == 'UTEN' %}
+                            {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformMinisterial1.html.twig" %}
+                        {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'PQ' %}
+                            {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformPq1.html.twig" %}
+                        {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'FOI' %}
+                            {% if ctsCase.correspondenceType == 'FOI' %}
+                                {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformFoi1.html.twig" %}
+                            {% else %}{# complaint #}
+                                {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseFormFoiComplaint1.html.twig" %}
+                            {% endif %}
+                        {% elseif ctsCase.correspondenceType == 'IMCB' or ctsCase.correspondenceType == 'IMCM'%}
+                            {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformUkvi1.html.twig" %}
+                        {% elseif ctsCase.correspondenceType == 'COM' %}
+                            {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformHmpoCom1.html.twig" %}
+                        {% elseif ctsCase.correspondenceType == 'GEN' %}
+                            {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformHmpoGen1.html.twig" %}
+                        {% endif %}
+
+                        {% if saveWarningMessage is not null and saveWarningMessage is defined  %}
+                            <div id="save_warning_message">{{saveWarningMessage|nl2br}}</div>
+                        {% endif %}
+
+                        <div class="form-group">
+                            {{ form_widget(ctsCaseForm['Save1']) }}
+                        </div>
+
+                    </section>
+                </div>
+
+                <div id="tabs-2">
+                    {% include "HomeOfficeCtsBundle:Case/Guft:minutes.html.twig" %}
+                </div>
+
+                <div id="tabs-3">
+                    {% include "HomeOfficeCtsBundle:Case/Guft/Document:documentList.html.twig" %}
+                    {% include "HomeOfficeCtsBundle:Case/Guft/Document:documentUpload.html.twig" %}
+                    {% include "HomeOfficeCtsBundle:Case/Guft/DocumentTemplate:documentTemplateList.html.twig" %}
+                </div>
+            </div>
+        </section>
+        <section class="column-third">
+            {% if ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'DCU' or ctsCase.correspondenceType == 'UTEN'%}
+                {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformMinisterial2.html.twig" %}
+            {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'PQ' %}
+                {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformPq2.html.twig" %}
+            {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'FOI' %}
+                {% if ctsCase.correspondenceType == 'FOI' %}
+                    {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformFoi2.html.twig" %}
+                {% else %}{# complaint #}
+                    {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseFormFoiComplaint2.html.twig" %}
+                {% endif %}
+            {% elseif ctsCase.correspondenceType == 'GEN' %}
+                {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformHmpoGen2.html.twig" %}
+            {% elseif ctsCase.correspondenceType == 'IMCB' or ctsCase.correspondenceType == 'IMCM'%}
+                {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformUkvi2.html.twig" %}
+            {% elseif ctsCase.correspondenceType == 'COM' %}
+                {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformHmpoCom2.html.twig" %}
+            {% elseif ctsCase.correspondenceType == 'GEN' %}
+                {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformHmpoGen2.html.twig" %}
+            {% endif %}
+
+            {% if ctsCase.correspondenceType == 'FOI' %}
+                {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformFoi3.html.twig" %}
+            {% elseif ctsCase.correspondenceType == 'COM' %}
+                {% include "HomeOfficeCtsBundle:Case/Guft/Edit:caseformHmpoCom3.html.twig" %}
+            {% endif %}
+        </section>
+    </section>
+    {{ form_end(ctsCaseForm) }}
+{% endblock %}

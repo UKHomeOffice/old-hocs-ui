@@ -1,0 +1,30 @@
+services:
+    home_office_cts.form.builder.ftci_create:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Create\FTCI
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FTCICreate }
+
+    home_office_cts.form.builder.ftci_draft:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Draft\FTCI
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FTCIDraft }
+
+    home_office_cts.form.builder.ftci_approve:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Approve\FTCI
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FTCIApprove }
+
+    home_office_cts.form.builder.ftci_signoff:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Signoff\FTCI
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FTCISignoff }
+
+    home_office_cts.form.builder.ftci_dispatch:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Dispatch\FTCI
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FTCIDispatch }

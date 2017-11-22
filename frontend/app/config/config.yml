@@ -1,0 +1,1742 @@
+imports:
+    - { resource: build.yml }
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+
+framework:
+    #esi:             ~
+    #translator:      { fallback: "%locale%" }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id:  ~
+    fragments:       ~
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    globals:
+        build_id: "%build_id%"
+        git_commit: "%git_commit%"
+        site_title: 'Home Office Correspondence Service'
+        site_title_short: 'HOCS'
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    bundles:        [ HomeOfficeCtsBundle, GuftBundle ]
+    #java: /usr/bin/java
+    filters:
+        sass:    ~
+        compass:
+            apply_to: "\.(scss|sass)$"
+            load_paths:
+                - "%kernel.root_dir%/../web"
+            no_line_comments: true
+        cssrewrite:
+            apply_to: "\.css$"
+        uglifyjs2:
+            bin: "%kernel.root_dir%/Resources/node_modules/uglify-js/bin/uglifyjs"
+        #closure:
+        #    jar: "%kernel.root_dir%/Resources/java/compiler.jar"
+        #yui_css:
+        #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
+        yui_js:
+            jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
+
+stash:
+    drivers: [ FileSystem ]
+    FileSystem: ~
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+home_office_list:
+    cache_timeout_seconds: 10800
+    list_definitions:
+        pq_topic_stop_list:
+            name: 'pqTopicStopList'
+            type: 'dataList'
+            alfresco_list_name: 'topicList'
+            storage: 'cache'
+            prepare_method_name: 'preparePqTopicStopList'
+        pq_correspondent_stop_list:
+            name: 'pqCorrespondentStopList'
+            type: 'csv'
+            file_name: 'CorrespondentStopList.csv'
+            storage: 'cache'
+            prepare_method_name: 'preparePqCorrespondentStopList'
+        dcu_correspondent_stop_list:
+            name: 'dcuCorrespondentStopList'
+            type: 'csv'
+            file_name: 'CorrespondentStopList.csv'
+            storage: 'cache'
+            prepare_method_name: 'prepareDcuCorrespondentStopList'
+        ukvi_correspondent_stop_list:
+            name: 'ukviCorrespondentStopList'
+            type: 'csv'
+            file_name: 'CorrespondentStopList.csv'
+            storage: 'cache'
+            prepare_method_name: 'prepareUkviCorrespondentStopList'
+        member_list:
+            name: 'ctsMemberList'
+            type: 'csv'
+            file_name: 'CorrespondentStopList.csv'
+            storage: 'cache'
+            prepare_method_name: 'prepareMemberList'
+        minister_list:
+            name: 'ctsMinisterList'
+            type: 'csv'
+            file_name: 'MinisterList.csv'
+            storage: 'cache'
+            prepare_method_name: 'prepareMinisterList'
+        unit_and_team_list:
+            name: 'ctsUnitAndTeamList'
+            type: 'custom'
+            storage: 'session'
+            retrieve_method_name: 'getUnitsAndTeams'
+        unit_list:
+            name: 'ctsUnitList'
+            type: 'custom'
+            storage: 'cache'
+            retrieve_method_name: 'getUnitsAndTeams'
+            prepare_method_name: 'prepareUnitList'
+
+home_office_alfresco_api:
+    endpoint: 'http://localhost:9001/alfresco/'
+    workspace: 'workspace'
+    store: 'SpacesStore'
+    alfresco_qname_prefix: '{http://cts-beta.homeoffice.gov.uk/model/content/1.0}'
+    cts_namespace: 'cts'
+    cts_case_properties:
+        object_type_id:
+            object_prop_name: 'objectTypeId'
+            alfresco_prop_name: 'cmis:objectTypeId'
+            query_name: 'c.cmis:objectTypeId'
+            type: 'id'
+            required_for_case_queue: true
+            required_for_search_results: true
+        id:
+            object_prop_name: 'id'
+            alfresco_prop_name: 'cmis:objectId'
+            query_name: 'c.cmis:objectId'
+            type: 'id'
+            system_field: true
+            required_for_case_queue: true
+            required_for_search_results: true
+        folder_name:
+            object_prop_name: 'folderName'
+            alfresco_prop_name: 'cmis:name'
+            query_name: 'c.cmis:name'
+            type: 'string'
+            system_field: true
+            required_for_case_queue: false
+            required_for_search_results: false
+        case_workflow_status:
+            object_prop_name: 'caseWorkflowStatus'
+            alfresco_prop_name: 'cts:caseWorkflowStatus'
+            query_name: 'c.cts:caseWorkflowStatus'
+            type: 'string'
+            system_field: true
+            required_for_case_queue: false
+            required_for_search_results: false
+        case_mandatory_fields:
+            object_prop_name: 'caseMandatoryFields'
+            alfresco_prop_name: 'cts:caseMandatoryFields'
+            query_name: 'c.cts:caseMandatoryFields'
+            type: 'string'
+            system_field: true
+            required_for_case_queue: false
+            required_for_search_results: false
+        date_created:
+            object_prop_name: 'dateCreated'
+            alfresco_prop_name: 'cmis:creationDate'
+            query_name: 'c.cmis:creationDate'
+            type: 'dateTime'
+            system_field: true
+            required_for_case_queue: true
+            required_for_search_results: false
+        status_updated_datetime:
+            object_prop_name: 'statusUpdatedDatetime'
+            alfresco_prop_name: 'cts:statusUpdatedDatetime'
+            query_name: 'c.cts:statusUpdatedDatetime'
+            type: 'dateTime'
+            system_field: true
+            required_for_case_queue: true
+            required_for_search_results: false
+        task_updated_datetime:
+            object_prop_name: 'taskUpdatedDatetime'
+            alfresco_prop_name: 'cts:taskUpdatedDatetime'
+            query_name: 'c.cts:taskUpdatedDatetime'
+            type: 'dateTime'
+            system_field: true
+            required_for_case_queue: true
+            required_for_search_results: false
+        owner_updated_datetime:
+            object_prop_name: 'ownerUpdatedDatetime'
+            alfresco_prop_name: 'cts:ownerUpdatedDatetime'
+            query_name: 'c.cts:ownerUpdatedDatetime'
+            type: 'dateTime'
+            system_field: true
+            required_for_case_queue: true
+            required_for_search_results: false
+        correspondence_type:
+            object_prop_name: 'correspondenceType'
+            alfresco_prop_name: 'cts:correspondenceType'
+            query_name: 'c.cts:correspondenceType'
+            type: 'string'
+            required_for_case_queue: true
+            required_for_search_results: true
+        date_received:
+            object_prop_name: 'dateReceived'
+            alfresco_prop_name: 'cts:dateReceived'
+            query_name: 'c.cts:dateReceived'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        date_of_letter:
+            object_prop_name: 'dateOfLetter'
+            alfresco_prop_name: 'cts:dateOfLetter'
+            query_name: 'c.cts:dateOfLetter'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        channel:
+            object_prop_name: 'channel'
+            alfresco_prop_name: 'cts:channel'
+            query_name: 'c.cts:channel'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        priority:
+            object_prop_name: 'priority'
+            alfresco_prop_name: 'cts:priority'
+            query_name: 'c.cts:priority'
+            type: 'boolean'
+            required_for_case_queue: true
+            required_for_search_results: true
+        advice:
+            object_prop_name: 'advice'
+            alfresco_prop_name: 'cts:advice'
+            query_name: 'c.cts:advice'
+            type: 'boolean'
+            required_for_case_queue: true
+            required_for_search_results: true
+        member:
+            object_prop_name: 'member'
+            alfresco_prop_name: 'cts:member'
+            query_name: 'c.cts:member'
+            type: 'string'
+            required_for_case_queue: true
+            required_for_search_results: true
+        mp_ref:
+            object_prop_name: 'mpRef'
+            alfresco_prop_name: 'cts:mpRef'
+            query_name: 'c.cts:mpRef'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        reply_to_name:
+            object_prop_name: 'replyToName'
+            alfresco_prop_name: 'cts:replyToName'
+            query_name: 'c.cts:replyToName'
+            type: 'string'
+            required_for_case_queue: true
+            required_for_search_results: true
+        reply_to_postcode:
+            object_prop_name: 'replyToPostcode'
+            alfresco_prop_name: 'cts:replyToPostcode'
+            query_name: 'c.cts:replyToPostcode'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        reply_to_address_line1:
+            object_prop_name: 'replyToAddressLine1'
+            alfresco_prop_name: 'cts:replyToAddressLine1'
+            query_name: 'c.cts:replyToAddressLine1'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        reply_to_address_line2:
+            object_prop_name: 'replyToAddressLine2'
+            alfresco_prop_name: 'cts:replyToAddressLine2'
+            query_name: 'c.cts:replyToAddressLine2'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        reply_to_address_line3:
+            object_prop_name: 'replyToAddressLine3'
+            alfresco_prop_name: 'cts:replyToAddressLine3'
+            query_name: 'c.cts:replyToAddressLine3'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        reply_to_country:
+            object_prop_name: 'replyToCountry'
+            alfresco_prop_name: 'cts:replyToCountry'
+            query_name: 'c.cts:replyToCountry'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        reply_to_telephone:
+            object_prop_name: 'replyToTelephone'
+            alfresco_prop_name: 'cts:replyToTelephone'
+            query_name: 'c.cts:replyToTelephone'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        reply_to_email:
+            object_prop_name: 'replyToEmail'
+            alfresco_prop_name: 'cts:replyToEmail'
+            query_name: 'c.cts:replyToEmail'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        reply_to_number_10_copy:
+            object_prop_name: 'replyToNumberTenCopy'
+            alfresco_prop_name: 'cts:replyToNumberTenCopy'
+            query_name: 'c.cts:replyToNumberTenCopy'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        correspondent_title:
+            object_prop_name: 'correspondentTitle'
+            alfresco_prop_name: 'cts:correspondentTitle'
+            query_name: 'c.cts:correspondentTitle'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        correspondent_forename:
+            object_prop_name: 'correspondentForename'
+            alfresco_prop_name: 'cts:correspondentForename'
+            query_name: 'c.cts:correspondentForename'
+            type: 'string'
+            required_for_case_queue: true
+            required_for_search_results: true
+        correspondent_surname:
+            object_prop_name: 'correspondentSurname'
+            alfresco_prop_name: 'cts:correspondentSurname'
+            query_name: 'c.cts:correspondentSurname'
+            type: 'string'
+            required_for_case_queue: true
+            required_for_search_results: true
+        correspondent_postcode:
+            object_prop_name: 'correspondentPostcode'
+            alfresco_prop_name: 'cts:correspondentPostcode'
+            query_name: 'c.cts:correspondentPostcode'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        correspondent_address_line1:
+            object_prop_name: 'correspondentAddressLine1'
+            alfresco_prop_name: 'cts:correspondentAddressLine1'
+            query_name: 'c.cts:correspondentAddressLine1'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        correspondent_address_line2:
+            object_prop_name: 'correspondentAddressLine2'
+            alfresco_prop_name: 'cts:correspondentAddressLine2'
+            query_name: 'c.cts:correspondentAddressLine2'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        correspondent_address_line3:
+            object_prop_name: 'correspondentAddressLine3'
+            alfresco_prop_name: 'cts:correspondentAddressLine3'
+            query_name: 'c.cts:correspondentAddressLine3'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        correspondent_country:
+            object_prop_name: 'correspondentCountry'
+            alfresco_prop_name: 'cts:correspondentCountry'
+            query_name: 'c.cts:correspondentCountry'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        correspondent_telephone:
+            object_prop_name: 'correspondentTelephone'
+            alfresco_prop_name: 'cts:correspondentTelephone'
+            query_name: 'c.cts:correspondentTelephone'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        correspondent_email:
+            object_prop_name: 'correspondentEmail'
+            alfresco_prop_name: 'cts:correspondentEmail'
+            query_name: 'c.cts:correspondentEmail'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        markup_decision:
+            object_prop_name: 'markupDecision'
+            alfresco_prop_name: 'cts:markupDecision'
+            query_name: 'c.cts:markupDecision'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        ogd_name:
+            object_prop_name: 'ogdName'
+            alfresco_prop_name: 'cts:ogdName'
+            query_name: 'c.cts:ogdName'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        markup_unit:
+            object_prop_name: 'markupUnit'
+            alfresco_prop_name: 'cts:markupUnit'
+            query_name: 'c.cts:markupUnit'
+            type: 'string'
+            required_for_case_queue: true
+            required_for_search_results: true
+        markup_team:
+            object_prop_name: 'markupTeam'
+            alfresco_prop_name: 'cts:markupTeam'
+            query_name: 'c.cts:markupTeam'
+            type: 'string'
+            required_for_case_queue: true
+            required_for_search_results: true
+        markup_topic:
+            object_prop_name: 'markupTopic'
+            alfresco_prop_name: 'cts:markupTopic'
+            query_name: 'c.cts:markupTopic'
+            type: 'string'
+            required_for_case_queue: true
+            required_for_search_results: true
+        markup_minister:
+            object_prop_name: 'markupMinister'
+            alfresco_prop_name: 'cts:markupMinister'
+            query_name: 'c.cts:markupMinister'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        lords_minister:
+            object_prop_name: 'lordsMinister'
+            alfresco_prop_name: 'cts:lordsMinister'
+            query_name: 'c.cts:lordsMinister'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_topic:
+            object_prop_name: 'secondaryTopic'
+            alfresco_prop_name: 'cts:secondaryTopic'
+            query_name: 'c.cts:secondaryTopic'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        case_status:
+            object_prop_name: 'caseStatus'
+            alfresco_prop_name: 'cts:caseStatus'
+            query_name: 'c.cts:caseStatus'
+            type: 'string'
+            required_for_case_queue: true
+            required_for_search_results: true
+        case_task:
+            object_prop_name: 'caseTask'
+            alfresco_prop_name: 'cts:caseTask'
+            query_name: 'c.cts:caseTask'
+            type: 'string'
+            required_for_case_queue: true
+            required_for_search_results: true
+        urn_suffix:
+            object_prop_name: 'urnSuffix'
+            alfresco_prop_name: 'cts:urnSuffix'
+            query_name: 'c.cts:urnSuffix'
+            type: 'string'
+            system_field: true
+            required_for_case_queue: true
+            required_for_search_results: true
+        case_response_deadline:
+            object_prop_name: 'caseResponseDeadline'
+            alfresco_prop_name: 'cts:caseResponseDeadline'
+            query_name: 'c.cts:caseResponseDeadline'
+            type: 'dateTime'
+            required_for_case_queue: true
+            required_for_search_results: true
+        assigned_unit:
+            object_prop_name: 'assignedUnit'
+            alfresco_prop_name: 'cts:assignedUnit'
+            query_name: 'c.cts:assignedUnit'
+            type: 'string'
+            system_field: true
+            required_for_case_queue: true
+            required_for_search_results: true
+        assigned_team:
+            object_prop_name: 'assignedTeam'
+            alfresco_prop_name: 'cts:assignedTeam'
+            query_name: 'c.cts:assignedTeam'
+            type: 'string'
+            system_field: true
+            required_for_case_queue: true
+            required_for_search_results: true
+        assigned_user:
+            object_prop_name: 'assignedUser'
+            alfresco_prop_name: 'cts:assignedUser'
+            query_name: 'c.cts:assignedUser'
+            type: 'string'
+            system_field: true
+            required_for_case_queue: true
+            required_for_search_results: true
+        uin:
+            object_prop_name: 'uin'
+            alfresco_prop_name: 'cts:uin'
+            query_name: 'c.cts:uin'
+            type: 'string'
+            required_for_case_queue: true
+            required_for_search_results: true
+        op_date:
+            object_prop_name: 'opDate'
+            alfresco_prop_name: 'cts:opDate'
+            query_name: 'c.cts:opDate'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: true
+        wo_date:
+            object_prop_name: 'woDate'
+            alfresco_prop_name: 'cts:woDate'
+            query_name: 'c.cts:woDate'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        question_number:
+            object_prop_name: 'questionNumber'
+            alfresco_prop_name: 'cts:questionNumber'
+            query_name: 'c.cts:questionNumber'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        question_text:
+            object_prop_name: 'questionText'
+            alfresco_prop_name: 'cts:questionText'
+            query_name: 'c.cts:questionText'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        answering_minister:
+            object_prop_name: 'answeringMinister'
+            alfresco_prop_name: 'cts:answeringMinister'
+            query_name: 'c.cts:answeringMinister'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        answering_minister_id:
+            object_prop_name: 'answeringMinisterId'
+            alfresco_prop_name: 'cts:answeringMinisterId'
+            query_name: 'c.cts:answeringMinisterId'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        received_type:
+            object_prop_name: 'receivedType'
+            alfresco_prop_name: 'cts:receivedType'
+            query_name: 'c.cts:receivedType'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        answer_text:
+            object_prop_name: 'answerText'
+            alfresco_prop_name: 'cts:answerText'
+            query_name: 'c.cts:answerText'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        constituency:
+            object_prop_name: 'constituency'
+            alfresco_prop_name: 'cts:constituency'
+            query_name: 'c.cts:constituency'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        party:
+            object_prop_name: 'party'
+            alfresco_prop_name: 'cts:party'
+            query_name: 'c.cts:party'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        home_secretary_reply:
+            object_prop_name: 'homeSecretaryReply'
+            alfresco_prop_name: 'cts:homeSecretaryReply'
+            query_name: 'c.cts:homeSecretaryReply'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: true
+        signed_by_home_sec:
+            object_prop_name: 'signedByHomeSec'
+            alfresco_prop_name: 'cts:signedByHomeSec'
+            query_name: 'c.cts:signedByHomeSec'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: true
+        signed_by_lords_minister:
+            object_prop_name: 'signedByLordsMinister'
+            alfresco_prop_name: 'cts:signedByLordsMinister'
+            query_name: 'c.cts:signedByLordsMinister'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: true
+        reviewed_by_perm_sec:
+            object_prop_name: 'reviewedByPermSec'
+            alfresco_prop_name: 'cts:reviewedByPermSec'
+            query_name: 'c.cts:reviewedByPermSec'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: true
+        reviewed_by_spads:
+            object_prop_name: 'reviewedBySpads'
+            alfresco_prop_name: 'cts:reviewedBySpads'
+            query_name: 'c.cts:reviewedBySpads'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: true
+        round_robin:
+            object_prop_name: 'roundRobin'
+            alfresco_prop_name: 'cts:roundRobin'
+            query_name: 'c.cts:roundRobin'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        cabinet_office_guidance:
+            object_prop_name: 'cabinetOfficeGuidance'
+            alfresco_prop_name: 'cts:cabinetOfficeGuidance'
+            query_name: 'c.cts:cabinetOfficeGuidance'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        transfer_department_name:
+            object_prop_name: 'transferDepartmentName'
+            alfresco_prop_name: 'cts:transferDepartmentName'
+            query_name: 'c.cts:transferDepartmentName'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        is_grouped_master:
+            object_prop_name: 'isGroupedMaster'
+            alfresco_prop_name: 'cts:isGroupedMaster'
+            query_name: 'gm.cts:isGroupedMaster'
+            type: 'boolean'
+            system_field: true
+            required_for_case_queue: true
+            required_for_search_results: true
+        is_grouped_slave:
+            object_prop_name: 'isGroupedSlave'
+            alfresco_prop_name: 'cts:isGroupedSlave'
+            query_name: 'gs.cts:isGroupedSlave'
+            type: 'boolean'
+            system_field: true
+            required_for_case_queue: false
+            required_for_search_results: true
+        master_node_ref:
+            object_prop_name: 'masterNodeRef'
+            alfresco_prop_name: 'cts:masterNodeRef'
+            query_name: 'gs.cts:masterNodeRef'
+            type: 'string'
+            system_field: true
+            required_for_case_queue: false
+            required_for_search_results: true
+        is_linked_case:
+            object_prop_name: 'isLinkedCase'
+            alfresco_prop_name: 'cts:isLinkedCase'
+            query_name: 'lc.cts:isLinkedCase'
+            type: 'string'
+            system_field: true
+            required_for_case_queue: true
+            required_for_search_results: true
+        po_target:
+            object_prop_name: 'poTarget'
+            alfresco_prop_name: 'cts:poTarget'
+            query_name: 'c.cts:poTarget'
+            type: 'dateTime'
+            system_field: true
+            required_for_case_queue: false
+            required_for_search_results: false
+        allocate_target:
+            object_prop_name: 'allocateTarget'
+            alfresco_prop_name: 'cts:allocateTarget'
+            query_name: 'c.cts:allocateTarget'
+            type: 'dateTime'
+            system_field: true
+            required_for_case_queue: false
+            required_for_search_results: false
+        draft_response_target:
+            object_prop_name: 'draftResponseTarget'
+            alfresco_prop_name: 'cts:draftResponseTarget'
+            query_name: 'c.cts:draftResponseTarget'
+            type: 'dateTime'
+            system_field: true
+            required_for_case_queue: false
+            required_for_search_results: false
+        scs_approval_target:
+            object_prop_name: 'scsApprovalTarget'
+            alfresco_prop_name: 'cts:scsApprovalTarget'
+            query_name: 'c.cts:scsApprovalTarget'
+            type: 'dateTime'
+            system_field: true
+            required_for_case_queue: false
+            required_for_search_results: false
+        final_approval_target:
+            object_prop_name: 'finalApprovalTarget'
+            alfresco_prop_name: 'cts:finalApprovalTarget'
+            query_name: 'c.cts:finalApprovalTarget'
+            type: 'dateTime'
+            system_field: true
+            required_for_case_queue: false
+            required_for_search_results: false
+        dispatch_target:
+            object_prop_name: 'dispatchTarget'
+            alfresco_prop_name: 'cts:dispatchTarget'
+            query_name: 'c.cts:dispatchTarget'
+            type: 'dateTime'
+            system_field: true
+            required_for_case_queue: false
+            required_for_search_results: false
+        responder_hub_target:
+            object_prop_name: 'responderHubTarget'
+            alfresco_prop_name: 'cts:responderHubTarget'
+            query_name: 'c.cts:responderHubTarget'
+            type: 'dateTime'
+            system_field: true
+            required_for_case_queue: false
+            required_for_search_results: false
+        allocate_to_responder_target:
+            object_prop_name: 'allocateToResponderTarget'
+            alfresco_prop_name: 'cts:allocateToResponderTarget'
+            query_name: 'c.cts:allocateToResponderTarget'
+            type: 'dateTime'
+            system_field: true
+            required_for_case_queue: false
+            required_for_search_results: false
+        foi_minister_sign_off:
+            object_prop_name: 'foiMinisterSignOff'
+            alfresco_prop_name: 'cts:foiMinisterSignOff'
+            query_name: 'c.cts:foiMinisterSignOff'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: true
+        foi_is_eir:
+            object_prop_name: 'foiIsEir'
+            alfresco_prop_name: 'cts:foiIsEir'
+            query_name: 'c.cts:foiIsEir'
+            type: 'boolean'
+            required_for_case_queue: true
+            required_for_search_results: true
+        exemptions:
+            object_prop_name: 'exemptions'
+            alfresco_prop_name: 'cts:exemptions'
+            query_name: 'c.cts:exemptions'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        pit_extension:
+            object_prop_name: 'pitExtension'
+            alfresco_prop_name: 'cts:pitExtension'
+            query_name: 'c.cts:pitExtension'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        pit_letter_sent_date:
+            object_prop_name: 'pitLetterSentDate'
+            alfresco_prop_name: 'cts:pitLetterSentDate'
+            query_name: 'c.cts:pitLetterSentDate'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        pit_qualified_exemptions:
+            object_prop_name: 'pitQualifiedExemptions'
+            alfresco_prop_name: 'cts:pitQualifiedExemptions'
+            query_name: 'c.cts:pitQualifiedExemptions'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        foiDisclosure:
+            object_prop_name: 'foiDisclosure'
+            alfresco_prop_name: 'cts:foiDisclosure'
+            query_name: 'c.cts:foiDisclosure'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: true
+        acpo_consultation:
+            object_prop_name: 'acpoConsultation'
+            alfresco_prop_name: 'cts:acpoConsultation'
+            query_name: 'c.cts:acpoConsultation'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        cabinet_office_consultation:
+            object_prop_name: 'cabinetOfficeConsultation'
+            alfresco_prop_name: 'cts:cabinetOfficeConsultation'
+            query_name: 'c.cts:cabinetOfficeConsultation'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        nslg_consultation:
+            object_prop_name: 'nslgConsultation'
+            alfresco_prop_name: 'cts:nslgConsultation'
+            query_name: 'c.cts:nslgConsultation'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        royals_consultation:
+            object_prop_name: 'royalsConsultation'
+            alfresco_prop_name: 'cts:royalsConsultation'
+            query_name: 'c.cts:royalsConsultation'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        round_robin_advice_consultation:
+            object_prop_name: 'roundRobinAdviceConsultation'
+            alfresco_prop_name: 'cts:roundRobinAdviceConsultation'
+            query_name: 'c.cts:roundRobinAdviceConsultation'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        case_ref:
+            object_prop_name: 'caseRef'
+            alfresco_prop_name: 'cts:caseRef'
+            query_name: 'c.cts:caseRef'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        third_party_correspondent_title:
+            object_prop_name: 'thirdPartyCorrespondentTitle'
+            alfresco_prop_name: 'cts:thirdPartyCorrespondentTitle'
+            query_name: 'c.cts:thirdPartyCorrespondentTitle'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_correspondent_forname:
+            object_prop_name: 'thirdPartyCorrespondentForename'
+            alfresco_prop_name: 'cts:thirdPartyCorrespondentForename'
+            query_name: 'c.cts:thirdPartyCorrespondentForename'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_correspondent_surname:
+            object_prop_name: 'thirdPartyCorrespondentSurname'
+            alfresco_prop_name: 'cts:thirdPartyCorrespondentSurname'
+            query_name: 'c.cts:thirdPartyCorrespondentSurname'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_correspondent_organisation:
+            object_prop_name: 'thirdPartyCorrespondentOrganisation'
+            alfresco_prop_name: 'cts:thirdPartyCorrespondentOrganisation'
+            query_name: 'c.cts:thirdPartyCorrespondentOrganisation'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_correspondent_telephone:
+            object_prop_name: 'thirdPartyCorrespondentTelephone'
+            alfresco_prop_name: 'cts:thirdPartyCorrespondentTelephone'
+            query_name: 'c.cts:thirdPartyCorrespondentTelephone'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_correspondent_email:
+            object_prop_name: 'thirdPartyCorrespondentEmail'
+            alfresco_prop_name: 'cts:thirdPartyCorrespondentEmail'
+            query_name: 'c.cts:thirdPartyCorrespondentEmail'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_correspondent_postcode:
+            object_prop_name: 'thirdPartyCorrespondentPostcode'
+            alfresco_prop_name: 'cts:thirdPartyCorrespondentPostcode'
+            query_name: 'c.cts:thirdPartyCorrespondentPostcode'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_correspondent_address_line1:
+            object_prop_name: 'thirdPartyCorrespondentAddressLine1'
+            alfresco_prop_name: 'cts:thirdPartyCorrespondentAddressLine1'
+            query_name: 'c.cts:thirdPartyCorrespondentAddressLine1'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_correspondent_address_line2:
+            object_prop_name: 'thirdPartyCorrespondentAddressLine2'
+            alfresco_prop_name: 'cts:thirdPartyCorrespondentAddressLine2'
+            query_name: 'c.cts:thirdPartyCorrespondentAddressLine2'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_correspondent_address_line3:
+            object_prop_name: 'thirdPartyCorrespondentAddressLine3'
+            alfresco_prop_name: 'cts:thirdPartyCorrespondentAddressLine3'
+            query_name: 'c.cts:thirdPartyCorrespondentAddressLine3'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_correspondent_country:
+            object_prop_name: 'thirdPartyCorrespondentCountry'
+            alfresco_prop_name: 'cts:thirdPartyCorrespondentCountry'
+            query_name: 'c.cts:thirdPartyCorrespondentCountry'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        hmpo_response:
+            object_prop_name: 'hmpoResponse'
+            alfresco_prop_name: 'cts:hmpoResponse'
+            query_name: 'c.cts:hmpoResponse'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        reply_to_correspondent:
+            object_prop_name: 'replyToCorrespondent'
+            alfresco_prop_name: 'cts:replyToCorrespondent'
+            query_name: 'c.cts:replyToCorrespondent'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        type_of_correspondent:
+            object_prop_name: 'typeOfCorrespondent'
+            alfresco_prop_name: 'cts:typeOfCorrespondent'
+            query_name: 'c.cts:typeOfCorrespondent'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        type_of_complainant:
+            object_prop_name: 'typeOfComplainant'
+            alfresco_prop_name: 'cts:typeOfComplainant'
+            query_name: 'c.cts:typeOfComplainant'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        type_of_representative:
+            object_prop_name: 'typeOfRepresentative'
+            alfresco_prop_name: 'cts:typeOfRepresentative'
+            query_name: 'c.cts:typeOfRepresentative'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        type_of_third_party:
+            object_prop_name: 'typeOfThirdParty'
+            alfresco_prop_name: 'cts:typeOfThirdParty'
+            query_name: 'c.cts:typeOfThirdParty'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        consent_attached:
+            object_prop_name: 'consentAttached'
+            alfresco_prop_name: 'cts:consentAttached'
+            query_name: 'c.cts:consentAttached'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        reply_to_applicant:
+            object_prop_name: 'replyToApplicant'
+            alfresco_prop_name: 'cts:replyToApplicant'
+            query_name: 'c.cts:replyToApplicant'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        applicant_number:
+            object_prop_name: 'applicantNumber'
+            alfresco_prop_name: 'cts:applicantNumber'
+            query_name: 'c.cts:applicantNumber'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        applicant_title:
+            object_prop_name: 'applicantTitle'
+            alfresco_prop_name: 'cts:applicantTitle'
+            query_name: 'c.cts:applicantTitle'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        applicant_forename:
+            object_prop_name: 'applicantForename'
+            alfresco_prop_name: 'cts:applicantForename'
+            query_name: 'c.cts:applicantForename'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        applicant_surname:
+            object_prop_name: 'applicantSurname'
+            alfresco_prop_name: 'cts:applicantSurname'
+            query_name: 'c.cts:applicantSurname'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        applicant_postcode:
+            object_prop_name: 'applicantPostcode'
+            alfresco_prop_name: 'cts:applicantPostcode'
+            query_name: 'c.cts:applicantPostcode'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        applicant_address_line1:
+            object_prop_name: 'applicantAddressLine1'
+            alfresco_prop_name: 'cts:applicantAddressLine1'
+            query_name: 'c.cts:applicantAddressLine1'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        applicant_address_line2:
+            object_prop_name: 'applicantAddressLine2'
+            alfresco_prop_name: 'cts:applicantAddressLine2'
+            query_name: 'c.cts:applicantAddressLine2'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        applicant_address_line3:
+            object_prop_name: 'applicantAddressLine3'
+            alfresco_prop_name: 'cts:applicantAddressLine3'
+            query_name: 'c.cts:applicantAddressLine3'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        applicant_country:
+            object_prop_name: 'applicantCountry'
+            alfresco_prop_name: 'cts:applicantCountry'
+            query_name: 'c.cts:applicantCountry'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        applicant_email:
+            object_prop_name: 'applicantEmail'
+            alfresco_prop_name: 'cts:applicantEmail'
+            query_name: 'c.cts:applicantEmail'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        applicant_telephone:
+            object_prop_name: 'applicantTelephone'
+            alfresco_prop_name: 'cts:applicantTelephone'
+            query_name: 'c.cts:applicantTelephone'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        reply_to_complainant:
+            object_prop_name: 'replyToComplainant'
+            alfresco_prop_name: 'cts:replyToComplainant'
+            query_name: 'c.cts:replyToApplicant'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        complainant_title:
+            object_prop_name: 'complainantTitle'
+            alfresco_prop_name: 'cts:complainantTitle'
+            query_name: 'c.cts:complainantTitle'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        complainant_forename:
+            object_prop_name: 'complainantForename'
+            alfresco_prop_name: 'cts:complainantForename'
+            query_name: 'c.cts:complainantForename'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        complainant_surname:
+            object_prop_name: 'complainantSurname'
+            alfresco_prop_name: 'cts:complainantSurname'
+            query_name: 'c.cts:complainantSurname'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        complainant_postcode:
+            object_prop_name: 'complainantPostcode'
+            alfresco_prop_name: 'cts:complainantPostcode'
+            query_name: 'c.cts:complainantPostcode'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        complainant_address_line1:
+            object_prop_name: 'complainantAddressLine1'
+            alfresco_prop_name: 'cts:complainantAddressLine1'
+            query_name: 'c.cts:complainantAddressLine1'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        complainant_address_line2:
+            object_prop_name: 'complainantAddressLine2'
+            alfresco_prop_name: 'cts:complainantAddressLine2'
+            query_name: 'c.cts:complainantAddressLine2'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        complainant_address_line3:
+            object_prop_name: 'complainantAddressLine3'
+            alfresco_prop_name: 'cts:complainantAddressLine3'
+            query_name: 'c.cts:complainantAddressLine3'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        complainant_country:
+            object_prop_name: 'complainantCountry'
+            alfresco_prop_name: 'cts:complainantCountry'
+            query_name: 'c.cts:complainantCountry'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        complainant_email:
+            object_prop_name: 'complainantEmail'
+            alfresco_prop_name: 'cts:complainantEmail'
+            query_name: 'c.cts:complainantEmail'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        complainant_telephone:
+            object_prop_name: 'complainantTelephone'
+            alfresco_prop_name: 'cts:complainantTelephone'
+            query_name: 'c.cts:complainantTelephone'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        hmpo_stage:
+            object_prop_name: 'hmpoStage'
+            alfresco_prop_name: 'cts:hmpoStage'
+            query_name: 'c.cts:hmpoStage'
+            type: 'string'
+            required_for_case_queue: true
+            required_for_search_results: true
+        hmpo_refund_decision:
+            object_prop_name: 'hmpoRefundDecision'
+            alfresco_prop_name: 'cts:hmpoRefundDecision'
+            query_name: 'c.cts:hmpoRefundDecision'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        hmpo_refund_amount:
+            object_prop_name: 'hmpoRefundAmount'
+            alfresco_prop_name: 'cts:hmpoRefundAmount'
+            query_name: 'c.cts:hmpoRefundAmount'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        hmpo_complaint_outcome:
+            object_prop_name: 'hmpoComplaintOutcome'
+            alfresco_prop_name: 'cts:hmpoComplaintOutcome'
+            query_name: 'c.cts:hmpoComplaintOutcome'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        hmpo_passport_number:
+            object_prop_name: 'passportNumber'
+            alfresco_prop_name: 'cts:hmpoPassportNumber'
+            query_name: 'c.cts:hmpoPassportNumber'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        hmpo_application_number:
+            object_prop_name: 'applicationNumber'
+            alfresco_prop_name: 'cts:hmpoApplicationNumber'
+            query_name: 'c.cts:hmpoApplicationNumber'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        colleague_name:
+            object_prop_name: 'colleagueName'
+            alfresco_prop_name: 'cts:colleagueName'
+            query_name: 'c.cts:colleagueName'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        ho_case_officer:
+            object_prop_name: 'hoCaseOfficer'
+            alfresco_prop_name: 'cts:hoCaseOfficer'
+            query_name: 'c.cts:hoCaseOfficer'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        response_date:
+            object_prop_name: 'responseDate'
+            alfresco_prop_name: 'cts:responseDate'
+            query_name: 'c.cts:responseDate'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        complex:
+            object_prop_name: 'complex'
+            alfresco_prop_name: 'cts:complex'
+            query_name: 'c.cts:complex'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: true
+        new_information_released:
+            object_prop_name: 'newInformationReleased'
+            alfresco_prop_name: 'cts:newInformationReleased'
+            query_name: 'c.cts:newInformationReleased'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        ico_reference:
+            object_prop_name: 'icoReference'
+            alfresco_prop_name: 'cts:icoReference'
+            query_name: 'c.cts:icoReference'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        ico_outcome:
+            object_prop_name: 'icoOutcome'
+            alfresco_prop_name: 'cts:icoOutcome'
+            query_name: 'c.cts:icoOutcome'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        ico_complaint_officer:
+            object_prop_name: 'icoComplaintOfficer'
+            alfresco_prop_name: 'cts:icoComplaintOfficer'
+            query_name: 'c.cts:icoComplaintOfficer'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        ico_outcome_date:
+            object_prop_name: 'icoOutcomeDate'
+            alfresco_prop_name: 'cts:icoOutcomeDate'
+            query_name: 'c.cts:icoOutcomeDate'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        tsol_rep:
+            object_prop_name: 'tsolRep'
+            alfresco_prop_name: 'cts:tsolRep'
+            query_name: 'c.cts:tsolRep'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        appellant:
+            object_prop_name: 'appellant'
+            alfresco_prop_name: 'cts:appellant'
+            query_name: 'c.cts:appellant'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        ho_joined:
+            object_prop_name: 'hoJoined'
+            alfresco_prop_name: 'cts:hoJoined'
+            query_name: 'c.cts:hoJoined'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        tribunal_outcome:
+            object_prop_name: 'tribunalOutcome'
+            alfresco_prop_name: 'cts:tribunalOutcome'
+            query_name: 'c.cts:tribunalOutcome'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        tribunal_outcome_date:
+            object_prop_name: 'tribunalOutcomeDate'
+            alfresco_prop_name: 'cts:tribunalOutcomeDate'
+            query_name: 'c.cts:tribunalOutcomeDate'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        enforcement_notice_needed:
+            object_prop_name: 'enforcementNoticeNeeded'
+            alfresco_prop_name: 'cts:enforcementNoticeNeeded'
+            query_name: 'c.cts:enforcementNoticeNeeded'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        enforcement_notice_deadline:
+            object_prop_name: 'enforcementNoticeDeadline'
+            alfresco_prop_name: 'cts:enforcementNoticeDeadline'
+            query_name: 'c.cts:enforcementNoticeDeadline'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        organisation:
+            object_prop_name: 'organisation'
+            alfresco_prop_name: 'cts:organisation'
+            query_name: 'c.cts:organisation'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: true
+        draft_deadline:
+            object_prop_name: 'draftDate'
+            alfresco_prop_name: 'cts:draftDate'
+            query_name: 'c.cts:draftDate'
+            type: 'dateTime'
+            required_for_case_queue: true
+            required_for_search_results: true
+        hard_copy_received:
+            object_prop_name: 'hardCopyReceived'
+            alfresco_prop_name: 'cts:hardCopyReceived'
+            query_name: 'c.cts:hardCopyReceived'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        corresponding_name:
+            object_prop_name: 'correspondingName'
+            alfresco_prop_name: 'cts:correspondingName'
+            query_name: 'c.cts:correspondingName'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        number_of_children:
+            object_prop_name: 'numberOfChildren'
+            alfresco_prop_name: 'cts:numberOfChildren'
+            query_name: 'c.cts:numberOfChildren'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        country_of_destination:
+            object_prop_name: 'countryOfDestination'
+            alfresco_prop_name: 'cts:countryOfDestination'
+            query_name: 'c.cts:countryOfDestination'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        other_countries_to_be_visited:
+            object_prop_name: 'otherCountriesToBeVisited'
+            alfresco_prop_name: 'cts:otherCountriesToBeVisited'
+            query_name: 'c.cts:otherCountriesToBeVisited'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        other_countries_to_be_travelled_through:
+            object_prop_name: 'countriesToBeTravelledThrough'
+            alfresco_prop_name: 'cts:countriesToBeTravelledThrough'
+            query_name: 'c.cts:countriesToBeTravelledThrough'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        departure_date_from_uk:
+            object_prop_name: 'departureDateFromUK'
+            alfresco_prop_name: 'cts:departureDateFromUK'
+            query_name: 'c.cts:departureDateFromUK'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        arriving_date_in_uk:
+            object_prop_name: 'arrivingDateInUK'
+            alfresco_prop_name: 'cts:arrivingDateInUK'
+            query_name: 'c.cts:arrivingDateInUK'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        induvidual_household:
+            object_prop_name: 'individualHousehold'
+            alfresco_prop_name: 'cts:individualHousehold'
+            query_name: 'c.cts:individualHousehold'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        fee_included:
+            object_prop_name: 'feeIncluded'
+            alfresco_prop_name: 'cts:feeIncluded'
+            query_name: 'c.cts:feeIncluded'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        leaders_address_abroad:
+            object_prop_name: 'leadersAddressAboard'
+            alfresco_prop_name: 'cts:leadersAddressAboard'
+            query_name: 'c.cts:leadersAddressAboard'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        party_leader_last_name:
+            object_prop_name: 'partyLeaderLastName'
+            alfresco_prop_name: 'cts:partyLeaderLastName'
+            query_name: 'c.cts:partyLeaderLastName'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        party_leader_other_names:
+            object_prop_name: 'partyLeaderOtherNames'
+            alfresco_prop_name: 'cts:partyLeaderOtherNames'
+            query_name: 'c.cts:partyLeaderOtherNames'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        party_leader_passport_number:
+            object_prop_name: 'partyLeaderPassportNumber'
+            alfresco_prop_name: 'cts:partyLeaderPassportNumber'
+            query_name: 'c.cts:partyLeaderPassportNumber'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        party_leader_passport_issued_at:
+            object_prop_name: 'partyLeaderPassportIssuedAt'
+            alfresco_prop_name: 'cts:partyLeaderPassportIssuedAt'
+            query_name: 'c.cts:partyLeaderPassportIssuedAt'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        party_leader_passport_issued_on:
+            object_prop_name: 'partyLeaderPassportIssuedOn'
+            alfresco_prop_name: 'cts:partyLeaderPassportIssuedOn'
+            query_name: 'c.cts:partyLeaderPassportIssuedOn'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        party_leader_deputy_last_name:
+            object_prop_name: 'partyLeaderDeputyLastName'
+            alfresco_prop_name: 'cts:partyLeaderDeputyLastName'
+            query_name: 'c.cts:partyLeaderDeputyLastName'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        party_leader_deputy_other_names:
+            object_prop_name: 'partyLeaderDeputyOtherNames'
+            alfresco_prop_name: 'cts:partyLeaderDeputyOtherNames'
+            query_name: 'c.cts:partyLeaderDeputyOtherNames'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        party_leader_deputy_passport_number:
+            object_prop_name: 'partyLeaderDeputyPassportNumber'
+            alfresco_prop_name: 'cts:partyLeaderDeputyPassportNumber'
+            query_name: 'c.cts:partyLeaderDeputyPassportNumber'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        party_leader_deputy_passport_issued_at:
+            object_prop_name: 'partyLeaderDeputyPassportIssuedAt'
+            alfresco_prop_name: 'cts:partyLeaderDeputyPassportIssuedAt'
+            query_name: 'c.cts:partyLeaderDeputyPassportIssuedAt'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        party_leader_deputy_passport_issued_on:
+            object_prop_name: 'partyLeaderDeputyPassportIssuedOn'
+            alfresco_prop_name: 'cts:partyLeaderDeputyPassportIssuedOn'
+            query_name: 'c.cts:partyLeaderDeputyPassportIssuedOn'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        delivery_type:
+            object_prop_name: 'deliveryType'
+            alfresco_prop_name: 'cts:deliveryType'
+            query_name: 'c.cts:deliveryType'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        bring_up_date:
+            object_prop_name: 'bringUpDate'
+            alfresco_prop_name: 'cts:bringUpDate'
+            query_name: 'c.cts:bringUpDate'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        defer_due_to:
+            object_prop_name: 'deferDueTo'
+            alfresco_prop_name: 'cts:deferDueTo'
+            query_name: 'c.cts:deferDueTo'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        delivery_number:
+            object_prop_name: 'deliveryNumber'
+            alfresco_prop_name: 'cts:deliveryNumber'
+            query_name: 'c.cts:deliveryNumber'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        dispatched_date:
+            object_prop_name: 'dispatchedDate'
+            alfresco_prop_name: 'cts:dispatchedDate'
+            query_name: 'c.cts:dispatchedDate'
+            type: 'dateTime'
+            required_for_case_queue: false
+            required_for_search_results: false
+        examiner_security_check:
+            object_prop_name: 'examinerSecurityCheck'
+            alfresco_prop_name: 'cts:examinerSecurityCheck'
+            query_name: 'c.cts:examinerSecurityCheck'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_type_of_correspondent:
+            object_prop_name: 'secondaryTypeOfCorrespondent'
+            alfresco_prop_name: 'cts:secondaryTypeOfCorrespondent'
+            query_name: 'c.cts:secondaryTypeOfCorrespondent'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_correspondent_reply_to:
+            object_prop_name: 'secondaryCorrespondentReplyTo'
+            alfresco_prop_name: 'cts:secondaryCorrespondentReplyTo'
+            query_name: 'c.cts:secondaryCorrespondentReplyTo'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_correspondent_type_of_representative:
+            object_prop_name: 'secondaryCorrespondentTypeOfRepresentative'
+            alfresco_prop_name: 'cts:secCorrespondentTypeOfRepresentative'
+            query_name: 'c.cts:secCorrespondentTypeOfRepresentative'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_correspondent_consent_attached:
+            object_prop_name: 'secondaryCorrespondentConsentAttached'
+            alfresco_prop_name: 'cts:secCorrespondentConsentAttached'
+            query_name: 'c.cts:secCorrespondentConsentAttached'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_correspondent_title:
+            object_prop_name: 'secondaryCorrespondentTitle'
+            alfresco_prop_name: 'cts:secondaryCorrespondentTitle'
+            query_name: 'c.cts:secondaryCorrespondentTitle'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_correspondent_forename:
+            object_prop_name: 'secondaryCorrespondentForename'
+            alfresco_prop_name: 'cts:secondaryCorrespondentForename'
+            query_name: 'c.cts:secondaryCorrespondentForename'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_correspondent_surname:
+            object_prop_name: 'secondaryCorrespondentSurname'
+            alfresco_prop_name: 'cts:secondaryCorrespondentSurname'
+            query_name: 'c.cts:secondaryCorrespondentSurname'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_correspondent_address_line_1:
+            object_prop_name: 'secondaryCorrespondentAddressLine1'
+            alfresco_prop_name: 'cts:secondaryCorrespondentAddressLine1'
+            query_name: 'c.cts:secondaryCorrespondentAddressLine1'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_correspondent_address_line_2:
+            object_prop_name: 'secondaryCorrespondentAddressLine2'
+            alfresco_prop_name: 'cts:secondaryCorrespondentAddressLine2'
+            query_name: 'c.cts:secondaryCorrespondentAddressLine2'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_correspondent_address_line_3:
+            object_prop_name: 'secondaryCorrespondentAddressLine3'
+            alfresco_prop_name: 'cts:secondaryCorrespondentAddressLine3'
+            query_name: 'c.cts:secondaryCorrespondentAddressLine3'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_correspondent_:
+            object_prop_name: 'secondaryCorrespondentPostcode'
+            alfresco_prop_name: 'cts:secondaryCorrespondentPostcode'
+            query_name: 'c.cts:secondaryCorrespondentPostcode'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_correspondent_:
+            object_prop_name: 'secondaryCorrespondentCountry'
+            alfresco_prop_name: 'cts:secondaryCorrespondentCountry'
+            query_name: 'c.cts:secondaryCorrespondentCountry'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_correspondent_email:
+            object_prop_name: 'secondaryCorrespondentEmail'
+            alfresco_prop_name: 'cts:secondaryCorrespondentEmail'
+            query_name: 'c.cts:secondaryCorrespondentEmail'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        secondary_correspondent_telephone:
+            object_prop_name: 'secondaryCorrespondentTelephone'
+            alfresco_prop_name: 'cts:secondaryCorrespondentTelephone'
+            query_name: 'c.cts:secondaryCorrespondentTelephone'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_type_of_correspondent:
+            object_prop_name: 'thirdPartyTypeOfCorrespondent'
+            alfresco_prop_name: 'cts:thirdPartyTypeOfCorrespondent'
+            query_name: 'c.cts:thirdPartyTypeOfCorrespondent'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_correspondent_type_of_representative:
+            object_prop_name: 'thirdPartyCorrespondentTypeOfRepresentative'
+            alfresco_prop_name: 'cts:thirdPartyTypeOfRepresentative'
+            query_name: 'c.cts:thirdPartyTypeOfRepresentative'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_correspondent_consent_attached:
+            object_prop_name: 'thirdPartyCorrespondentConsentAttached'
+            alfresco_prop_name: 'cts:thirdPartyConsentAttached'
+            query_name: 'c.cts:thirdPartyConsentAttached'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        third_party_correspondent_reply_to:
+            object_prop_name: 'thirdPartyCorrespondentReplyTo'
+            alfresco_prop_name: 'cts:thirdPartyCorrespondentReplyTo'
+            query_name: 'c.cts:thirdPartyCorrespondentReplyTo'
+            type: 'boolean'
+            required_for_case_queue: false
+            required_for_search_results: false
+        office_of_origin:
+            object_prop_name: 'officeOfOrigin'
+            alfresco_prop_name: 'cts:officeOfOrigin'
+            query_name: 'c.cts:officeOfOrigin'
+            type: 'string'
+            required_for_case_queue: false
+            required_for_search_results: false
+
+    cts_case_permissions:
+        can_update_properties:
+            object_prop_name: 'canUpdateProperties'
+            alfresco_prop_name: 'cmis:canUpdateProperties'
+        can_assign_user_properties:
+            object_prop_name: 'canAssignUser'
+            alfresco_prop_name: 'cmis:canAssignUser'
+    cts_case_document_properties:
+        link_self:
+            object_prop_name: 'fileVersionUrl'
+            alfresco_prop_name: 'linkself'
+        id:
+            object_prop_name: 'id'
+            alfresco_prop_name: 'cmis:objectId'
+        name:
+            object_prop_name: 'name'
+            alfresco_prop_name: 'cmis:name'
+        document_type:
+            object_prop_name: 'documentType'
+            alfresco_prop_name: 'cts:documentType'
+        document_description:
+            object_prop_name: 'documentDescription'
+            alfresco_prop_name: 'cts:documentDescription'
+        created_date:
+            object_prop_name: 'createdDate'
+            alfresco_prop_name: 'cmis:creationDate'
+        last_modification_date:
+            object_prop_name: 'lastModificationDate'
+            alfresco_prop_name: 'cmis:lastModificationDate'
+        version_number:
+            object_prop_name: 'versionNumber'
+            alfresco_prop_name: 'cmis:versionLabel'
+        mime_type:
+            object_prop_name: 'mimeType'
+            alfresco_prop_name: 'cmis:contentStreamMimeType'
+        created_by:
+            object_prop_name: 'createdBy'
+            alfresco_prop_name: 'cmis:createdBy'
+        can_delete_object:
+            object_prop_name: 'canDeleteObject'
+            alfresco_prop_name: 'cmis:canDeleteObject'
+    cts_case_document_template_properties:
+        id:
+            object_prop_name: 'id'
+            alfresco_prop_name: 'cmis:objectId'
+            type: 'id'
+            required_for_update: false
+        name:
+            object_prop_name: 'name'
+            alfresco_prop_name: 'cmis:name'
+            type: 'string'
+            required_for_update: false
+        applies_to_correspondence_type:
+            object_prop_name: 'appliesToCorrespondenceType'
+            alfresco_prop_name: 'cts:appliesToCorrespondenceType'
+            type: 'string'
+            required_for_update: true
+        template_name:
+            object_prop_name: 'templateName'
+            alfresco_prop_name: 'cts:templateName'
+            type: 'string'
+            required_for_update: true
+        valid_from_date:
+            object_prop_name: 'validFromDate'
+            alfresco_prop_name: 'cts:validFromDate'
+            type: 'dateTime'
+            required_for_update: true
+        valid_to_date:
+            object_prop_name: 'validToDate'
+            alfresco_prop_name: 'cts:validToDate'
+            type: 'dateTime'
+            required_for_update: true
+        created_date:
+            object_prop_name: 'createdDate'
+            alfresco_prop_name: 'cmis:creationDate'
+            type: 'dateTime'
+            required_for_update: false
+        mime_type:
+            object_prop_name: 'mimeType'
+            alfresco_prop_name: 'cmis:contentStreamMimeType'
+            type: 'string'
+            required_for_update: false
+    cts_case_standard_line_properties:
+        id:
+            object_prop_name: 'id'
+            alfresco_prop_name: 'cmis:objectId'
+            type: 'id'
+            required_for_update: false
+        name:
+            object_prop_name: 'name'
+            alfresco_prop_name: 'cmis:name'
+            type: 'string'
+            required_for_update: false
+        associated_unit:
+            object_prop_name: 'associatedUnit'
+            alfresco_prop_name: 'cts:associatedUnit'
+            type: 'string'
+            required_for_update: true
+        associated_topic:
+            object_prop_name: 'associatedTopic'
+            alfresco_prop_name: 'cts:associatedTopic'
+            type: 'string'
+            required_for_update: true
+        review_date:
+            object_prop_name: 'reviewDate'
+            alfresco_prop_name: 'cts:reviewDate'
+            type: 'dateTime'
+            required_for_update: true
+        created_date:
+            object_prop_name: 'createdDate'
+            alfresco_prop_name: 'cmis:creationDate'
+            type: 'dateTime'
+            required_for_update: false
+        mime_type:
+            object_prop_name: 'mimeType'
+            alfresco_prop_name: 'cmis:contentStreamMimeType'
+            type: 'string'
+            required_for_update: false
+    cts_help_document_properties:
+        id:
+            object_prop_name: 'id'
+            alfresco_prop_name: 'cmis:objectId'
+        name:
+            object_prop_name: 'name'
+            alfresco_prop_name: 'cmis:name'
+        document_type:
+            object_prop_name: 'documentType'
+            alfresco_prop_name: 'cts:documentType'
+    cts_case_bulk_create_document_properties:
+        id:
+            object_prop_name: 'id'
+            alfresco_prop_name: 'cmis:objectId'
+        name:
+            object_prop_name: 'name'
+            alfresco_prop_name: 'cmis:name'
+        auto_create_failure_date_time:
+            object_prop_name: 'autoCreateFailureDateTime'
+            alfresco_prop_name: 'cts:autoCreateFailureDateTime'
+        auto_create_failure_message:
+            object_prop_name: 'autoCreateFailureMessage'
+            alfresco_prop_name: 'cts:autoCreateFailureMessage'
+        mime_type:
+            object_prop_name: 'mimeType'
+            alfresco_prop_name: 'cmis:contentStreamMimeType'

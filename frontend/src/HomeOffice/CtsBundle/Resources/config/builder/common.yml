@@ -1,0 +1,67 @@
+services:
+    home_office_cts.form.builder.linked_case:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Common\LinkedCaseType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        tags:
+            - { name: form.type, alias: LinkedCase }
+
+    home_office_cts.form.builder.appeals_case:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Common\AppealsCaseType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        tags:
+            - { name: form.type, alias: AppealsCase }
+
+    home_office_cts.form.builder.group_case:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Common\GroupCaseType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        tags:
+            - { name: form.type, alias: GroupCase }
+
+    home_office_cts.form.builder.document:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Common\DocumentType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        tags:
+            - { name: form.type, alias: Document }
+
+    home_office_cts.form.builder.document_removal:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Common\DocumentRemovalType
+        tags:
+            - { name: form.type, alias: DocumentRemoval }
+
+    home_office_cts.form.builder.markup.no_reply_needed:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Common\Markup\NoReplyNeededType
+        tags:
+            - { name: form.type, alias: MarkupNoReplyNeeded }
+
+    home_office_cts.form.builder.markup.refer_to_ogd:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Common\Markup\ReferToOGDType
+        arguments:
+            - %home_office_alfresco_api.workspace%
+            - %home_office_alfresco_api.store%
+        tags:
+            - { name: form.type, alias: MarkupReferToOGD }
+
+    home_office_cts.form.builder.markup.refer_to_dcu:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Common\Markup\ReferToDCUType
+        tags:
+            - { name: form.type, alias: MarkupReferToDCU }
+
+    home_office_cts.form.builder.allocate:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Allocate\AllocateType
+        calls:
+            - [setListService, ["@home_office.list_service"]]
+        tags:
+            - { name: form.type, alias: Allocate }
+
+    home_office_cts.form.builder.manual_allocation:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Common\ManualAllocationType
+        tags:
+            - { name: form.type, alias: ManualAllocation }

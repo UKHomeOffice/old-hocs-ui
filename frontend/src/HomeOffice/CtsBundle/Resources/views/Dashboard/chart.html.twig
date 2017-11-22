@@ -1,0 +1,24 @@
+{% set chartId = 'chart' ~ position|capitalize ~ selectBy.value ~ groupBy|capitalize %}
+{% set positionTotal = chart.positionTotal(data, position) %}
+{% set positionLabel = chart.positionLabel(position) %}
+
+<div class="column-third chart" data-title="{{ chartId }}">
+    <div id="chart{{ chartId }}" style="height: 285px; width: 100%; margin: 0 auto;overflow: hidden;"></div>
+
+    <script>
+        var chartText{{ chartId }} = '<span class="count">{{ positionTotal }}</span><br><span class="state">{{ positionLabel }}</span>';
+        var chartData{{ chartId }} = [
+            {% if positionTotal == 0 %}
+                ['Empty', 1],
+            {% else %}
+                {% for key, value in chart.getChartData(data, groupBy, position) %}
+                    ['{{ key }}', {{ value }}],
+                {% endfor %}
+            {% endif %}
+        ];
+
+        var chartColor{{ chartId }} = {{ chart.colors(positionTotal == 0)|json_encode|raw }};
+
+        var chartTooltip{{ chartId }} = {{ positionTotal == 0 ? "false" : "{pointFormat: '<b>{point.percentage:.1f}%</b>'}" }};
+    </script>
+</div>

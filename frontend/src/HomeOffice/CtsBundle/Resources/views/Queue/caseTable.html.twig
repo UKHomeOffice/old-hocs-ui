@@ -1,0 +1,79 @@
+{% if ctsHomeFiltersForm['exportQueue'] is defined %}
+    <div class="generate-report">
+        <span class="button" {% if ctsQueue|length == 0 %}style="display:none"{% endif %}>{{form_widget(ctsHomeFiltersForm['exportQueue'])}}</span>
+    </div>
+{% endif %}
+{% if ctsQueue|length > 0 %}
+    <table class="results-table" summary="{% if summary is defined %}{{ summary }}{% endif %}">
+        <tr>
+            <th>HRN</th>
+            {% if orderByField == 'c.cts:caseResponseDeadline' %}
+                {% if orderByDirection == 'DESC' %}
+                    <th class="sorted reverse"><a href="{{ path('homeoffice_cts_home_home', app.request.query.all|merge( {'orderBy': 'deadlineDate', 'orderDirection': 'ASC' } )) }}">Deadline</a></th>
+                 {% else %}
+                    <th class="sorted"><a href="{{ path('homeoffice_cts_home_home', app.request.query.all|merge( {'orderBy': 'deadlineDate', 'orderDirection': 'DESC' } )) }}">Deadline</a></th>
+                {% endif %}
+            {% else %}
+                <th><a href="{{ path('homeoffice_cts_home_home', app.request.query.all|merge( {'orderBy': 'deadlineDate', 'orderDirection': 'DESC' } )) }}">Deadline</a></th>
+            {% endif %}
+            <th>Name / Member</th>
+            <th>Unit</th>
+            <th>Topic</th>
+            <th>Status</th>
+            <th>Task</th>
+            {% if queueValue=='unitQueue' or queueValue=='teamQueue' %}
+                <th>Owner</th>
+            {% endif %}
+        </tr>
+        {% for ctsCase in ctsQueue %}
+            <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <td>
+                    {% include 'HomeOfficeCtsBundle:Search:_hrnResultsColumn.html.twig' %}
+                </td>
+                <td>
+                    {% if ctsCase.caseResponseDeadline is defined %}
+                        {{ ctsHelper.formatDateTimeToDate(ctsCase.caseResponseDeadline) }}
+                    {% endif %}
+                </td>
+                <td>{{ ctsCase.canonicalCorrespondent }}</td>
+                <td>{{ ctsCase.markupUnit }}</td>
+                <td class="topic" title="{{ ctsCase.markupTopic }}">{{ ctsCase.markupTopic[:40] }}{% if ctsCase.markupTopic[41:] %}&hellip;{%  endif %}</td>
+                <td>
+                    {{ ctsCase.caseStatus }}
+                    <p class="workflow-time">{{ ctsHelper.formatDateTimeToDateTime(ctsCase.statusUpdatedDatetime) }}</p>
+                </td>
+                <td>
+                    {{ ctsCase.caseTask }}
+                    <p class="workflow-time">{{ ctsHelper.formatDateTimeToDateTime(ctsCase.taskUpdatedDatetime) }}</p>
+                </td>
+                {% if queueValue=='unitQueue' or queueValue=='teamQueue' %}
+                    <td>
+                        {% if null == ctsCase.assignedUser %}
+                            <span class="lozenge green"
+                                data-allocate-to="Me"
+                                data-allocate-team="{{ ctsCase.assignedTeam }}"
+                                data-allocate-unit="{{ ctsCase.assignedUnit }}"
+                                data-id="{{ ctsCase.id }}"
+                                data-return-path="{{ path('homeoffice_cts_home_home', app.request.query.all) }}"
+                                data-target="{{ path('homeoffice_cts_status_allocate') }}"
+                                data-correspondence-type="{{ ctsCase.correspondenceType }}"
+                                data-status-change="Reallocate"
+                            >
+                                <a href="#" class="allocation-link">Allocate to Me</a>
+                            </span>
+                        {% else %}
+                                {{ ctsCase.caseOwner }}
+                        {% endif %}
+                        <p class="workflow-time">{{ ctsHelper.formatDateTimeToDateTime(ctsCase.ownerUpdatedDatetime) }}</p>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+    <br/>
+    {% include "HomeOfficeCtsBundle:Pagination:controls.html.twig" with {'displayedResultCount': ctsQueue|length } %}
+{% else %}
+    <div class="queue-no-results">
+        <span>Nothing to show in this queue.</span>
+    </div>
+{% endif %}

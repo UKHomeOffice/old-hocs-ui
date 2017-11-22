@@ -1,0 +1,28 @@
+<div class="modal">
+    {{ form_start(form, {
+        'action': path('homeoffice_cts_ctscase_reject', { 'nodeRef': case.nodeId }),
+        'attr': {'class': 'form-ajax', 'novalidate' : 'novalidate' } })
+    }}
+
+    <h3>Reject Case</h3>
+    <p>This case will be returned to
+        {% if case.caseStatus == 'Draft' %}
+            the case creator
+        {% else %}
+            {{ case.originalDrafterUser|default('the original drafter') }}
+        {% endif %}
+    </p>
+
+    <div class="form-group">
+        {{ form_label(form['returnReason']) }}
+        {{ form_widget(form['returnReason']) }}
+    </div>
+
+    {% if form['transitions'] is defined %}
+        <div class="form-group">
+            {% include 'HomeOfficeCtsBundle:CaseElements:transitions.html.twig' with { 'transitions': form['transitions'], 'step': step } %}
+            <a href="#close-modal" rel="modal:close" class="button button-secondary">Cancel</a>
+        </div>
+    {% endif %}
+    {{ form_end(form) }}
+</div>

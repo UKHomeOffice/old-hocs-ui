@@ -1,0 +1,30 @@
+services:
+    home_office_cts.form.builder.fut_create:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Create\FUT
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FUTCreate }
+
+    home_office_cts.form.builder.fut_draft:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Draft\FUT
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FUTDraft }
+
+    home_office_cts.form.builder.fut_approve:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Approve\FUT
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FUTApprove }
+
+    home_office_cts.form.builder.fut_signoff:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Signoff\FUT
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FUTSignoff }
+
+    home_office_cts.form.builder.fut_dispatch:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Dispatch\FUT
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FUTDispatch }

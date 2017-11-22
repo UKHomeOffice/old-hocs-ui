@@ -1,0 +1,34 @@
+{% if case.groupedCases %}
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            {% if not form['groupedCaseToRemove'].vars.read_only %}
+                <th>Actions</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for groupedCase in case.groupedCases %}
+            <tr class="groupedCase_{{ groupedCase.nodeId }}">
+                <td>
+                    <a href="{{ path('homeoffice_cts_case_view', { 'nodeRef': groupedCase.nodeId }) }}" target="_blank">
+                        UIN: {{ groupedCase.uin }}
+                    </a>
+                </td>
+                {% if not form['groupedCaseToRemove'].vars.read_only %}
+                    <td>
+                        <a href="#" class="groupedCase-remove" data-value="{{ groupedCase.nodeId }}">Remove</a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {{ form_widget(form['removeGroupedCase']) }}
+    {{ form_widget(form['groupedCaseToRemove']) }}
+{% else %}
+    <hr>
+{% endif %}
+{% do form.setRendered %}

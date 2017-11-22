@@ -1,0 +1,76 @@
+<div class="advanced-search-fields MIN-search" {% if advancedSearchType != null and advancedSearchType != 'MIN' %} style="display: none;"{% endif %}>
+    <h2>Advanced search - DCU Ministerial</h2>
+    <fieldset class="search_fields1">
+        <div class="dateField">
+            <span class="prelude">Received:</span>
+            <span class="inset-label">{{ form_label(searchByForm['minReceivedDateFrom']) }}</span>
+            {{ form_widget(searchByForm['minReceivedDateFrom'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="dateField">
+            <span class="inset-label">{{ form_label(searchByForm['minReceivedDateTo']) }}</span>
+            {{ form_widget(searchByForm['minReceivedDateTo'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="preDateField">
+            {{ form_label(searchByForm['minPriority']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['minPriority']) }}
+            </div>
+        </div>
+        <div class="preDateField">
+            {{ form_label(searchByForm['minAdvice']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['minAdvice']) }}
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="search_fields2">
+        <div class="advanced-search-sub-title">
+            <span>Reply to details</span>
+        </div>
+        <div>
+            {{ form_label(searchByForm['minMember']) }}
+            {{ form_widget(searchByForm['minMember']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['minMpRef']) }}
+            {{ form_widget(searchByForm['minMpRef']) }}
+        </div>
+        <div class="preDateField">
+            {{ form_label(searchByForm['minHomeSecReply']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['minHomeSecReply']) }}
+            </div>
+        </div>
+        <div class="preDateField">
+            {{ form_label(searchByForm['minCopyToNo10']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['minCopyToNo10']) }}
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="search_fields3 last">
+        <div class="advanced-search-sub-title">
+            <span>Constituent details</span>
+        </div>
+        <div>
+            {{ form_label(searchByForm['minConstituentFirstName']) }}
+            {{ form_widget(searchByForm['minConstituentFirstName']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['minConstituentSurname']) }}
+            {{ form_widget(searchByForm['minConstituentSurname']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['minConstituentPostcode']) }}
+            {{ form_widget(searchByForm['minConstituentPostcode']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['minConstituentEmail']) }}
+            {{ form_widget(searchByForm['minConstituentEmail']) }}
+        </div>
+        <div class="button-holder">
+            <span class="button">{{form_widget(searchByForm['clearMin'])}}</span>
+            <span class="button default">{{ form_widget(searchByForm['searchButtonMin']) }}</span>
+        </div>
+    </fieldset>
+</div>

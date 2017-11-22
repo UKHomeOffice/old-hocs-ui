@@ -1,0 +1,165 @@
+services:
+    home_office_cts.form.transition_factory:
+        class: HomeOffice\CtsBundle\Form\FormTransitionFactory
+        arguments:
+            - "@home_office_cts.form.ajax_response_builder"
+
+    home_office_cts.form.transition.abstract:
+        class: HomeOffice\CtsBundle\Form\Transition\AbstractTransition
+        abstract: true
+        arguments:
+            - "@home_office_alfresco_api.cts_case.repository"
+            - "@home_office_alfresco_api.cts_workflow.repository"
+            - "@home_office_alfresco_api.cts_case_document.repository"
+            - "@home_office_alfresco_api.cts_case_minute.repository"
+            - "@home_office_alfresco_api.person.repository"
+            - "@home_office_alfresco_api.cts_case_document_template.repository"
+            - "@home_office_alfresco_api.cts_case.cts_helper"
+            - "@home_office_cts.form.case_validator"
+            - "@=service('security.context').getToken().getUser()"
+
+    home_office_cts.form.transition.save:
+        class: HomeOffice\CtsBundle\Form\Transition\SaveTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: save }
+            - { name: form.transition, alias: editAnswer }
+
+    home_office_cts.form.transition.save_and_create_letter:
+        class: HomeOffice\CtsBundle\Form\Transition\SaveAndCreateLetterTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: saveAndCreateLetter }
+
+    home_office_cts.form.transition.next:
+        class: HomeOffice\CtsBundle\Form\Transition\NextTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: Next }
+            - { name: form.transition, alias: SendForQA }
+            - { name: form.transition, alias: SendForQAReview }
+            - { name: form.transition, alias: SendQAReviewForHSPrivateOfficeApproval }
+            - { name: form.transition, alias: SendHSPrivateOfficeApprovalForHSSignOff }
+            - { name: form.transition, alias: SendQAReviewForSCSApproval }
+
+    home_office_cts.form.transition.reallocate:
+        class: HomeOffice\CtsBundle\Form\Transition\ReallocateTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: Reallocate }
+
+    home_office_cts.form.transition.approve:
+        class: HomeOffice\CtsBundle\Form\Transition\ApproveTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: Approve }
+            - { name: form.transition, alias: ApproveToDraft }
+            - { name: form.transition, alias: SendForDispatch }
+            - { name: form.transition, alias: SendDraftForDispatch }
+            - { name: form.transition, alias: SendToDispatch }
+            - { name: form.transition, alias: SendForCQTApproval }
+            - { name: form.transition, alias: SendQACaseToMarkup }
+            - { name: form.transition, alias: SendMarkupCaseToDraft }
+            - { name: form.transition, alias: SendQACaseToDraft }
+            - { name: form.transition, alias: SendQAReviewForApproval }
+            - { name: form.transition, alias: SendQAReviewForDispatch }
+            - { name: form.transition, alias: SendForPrivateOfficeApproval }
+            - { name: form.transition, alias: SendForHSPrivateOfficeApproval }
+            - { name: form.transition, alias: SendHSPrivateOfficeApprovalForHSSignOff }
+            - { name: form.transition, alias: SendPrivateOfficeApprovalForMinistersSignOff }
+            - { name: form.transition, alias: SendMinistersSignOffForDispatch }
+            - { name: form.transition, alias: SendHSSignOffForDispatch }
+            - { name: form.transition, alias: ApproveNRR }
+            - { name: form.transition, alias: SendForSCSApproval }
+            - { name: form.transition, alias: SendForPressOfficeReview }
+            - { name: form.transition, alias: PressOfficeNoted }
+            - { name: form.transition, alias: SendQAReviewForHeadOfUnitApproval }
+            - { name: form.transition, alias: HeadOfUnitApprovalCompleted }
+            - { name: form.transition, alias: SendSCSApprovalForDispatch }
+            - { name: form.transition, alias: SendForMinisterSignOff }
+            - { name: form.transition, alias: SendInitialDraftForApproval }
+
+    home_office_cts.form.transition.reject:
+        class: HomeOffice\CtsBundle\Form\Transition\RejectTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: Return }
+            - { name: form.transition, alias: Reject }
+
+    home_office_cts.form.transition.dispatch:
+        class: HomeOffice\CtsBundle\Form\Transition\DispatchTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: Dispatch }
+            - { name: form.transition, alias: Dispatched }
+            - { name: form.transition, alias: SendDispatchToPQAPI }
+            - { name: form.transition, alias: OfflineDispatch }
+
+    home_office_cts.form.transition.close.cancel:
+        class: HomeOffice\CtsBundle\Form\Transition\CloseTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: markupCloseCancel }
+            - { name: form.transition, alias: closeCancel }
+
+    home_office_cts.form.transition.close.refer:
+        class: HomeOffice\CtsBundle\Form\Transition\CloseTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: markupCloseRefer }
+            - { name: form.transition, alias: closeRefer }
+
+    home_office_cts.form.transition.close.case:
+        class: HomeOffice\CtsBundle\Form\Transition\CloseCaseTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: CloseCase }
+
+    home_office_cts.form.transition.cancel.case:
+        class: HomeOffice\CtsBundle\Form\Transition\CancelCaseTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: CancelCase }
+            - { name: form.transition, alias: CompleteCase }
+
+    home_office_cts.form.transition.link_case:
+        class: HomeOffice\CtsBundle\Form\Transition\LinkCaseTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: addLinkedCase }
+            - { name: form.transition, alias: removeLinkedCase }
+
+    home_office_cts.form.transition.appeal_case:
+        class: HomeOffice\CtsBundle\Form\Transition\AppealCaseTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: addAppeal }
+            - { name: form.transition, alias: removeAppeal }
+
+    home_office_cts.form.transition.group_case:
+        class: HomeOffice\CtsBundle\Form\Transition\GroupCaseTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: addGroupedCase }
+            - { name: form.transition, alias: removeGroupedCase }
+
+    home_office_cts.form.transition.document:
+        class: HomeOffice\CtsBundle\Form\Transition\DocumentTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: addDocument }
+            - { name: form.transition, alias: removeDocument }
+
+    home_office_cts.form.transition.defer:
+        class: HomeOffice\CtsBundle\Form\Transition\DeferTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: Defer}
+            - { name: form.transition, alias: SendForDefer }
+            - { name: form.transition, alias: CancelDefer }
+
+    home_office_cts.form.transition.manual_allocate:
+        class: HomeOffice\CtsBundle\Form\Transition\ManualAllocateTransition
+        parent: home_office_cts.form.transition.abstract
+        tags:
+            - { name: form.transition, alias: ManualAllocate }

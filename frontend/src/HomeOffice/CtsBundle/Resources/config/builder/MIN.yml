@@ -1,0 +1,30 @@
+services:
+    home_office_cts.form.builder.min_create:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Create\MIN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: MINCreate }
+
+    home_office_cts.form.builder.min_draft:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Draft\MIN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: MINDraft }
+
+    home_office_cts.form.builder.min_approve:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Approve\MIN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: MINApprove }
+
+    home_office_cts.form.builder.min_signoff:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Signoff\MIN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: MINSignoff }
+
+    home_office_cts.form.builder.min_dispatch:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Dispatch\MIN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: MINDispatch }

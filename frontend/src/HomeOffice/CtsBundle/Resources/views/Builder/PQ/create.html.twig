@@ -1,0 +1,96 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Create{% endblock %}
+
+{% block metaTitle %}Create PQ case {{ case.urn }}{% endblock %}
+
+{% block guftForm %}
+    <h2>Case details</h2>
+
+    <div class="form-group">
+        <label class="form-label">Case type</label>
+        <div class="form-read correspondenceType">{{ constant('HomeOffice\\AlfrescoApiBundle\\Service\\CaseCorrespondenceSubType::'~case.correspondenceType) }}</div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['uin']) }}
+        {{ form_widget(form['uin']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['questionNumber']) }}
+        {{ form_widget(form['questionNumber']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['opDate']) }}
+        {{ form_widget(form['opDate']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['woDate']) }}
+        {{ form_widget(form['woDate']) }}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">{{ form['receivedType'].vars.label }}</label>
+        {{ form_widget(form['receivedType']) }}
+    </div>
+
+    <div class="form-group hidden receivedTypeToggle">
+        {{ form_label(form['transferDepartmentName']) }}
+        {{ form_widget(form['transferDepartmentName']) }}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">{{ form['roundRobin'].vars.label }}</label>
+        {{ form_widget(form['roundRobin']) }}
+    </div>
+
+    <div class="form-group roundRobbinToggle">
+        <label class="form-label">Cabinet Office guidance</label>
+        {{ form_widget(form['cabinetOfficeGuidance']) }}
+    </div>
+
+    {% include 'HomeOfficeCtsBundle:Builder:groups/linkedCase.html.twig' with {'form': form['linkedCases']} %}
+
+    {% include 'HomeOfficeCtsBundle:Builder:groups/groupedCases.html.twig' with {'form': form['groupedCases']} %}
+
+    <h2>Question</h2>
+    <div class="form-group">
+        {{ form_label(form['questionText']) }}
+        {{ form_widget(form['questionText']) }}
+    </div>
+    <hr>
+
+    <h2>Reply to</h2>
+    <div class="form-group member_list">
+        {{ form_label(form['member']) }}
+        {{ form_widget(form['member']) }}
+    </div>
+
+    {% if form['constituency'] is defined %}
+        <div class="form-group member_constituency">
+            {{ form_label(form['constituency']) }}
+            {{ form_widget(form['constituency']) }}
+        </div>
+    {% endif %}
+
+    {% if form['party'] is defined %}
+        <div class="form-group member_party">
+            {{ form_label(form['party']) }}
+            {{ form_widget(form['party']) }}
+        </div>
+    {% endif %}
+
+    {% include "HomeOfficeCtsBundle:Case/Guft/Script:_memberPartyDetailsScript.html.twig" %}
+    <hr>
+
+    {% include 'HomeOfficeCtsBundle:Builder:groups/markup.html.twig' %}
+
+    {% if form['save'] is defined %}
+        {{ form_widget(form['save']) }}
+    {% endif %}
+{% endblock %}

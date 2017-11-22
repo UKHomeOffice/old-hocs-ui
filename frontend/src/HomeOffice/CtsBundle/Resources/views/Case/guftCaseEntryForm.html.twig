@@ -1,0 +1,141 @@
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+<section class="grid-row">
+    <div class="column-full">
+        <h2>Initiate case</h2>
+
+        {% if not form.vars.valid %}
+            <div class="global error">
+                Errors found on form.
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+
+        {{ form_start(form, {'attr': {'novalidate' : 'novalidate' } }) }}
+            <span class="hidden">{{ form_widget(form['SetType']) }}</span>
+            <fieldset class="inline">
+                <label class="form-label" for="correspondenceTypeGroup">Select business unit</label>
+                {% for key, type in correspondenceTypes  %}
+                    <label class="block-label" for="group-{{ key }}">
+                        <input
+                            type="radio"
+                            value="{{ key }}"
+                            id="group-{{ key }}"
+                            name="correspondenceTypeGroup"
+                            data-target="expand_{{ key }}"
+                            class="multiExpandTrigger hideInitiateCaseSubForm"
+                            {% if correspondenceTypeGroup == key %}checked="checked" {% endif %}
+                        />
+                        {{ key }}
+                    </label>
+                {% endfor %}
+            </fieldset>
+
+        {% for key, type in correspondenceTypes %}
+            <fieldset
+                class="inline multiExpandTarget expand_{{ key }}"
+                {% if correspondenceTypeGroup != key %} style="display:none" {% endif %}
+            >
+                <label class="form-label" for="correspondenceTypeGroup">Select case type</label>
+                {% for subKey, subType in type %}
+                    <label class="block-label" for="{{ subKey }}">
+                        <input
+                            type="radio"
+                            value="{{ subKey }}"
+                            id="{{ subKey }}"
+                            name="correspondenceTypeFaux"
+                            class="initiateCaseSetType"
+                            {% if correspondenceType == subKey %}checked="checked" {% endif %}
+                        />
+                        {{ subType }}
+                    </label>
+                {% endfor %}
+            </fieldset>
+        {% endfor %}
+
+        <fieldset id="initiateCaseSubForm">
+            {% set stage2 = (form['Create'] is defined) %}
+            {% set goLabel = (stage2 ? 'Change' : 'Continue') %}
+
+            <span class="button{% if not stage2 %} default{% endif %} hidden">
+                {{ form_widget(form['SetType'], { 'label': goLabel }) }}
+            </span>
+
+            {% if form['hmpoStage'] is defined %}
+                <div class="form-group inline">
+                    <label class="form-label">Complaint type</label>
+                    {{ form_widget(form['hmpoStage']) }}
+                </div>
+            {% endif %}
+
+            <div class="form-control-full">
+                {% if form['hmpoCorrespondenceType'] is defined %}
+                    <div class="form-group inline">
+                        <label class="form-label">{{ form['hmpoCorrespondenceType'].vars.label }}</label>
+                        {{ form_widget(form['hmpoCorrespondenceType']) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-control-2-3">
+                {% if form['foiIsEir'] is defined %}
+                    <div class="form-group">
+                        {{ form_widget(form['foiIsEir']) }}
+                        {{ form_label(form['foiIsEir']) }}
+                    </div>
+                {% endif %}
+
+                {% if form['dateReceived'] is defined %}
+                    <div class="form-group">
+                        {{ form_label(form['dateReceived']) }}
+                        {{ form_widget(form['dateReceived']) }}
+                    </div>
+                {% endif %}
+                {% if form['uin'] is defined %}
+                    <div class="form-group">
+                        {{ form_label(form['uin']) }}
+                        {{ form_widget(form['uin']) }}
+                    </div>
+                {% endif %}
+
+                {% if form['caseResponseDeadline'] is defined %}
+                    <div class="form-group">
+                        {{ form_label(form['caseResponseDeadline']) }}
+                        {{ form_widget(form['caseResponseDeadline']) }}
+                    </div>
+                {% endif %}
+
+                {% if form['departureDateFromUK'] is defined %}
+                    <div class="form-group">
+                        {{ form_label(form['departureDateFromUK']) }}
+                        {{ form_widget(form['departureDateFromUK']) }}
+                    </div>
+                {% endif %}
+
+                {% if form['originalDocument'] is defined %}
+                    <div class="form-group errors">
+                        {{ form_label(form['originalDocument']) }}
+                        {{ form_widget(form['originalDocument']) }}
+                        {{ form_errors(form['originalDocument']) }}
+                        <button class="button-tertiary toggleFile" data-toggle="#ctsCaseEntry_originalDocument">Browse</button>
+                        <span id="uploadFileName"></span>
+                    </div>
+                {% endif %}
+
+                {% if form['opDate'] is defined %}
+                    <div class="form-group">
+                        {{ form_label(form['opDate']) }}
+                        {{ form_widget(form['opDate']) }}
+                    </div>
+                {% endif %}
+
+                {% if stage2 %}
+                    <div class="form-group">
+                        {{ form_widget(form['Create']) }}
+                    </div>
+                {% endif %}
+            </div>
+        </fieldset>
+    {{ form_end(form) }}
+    </div>
+</section>

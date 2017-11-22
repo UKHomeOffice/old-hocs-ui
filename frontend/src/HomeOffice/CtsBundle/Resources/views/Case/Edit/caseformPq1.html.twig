@@ -1,0 +1,152 @@
+{% form_theme ctsCaseForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+
+    <div id="correspondence_details" class="panel wide">
+        <h2>Case details</h2>
+        <fieldset class="basic_details">
+            <div>
+                {{ form_label(ctsCaseForm['uin']) }}
+                {{ form_widget(ctsCaseForm['uin']) }}
+            </div>
+            <div>
+                {{ form_label(ctsCaseForm['questionNumber']) }}
+                {{ form_widget(ctsCaseForm['questionNumber']) }}
+            </div>
+            <div>
+                {{ form_label(ctsCaseForm['correspondenceType']) }}
+                {{ form_widget(ctsCaseForm['correspondenceType']) }}
+            </div>
+            <div class="dateField">
+                {{ form_label(ctsCaseForm['opDate']) }}
+                {{ form_widget(ctsCaseForm['opDate'],
+                    { 'attr' : { 'class' : 'dateSelect' } }
+                ) }}
+
+            </div>
+            <div class="dateField last">
+                {{ form_label(ctsCaseForm['woDate']) }}
+                {{ form_widget(ctsCaseForm['woDate'],
+                    { 'attr' : { 'class' : 'dateSelect' } }
+                ) }}
+            </div>
+        </fieldset>
+        <fieldset class="basic_details_2 pq">
+            <div>
+                {{ form_label(ctsCaseForm['receivedType']) }}
+                <div class="spot-control with-inner">
+                    {{ form_widget(ctsCaseForm['receivedType']) }}
+                </div>
+            </div>
+            <div class="transfer_department_name">
+                {{ form_label(ctsCaseForm['transferDepartmentName']) }}
+                {{ form_widget(ctsCaseForm['transferDepartmentName']) }}
+            </div>
+            <div>
+                {{ form_label(ctsCaseForm['roundRobin']) }}
+                <div class="spot-control with-inner">
+                    {{ form_widget(ctsCaseForm['roundRobin']) }}
+                </div>
+            </div>
+            <div class="last cabinet_office_guidance">
+                {{ form_label(ctsCaseForm['cabinetOfficeGuidance']) }}
+                <div class="spot-control with-inner">
+                    {{ form_widget(ctsCaseForm['cabinetOfficeGuidance']) }}
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <fieldset class="sibling-group">
+        {% include "HomeOfficeCtsBundle:Case:linkedCaseList.html.twig" with { 'editable' : true } %}
+        {% include "HomeOfficeCtsBundle:Case:groupedCaseList.html.twig" with { 'editable' : true } %}
+    </fieldset>
+    <fieldset class="sibling-group">
+        <div id="reply_to" class="panel page-chunk pq">
+            <h2>Reply to</h2>
+            <div class="stop_list member_list" data-stop_list_type="members">
+                {{ form_label(ctsCaseForm['member']) }}
+                {{ form_widget(ctsCaseForm['member']) }}
+            </div>
+
+            <div class="full_width_label stop_list_div{% if (not displayMemberStopListIcon) %} collapsed{% endif %}">
+                <div class="stop_list_label">Stop list <b class="icon"></b></div>
+            </div>
+
+            <div>
+                {{ form_label(ctsCaseForm['constituency']) }}
+                {{ form_widget(ctsCaseForm['constituency']) }}
+            </div>
+            <div class="last">
+                {{ form_label(ctsCaseForm['party']) }}
+                {{ form_widget(ctsCaseForm['party']) }}
+            </div>
+        </div>
+        <div id="signed_reviewed_by_details" class="panel page-chunk">
+            <h2>Signed by</h2>
+            <div class="spot-control">
+                {{ form_widget(ctsCaseForm['signedByHomeSec']) }}
+                {{ form_label(ctsCaseForm['signedByHomeSec']) }}
+            </div>
+            <h2>Requires review by</h2>
+            <div class="spot-control">
+                {{ form_widget(ctsCaseForm['reviewedByPermSec']) }}
+                {{ form_label(ctsCaseForm['reviewedByPermSec']) }}
+            </div>
+            <div class="spot-control last">
+                {{ form_widget(ctsCaseForm['reviewedBySpads']) }}
+                {{ form_label(ctsCaseForm['reviewedBySpads']) }}
+            </div>
+        </div>
+    </fieldset>
+    <fieldset id="markup" class="panel wide">
+        <h2>Mark up</h2>
+        <div>
+            {{ form_label(ctsCaseForm['markupDecision']) }}
+            {{ form_widget(ctsCaseForm['markupDecision']) }}
+        </div>
+        {% if ctsCaseForm['ogdName'] is defined %}
+            <div class="medium-label wide-input ogd-name-field">
+                {{ form_label(ctsCaseForm['ogdName']) }}
+                {{ form_widget(ctsCaseForm['ogdName']) }}
+            </div>
+        {% endif %}
+        <div>
+            {{ form_label(ctsCaseForm['markupUnit']) }}
+            {{ form_widget(ctsCaseForm['markupUnit']) }}
+        </div>
+        <div class="stop_list" data-stop_list_type="topics">
+            {{ form_label(ctsCaseForm['markupTopic']) }}
+            {{ form_widget(ctsCaseForm['markupTopic']) }}
+        </div>
+
+        <div class="full_width_label stop_list_div{% if not displayTopicStopListIcon %} collapsed{% endif %}">
+            <div class="stop_list_label">Stop list <b class="icon"></b></div>
+        </div>
+
+        <div>
+            {{ form_label(ctsCaseForm['markupMinister']) }}
+            {{ form_widget(ctsCaseForm['markupMinister']) }}
+        </div>
+
+        {% if ctsCase.correspondenceType == 'LPQ' %}
+            <div>
+                {{ form_label(ctsCaseForm['lordsMinister']) }}
+                {{ form_widget(ctsCaseForm['lordsMinister']) }}
+            </div>
+        {% endif %}
+
+        <div class="last">
+            {{ form_label(ctsCaseForm['secondaryTopic']) }}
+            {{ form_widget(ctsCaseForm['secondaryTopic']) }}
+        </div>
+
+
+
+    </fieldset>
+    {% if (formPurpose == 'edit') %}
+        <fieldset id="minutes_history" class="panel wide">
+            <h2>Minutes history</h2>
+            {% include "HomeOfficeCtsBundle:Minute:minuteAdd.html.twig" with {'minuteForm': ctsCaseForm.newMinute, 'addFormTag': false } %}
+            {% include "HomeOfficeCtsBundle:Minute:minuteFilter.html.twig" %}
+            {% include "HomeOfficeCtsBundle:Minute:minuteHistory.html.twig" %}
+        </fieldset>
+    {% endif %}
+

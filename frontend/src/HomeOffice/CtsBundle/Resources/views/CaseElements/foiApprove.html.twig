@@ -1,0 +1,60 @@
+{% if not buttonValue is defined %}
+    {% set buttonValue = 'Approve' %}
+{% endif %}
+
+{% if caseIsApproved(task, case) %}
+    <label class="form-label form-approved">{{ buttonValue }}</label>
+{% else %}
+
+    {% if case.caseTask | lower == task | lower %}
+        {% if form['SendQAReviewForHeadOfUnitApproval'] is defined %}
+            {{ form_widget(form['SendQAReviewForHeadOfUnitApproval']) }}
+        {% endif %}
+
+        {% if form['HeadOfUnitApprovalCompleted'] is defined %}
+            {{ form_widget(form['HeadOfUnitApprovalCompleted']) }}
+        {% endif %}
+
+        {% if form['SendQAReviewForDispatch'] is defined %}
+            {{ form_widget(form['SendQAReviewForDispatch']) }}
+        {% endif %}
+
+        {% if form['SendForQAApproval'] is defined %}
+            {{ form_widget(form['SendForQAApproval']) }}
+        {% endif %}
+
+        {% if form['SendSCSApprovalForDispatch'] is defined %}
+            {{ form_widget(form['SendSCSApprovalForDispatch']) }}
+        {% endif %}
+
+        {% if form['SendForSCSApproval'] is defined %}
+            {{ form_widget(form['SendForSCSApproval']) }}
+        {% endif %}
+
+        {% if form['SendForPressOfficeReview'] is defined %}
+            {{ form_widget(form['SendForPressOfficeReview']) }}
+        {% endif %}
+
+        {% if form['PressOfficeNoted'] is defined %}
+            {{ form_widget(form['PressOfficeNoted']) }}
+        {% endif %}
+
+        {% if form['SendForMinisterSignOff'] is defined %}
+            {{ form_widget(form['SendForMinisterSignOff']) }}
+        {% endif %}
+
+        {% if form['SendForDispatch'] is defined %}
+            {{ form_widget(form['SendForDispatch']) }}
+        {% endif %}
+
+        {% if form['Reject'] is defined %}
+            <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_return', {
+                'nodeRef': case.nodeId }) }}">
+                {{ form['Reject'].vars.label }}
+            </button>
+        {% endif %}
+    {% else %}
+        <input type="button" value="{{ buttonValue }}" class="button" disabled>
+        <input type="button" value="Return" class="button button-secondary" disabled>
+    {% endif %}
+{% endif %}

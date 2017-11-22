@@ -1,0 +1,65 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% block title %}{% endblock %}
+
+{% block bc %}
+    <section class="grid-row">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>Manage Templates</li>
+            </ol>
+        </nav>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section class="grid-row">
+        <div class="column-two-thirds">
+            <h2>Templates</h2>
+        </div>
+        <div class="column-third">
+            <ul class="blank">
+                <li>
+                    <a class="button right" href="{{ path('homeoffice_cts_documenttemplates_new') }}">Add new template</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="column-full">
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Case Type</th>
+                    <th>Date Added</th>
+                    <th>Valid From</th>
+                    <th>Valid To</th>
+                    <th colspan="2">&nbsp;</th>
+                </tr>
+                {% for template in templates %}
+                    <tr>
+                        <td><a href="{{ path('homeoffice_cts_documenttemplates_download', { 'nodeRef' : template.nodeId }) }}">{{ template.templateName }}</a><br>{{ template.name }}</td>
+                        <td>{{ correspondentSubType(template.appliesToCorrespondenceType) }}</td>
+                        <td>{{ template.createdDate|date('d/m/Y') }}<br>{{ template.createdDate|date('H:ia') }}</td>
+                        <td>{{ template.validFromDate|date('d/m/Y') }}</td>
+                        <td>{{ template.validToDate|date('d/m/Y') }}</td>
+                        <td>
+                            <a href="{{ path('homeoffice_cts_documenttemplates_edit', { 'nodeRef' : template.nodeId }) }}" class="button">Edit</a>
+                        </td>
+                        <td>
+                            <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_documenttemplates_delete', { 'nodeRef': template.nodeId }) }}">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">
+                            <em>There are no document templates.</em>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </section>
+{% endblock %}

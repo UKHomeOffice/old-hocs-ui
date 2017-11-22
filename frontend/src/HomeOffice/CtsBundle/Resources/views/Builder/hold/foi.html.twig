@@ -1,0 +1,91 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}On Hold{% endblock %}
+
+{% block metaTitle %}FOI Case {{ case.urn }}{% endblock %}
+
+{% block guftForm %}
+    <h2>Original correspondence</h2>
+    <p>Correspondent: {{ case.correspondentFullName }}</p>
+
+    <div class="panel">
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+        'filterTypes': ['Original']
+        } %}
+    </div>
+    <hr>
+
+    <h2>Case Details</h2>
+    {% include 'HomeOfficeCtsBundle:CaseElements:linkedCases.html.twig' with {
+        'form': form['linkedCases']
+    } %}
+
+    <div class="form-group">
+        {{ form_label(form['markupTopic']) }}
+        {{ form_widget(form['markupTopic']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['secondaryTopic']) }}
+        {{ form_widget(form['secondaryTopic']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['hoCaseOfficer']) }}
+        {{ form_widget(form['hoCaseOfficer']) }}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">{{ form.foiMinisterSignOff.vars.label }}</label>
+        {{ form_widget(form['foiMinisterSignOff']) }}
+    </div>
+    <div class="form-group signOffMinisterToggle hidden">
+        {{ form_label(form['answeringMinister']) }}
+        {{ form_widget(form['answeringMinister']) }}
+    </div>
+    <hr>
+
+    <h2>Response</h2>
+    {% if form['channel'] is defined %}
+        <div class="form-group">
+            <label class="form-label">Original channel</label>
+            <div class="form-read">{{ case.channel }}</div>
+        </div>
+    {% endif %}
+
+
+    {% if form['hmpoResponse'] is defined %}
+        <div class="form-group">
+            <label class="form-label">{{ form['hmpoResponse'].vars.label }}</label>
+            {{ form_widget(form['hmpoResponse']) }}
+        </div>
+    {% endif %}
+
+    <div class="form-group">
+        <label class="form-label">Document(s)</label>
+        <div class="documentTable panel"
+             data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+             data-filter-types="Original attachments,Contribution,Background note,Response,Other"
+             data-allow-remove="{{ caseIsStep(case, 'hold') ? "true" : "false" }}"
+        >
+            {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+            'filterTypes': ['Original attachments', 'Contribution', 'Background note', 'Response', 'Other'],
+            'allowRemove': caseIsStep(case, 'hold')
+            } %}
+        </div>
+    </div>
+
+    {% if caseIsStep(case, 'hold') %}
+        <div class="form-group">
+            {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form['document']} %}
+        </div>
+    {% endif %}
+    <hr>
+
+    {% if form['Next'] is defined and caseIsStep(case, 'hold') %}
+        {{ form_widget(form['Next']) }}
+    {% endif %}
+
+{% endblock %}

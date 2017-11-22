@@ -1,0 +1,45 @@
+/* Grid */
+
+.grid-row {
+  @extend %grid-row;
+  padding: $gutter-one-quarter;
+
+  .column-third {
+    @include grid-column(1/3);
+  }
+  .column-two-thirds {
+    @include grid-column( 2/3 );
+  }
+  .column-half {
+    @include grid-column(1/2);
+  }
+
+  .column-full {
+    @include grid-column(1/1);
+    margin: $gutter-one-quarter 0;
+  }
+
+  .column-quarter {
+    @include grid-column(1/4);
+  }
+
+  .column-three-quarters {
+    @include grid-column(3/4);
+  }
+
+  .column-fifth {
+    @include grid-column(1/5);
+  }
+
+  .column-two-fifths {
+    @include grid-column(2/5);
+  }
+
+  .column-three-fifths {
+    @include grid-column(3/5);
+  }
+
+  .column-four-fifths {
+    @include grid-column(4/5);
+  }
+}

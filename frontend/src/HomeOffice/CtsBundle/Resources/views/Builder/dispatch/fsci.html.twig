@@ -1,0 +1,59 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Dispatch{% endblock %}
+
+{% block metaTitle %}FOI Case {{ case.urn }}{% endblock %}
+
+{% block guftForm %}
+    <h2>Original correspondence</h2>
+    <p>Correspondent: {{ case.correspondentFullName }}</p>
+
+    <div class="panel">
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+        'filterTypes': ['Original']
+        } %}
+    </div>
+    <hr>
+
+    <h2>Response</h2>
+    <label class="form-label">Document(s)</label>
+    <div class="documentTable panel"
+         data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+         data-filter-types="Original attachments,Contribution,Background note,Response,Other"
+         data-allow-remove="{{ caseIsStep(case, 'hold') ? "true" : "false" }}"
+    >
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+        'filterTypes': ['Original attachments', 'Contribution', 'Background note', 'Response', 'Other'],
+        'allowRemove': caseIsStep(case, 'hold')
+        } %}
+    </div>
+
+    {% if caseIsStep(case, 'hold') %}
+        <div class="form-group">
+            {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form['document']} %}
+        </div>
+    {% endif %}
+    <hr>
+
+    <div class="form-group">
+        {{ form_label(form['icoOutcome']) }}
+        {{ form_widget(form['icoOutcome']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['icoOutcomeDate']) }}
+        {{ form_widget(form['icoOutcomeDate']) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['minute']) }}
+        {{ form_widget(form['minute']) }}
+    </div>
+
+    {% if caseIsStep(case, 'hold') %}
+        {{ form_widget(form['Next']) }}
+        {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+    {% endif %}
+{% endblock %}

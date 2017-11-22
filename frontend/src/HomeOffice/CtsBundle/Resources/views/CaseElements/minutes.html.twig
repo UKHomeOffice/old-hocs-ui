@@ -1,0 +1,31 @@
+<h3>Add manual minute</h3>
+
+{{ form_start(form, {'attr': {'class': 'form-ajax', 'novalidate' : 'novalidate', 'data-ajax-message' : 'Saving minute...'} }) }}
+
+<fieldset id="add_minute">
+    <div class="form-group">
+        {{ form_widget(form['minuteContent']) }}
+    </div>
+
+    <div class="right">
+        {{ form_widget(form['saveMinute']) }}
+    </div>
+</fieldset>
+{{ form_end(form) }}
+
+<h3>Minutes History</h3>
+<form method="get">
+    <div class="form-group">
+        <input type="checkbox" id="minutesManual" name="minutesManual" checked="checked" class="showOnSelect" data-toggle="manual"/>
+        <label for="minutesManual">Manual</label>
+
+        <input type="checkbox" id="minutesSystem" name="minutesSystem" class="showOnSelect" data-toggle="system"/>
+        <label for="minutesSystem">System</label>
+    </div>
+</form>
+
+<div class="minutesTable">
+    {% include 'HomeOfficeCtsBundle:CaseElements:minutesTable.html.twig' with { 'minutes': minutes } %}
+</div>
+
+{#<a class="button" href="{{ path('homeoffice_cts_case_viewminutes', { 'nodeRef': case.nodeId }) }}">Print minutes</a>#}

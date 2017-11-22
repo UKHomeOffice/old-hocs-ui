@@ -1,0 +1,24 @@
+services:
+    home_office_cts.form.builder.col_create:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Create\COL
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: COLCreate }
+
+    home_office_cts.form.builder.col_draft:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Draft\COL
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: COLDraft }
+
+    home_office_cts.form.builder.col_approve:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Approve\COL
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: COLApprove }
+
+    home_office_cts.form.builder.col_dispatch:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Dispatch\COL
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: COLDispatch }

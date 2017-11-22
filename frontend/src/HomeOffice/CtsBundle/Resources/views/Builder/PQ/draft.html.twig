@@ -1,0 +1,36 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Draft{% endblock %}
+
+{% block metaTitle %}Draft PQ case {{ case.urn }}{% endblock %}
+
+{% block guftForm %}
+    <h2>Question</h2>
+
+    <h3>Question (asked by {{ case.member }})</h3>
+    <p>{{ case.questionText }}</p>
+    <hr>
+
+    <h2>Response</h2>
+    <div class="form-group">
+        {{ form_widget(form['answerText']) }}
+    </div>
+
+    {% if form['newDocument'] is defined and caseIsStep(case, 'draft') %}
+        {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form['newDocument']} %}
+    {% endif %}
+
+    {% if form['allocateTo'] is defined and caseIsStep(case, 'draft') %}
+        <hr>
+        <h2>Allocate to SCS approval</h2>
+        {% include 'HomeOfficeCtsBundle:CaseElements:allocate.html.twig' %}
+
+        {{ form_widget(form['SendForQA'], { 'label': 'Submit for approval'}) }}
+    {% endif %}
+
+    {% if form['save'] is defined %}
+        {{ form_widget(form['save']) }}
+    {% endif %}
+{% endblock %}

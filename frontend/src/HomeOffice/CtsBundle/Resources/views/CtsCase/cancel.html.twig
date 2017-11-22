@@ -1,0 +1,21 @@
+<div class="modal">
+    {{ form_start(form, {
+        'action': path('homeoffice_cts_ctscase_cancel', { 'nodeRef': case.nodeId }),
+        'attr': {'class': 'form-ajax', 'novalidate' : 'novalidate' } })
+    }}
+
+    <h2>Cancel case</h2>
+
+    <div class="form-group">
+        {{ form_label(form['cancelReason']) }}
+        {{ form_widget(form['cancelReason']) }}
+    </div>
+
+    {% if form['transitions'] is defined %}
+        <div class="form-group">
+            {% include 'HomeOfficeCtsBundle:CaseElements:transitions.html.twig' with { 'transitions': form['transitions'], 'step': step } %}
+            <a href="#close-modal" rel="modal:close" class="button button-secondary">Cancel</a>
+        </div>
+    {% endif %}
+    {{ form_end(form) }}
+</div>

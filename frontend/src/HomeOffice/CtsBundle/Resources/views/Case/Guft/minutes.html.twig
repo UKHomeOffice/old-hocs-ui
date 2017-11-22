@@ -1,0 +1,9 @@
+{% if (formPurpose == 'edit') %}
+    <fieldset id="minutes_history">
+
+        {% include "HomeOfficeCtsBundle:Case/Guft/Minute:minuteAdd.html.twig"
+            with {'minuteForm': ctsCaseForm.newMinute, 'addFormTag': false } %}
+
+        {{ render(controller('HomeOfficeCtsBundle:CaseElements:minutes', { 'nodeRef': nodeRef })) }}
+    </fieldset>
+{% endif %}

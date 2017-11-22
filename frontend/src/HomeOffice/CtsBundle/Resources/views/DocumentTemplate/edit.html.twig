@@ -1,0 +1,18 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Edit template{% endblock %}
+
+{% block breadcrumb_trail %}
+    <li><a href="{{ path('homeoffice_cts_documenttemplate_manage') }}">Manage templates</a></li>
+    <li>Edit template</li>
+{% endblock %}
+
+{% block body %}
+    
+    {% if errorMsg is defined %}
+        <div>{{ errorMsg }}</div>
+    {% endif %}
+
+    {% include "HomeOfficeCtsBundle:DocumentTemplate:documentTemplateForm.html.twig" %}
+
+{% endblock %}

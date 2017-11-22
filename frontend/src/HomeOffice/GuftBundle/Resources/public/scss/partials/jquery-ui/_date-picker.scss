@@ -1,0 +1,101 @@
+.ui-datepicker {
+  background: white;
+  border: 1px solid #ccc;
+  font-weight: normal;
+  left: -9999px;
+  padding: 5px;
+  position: absolute;
+  z-index: 15 !important;
+
+  .ui-datepicker-header {
+    a {
+      cursor: pointer;
+      //font-size: ;
+    }
+
+    .ui-datepicker-title {
+      clear: both;
+      padding: 2px 0 5px;
+      text-align: center;
+
+      span {
+        font-weight: bold;
+
+      }
+    }
+  }
+
+  .ui-datepicker-prev {
+    float: left;
+
+    &:before {
+      content: '< ';
+    }
+  }
+
+  .ui-datepicker-next {
+    float: right;
+
+    &:after {
+      content: ' >';
+    }
+  }
+
+  .ui-datepicker-prev, .ui-datepicker-next {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  table {
+    td, th {
+      text-align:center;
+      padding: $gutter-one-quarter / 1.5;
+
+      a {
+        border: 1px solid white;
+        padding: 1px;
+
+        &, &.ui-state-default {
+          color: $govuk-blue;
+          display: block;
+        }
+
+        &:hover, &.ui-state-hover {
+          background: $govuk-blue;
+          color: $white;
+        }
+
+        &.ui-state-highlight { // today
+          background: $orange;
+          color: $white;
+        }
+
+        &.ui-state-active { // selected
+          background: $button-colour;
+          color: $white;
+        }
+
+      }
+
+      &.ui-datepicker-days-cell-over a {
+        border-color: $grey-1;
+      }
+    }
+  }
+}
+
+.calendar-button {
+  background:
+          url("data:image/png;base64,R0lGODlhFwAXAKECAABepff6/f///////yH5BAEKAAMALAAAAAAXABcAAAJSjA2nmsu+2gE02YptyHVy6n3iSJaZgKbqqmLsy7prJdB0fbcUDvCorOvZdrwe7Fj87YZCoozpuz2X1KYRiIxJq1Hn1tq9fsO+ZPaFPadM7PaoAAA7");
+  border: none;
+  display: inline-block;
+  height: 23px;
+  margin: $gutter-one-quarter;
+  vertical-align: middle;
+  width: 23px;
+}
+
+.todayButton {
+  margin: $gutter-one-quarter;
+}

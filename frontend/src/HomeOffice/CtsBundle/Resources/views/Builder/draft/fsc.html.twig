@@ -1,0 +1,8 @@
+{% extends '@HomeOfficeCts/Builder/draft/ftc.html.twig' %}
+
+{% block markup %}
+    {% include 'HomeOfficeCtsBundle:Builder:groups/markup.html.twig' with {
+        'markupTitle': 'Outcome',
+        'alwaysShowExemptions': true,
+    } %}
+{% endblock %}

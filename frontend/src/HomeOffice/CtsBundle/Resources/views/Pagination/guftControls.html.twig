@@ -1,0 +1,83 @@
+{% if (paginatorMethod is not defined) %}
+    {% set paginatorMethod = 'GET' %}
+{% endif %}
+<section class="grid-row">
+    <div class="column-third">
+        <p>Showing {{ paginator.startresult() }} to {{ paginator.endResult() }} of {{ paginator.totalResults() }} results</p>
+    </div>
+    <div class="column-two-thirds">
+        {% if paginator.getPages|length > 0 %}
+            <ul class="inline right blank{% if class is defined %} {{ class }}{% endif %}">
+
+                <li>
+                    {% if paginator.showPreviousLink %}
+                        {% if paginatorMethod == 'POST' %}
+                            {{form_widget(searchByForm['pagePrevious'])}}
+                        {% else %}
+                            <a
+                                href="{{
+                                    path(paginator.pagePath, app.request.query.all|merge(
+                                        {'pageNumber': paginator.pageNumber-1} )
+                                    )
+                                }}">&laquo; Previous</a>
+                        {% endif %}
+                    {% else %}
+                        &laquo; Previous
+                    {% endif %}
+                </li>
+
+                {% if paginator.pageNumber - paginator.previousPageCount > 1 %}
+                    <li>
+                        <a href="{{ path(paginator.pagePath, app.request.query.all|merge({'pageNumber': 1} )) }}">
+                            1
+                        </a>
+                    </li>
+                    <li>...</li>
+                {% endif %}
+
+                {% for page in paginator.getPages %}
+                    <li>
+                        {% if page != paginator.pageNumber %}
+                            {% if paginatorMethod == 'POST' %}
+                                {{form_widget(searchByForm['page_'~page])}}
+                            {% else %}
+                                <a href="{{
+                                    path(paginator.pagePath, app.request.query.all|merge(
+                                        {'pageNumber': page} )
+                                    )
+                                }}">{{ page }}</a>
+                            {% endif %}
+                        {% else %}
+                            {{ page }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+
+                {% if paginator.pageNumber + paginator.nextPageCount < paginator.calculateNumberOfPages %}
+                    <li>...</li>
+                    <li>
+                        <a href="{{ path(paginator.pagePath, app.request.query.all|merge({'pageNumber': paginator.calculateNumberOfPages} )) }}">
+                            {{ paginator.calculateNumberOfPages }}
+                        </a>
+                    </li>
+                {% endif %}
+
+                <li>
+                    {% if paginator.showNextLink %}
+                        {% if paginatorMethod == 'POST' %}
+                            {{form_widget(searchByForm['pageNext'])}}
+                        {% else %}
+                            <a href="{{
+                                path(paginator.pagePath, app.request.query.all|merge(
+                                    {'pageNumber': paginator.pageNumber+1} )
+                                )
+                            }}">Next &raquo;</a>
+                        {% endif %}
+                    {% else %}
+                        Next &raquo;
+                    {% endif %}
+                </li>
+            </ul>
+        {% endif %}
+    </div>
+</section>

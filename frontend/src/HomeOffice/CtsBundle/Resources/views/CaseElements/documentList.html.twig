@@ -1,0 +1,40 @@
+<div class="supportingDocumentsTable">
+    {% if (case.caseDocuments | length > 0 ) %}
+        <div id="doc_preview_container"></div>
+
+        <div class="panel panel-overflow">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type/Name</th>
+                        <th>Added</th>
+                        <th>Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for document in case.caseDocuments %}
+                        <tr>
+                            <td styl>{{ document.documentType }}<br>
+                                <a href="{{ path('homeoffice_cts_document_download',
+                                    { 'caseNodeRef' : case.nodeId, 'documentNodeRef' : document.nodeId }) }}" target="_blank">
+                                    {{ document.name }}
+                                </a>
+                            </td>
+                            <td>{{ document.createdDate|date("d/m/y h:i") }}</td>
+                            <td>
+                                {% set docPath = path(
+                                    document.canDownloadDirect ? 'homeoffice_cts_document_downloaddirect' : 'homeoffice_cts_document_downloadpdf',
+                                    { 'documentNodeRef' : document.getNodeId }
+                                ) %}
+                                <a href="{{ docPath }}" class="preview-image" data-filename="{{ document.name }}">Preview</a>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No documents to show.</p>
+    {% endif %}
+</div>

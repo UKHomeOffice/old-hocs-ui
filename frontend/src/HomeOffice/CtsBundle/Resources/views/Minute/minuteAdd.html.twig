@@ -1,0 +1,27 @@
+<div>
+    {% if addFormTag %}
+        {% form_theme minuteForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+        {{ form_start(minuteForm, {'attr': {
+                                        'novalidate' : 'novalidate',
+                                        'data-ajax-message' : 'Saving minute...'
+                                    } }) }}
+    {% endif %}
+        {{ form_errors(minuteForm) }}
+        <fieldset id="add_minute">
+            <div>
+                {{ form_widget(minuteForm.id) }}
+                {{ form_widget(minuteForm['minuteContent']) }}
+            </div>
+            {% if ctsCase.isQaEligible() %}
+                {{ form_widget(minuteForm.task) }}
+                {{ form_label(minuteForm.minuteQaReviewOutcomes) }}
+                {{ form_widget(minuteForm.minuteQaReviewOutcomes) }}
+            {% endif %}
+            <span class="default button">
+                {{ form_widget(minuteForm['saveMinute']) }}
+            </span>
+        </fieldset>
+    {% if addFormTag %}
+        {{ form_end(minuteForm) }}
+    {% endif %}
+</div>

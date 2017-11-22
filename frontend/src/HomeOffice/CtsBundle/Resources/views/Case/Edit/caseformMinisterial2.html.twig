@@ -1,0 +1,34 @@
+{% form_theme ctsCaseForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+
+<fieldset id="panels" class="sibling-group">
+
+    {% include 'HomeOfficeCtsBundle:Case/Edit:_caseOverview.html.twig' %}
+
+    <div id="deadline" class="panel alt2 page-chunk">
+        <h2>Deadline {{ form_widget(ctsCaseForm['caseResponseDeadline']) }}</h2>
+        {% if ctsCase.correspondenceType != 'TRO' and ctsCase.correspondenceType != 'DTEN' and ctsCase.correspondenceType != 'UTEN' %}
+            <h3>Targets</h3>
+            {% spaceless %}{# compatibilty mode bug #}
+            <div>
+                {{ form_label(ctsCaseForm['allocateTarget']) }}
+                {{ form_widget(ctsCaseForm['allocateTarget']) }}
+            </div>
+            <div>
+                <label class="squash">Draft response</label>
+                {{ form_widget(ctsCaseForm['draftResponseTarget']) }}
+            </div>
+            <div>
+                {{ form_label(ctsCaseForm['poTarget']) }}
+                {{ form_widget(ctsCaseForm['poTarget']) }}
+            </div>
+            <div class="last">
+                {{ form_label(ctsCaseForm['dispatchTarget']) }}
+                {{ form_widget(ctsCaseForm['dispatchTarget']) }}
+            </div>
+            {% endspaceless %}
+        {% endif %}
+    </div>
+</fieldset>
+
+{% include "HomeOfficeCtsBundle:Case/Script:_memberStopListScript.html.twig" %}
+{% include "HomeOfficeCtsBundle:Case/Script:_topicListScript.html.twig" %}

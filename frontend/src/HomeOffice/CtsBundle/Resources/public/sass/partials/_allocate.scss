@@ -1,0 +1,24 @@
+body.allocate {
+  .panel#allocate {
+    position: relative;
+
+    .button.reject {
+      padding: 0;
+      position: absolute;
+      right: $horizontal-rhythm;
+      top: 21px;
+    }
+
+    label, .spacer {
+      width: $narrow-label;
+    }
+
+    select {
+      width: 473px;
+    }
+
+    .multiteam {
+      display: none;
+    }
+  }
+}

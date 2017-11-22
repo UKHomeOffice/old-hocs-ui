@@ -1,0 +1,126 @@
+<h2>Case details</h2>
+<fieldset>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['uin']) }}
+        {{ form_widget(ctsCaseForm['uin']) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['questionNumber']) }}
+        {{ form_widget(ctsCaseForm['questionNumber']) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['correspondenceType']) }}
+        {{ form_widget(ctsCaseForm['correspondenceType']) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['opDate']) }}
+        {{ form_widget(ctsCaseForm['opDate']) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['woDate']) }}
+        {{ form_widget(ctsCaseForm['woDate']) }}
+    </div>
+    <div class="form-group">
+        <label class="form-label">Received Type</label>
+        {{ form_widget(ctsCaseForm['receivedType']) }}
+    </div>
+    <div class="form-group hidden receivedTypeToggle">
+        {{ form_label(ctsCaseForm['transferDepartmentName']) }}
+        {{ form_widget(ctsCaseForm['transferDepartmentName']) }}
+    </div>
+    <div class="form-group">
+        <label class="form-label">Round Robin</label>
+        {{ form_widget(ctsCaseForm['roundRobin']) }}
+    </div>
+    <div class="form-group hidden roundRobbinToggle">
+        <label class="form-label">Cabinet Office guidance</label>
+        {{ form_widget(ctsCaseForm['cabinetOfficeGuidance']) }}
+    </div>
+    {% include "HomeOfficeCtsBundle:Case/Guft:linkedCaseList.html.twig" with { 'editable' : true } %}
+    {% include "HomeOfficeCtsBundle:Case/Guft:groupedCaseList.html.twig" with { 'editable' : true } %}
+    <h3>Question</h3>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['questionText']) }}
+        {{ form_widget(ctsCaseForm['questionText']) }}
+    </div>
+    <h3>Reply to</h3>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['member']) }}
+        {{ form_widget(ctsCaseForm['member']) }}
+    </div>
+
+    <div{% if (not displayMemberStopListIcon) %} class="hidden"{% endif %}>
+        <div class="stop_list_label">Stop list <b class="icon"></b></div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['constituency']) }}
+        {{ form_widget(ctsCaseForm['constituency']) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['party']) }}
+    {{ form_widget(ctsCaseForm['party']) }}
+    </div>
+    <h3>Mark up</h3>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['markupDecision']) }}
+        {{ form_widget(ctsCaseForm['markupDecision']) }}
+    </div>
+    {% if ctsCaseForm['ogdName'] is defined %}
+        <div class="form-group">
+            {{ form_label(ctsCaseForm['ogdName']) }}
+            {{ form_widget(ctsCaseForm['ogdName']) }}
+        </div>
+    {% endif %}
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['markupUnit']) }}
+        {{ form_widget(ctsCaseForm['markupUnit']) }}
+    </div>
+    <div class="stop_list form-group" data-stop_list_type="topics">
+        {{ form_label(ctsCaseForm['markupTopic']) }}
+        {{ form_widget(ctsCaseForm['markupTopic']) }}
+    </div>
+
+    <div{% if not displayTopicStopListIcon %} class="hidden" collapsed{% endif %}>
+        <div class="stop_list_label">Stop list <b class="icon"></b></div>
+    </div>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['markupMinister']) }}
+        {{ form_widget(ctsCaseForm['markupMinister']) }}
+    </div>
+
+    {% if ctsCase.correspondenceType == 'LPQ' %}
+        <div class="form-group">
+            {{ form_label(ctsCaseForm['lordsMinister']) }}
+            {{ form_widget(ctsCaseForm['lordsMinister']) }}
+        </div>
+    {% endif %}
+
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['secondaryTopic']) }}
+        {{ form_widget(ctsCaseForm['secondaryTopic']) }}
+    </div>
+    <h3>Requires review by</h3>
+    <div class="form-group">
+        {{ form_widget(ctsCaseForm['reviewedByPermSec']) }}
+        {{ form_label(ctsCaseForm['reviewedByPermSec']) }}
+    </div>
+    <div class="form-group">
+        {{ form_widget(ctsCaseForm['reviewedBySpads']) }}
+        {{ form_label(ctsCaseForm['reviewedBySpads']) }}
+    </div>
+    <div class="form-group">
+        {{ form_widget(ctsCaseForm['signedByHomeSec']) }}
+        {{ form_label(ctsCaseForm['signedByHomeSec']) }}
+    </div>
+    <h3>Answer</h3>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['answerText']) }}
+        {{ form_widget(ctsCaseForm['answerText']) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['answeringMinister']) }}
+        {{ form_widget(ctsCaseForm['answeringMinister']) }}
+    </div>
+    {{ render(controller('HomeOfficeCtsBundle:CaseElements:allocate', { 'nodeRef': nodeRef })) }}
+</fieldset>

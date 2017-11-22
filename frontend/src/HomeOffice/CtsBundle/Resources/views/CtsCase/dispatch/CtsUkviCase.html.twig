@@ -1,0 +1,50 @@
+{% extends "HomeOfficeCtsBundle:CtsCase:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Dispatch{% endblock %}
+
+{% block metaTitle %}Dispatch UKVI Case {{ case.urn }}{% endblock %}
+
+{% block overviewReturn %}{% endblock %}
+
+{% block tab1 %}
+    <a name="form_top"></a>
+    {{ form_start(form, {'attr': {'class': 'form-ajax', 'data-casetype': case.correspondenceType}}) }}
+        <h2>Original correspondence</h2>
+        <p>Member: {{ case.member }}</p>
+
+        <div class="panel" data-filter-types="Original">
+            {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+                'filterTypes': ['Original']
+            } %}
+        </div>
+        <hr>
+
+        <h2>Response</h2>
+
+        <label class="form-label">Document(s)</label>
+        <div class="documentTable panel"
+             data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+             data-filter-types="Original attachments,Contribution,Background note,Response,Other"
+             data-allow-remove="false"
+        >
+            {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+                'filterTypes': ['Original attachments', 'Contribution', 'Background note', 'Response', 'Other'],
+                'allowRemove': false
+            } %}
+        </div>
+        <hr>
+
+        <div class="form-group">
+            {% if form.transitions['Dispatch'] is defined %}
+                {{ form_label(form.transitions['Dispatch']) }}
+                {{ form_widget(form.transitions['Dispatch']) }}
+            {% else %}
+                <label class="form-label form-approved">Dispatched</label>
+            {% endif %}
+        </div>
+    {% do form['transitions'].setRendered %}
+
+    {{ form_end(form) }}
+{% endblock %}

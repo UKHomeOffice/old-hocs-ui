@@ -1,0 +1,28 @@
+<fieldset id="panels" class="sibling-group">
+    
+    {% include 'HomeOfficeCtsBundle:Case/Edit:_caseOverview.html.twig' %}
+
+    <div id="deadline" class="panel alt2 page-chunk">
+        <h2>Deadline <span>{{ form_widget(ctsCaseForm['caseResponseDeadline']) }}</span></h2>
+        <h3>Targets</h3>
+        {% spaceless %}{# compatibilty mode bug #}
+        <p>
+            <label>Allocate</label>
+            <span>{{ form_widget(ctsCaseForm['allocateTarget']) }}</span>
+        </p>
+        <p class="squash">
+            <label>Draft response</label>
+            <span>{{ form_widget(ctsCaseForm['draftResponseTarget']) }}</span>
+        </p>
+        <p>
+            <label>SCS approval</label>
+            <span>{{ form_widget(ctsCaseForm['scsApprovalTarget']) }}</span>
+        </p>
+        <p>
+            <label>Final approval</label>
+            <span>{{ form_widget(ctsCaseForm['finalApprovalTarget']) }}</span>
+        </p>
+        {% endspaceless %}
+    </div>
+</fieldset>
+{% include "HomeOfficeCtsBundle:Case/Script:_topicListScript.html.twig" %}

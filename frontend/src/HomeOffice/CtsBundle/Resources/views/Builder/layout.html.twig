@@ -1,0 +1,19 @@
+{% extends "HomeOfficeCtsBundle:CtsCase:layout.html.twig" %}
+
+{% block tab1 %}
+    <a name="form_top"></a>
+    {{ form_start(form, {'method': 'POST', 'attr': {'class': 'form-ajax', 'novalidate' : 'novalidate', 'data-casetype': case.correspondenceType} }) }}
+
+    {% block guftForm %} {% endblock %}
+
+    {% if form['ManualAllocation'] is defined %}
+        <div class="ManualAllocation hidden">
+            {{ form_widget(form['ManualAllocation']['assignedUnit']) }}
+            {{ form_widget(form['ManualAllocation']['assignedTeam']) }}
+            {{ form_widget(form['ManualAllocation']['assignedUser']) }}
+        </div>
+    {% endif %}
+
+    {{ form_widget(form._token) }}
+    {{ form_end(form, {'render_rest': false}) }}
+{% endblock %}

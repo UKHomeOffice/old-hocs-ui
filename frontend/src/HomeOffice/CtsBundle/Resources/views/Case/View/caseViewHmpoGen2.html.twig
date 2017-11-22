@@ -1,0 +1,8 @@
+<div id="panels" class="sibling-group">
+    
+    {% include "HomeOfficeCtsBundle:Case/View:_caseOverview.html.twig" %}
+    
+    <div id="deadline" class="panel alt2 page-chunk">
+        <h2>Deadline <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.caseResponseDeadline)|default('-') }}</span></h2>
+    </div>
+</div>

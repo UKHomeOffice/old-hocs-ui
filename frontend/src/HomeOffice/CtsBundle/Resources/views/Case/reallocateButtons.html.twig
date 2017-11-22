@@ -1,0 +1,6 @@
+{% if ctsCase.assignedUser != null and ctsCase.assignedUser != '' %}
+    {% set allocateLabel = 'Reallocate' %}
+{% else %}
+    {% set allocateLabel = 'Allocate' %}
+{% endif %}
+<a class ="action default" href="{{ path('homeoffice_cts_case_view', { 'nodeRef' : ctsCase.getNodeId, 'actionType' : 'allocate', 'statusChange' : 'Reallocate' }) }}"><span>{{allocateLabel}}</span></a>

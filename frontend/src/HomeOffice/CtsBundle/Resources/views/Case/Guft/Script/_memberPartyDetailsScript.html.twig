@@ -1,0 +1,7 @@
+<script type="text/javascript">
+    var memberPartyList = {'memberParty': {}, 'memberConstituency': {}};
+    {% for member in memberList %}
+        memberPartyList.memberParty['{{member.displayName }}'] = '{{ member.party }}';
+        memberPartyList.memberConstituency['{{member.displayName }}'] = '{{ member.constituency }}';
+    {% endfor %}
+</script>

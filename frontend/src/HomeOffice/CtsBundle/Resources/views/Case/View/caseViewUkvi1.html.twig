@@ -1,0 +1,100 @@
+<div id="correspondence_details" class="panel wide">
+    <h2>Case details</h2>
+    <div class="page-chunk basic_details">
+        <p>
+            <label>Case type:</label>
+            <span>{{ correspondenceSubTypes[ctsCase.correspondenceType] }}</span>
+        </p>
+        <p>
+            <label>Date received:</label>
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.dateReceived) }}</span>
+        </p>
+        <p>
+            {% if (ctsCase.correspondenceType == 'IMCM' or ctsCase.correspondenceType == 'IMCB') and ctsCase.caseTask == 'Create case' %}
+                <label>Date of letter*:</label>
+            {% else %}
+                <label>Date of letter:</label>
+            {% endif %}
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.dateOfLetter) }}</span>
+        </p>
+        <p>
+            <label>Case ref:</label>
+            <span>{{ ctsCase.caseRef }}</span>
+        </p>
+        {% if (ctsCase.correspondenceType == 'IMCM' or ctsCase.correspondenceType == 'IMCB') and ctsCase.caseTask == 'Create case' %}
+            <div class ="last">
+                <p>* Mandatory Fields</p>
+            </div>
+        {% endif %}
+    </div>
+    <div class="page-chunk basic_details_2">
+        <p>
+            {% if (ctsCase.correspondenceType == 'IMCM' or ctsCase.correspondenceType == 'IMCB') and ctsCase.caseTask == 'Create case' %}
+                <label>Channel*:</label>
+            {% else %}
+                <label>Channel:</label>
+            {% endif %}
+            <span>{{ ctsCase.channel }}</span>
+        </p>
+        <p>
+            <label>Response:</label>
+            <span>{{ ctsCase.hmpoResponse }}</span>
+        </p>
+        <p>
+            <label>Priority:</label>
+            <span>
+                {% if ctsCase.priority %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </span>
+        </p>
+        <p>
+            <label>Advice:</label>
+            <span>
+                {% if ctsCase.advice %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </span>
+        </p>
+        {#<p>
+            <label>M ref:</label>
+            <span>
+                {% if ctsCase.isMRef %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </span>
+        </p>
+        <p>
+            <label>B ref:</label>
+            <span>
+                {% if ctsCase.isBRef %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </span>
+        </p>#}
+    </div>
+</div>
+
+{% include "HomeOfficeCtsBundle:Case:linkedCaseList.html.twig" with { 'editable' : false, 'wide' : true } %}
+{% include 'HomeOfficeCtsBundle:Case/View:_replyToConstituentDetails.html.twig' %}
+
+<fieldset id="third_party_correspondent_details" class="panel wide">
+    {% include 'HomeOfficeCtsBundle:Case/View:_thirdPartyCorrespondentDetails.html.twig' %}
+</fieldset>
+
+{% include "HomeOfficeCtsBundle:Case/View:_markupView.html.twig" %}
+
+<div class="panel wide page-chunk" id="minutes_history">
+    <h2>Minutes history</h2>
+    {% include "HomeOfficeCtsBundle:Minute:minuteAdd.html.twig" with { 'minuteForm': ctsCaseMinuteForm, 'addFormTag': true }  %}
+    {% include "HomeOfficeCtsBundle:Minute:minuteFilter.html.twig" %}
+    {% include "HomeOfficeCtsBundle:Minute:minuteHistory.html.twig" %}
+</div>

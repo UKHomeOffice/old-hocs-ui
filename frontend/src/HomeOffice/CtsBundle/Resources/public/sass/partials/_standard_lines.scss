@@ -1,0 +1,51 @@
+body.standard-lines {
+  
+  .standard_line_error {
+    color: $error-red;
+    line-height: $list-line-height;
+    border: 1px solid $error-red;
+    padding: $alert-padding;
+    margin-bottom: 20px;
+  }
+    
+  .associated-topic {
+    height: $input-height;
+    width: 500px;  
+  }
+  
+  #search_details {
+    .standard_line_name input[type="text"] {
+      width: 185px;
+    }
+    fieldset.search_fields1 {
+      label, .spacer {
+        width: 65px;
+      }
+    }
+    fieldset.search_fields2 {
+      > div {
+        min-height: 20px;
+        > label, > .spacer {
+          width: 50px;
+        }
+      }
+    }
+  }
+  
+  .review-date-expired-error, .topic-not-valid-warning {
+    color: $error-red;
+    display: block;
+    margin-top: 10px;
+  }
+    
+  .standard_line_edit {
+    margin-left: 88px;
+    margin-bottom: 5px;
+    
+    a {
+      color: $link-blue;
+      font-weight: normal;
+    }
+  }
+  
+}

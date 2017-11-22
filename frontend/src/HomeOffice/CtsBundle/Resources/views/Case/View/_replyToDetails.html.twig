@@ -1,0 +1,54 @@
+<div class="panel wide page-chunk" id="reply_to">
+   <h2>Reply to</h2>
+    <div class="page-chunk basic_details">
+        <p>
+            <label>Member:</label>
+            <span>{{ ctsCase.member }}</span>
+        <div class="full_width_label">
+            {% if (displayMemberStopListIcon == 'true') %}
+                <div class="stop_list_label">Stop list <b class="icon"></b></div>
+            {% endif %}
+        </div>
+        </p>
+        <p>
+            <label>MP ref:</label>
+            <span>{{ ctsCase.mpRef }}</span>
+        </p>
+        <p>
+            <label>Name:</label>
+            <span>{{ ctsHelper.wordWrap(ctsCase.replyToName, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <label>Telephone:</label>
+            <span>{{ ctsCase.replyToTelephone }}</span>
+        </p>
+        <p class="last">
+            <label>Email:</label>
+                <span>
+                    <a href="mailto:{{ ctsCase.replyToEmail }}" title="{{ ctsCase.replyToEmail }}">{{ ctsCase.replyToEmail[:19] }}{% if ctsCase.replyToEmail[20:] %}&hellip;{%  endif %}</a></span>
+        </p>
+    </div>
+    <div class="page-chunk basic_details_2">
+        <p>
+            <label>Address:</label>
+            <span>{{ ctsHelper.wordWrap(ctsCase.replyToAddressLine1, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <span class="spacer"></span>
+            <span>{{ ctsHelper.wordWrap(ctsCase.replyToAddressLine2, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <span class="spacer"></span>
+            <span>{{ ctsHelper.wordWrap(ctsCase.replyToAddressLine3, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <label>Postcode:</label>
+            <span>{{ ctsCase.replyToPostcode }}</span>
+        </p>
+        <p class="last">
+            <label>Country:</label>
+            <span>{{ ctsCase.replyToCountry }}</span>
+        </p>
+    </div>
+</div>
+

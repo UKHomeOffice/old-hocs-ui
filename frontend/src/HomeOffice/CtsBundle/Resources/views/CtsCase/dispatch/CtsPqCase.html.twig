@@ -1,0 +1,68 @@
+{% extends "HomeOfficeCtsBundle:CtsCase:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Dispatch{% endblock %}
+
+{% block metaTitle %}Dispatch PQ Case {{ case.urn }}{% endblock %}
+
+{% block tab1 %}
+    <a name="form_top"></a>
+    {{ form_start(form, {'attr': {'class': 'form-ajax', 'data-casetype': case.correspondenceType}}) }}
+        <h2>Question</h2>
+
+        <h3>Question (asked by {{ case.member }})</h3>
+
+        <p>{{ case.questionText }}</p>
+        <hr>
+
+        <div class="editResponseToggle">
+            <h2>
+                Response
+                {% if caseIsStep(case, 'dispatch') %}<a href="#" class="editResponseTrigger">Edit</a>{% endif %}
+            </h2>
+            <p class="{% if caseIsStep(case, 'dispatch') %}editResponseToggle {% endif %}answerTextDisplay">{{ case.answerText }}</p>
+        </div>
+
+        {% if caseIsStep(case, 'dispatch') %}
+            <div class="editResponseToggle hidden">
+                <h2>Response <a href="#" class="editResponseSave">Save</a></h2>
+                <div class="form-group">
+                    {{ form_widget(form['answerText']) }}
+                    {{ form_widget(form['editAnswer']) }}
+                </div>
+            </div>
+        {% endif %}
+        {% do form['answerText'].setRendered %}
+
+        <div class="documentTable panel"
+             data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+             data-allow-remove="{{ caseIsStep(case, 'dispatch') ? 'true' : 'false' }}"
+        >
+            {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+                'allowRemove': caseIsStep(case, 'dispatch') ? true : false
+            } %}
+        </div>
+
+        {% if form['document'] is defined %}
+            {% if caseIsStep(case, 'dispatch') %}
+                <div class="form-group">
+                    {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with {
+                        'form': form['document']
+                    } %}
+                </div>
+            {% endif %}
+            {% do form['document'].setRendered %}
+        {% endif %}
+        <hr>
+
+        <div class="form-group">
+            {{ form_label(form.answeringMinister) }}
+            {{ form_widget(form.answeringMinister) }}
+        </div>
+
+        <div class="form-group">
+            {% include 'HomeOfficeCtsBundle:CaseElements:transitions.html.twig' with { 'transitions': form['transitions'], 'step': step} %}
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

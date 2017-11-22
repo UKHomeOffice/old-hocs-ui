@@ -1,0 +1,57 @@
+<div id="deadline" class="panel">
+    <h2>Deadlines</h2>
+    {% if case.allocateTarget is defined %}
+        <p>
+            <strong>Allocate</strong>
+            <span class="right">{{ case.allocateTarget|date('d/m/Y') }}</span>
+        </p>
+    {% endif %}
+
+    {% if case.allocateToResponderTarget is defined %}
+        <p>
+            <strong>Allocate</strong>
+            <span class="right">{{ case.allocateToResponderTarget|date('d/m/Y') }}</span>
+        </p>
+    {% endif %}
+
+    {% if case.draftResponseTarget is defined %}
+        <p>
+            <strong>Draft</strong>
+            <span class="right">{{ case.draftResponseTarget|date('d/m/Y') }}</span>
+        </p>
+    {% endif %}
+
+    {% if case.scsApprovalTarget is defined %}
+        <p>
+            <strong>SCS Approval</strong>
+            <span class="right">{{ case.scsApprovalTarget|date('d/m/Y') }}</span>
+        </p>
+    {% endif %}
+    {% if case.caseResponseDeadline is defined %}
+        <p>
+            <strong>Final reply</strong>
+            <span class="right">{{ case.caseResponseDeadline|date('d/m/Y') }}</span>
+        </p>
+    {% endif %}
+
+    {% if case.bringUpDate is defined and case.bringUpDate is not null%}
+        <p>
+            <strong>Bring up date</strong>
+            <span class="right">{{ case.bringUpDate|date('d/m/Y') }}</span>
+        </p>
+    {% endif %}
+
+    {% if case.getShortName == 'CtsNo10Case' and case.draftDate is defined and case.draftDate %}
+        <p>
+            <strong>Draft Deadline</strong>
+            <span class="right">{{ case.draftDate|date('d/m/Y') }}</span>
+        </p>
+    {% endif %}
+
+    {% if case.pitExtension is defined %}
+        <p class="hidden">
+            <strong>PIT extension</strong>
+            <span class="right pitExtension"></span>
+        </p>
+    {% endif %}
+</div>

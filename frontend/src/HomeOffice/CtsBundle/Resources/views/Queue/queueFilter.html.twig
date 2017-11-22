@@ -1,0 +1,40 @@
+<div id="filter_queue" class="hide_show{% if showFilters %} startOpen{% endif %}" data-hide_show_text="Filter by">
+    <div id="search_details" class="panel huge">
+        <fieldset class="filter-holder">
+            {% if ctsHomeFiltersForm['status'] is defined %}
+                <div>
+                    {{ form_label(ctsHomeFiltersForm['status']) }}
+                    {{ form_widget(ctsHomeFiltersForm['status']) }}
+                </div>
+            {% endif %}
+            {% if ctsHomeFiltersForm['team'] is defined %}
+                <div>
+                    {{ form_label(ctsHomeFiltersForm['team']) }}
+                    {{ form_widget(ctsHomeFiltersForm['team']) }}
+                </div>
+            {% endif %}
+            {% if ctsHomeFiltersForm['correspondenceType'] is defined %}
+                <div>
+                    {{ form_label(ctsHomeFiltersForm['correspondenceType']) }}
+                    {{ form_widget(ctsHomeFiltersForm['correspondenceType']) }}
+                </div>
+            {% endif %}
+        </fieldset>
+        <fieldset class="filter-holder">
+            {% if ctsHomeFiltersForm['task'] is defined %}
+                <div>
+                    {{ form_label(ctsHomeFiltersForm['task']) }}
+                    {{ form_widget(ctsHomeFiltersForm['task']) }}
+                </div>
+            {% endif %}
+            {% if ctsHomeFiltersForm['assignedUser'] is defined %}
+                <div>
+                    {{ form_label(ctsHomeFiltersForm['assignedUser']) }}
+                    {{ form_widget(ctsHomeFiltersForm['assignedUser']) }}
+                </div>
+            {% endif %}
+        </fieldset>
+        <span class="button as-link">{{form_widget(ctsHomeFiltersForm['clear'])}}</span>
+        <span class="button">{{ form_widget(ctsHomeFiltersForm['apply']) }}</span>
+    </div>
+</div>

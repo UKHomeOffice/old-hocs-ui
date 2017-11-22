@@ -1,0 +1,68 @@
+<div id="correspondence_details" class="panel wide">
+    <h2>Case details</h2>
+    <div class="page-chunk">
+        <p>
+            <label>Case type:</label>
+            <span>{{ correspondenceSubTypes[ctsCase.correspondenceType] }}</span>
+        </p>
+        <p>
+            <label>Date received:</label>
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.dateReceived) }}</span>
+        </p>
+        <p class="last">
+            <label>Date of letter:</label>
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.dateOfLetter) }}</span>
+        </p>
+    </div>
+    <div class="page-chunk">
+        <p>
+            <label>Channel:</label>
+            <span>{{ ctsCase.channel }}</span>
+        </p>
+        {% if ctsCase.correspondenceType == 'MIN' or ctsCase.correspondenceType == 'TRO'%}
+            <p>
+                <label>Response:</label>
+                <span>{{ ctsCase.hmpoResponse }}</span>
+            </p>
+        {% endif %}
+        <p>
+            <label>Priority:</label>
+            <span>
+                {% if ctsCase.priority %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </span>
+        </p>
+        <p class="last">
+            <label>Advice:</label>
+            <span>
+                {% if ctsCase.advice %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </span>
+        </p>
+    </div>
+</div>
+
+{% include "HomeOfficeCtsBundle:Case:linkedCaseList.html.twig" with { 'editable' : false, 'wide' : true } %}
+
+{% if ctsCase.correspondenceType == 'MIN'%}
+    {% include 'HomeOfficeCtsBundle:Case/View:_replyToConstituentDetails.html.twig' %}
+{% elseif ctsCase.correspondenceType == 'DTEN' or ctsCase.correspondenceType == 'UTEN' %}
+    {% include 'HomeOfficeCtsBundle:Case/View:_replyToDetails.html.twig' %}
+{% elseif ctsCase.correspondenceType == 'TRO' %}
+    {% include 'HomeOfficeCtsBundle:Case/View:_correspondentDetails.html.twig' with { 'title' : 'Correspondent details' }  %}
+{% endif %}
+
+{% include "HomeOfficeCtsBundle:Case/View:_markupView.html.twig" %}
+
+<div class="panel wide page-chunk" id="minutes_history">
+    <h2>Minutes history</h2>
+    {% include "HomeOfficeCtsBundle:Minute:minuteAdd.html.twig" with { 'minuteForm': ctsCaseMinuteForm, 'addFormTag': true }  %}
+    {% include "HomeOfficeCtsBundle:Minute:minuteFilter.html.twig" %}
+    {% include "HomeOfficeCtsBundle:Minute:minuteHistory.html.twig" %}
+</div>

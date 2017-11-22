@@ -1,0 +1,60 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Draft{% endblock %}
+
+{% block metaTitle %}DTEN Case {{ case.urn }}{% endblock %}
+
+{% block guftForm %}
+    <h2>Original Correspondence</h2>
+    <p>Member: {{ case.member }}</p>
+
+    <div class="panel">
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+            'filterTypes': ['Original']
+        } %}
+    </div>
+    <hr>
+
+    <h2>Case details</h2>
+
+    <h3>Linked cases</h3>
+    {% if case.linkedCases %}
+        {% include 'HomeOfficeCtsBundle:CaseElements:linkedCasesTable.html.twig' with { 'form': form.linkedCases } %}
+    {% else %}
+        There are no linked cases
+    {% endif %}
+    <hr>
+
+    <h2>Response</h2>
+    <label class="form-label">Document(s)</label>
+    <div class="documentTable panel"
+         data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+         data-filter-types="Original attachments,Contribution,Background note,Response,Other"
+         data-allow-remove="{{ caseIsStep(case, 'draft') ? "true" : "false" }}"
+    >
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+            'filterTypes': ['Original attachments', 'Contribution', 'Background note', 'Response', 'Other'],
+            'allowRemove': caseIsStep(case, 'draft')
+        } %}
+    </div>
+
+    {% if caseIsStep(case, 'draft') %}
+        <div class="form-group">
+            {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form['document']} %}
+        </div>
+    {% endif %}
+
+    {% if caseIsStep(case, 'draft') %}
+        <hr>
+        <h2>Allocate to QA Review</h2>
+        {% include 'HomeOfficeCtsBundle:Builder:groups/allocate.html.twig' %}
+        {{ form_widget(form.SendForQAReview, {'label': 'Submit for approval'}) }}
+        {{ form_widget(form.save) }}
+    {% else %}
+        <div class="form-group">
+            <label class="form-label form-approved">Approved</label>
+        </div>
+    {% endif %}
+{% endblock %}

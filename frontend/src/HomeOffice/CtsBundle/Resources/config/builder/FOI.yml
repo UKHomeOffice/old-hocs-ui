@@ -1,0 +1,24 @@
+services:
+    home_office_cts.form.create.foi_create:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Create\FOI
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FOICreate }
+
+    home_office_cts.form.draft.foi_draft:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Draft\FOI
+        parent: home_office_cts.form.basetype
+        tags:
+            - { name: form.type, alias: FOIDraft }
+
+    home_office_cts.form.approve.foi_approve:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Approve\FOI
+        parent: home_office_cts.form.basetype
+        tags:
+            - { name: form.type, alias: FOIApprove }
+
+    home_office_cts.form.dispatch.foi_dispatch:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Dispatch\FOI
+        parent: home_office_cts.form.basetype
+        tags:
+            - { name: form.type, alias: FOIDispatch }

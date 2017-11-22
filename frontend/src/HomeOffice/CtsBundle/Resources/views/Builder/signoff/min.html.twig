@@ -1,0 +1,107 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Signoff{% endblock %}
+
+{% block metaTitle %}Approve DCU Ministerial Case {{ case.urn }}{% endblock %}
+
+{% block overviewReturn %}{% endblock %}
+
+{% block guftForm %}
+    <h2>Original correspondence</h2>
+
+    <p>Member: {{ case.member }}</p>
+    <div class="panel">
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+            'filterTypes': ['Original']
+        } %}
+    </div>
+    <hr>
+
+    <h2>Response</h2>
+
+    <label class="form-label">Document(s)</label>
+    <div class="documentTable panel"
+         data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+         data-filter-types="Original attachments,Contribution,Background note,Response,Other"
+         data-allow-remove="{{ caseIsStep(case, 'signOff') ? "true" : "false" }}"
+    >
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+            'filterTypes': ['Original attachments', 'Contribution', 'Background note', 'Response', 'Other'],
+            'allowRemove': caseIsStep(case, 'signOff')
+        } %}
+    </div>
+
+    {% if caseIsStep(case, 'signOff') %}
+        <div class="form-group">
+            {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form['document']} %}
+        </div>
+    {% endif %}
+    <hr>
+
+    <h2>Sign off</h2>
+    {% if case.homeSecretaryReply and form.SendHSPrivateOfficeApprovalForHSSignOff is defined %}
+        <div class="form-group">
+            <label class="form-label"><strong>Home Secretary's Private Office</strong></label>
+            {{ form_widget(form.SendHSPrivateOfficeApprovalForHSSignOff) }}
+
+            {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label"><strong>Home Secretary</strong></label>
+            <input type="button" value="Approve" class="button" disabled>
+            <input type="button" value="Return" class="button button-secondary" disabled>
+        </div>
+
+    {% elseif case.homeSecretaryReply and form.SendHSSignOffForDispatch is defined %}
+        <div class="form-group">
+            <label class="form-label"><strong>Home Secretary's Private Office</strong></label>
+            <label class="form-label form-approved">Approved</label>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label"><strong>Home Secretary</strong></label>
+            {{ form_widget(form.SendHSSignOffForDispatch) }}
+
+            {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+        </div>
+
+    {% elseif form.SendPrivateOfficeApprovalForMinistersSignOff is defined %}
+        <div class="form-group">
+            <label class="form-label"><strong>Private Office</strong></label>
+            {{ form_widget(form.SendPrivateOfficeApprovalForMinistersSignOff) }}
+
+            {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label"><strong>Minister</strong></label>
+            <input type="button" value="Approve" class="button" disabled>
+            <input type="button" value="Return" class="button button-secondary" disabled>
+        </div>
+    {% elseif form.SendMinistersSignOffForDispatch is defined %}
+        <div class="form-group">
+            <label class="form-label"><strong>Private Office</strong></label>
+            <label class="form-label form-approved">Approved</label>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label"><strong>Minister</strong></label>
+            {{ form_widget(form.SendMinistersSignOffForDispatch) }}
+
+            {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+        </div>
+    {% else %}
+        <div class="form-group">
+            <label class="form-label"><strong>Private Office</strong></label>
+            <label class="form-label form-approved">Approved</label>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label"><strong>Minister</strong></label>
+            <label class="form-label form-approved">Approved</label>
+        </div>
+    {% endif %}
+{% endblock %}

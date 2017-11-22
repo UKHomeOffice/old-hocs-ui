@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--[if lte IE 8]><html class="ie8" lang="en-GB"><![endif]-->
+<!--[if !(lte IE 8)]> --><html lang="en-GB"><!-- <![endif]-->
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>{{ site_title }}: {% block title %}Welcome!{% endblock %}</title>
+        {% include "::stylesheets.html.twig" %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body class="{% block bodyClass %}{% endblock %}">
+        {% block first %}{% endblock %}
+        <div id="header">
+            <div class="constraint">
+                <div id="intro">
+                    <h1>{{ site_title }}</h1>
+                </div>
+                <div class="controls">
+                    {% block control_surround_start %}{% endblock %}
+                    {% block searchButton %}
+                        <span class="action"><a href="{{ path('homeoffice_cts_search_globalsearch') }}" target="_blank">Search</a></span>
+                    {% endblock %}
+                    {% block helpButton %}
+                        <span class="action" id="help-button"><a href="{{ path('homeoffice_cts_help_help') }}" target="_blank">Help</a></span>
+                    {% endblock %}
+                    {% block primary_controls %}{% endblock %}
+                    {% block dropdown %}
+                    <ul class="dropdown">
+                        <li class="button toggler">
+                            <a href="">
+                                <span>Tools</span>
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+                        {% if is_granted('manageStandardLines', app.user) %}
+                            <li>
+                                <span class="subaction">
+                                    <a href="{{ path('homeoffice_cts_standardlines_index') }}" target="_blank">Standard lines</a>
+                                </span>
+                            </li>
+                        {% endif %}
+
+                        {% if is_granted('create', app.user) %}
+                            <li>
+                                <span class="subaction">
+                                    <a href="{{ path('homeoffice_cts_case_upload') }}" target="_blank">Upload feed</a>
+                                </span>
+                            </li>
+                        {% endif %}
+
+                        {% if is_granted('manageTemplates', app.user) %}
+                            <li>
+                                <span class="subaction">
+                                    <a href="{{ path('homeoffice_cts_documenttemplates_index') }}" target="_blank">Manage templates</a>
+                                </span>
+                            </li>
+                        {% endif %}
+
+                        {% if is_granted('bulkCreateCases', app.user) %}
+                            <li>
+                                <span class="subaction">
+                                    <a href="{{ path('homeoffice_cts_bulkcase_create') }}" target="_blank">Bulk create cases</a>
+                                </span>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <span class="subaction">
+                                <a href="{{ path('reset_password') }}" target="_blank">Reset password</a>
+                            </span>
+                        </li>
+                        {% block sub_controls %}{% endblock %}
+                    </ul>
+                    {% endblock %}
+                    {% if app.user %}
+                        <p id="user">Signed in as <strong>{{ app.user.username }}</strong></p>
+                    {% endif %}
+                    {% block signoutButton %}
+                        <a class ="subordinate action" id="signout-button" href="{{ path('signout')}}"><span>Sign out</span></a>
+                    {% endblock%}
+                    {% block control_surround_end %}{% endblock %}
+                </div>
+            </div>
+        </div>
+        <div id="outer">
+            <ul id="breadcrumb">
+                {% block breadcrumb_home %}
+                    <li><a href="{{ path('homeoffice_cts_home_home') }}">Home</a></li>
+                {% endblock %}
+                {% block breadcrumb_trail %}{% endblock %}
+            </ul>
+            {% block body %}{% endblock %}
+        </div>
+        <div id="footer">
+            <div class="constraint">
+                <div class="controls">
+                {%  block primary_controls_footer %}{% endblock %}
+                </div>
+            </div>
+        </div>
+        {% block last %}{% endblock %}
+        {% block javascripts %}
+            {% include "::javascripts.html.twig" %}
+        {% endblock %}
+        {% block extra_javascripts %}
+        {% endblock %}
+        <!-- BUILD: {{ build_id }} HASH: {{ git_commit }} -->
+    </body>
+</html>

@@ -1,0 +1,48 @@
+{% form_theme allocateUserForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+
+{{ form_start(allocateUserForm, {'attr': {'novalidate' : 'novalidate' } }) }}
+
+    <div class="panel wide" id="allocate">
+        {{ form_errors(allocateUserForm) }}
+        
+        <h2>
+            {% if activeTransition is defined and activeTransition != null %}
+                {{ activeTransition.allocateHeader }}
+            {% else %}
+                Allocate
+            {% endif %}
+        </h2>
+        
+        <fieldset>
+            <span class="button reject as-link">{{ form_widget(allocateUserForm['CancelAllocateButton']) }}</span>
+            {% set allocateToLength = allocateUserForm['allocateTo'].vars.value|length %}
+            <div class="spot-control with-inner{% if allocateToLength == 1 %} multiteam{% endif %}">
+                {{ form_widget(allocateUserForm['allocateTo']) }}
+            </div>
+            {% if allocateToLength == 1 %}
+                <div class="success">
+                    Due to the fact that you belong to multiple teams and/or units, please allocate to yourself using the options below.
+                </div>
+            {% endif %}
+            <div>
+                {{ form_label(allocateUserForm['assignedUnit']) }}
+                {{ form_widget(allocateUserForm['assignedUnit']) }}
+                <span class="button">{{ form_widget(allocateUserForm['SetUnit']) }}</span>
+            </div>
+            <div>
+                {{ form_label(allocateUserForm['assignedTeam']) }}
+                {{ form_widget(allocateUserForm['assignedTeam']) }}
+                <span class="button">{{ form_widget(allocateUserForm['SetTeam']) }}</span>
+            </div>
+            <div>
+                {{ form_label(allocateUserForm['assignedUser']) }}
+                {{ form_widget(allocateUserForm['assignedUser']) }}
+            </div>
+            <div class="allocate_submit_button last">
+                <span class="spacer">&nbsp;</span>
+                <span class="button default as-control">{{ form_widget(allocateUserForm['AllocateButton']) }}</span>
+            </div>
+        </fieldset>
+    </div>
+
+{{ form_end(allocateUserForm) }}

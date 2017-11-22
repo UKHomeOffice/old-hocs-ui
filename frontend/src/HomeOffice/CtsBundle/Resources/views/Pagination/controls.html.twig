@@ -1,0 +1,49 @@
+{% if (paginatorMethod is not defined) %}
+    {% set paginatorMethod = 'GET' %}
+{% endif %}
+<div id="page-controls" class="page-controls">
+    <div class="num-results">
+        Showing {{ displayedResultCount }} of {{ paginator.totalResults }} results
+    </div>
+    <div class="pages">
+        {% if paginator.getPages|length > 0 %}
+            <ul>
+                <li>
+                    {% if paginator.showPreviousLink %}
+                        {% if paginatorMethod == 'POST' %}
+                            {{form_widget(searchByForm['pagePrevious'])}}
+                        {% else %}
+                            <a href="{{ path(paginator.pagePath, app.request.query.all|merge( {'pageNumber': paginator.pageNumber-1} )) }}">Previous</a>
+                        {% endif %}
+                    {% else %}
+                        Previous
+                    {% endif %}
+                </li>
+                {% for page in paginator.getPages %}
+                    <li>
+                        {% if page != paginator.pageNumber %}
+                            {% if paginatorMethod == 'POST' %}
+                                {{form_widget(searchByForm['page_'~page])}}
+                            {% else %}
+                                <a href="{{ path(paginator.pagePath, app.request.query.all|merge( {'pageNumber': page} )) }}">{{ page }}</a>
+                            {% endif %}
+                        {% else %}
+                            {{ page }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                <li>
+                    {% if paginator.showNextLink %}
+                        {% if paginatorMethod == 'POST' %}
+                            {{form_widget(searchByForm['pageNext'])}}
+                        {% else %}
+                            <a href="{{ path(paginator.pagePath, app.request.query.all|merge( {'pageNumber': paginator.pageNumber+1} )) }}">Next</a>
+                        {% endif %}
+                    {% else %}
+                        Next
+                    {% endif %}
+                </li>
+            </ul>
+        {% endif %}
+    </div>
+</div>

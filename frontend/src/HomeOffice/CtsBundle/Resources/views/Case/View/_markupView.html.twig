@@ -1,0 +1,77 @@
+<div class="panel wide page-chunk" id="markup">
+    <h2>Mark up</h2>
+    <p>
+        {% if (ctsCase.correspondenceType == 'IMCM' or ctsCase.correspondenceType == 'IMCB') and ctsCase.caseTask == 'Create case' %}
+            <label>Decision * :</label>
+        {% else %}
+            <label>Decision:</label>
+        {% endif %}
+        <span>{{ ctsCase.markupDecision }}</span>
+    </p>
+    {% if ctsCase.markupDecision == 'Refer to OGD' %}
+        <p>
+            <label>Department name:</label>
+            {% if ctsCase.ogdName is defined %}
+                <span>{{ ctsCase.ogdName }}</span>
+            {% endif %}
+        </p>
+    {% endif %}
+    <p>
+        {% if (ctsCase.correspondenceType == 'IMCM' or ctsCase.correspondenceType == 'IMCB') and ctsCase.caseTask == 'Create case' %}
+            <label>Unit * :</label>
+        {% else %}
+            <label>Unit:</label>
+        {% endif %}
+        <span>{{ ctsCase.markupUnit }}</span>
+    </p>
+    <p>
+        <label>Topic:</label>
+        <span>{{ ctsCase.markupTopic }}</span>
+        {% if (displayTopicStopListIcon == 'true') %}
+            <div class="full_width_label">
+                <div class="stop_list_label">Stop list <b class="icon"></b></div>
+            </div>
+        {% endif %}
+    {% if (standardLine != null) %}
+        <p>
+            <label>Standard Line:</label>
+            <span>
+                <a href="{{ path('homeoffice_cts_standardline_download', { 'documentNodeRef' : standardLine.getNodeId }) }}">{{ standardLine.name }}</a>
+                {% if standardLine.isReviewRequired %}
+                    <span class="standard_line_markup_expired">Expired</span>
+                {% endif %}
+            </span>
+        </p>
+    {% endif %}
+
+    <p{% if not ctsCase.secondaryTopic and ctsCase.correspondenceType != 'LPQ' %} class="last"{% endif %}>
+        {% if ctsCase.correspondenceType == 'IMCM' and ctsCase.caseTask == 'Create case' %}
+            <label>Minister * :</label>
+        {% else %}
+            <label>Minister:</label>
+        {% endif %}
+        <span>{{ ctsCase.markupMinister }}</span>
+    </p>
+
+    {% if ctsCase.correspondenceType == 'LPQ'%}
+    <p {% if not ctsCase.secondaryTopic %} class="last"{% endif %}>
+        <label>Lord's Minister:</label>
+        <span>{{ ctsCase.lordsMinister }}</span>
+    </p>
+    {% endif %}
+    {% if (ctsCase.correspondenceType == 'IMCM' or ctsCase.correspondenceType == 'IMCB') and ctsCase.caseTask == 'Create case' %}
+        <p>
+            <label>Secondary Topic:</label>
+            <span>{{ ctsCase.secondaryTopic }}</span>
+        </p>
+        <div class ="last">
+            <p>* Mandatory Fields</p>
+        </div>
+    {% else %}
+        <p class="last">
+            <label>Secondary Topic:</label>
+            <span>{{ ctsCase.secondaryTopic }}</span>
+        </p>
+    {% endif %}
+
+</div>

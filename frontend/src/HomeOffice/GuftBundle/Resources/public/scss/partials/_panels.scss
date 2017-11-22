@@ -1,0 +1,15 @@
+/* Panels */
+
+.panel {
+  background-color: $panel-colour;
+  padding: $gutter-half;
+  margin-bottom: $gutter-half;
+
+  p {
+    margin: $gutter-one-quarter 0 0;
+  }
+}
+
+.panel-overflow {
+  overflow: hidden;
+}

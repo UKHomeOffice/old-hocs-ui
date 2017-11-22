@@ -1,0 +1,17 @@
+{% if documentTemplates|length > 0 %}
+    <h2 class="standalone" id="template_list_title">Templates</h2>
+    <div id="template_list" class="case-table">
+        <table>
+            <tr>
+                <th class="date">Template name</th>
+                <th class="name">Download</th>
+            </tr>
+            {% for documentTemplate in documentTemplates %}
+                <tr>
+                    <td class="date">{{ documentTemplate.templateName }}</td>
+                    <td class="name"><a href="{{ path('homeoffice_cts_documenttemplate_downloadfromcase', { 'caseNodeRef' : ctsCase.getNodeId, 'documentNodeRef' : documentTemplate.getNodeId }) }}">{{ documentTemplate.name }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endif %}

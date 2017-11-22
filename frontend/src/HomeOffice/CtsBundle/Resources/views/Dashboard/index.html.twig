@@ -1,0 +1,249 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% block title %}{% endblock %}
+
+{% block bc %}
+    <section class="grid-row">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>Dashboard</li>
+            </ol>
+        </nav>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section class="grid-row">
+        <div class="column-full" id="dashboard">
+            <h2>Dashboard</h2>
+
+            <div id="tabs">
+                <ul>
+                    <li><a href="#tabs-1" data-toggle="tab">Overview</a></li>
+                    <li><a href="#tabs-2" data-toggle="tab">PQ</a></li>
+                    <li><a href="#tabs-3" data-toggle="tab">UKVI</a></li>
+                    <li><a href="#tabs-4" data-toggle="tab">DCU</a></li>
+                    <li><a href="#tabs-5" data-toggle="tab">HMPO</a></li>
+                    <li><a href="#tabs-6" data-toggle="tab">FOI</a></li>
+                </ul>
+
+                <div id="tabs-1">
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'caseType', 'value': 'PQ'},
+                        'groupBy': 'status',
+                        'searchParams': {'businessUnit': 'PQ'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'caseType', 'value': 'UKVI'},
+                        'groupBy': 'status',
+                        'searchParams': {'businessUnit': 'UKVI'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'caseType', 'value': 'DCU'},
+                        'groupBy': 'status',
+                        'searchParams': {'businessUnit': 'DCU'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'caseType', 'value': 'HMPO'},
+                        'groupBy': 'status',
+                        'searchParams': {'businessUnit': 'HMPO'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'caseType', 'value': 'FOI'},
+                        'groupBy': 'status',
+                        'searchParams': {'businessUnit': 'FOI'},
+                    } only %}
+                </div>
+
+                <div id="tabs-2">
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'OPQ'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'PQ', 'caseType': 'OPQ'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'NPQ'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'PQ', 'caseType': 'NPQ'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'LPQ'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'PQ', 'caseType': 'LPQ'},
+                    } only %}
+                </div>
+
+                <div id="tabs-3">
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'IMCB'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'UKVI', 'caseType': 'IMCB'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'IMCM'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'UKVI', 'caseType': 'IMCM'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'UTEN'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'UKVI', 'caseType': 'UTEN'},
+                    } only %}
+                </div>
+
+                <div id="tabs-4">
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'MIN'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'DCU', 'caseType': 'MIN'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'TRO'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'DCU', 'caseType': 'TRO'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'DTEN'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'DCU', 'caseType': 'DTEN'},
+                    } only %}
+                </div>
+
+                <div id="tabs-5">
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'COL'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'HMPO', 'caseType': 'COL'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'COM1'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'HMPO', 'caseType': 'COM1'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'COM2'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'HMPO', 'caseType': 'COM2'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'DGEN'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'HMPO', 'caseType': 'DGEN'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'GNR'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'HMPO', 'caseType': 'GNR'},
+                    } only %}
+                </div>
+
+                <div id="tabs-6">
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'FOI'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'FOI', 'caseType': 'FOI'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'FTC'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'FOI', 'caseType': 'FTC'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'FTCI'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'FOI', 'caseType': 'FTCI'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'FSC'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'FOI', 'caseType': 'FSC'},
+                    } only %}
+
+                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
+                        'chart': chart,
+                        'selectBy': {'field': 'correspondenceType', 'value': 'FSCI'},
+                        'groupBy': 'task',
+                        'tableLimit': 5,
+                        'searchParams': {'businessUnit': 'FOI', 'caseType': 'FSCI'},
+                    } only %}
+
+                    {#{% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {#}
+                        {#'chart': chart,#}
+                        {#'selectBy': {'field': 'correspondenceType', 'value': 'FLT'},#}
+                        {#'groupBy': 'task',#}
+                        {#'tableLimit': 5,#}
+                        {#'searchParams': {'businessUnit': 'FOI', 'caseType': 'FLT'},#}
+                    {#} only %}#}
+
+                    {#{% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {#}
+                        {#'chart': chart,#}
+                        {#'selectBy': {'field': 'correspondenceType', 'value': 'FUT'},#}
+                        {#'groupBy': 'task',#}
+                        {#'tableLimit': 5,#}
+                        {#'searchParams': {'businessUnit': 'FOI', 'caseType': 'FUT'},#}
+                    {#} only %}#}
+                </div>
+            </div>
+        </div>
+
+    </section>
+{% endblock %}

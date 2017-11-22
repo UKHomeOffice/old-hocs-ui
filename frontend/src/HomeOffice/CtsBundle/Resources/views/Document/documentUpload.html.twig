@@ -1,0 +1,30 @@
+{% form_theme ctsCaseForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+{% if documentErrorMsg is defined %}
+<div class="global error" {% if documentErrorMsg == null %} style="display: none;"{% endif %}>{{ documentErrorMsg }}</div>
+{% else %}
+<div class="global error" style="display: none;"></div>
+{% endif %}
+<div id="document-form">
+    <fieldset id="doc_upload" class="panel medium">
+        <h3>Add document</h3>
+            <div>
+                {{ form_label(ctsCaseForm.newDocument['documentType']) }}
+                {{ form_widget(ctsCaseForm.newDocument['documentType']) }}
+            </div>
+            <div class="textarea">
+                {{ form_label(ctsCaseForm.newDocument['documentDescription']) }}
+                {{ form_widget(ctsCaseForm.newDocument['documentDescription']) }}
+            </div>
+            <div class="file-upload">
+                {{ form_label(ctsCaseForm.newDocument['file']) }}
+                {{ form_widget(ctsCaseForm.newDocument['file']) }}
+            </div>
+            <div class="submit">
+                <span class="spacer"></span>
+                <span class="default button as-control">{{ form_widget(ctsCaseForm.newDocument['addDocument']) }}</span>
+            </div>
+            <div class="last">
+                <span>* Mandatory fields when adding a document</span>
+            </div>
+    </fieldset>
+</div>

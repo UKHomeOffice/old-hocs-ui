@@ -1,0 +1,34 @@
+<div class="modal caseAllocateGroup">
+    <h2>Allocate Case</h2>
+    <p>This case will be allocated to:</p>
+
+    {{ form_start(form, {
+        'action': path('homeoffice_cts_ctscase_manualallocation', { 'nodeRef': case.nodeId, 'transition': transition }),
+        'attr': {'class': 'form-ajax', 'novalidate' : 'novalidate' } })
+    }}
+        <div class="caseAllocate">
+            {{ form_widget(form['allocateTo'], {'attr': {'class': 'caseAllocateFilter'}}) }}
+
+            <div class="form-group">
+                {{ form_label(form['assignedUnit']) }}
+                {{ form_widget(form['assignedUnit']) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form['assignedTeam']) }}
+                {{ form_widget(form['assignedTeam']) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form['assignedUser']) }}
+                {{ form_widget(form['assignedUser']) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_widget(form['ManualAllocate']) }}
+                <a href="#close-modal" rel="modal:close" class="button button-secondary">Cancel</a>
+            </div>
+        </div>
+        {{ form_widget(form._token) }}
+    {{ form_end(form, {'render_rest': false}) }}
+</div>

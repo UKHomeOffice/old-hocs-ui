@@ -1,0 +1,37 @@
+{% form_theme ctsCaseDocumentTemplateForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+{{ form_start(ctsCaseDocumentTemplateForm, {'attr': {'novalidate' : 'novalidate' } }) }} 
+
+<div id="document-form" class="panel wide">
+    <fieldset id="case_upload" class="basic_details">
+        <div>
+            {{ form_label(ctsCaseDocumentTemplateForm.templateName) }}
+            {{ form_widget(ctsCaseDocumentTemplateForm.templateName) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseDocumentTemplateForm.appliesToCorrespondenceType) }}
+            {{ form_widget(ctsCaseDocumentTemplateForm.appliesToCorrespondenceType) }}
+        </div>
+        <div class="dateField">
+            {{ form_label(ctsCaseDocumentTemplateForm.validFromDate) }}
+            {{ form_widget(ctsCaseDocumentTemplateForm.validFromDate, { 'attr' : { 'class' : 'dateSelect' } }) }}
+        </div>
+        <div class="dateField">
+            {{ form_label(ctsCaseDocumentTemplateForm.validToDate) }}
+            {{ form_widget(ctsCaseDocumentTemplateForm.validToDate, { 'attr' : { 'class' : 'dateSelect' } }) }}
+        </div>
+        {% if formPurpose == 'create' %}
+            <div>
+                {{ form_label(ctsCaseDocumentTemplateForm.file) }}
+                {{ form_widget(ctsCaseDocumentTemplateForm.file) }}
+            </div>
+        {% endif %}
+        {% if documentNodeRef is defined %}
+            <div>
+                <a href="{{ path('homeoffice_cts_documenttemplate_download', { 'documentNodeRef' : documentNodeRef }) }}">Download template</a>
+            </div>
+        {% endif %}
+        <span class="button default">{{ form_widget(ctsCaseDocumentTemplateForm.saveTemplateButton) }}</span>
+    </fieldset>
+</div>
+        
+{{ form_end(ctsCaseDocumentTemplateForm) }}

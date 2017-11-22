@@ -1,0 +1,33 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% block title %}Reports{% endblock %}
+
+{% block bc %}
+    <section class="grid-row">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>Reports</li>
+            </ol>
+        </nav>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section class="grid-row">
+        <div class="column-two-thirds">
+            <label class="form-label">Select Business Unit</label>
+            {% for unit in businessUnits %}
+                <label class="block-label" for="businessUnit-{{ businessUnit }}">
+                    <input type="radio" value="{{ unit }}" id="businessUnit-{{ unit }}" name="businessUnit"
+                           onclick="document.location.href='{{ path('homeoffice_cts_reports_view', { 'businessUnit': unit|lower }) }}'"
+                    {% if businessUnit is defined and businessUnit == unit|lower %}checked="checked"{% endif %}
+                    >
+                    {{ unit }}
+                </label>
+            {% endfor %}
+        </div>
+
+        {% block reportList %}{% endblock %}
+    </section>
+{% endblock %}

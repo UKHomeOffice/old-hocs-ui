@@ -1,0 +1,114 @@
+{% if step == 'create' %}
+    {% if transitions['Next'] is defined %}
+        {% if case.shortName == 'CtsDcuMinisterialCase' %}
+            {{ form_widget(transitions['Next'], { 'label': 'Send to QA'}) }}
+        {% else %}
+            {{ form_widget(transitions['Next'], { 'label': 'Send to draft'}) }}
+        {% endif %}
+    {% endif %}
+
+    {% if transitions['SendQACaseToMarkup'] is defined %}
+        {{ form_widget(transitions['SendQACaseToMarkup'], { 'label': 'Approve'}) }}
+    {% endif %}
+
+    {% if transitions['SendMarkupCaseToDraft'] is defined %}
+        {{ form_widget(transitions['SendMarkupCaseToDraft'], { 'label': 'Send to draft'}) }}
+    {% endif %}
+
+    {% if transitions['Reject'] is defined %}
+        <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_return', { 'nodeRef': case.nodeId }) }}">
+            {{ transitions['Reject'].vars.label }}
+        </button>
+    {% endif %}
+{% endif %}
+
+{% if step == 'draft' %}
+    {% if transitions['SendForQA'] is defined %}
+        {{ form_widget(transitions['SendForQA'], { 'label': 'Submit for approval'}) }}
+    {% endif %}
+    {% if transitions['SendForQAReview'] is defined %}
+        {{ form_widget(transitions['SendForQAReview'], { 'label': 'Submit for approval'}) }}
+    {% endif %}
+    {%  if transitions['SendToDispatch'] is defined %}
+        {{ form_widget(transitions['SendToDispatch'], { 'label': 'Send to dispatch'}) }}
+    {% endif %}
+    {%  if transitions['SendQAReviewForHSPrivateOfficeApproval'] is defined %}
+        {{ form_widget(transitions['SendQAReviewForHSPrivateOfficeApproval'], { 'label': 'Submit for approval'}) }}
+    {% endif %}
+    {% if transitions['SendDraftForDispatch'] is defined %}
+        {{ form_widget(transitions['SendDraftForDispatch'], { 'label': 'Skip to dispatch'}) }}
+    {% endif %}
+
+    {% if case.shortName == 'CtsDcuMinisterialCase' %}
+        {%  if transitions['Next'] is defined %}
+            {{ form_widget(transitions['Next'], { 'label': 'Submit for approval'}) }}
+        {% endif %}
+
+        {% if transitions['Reject'] is defined %}
+            <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_return', { 'nodeRef': case.nodeId }) }}">
+                {{ transitions['Reject'].vars.label }}
+            </button>
+        {% endif %}
+    {% endif %}
+{% endif %}
+
+{% if step == 'approve' %}
+    {%  if transitions['SendQAReviewForHSPrivateOfficeApproval'] is defined %}
+        {{ form_widget(transitions['SendQAReviewForHSPrivateOfficeApproval'], { 'label': 'Submit for approval'}) }}
+    {% endif %}
+    {% if transitions['Approve'] is defined %}
+        {{ form_widget(transitions['Approve']) }}
+    {% endif %}
+
+    {% if transitions['Reject'] is defined %}
+        {{ form_widget(transitions['Reject'], { 'attr': { 'class': 'button-secondary' }}) }}
+    {% endif %}
+
+{% endif %}
+
+{% if step == 'dispatch' %}
+    {% if transitions['SendDispatchToPQAPI'] is defined %}
+        {{ form_widget(transitions['SendDispatchToPQAPI'], { 'label': 'Dispatch' }) }}
+    {% endif %}
+
+    {% if transitions['OfflineDispatch'] is defined %}
+        {{ form_widget(transitions['OfflineDispatch'], { 'label': 'Dispatched offline', 'attr': { 'class': 'button-secondary' }}) }}
+    {% endif %}
+
+    {% if transitions['Reject'] is defined %}
+        {{ form_widget(transitions['Reject'], { 'attr': { 'class': 'button-secondary' }}) }}
+    {% endif %}
+{% endif %}
+
+{% if transitions.parent['save'] is defined %}
+    {{ form_widget(transitions.parent['save']) }}
+{% endif %}
+
+
+{% if step == 'reallocate' %}
+    {% if transitions['Reallocate'] is defined %}
+        {{ form_widget(transitions['Reallocate']) }}
+    {% endif %}
+{% endif %}
+
+
+{% if step == 'return' %}
+    {% if transitions['Reject'] is defined %}
+        {{ form_widget(transitions['Reject']) }}
+    {% endif %}
+{% endif %}
+
+
+{% if step == 'reject' %}
+    {% if transitions['Reject'] is defined %}
+        {{ form_widget(transitions['Reject'], { 'label': 'Reject' }) }}
+    {% endif %}
+{% endif %}
+
+{% if step == 'cancel' %}
+    {% if transitions['CompleteCase'] is defined %}
+        {{ form_widget(transitions['CompleteCase'], { 'label': 'Submit' }) }}
+    {% endif %}
+{% endif %}
+
+{% do transitions.setRendered %}

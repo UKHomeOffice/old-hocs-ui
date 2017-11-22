@@ -1,0 +1,54 @@
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+<h2>Advanced search - HMPO</h2>
+
+<div class="form-group">
+    <label class="form-label">{{ form['caseType'].vars.label }}</label>
+    {{ form_widget(form['caseType']) }}
+</div>
+
+<div class="form-group">
+    <label class="form-label">Received<br>{{ form_label(form['dateReceivedFrom']) }}</label>
+    {{ form_widget(form['dateReceivedFrom']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['dateReceivedTo']) }}
+    {{ form_widget(form['dateReceivedTo']) }}
+</div>
+
+<h2>Correspondent / complainant / applicant details</h2>
+<div class="form-group">
+    {{ form_label(form['correspondentForename']) }}
+    {{ form_widget(form['correspondentForename']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['correspondentSurname']) }}
+    {{ form_widget(form['correspondentSurname']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['correspondentPostcode']) }}
+    {{ form_widget(form['correspondentPostcode']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['correspondentEmail']) }}
+    {{ form_widget(form['correspondentEmail']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['correspondingName']) }}
+    {{ form_widget(form['correspondingName']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['passportNumber']) }}
+    {{ form_widget(form['passportNumber']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['applicationNumber']) }}
+    {{ form_widget(form['applicationNumber']) }}
+</div>

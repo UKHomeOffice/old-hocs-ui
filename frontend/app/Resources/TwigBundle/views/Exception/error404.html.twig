@@ -1,0 +1,23 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% block title %}Error 404{% endblock %}
+
+{% block bc %}
+    <div id="global-breadcrumb" class="header-context">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>404</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <section class="grid-row">
+        <article class="column-full">
+            <h2>Page not found</h2>
+            <p>Please check and try again. Failing that, please contact your system administrator.</p>
+        </article>
+    </section>
+{% endblock %}

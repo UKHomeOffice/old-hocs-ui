@@ -1,0 +1,16 @@
+<div class="modal">
+    <h2>Delete Standard Line</h2>
+
+    <p>
+        Are you sure you want to delete `<span class="standard-line-name">{{ standardLine.name }}</span>`?<br>
+        Deleting this standard line cannot be undone.<br>
+    </p>
+
+    <form action="{{ path('homeoffice_cts_standardlines_delete', { 'id': standardLine.nodeId }) }}" method="post" class="form-ajax">
+        <input class="button button-delete" type="submit" value="Delete Standard Line">
+
+        <a href="#close-modal" rel="modal:close" class="button button-secondary right">Cancel</a>
+    </form>
+</div>
+
+

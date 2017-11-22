@@ -1,0 +1,79 @@
+{% block header %}
+<!-- begin default page header -->
+
+<div id="skiplink-container">
+    <div>
+        <a href="#content" class="skiplink">Skip to main content</a>
+    </div>
+</div>
+
+<header role="banner" id="global-header">
+    <nav class="header-wrapper">
+        <div class="header-global">
+            <div class="header-logo">
+                <a href="/" title="Go to the {{ site_title }} Homepage" id="logo" class="content tablet-hide">
+                    {{ site_title }}
+                </a>
+                <a href="/" title="Go to the {{ site_title }} Homepage" id="logo" class="content desktop-hide">
+                    {{ site_title_short }}
+                </a>
+            </div>
+
+            {% block menu %}
+            <nav class="header-admin">
+                <ul class="blank">
+                    {% if app.user %}
+                    <li><a href="{{ path('homeoffice_cts_dashboard_index') }}">Dashboard</a></li>
+                    <li><a href="{{ path('homeoffice_cts_supersearch_search') }}">Search</a></li>
+                    <li><a href="{{ path('homeoffice_cts_help_help') }}">Help</a></li>
+                    {% block admin %}
+                    <li><a href="#" class="hasChild">Tools</a>
+                        <ul>
+                            {% if is_granted('manageStandardLines', app.user) %}
+                                <li><a href="{{ path('homeoffice_cts_standardlines_index') }}">Standard lines</a></li>
+                            {% endif %}
+
+                            {% if is_granted('create', app.user) %}
+                                <li><a href="{{ path('homeoffice_cts_case_upload') }}">Upload feed</a></li>
+                            {% endif %}
+
+                            {% if is_granted('manageTemplates', app.user) %}
+                                <li><a href="{{ path('homeoffice_cts_documenttemplates_index') }}">Manage templates</a></li>
+                            {% endif %}
+
+                            {% if is_granted('bulkCreateCases', app.user) %}
+                                <li><a href="{{ path('homeoffice_cts_bulkcase_create') }}">Bulk create cases</a></li>
+                            {% endif %}
+
+                            <li><a href="{{ path('homeoffice_cts_emailpreferences_index') }}">Email preferences</a></li>
+
+                            <li><a href="{{ path('reset_password') }}">Reset password</a></li>
+                        </ul>
+                    </li>
+                    {% endblock admin %}
+                    <li><a href="{{ path('signout') }}">Sign out</a></li>
+                    {%  else %}
+                        {% if status_code is defined and status_code != '200' %}
+                            <li><a href="{{ path('signout') }}">Sign out</a></li>
+                        {% else %}
+                            <li><a href="{{ path('login') }}">Login</a></li>
+                        {% endif %}
+
+                    {% endif %}
+                </ul>
+            </nav>
+            <label for="navbar-checkbox" class="navbar-handle"></label>
+            {% endblock menu %}
+
+        </div>
+    </nav>
+</header>
+<div id="global-header-bar"></div>
+
+<div id="global-cookie-message">
+    <p>
+        GOV.UK uses cookies to make the site simpler.
+        <a href="https://www.gov.uk/help/cookies">Find out more about cookies</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+<label><a class="replyToMemberTrigger noUnderline" href="#">{{ memberTitle|default('Member') }}</a></label>
+
+<div class="replyToMemberToggle hidden">
+    <div class="form-group member_list">
+        {{ form_widget(form.member) }}
+    </div>
+
+    {% if form.constituency is defined %}
+        <div class="form-group member_constituency">
+            {{ form_label(form.constituency) }}
+            {{ form_widget(form.constituency) }}
+        </div>
+    {% endif %}
+
+    {% if form.party is defined %}
+        <div class="form-group member_party">
+            {{ form_label(form.party) }}
+            {{ form_widget(form.party) }}
+        </div>
+    {% endif %}
+
+    {% if form.mpRef is defined %}
+        <div class="form-group">
+            {{ form_label(form.mpRef) }}
+            {{ form_widget(form.mpRef) }}
+        </div>
+    {% endif %}
+
+    {% if form.replyToPostcode is defined %}
+        <div class="form-group member_postcode">
+            {{ form_label(form.replyToPostcode) }}
+            {{ form_widget(form.replyToPostcode) }}
+        </div>
+    {% endif %}
+
+    {% if form.replyToAddressLine1 is defined %}
+        <div class="form-group member_address1">
+            {{ form_label(form.replyToAddressLine1) }}
+            {{ form_widget(form.replyToAddressLine1) }}
+        </div>
+        <div class="form-group member_address2">
+            {{ form_widget(form.replyToAddressLine2) }}
+        </div>
+        <div class="form-group member_address3">
+            {{ form_widget(form.replyToAddressLine3) }}
+        </div>
+    {% endif %}
+
+    {% if form.replyToCountry is defined %}
+        <div class="form-group member_country">
+            {{ form_label(form.replyToCountry) }}
+            {{ form_widget(form.replyToCountry) }}
+        </div>
+    {% endif %}
+
+    {% if form.replyToTelephone is defined %}
+        <div class="form-group">
+            {{ form_label(form.replyToTelephone) }}
+            {{ form_widget(form.replyToTelephone) }}
+        </div>
+    {% endif %}
+
+    {% if form.replyToEmail is defined %}
+        <div class="form-group">
+            {{ form_label(form.replyToEmail) }}
+            {{ form_widget(form.replyToEmail) }}
+        </div>
+    {% endif %}
+</div>
+
+{% include "HomeOfficeCtsBundle:Case/Guft/Script:_memberReplyToDetailsScript.html.twig" %}

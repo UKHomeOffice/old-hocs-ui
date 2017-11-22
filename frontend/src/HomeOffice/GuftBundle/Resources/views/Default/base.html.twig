@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+{% block head %}
+<!--[if lte IE 8]><html class="ie8" lang="en-GB"><![endif]-->
+<!--[if !(lte IE 8)]> --><html lang="en-GB"><!-- <![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Hercule - Correspondence Tracking System">
+
+    {% stylesheets filter="cssrewrite" output='css/compiled/guft.css'
+        'bundles/guft/css/jquery-modal.min.css'
+        'bundles/guft/css/chosen.min.css'
+        'bundles/guft/scss/base.scss'
+        'bundles/guft/css/font-awesome.min.css'
+    %}
+        <link rel="stylesheet" media="screen,print" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+
+    <link href="{{  asset("bundles/guft/scss/fonts.css") }}" media="all" rel="stylesheet" type="text/css" />
+    <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
+    <title>{{ site_title }}: {{ block('title') }} {{ block('metaTitle') }}</title>
+</head>
+{% endblock %}
+
+<body class="mainstream">
+
+<script type="text/javascript">
+    document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
+</script>
+
+{% include 'GuftBundle:Default:partials/header.html.twig' %}
+
+{% block body %}
+    <main id="page-container" role="main">
+        {% block phasebanner %}
+            {% if case is defined and not case.shortName in ['CtsHmpoComCase', 'CtsHmpoGenCase'] %}
+                <div class="phase-banner">
+                    <p>
+                        <strong class="phase-tag">BETA</strong>
+                        <span>You are using the new features - to switch off click
+                            <a href="{{ path('homeoffice_cts_featuretoggle_edit') }}">here</a>
+                        .</span>
+                    </p>
+                </div>
+            {% endif %}
+        {% endblock %}
+        {% block bc %}
+            {% if ft_config['hide_breadcrumb'] is not defined or ft_config['hide_breadcrumb'] == false %}
+
+            <nav class="breadcrumbs">
+                <ol>
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        Style Guide
+                    </li>
+                </ol>
+            </nav>
+
+            {% endif %}
+        {% endblock bc %}
+            <div id="js-replaceable">
+                {% block title_override %}
+                    {% set _title = block('title') %}
+
+                    {% if _title is not empty %}
+                        <header class="page-header group"><div>
+                                <h1>{{ block('title') }}</h1>
+                            </div>
+                        </header>
+                    {% endif %}
+                {% endblock %}
+                <div class="article-container group">
+
+                    {% for flashMessage in app.session.flashbag.get('notice') %}
+                        <div class="flash-message">
+                            <em>Notice</em>: {{ flashMessage }}
+                        </div>
+                    {% endfor %}
+
+                    <article role="article" class="group">
+                        <div class="inner">
+                            {% block content %}{% endblock %}
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            {% block meta %}
+                <div class="meta-wrapper">
+
+                </div>
+            {% endblock %}
+    </main>
+
+    {% if ft_config['hide_sidebar'] is not defined or ft_config['hide_sidebar'] == false %}
+        {{ block('sb') }}
+    {% endif %}
+
+</div><!-- end wrapper -->
+
+{% include 'GuftBundle:Default:partials/footer.html.twig' %}
+
+    <div id="global-app-error" class="app-error hidden"></div>
+{% endblock %}
+
+
+{% block Javascript %}
+    {% javascripts
+        'bundles/guft/js/lib/jquery-1.11.0.min.js'
+        'bundles/guft/js/lib/jquery-ui.js'
+        'bundles/guft/js/lib/jsRender-0.9.80.min.js'
+        'bundles/guft/js/lib/jquery-modal.min.js'
+        'bundles/guft/js/lib/jquery.browser.min.js'
+        'bundles/guft/js/lib/date-picker.js'
+        'bundles/guft/js/Bootstrap/dropdown.js'
+        'bundles/guft/js/lib/bootstrap-multiselect.js'
+        'bundles/guft/js/lib/jquery.iviewer.js'
+        'bundles/guft/js/lib/chosen.jquery.min.js'
+        'bundles/guft/js/lib/highcharts-5.0.6.js'
+        'bundles/guft/js/base.js'
+        'bundles/guft/js/file-upload/jquery.fileupload.js'
+        'bundles/guft/js/file-upload/jquery.fileupload-process.js'
+        'bundles/guft/js/file-upload/jquery.iframe-transport.js'
+        'bundles/guft/js/file-upload/file-upload.js'
+        'bundles/guft/js/file-upload/*'
+        'bundles/guft/js/selection-buttons.js'
+        'bundles/guft/js/ajaxifyForm.js'
+        'bundles/guft/js/ajax-form.js'
+        'bundles/guft/js/superSearch.js'
+        'bundles/guft/js/chart.js'
+        'bundles/guft/js/browser.js'
+     %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% block javascriptTemplates %}
+        {% include 'GuftBundle:Default:partials/javascriptTemplates.html.twig' %}
+    {% endblock %}
+    {% block pageJavascript %}{% endblock %}
+{% endblock %}
+<!-- BUILD: {{ build_id }} HASH: {{ git_commit }} -->
+</body>
+</html>

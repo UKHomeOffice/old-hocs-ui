@@ -1,0 +1,19 @@
+{% extends "GuftBundle:Default:form.html.twig" %}
+
+{% block title %}Feature Toggle{% endblock %}
+
+{% block content %}
+    <section class="grid-row">
+        <article class="column-full">
+            {{ form_start(form) }}
+                <h3>Toggle new features: </h3>
+                <fieldset class="inline column-full">
+                    {{ form_row(form.featureToggle) }}
+                </fieldset>
+                <fieldset class="column-full">
+                    {{ form_row(form.save) }}
+                </fieldset>
+            {{ form_end(form) }}
+        </article>
+    </section>
+{% endblock %}

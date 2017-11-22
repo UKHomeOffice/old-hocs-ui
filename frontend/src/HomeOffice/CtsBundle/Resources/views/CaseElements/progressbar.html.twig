@@ -1,0 +1,53 @@
+<nav class="progressBar">
+    <ol class="inline">
+        {% if caseHasStep(case, 'create') %}
+            <li {{ caseProgressClass(case, step, 'create') }}>
+                {% if case.nodeId is defined %}
+                    <a href="{{ path('homeoffice_cts_ctscase_create', {'nodeRef': case.nodeId}) }}">Create</a>
+                {% else %}
+                    <a href="#">Create</a>
+                {% endif %}
+            </li>
+        {% endif %}
+
+        {% if caseHasStep(case, 'draft') %}
+            <li {{ caseProgressClass(case, step, 'draft') }}>
+                {% if case.nodeId is defined %}
+                    <a href="{{ path('homeoffice_cts_ctscase_draft', {'nodeRef': case.nodeId}) }}">Draft</a>
+                {% else %}
+                    <a href="#">Draft</a>
+                {% endif %}
+            </li>
+        {% endif %}
+
+        {% if caseHasStep(case, 'approve') %}
+            <li {{ caseProgressClass(case, step, 'approve') }}>
+                {% if case.nodeId is defined %}
+                    <a href="{{ path('homeoffice_cts_ctscase_approve', {'nodeRef': case.nodeId}) }}">Approve</a>
+                {% else %}
+                    <a href="#">Approve</a>
+                {% endif %}
+            </li>
+        {% endif %}
+
+        {% if caseHasStep(case, 'signOff') %}
+            <li {{ caseProgressClass(case, step, 'signOff') }}>
+                {% if case.nodeId is defined %}
+                    <a href="{{ path('homeoffice_cts_ctscase_signoff', {'nodeRef': case.nodeId}) }}">Sign Off</a>
+                {% else %}
+                    <a href="#">Sign Off</a>
+                {% endif %}
+            </li>
+        {% endif %}
+
+        {% if caseHasStep(case, 'dispatch') %}
+            <li {{ caseProgressClass(case, step, 'dispatch') }}>
+                {% if case.nodeId is defined %}
+                    <a href="{{ path('homeoffice_cts_ctscase_dispatch', {'nodeRef': case.nodeId}) }}">Dispatch</a>
+                {% else %}
+                    <a href="#">Dispatch</a>
+                {% endif %}
+            </li>
+        {% endif %}
+    </ol>
+</nav>

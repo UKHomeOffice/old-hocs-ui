@@ -1,0 +1,26 @@
+
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% block title %}Error {{ status_code }}{% endblock %}
+
+{% block bc %}
+    <div id="global-breadcrumb" class="header-context">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>{{ status_code }}</li>
+            </ol>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <section class="grid-row">
+        <article class="column-full">
+            <h2>An error occurred</h2>
+            <p>Please contact your systems administrator.</p>
+            <h3>Detail:</h3>
+            <p>{{ status_text }}</p>
+        </article>
+    </section>
+{% endblock %}

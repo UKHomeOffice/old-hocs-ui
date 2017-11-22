@@ -1,0 +1,79 @@
+{
+    "name": "homeoffice/cts-app",
+    "license": "PROPRIETARY",
+    "type": "project",
+    "description": "Frontend for alfresco for managing correspondence",
+    "autoload": {
+        "psr-0": { "": "src/", "SymfonyStandard": "app/" }
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.5.2",
+        "symfony/icu": "1.1.*",
+        "doctrine/orm": "~2.2,>=2.2.3",
+        "doctrine/doctrine-bundle": "~1.2",
+        "twig/extensions": "~1.0",
+        "symfony/assetic-bundle": "~2.3",
+        "symfony/swiftmailer-bundle": "~2.3",
+        "symfony/monolog-bundle": "~2.4",
+        "sensio/distribution-bundle": "~3.0",
+        "sensio/framework-extra-bundle": "~3.0",
+        "incenteev/composer-parameter-handler": "~2.0",
+        "guzzlehttp/guzzle": "5.3.*",
+        "guzzlehttp/guzzle-services": "*",
+        "mikey179/vfsStream": "v1.3.0",
+        "tedivm/stash-bundle": "v0.4.1",
+        "alphagov/govuk_frontend_toolkit": "dev-master#8e614da3482f7ee728b097f8ae6394f4fffcb23e",
+        "phpoffice/phpword": "^0.13.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.1.*",
+        "squizlabs/php_codesniffer": "2.6.1",
+        "sensio/generator-bundle": "~2.3",
+        "polishsymfonycommunity/symfony-mocker-container": "*",
+        "johnkary/phpunit-speedtrap": "dev-master",
+        "webfactory/exceptions-bundle": "@stable"
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "SymfonyStandard\\Composer::hookRootPackageInstall"
+        ],
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles"
+        ]
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
+        "symfony-web-dir": "web",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        },
+        "branch-alias": {
+            "dev-master": "2.5-dev"
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://govuk-frontend-toolkit.appspot.com"
+        }
+    ]
+}

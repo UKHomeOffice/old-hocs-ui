@@ -1,0 +1,21 @@
+services:
+    home_office_cts.form.builder.dgen_create:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Create\DGEN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: DGENCreate }
+    home_office_cts.form.builder.dgen_draft:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Draft\DGEN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: DGENDraft }
+    home_office_cts.form.builder.dgen_approve:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Approve\DGEN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: DGENApprove }
+    home_office_cts.form.builder.dgen_dispatch:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Dispatch\DGEN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: DGENDispatch }

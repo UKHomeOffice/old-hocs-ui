@@ -1,0 +1,104 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% form_theme ctsHomeFiltersForm 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% if (queueValue == 'todoQueue') %}
+    {% set queueName = "To do queue" %}
+{% elseif (queueValue == 'teamQueue') %}
+    {% set queueName = "Team queue" %}
+{% elseif (queueValue == 'unitQueue') %}
+    {% set queueName = "Unit queue" %}
+{% endif %}
+
+{% block title %}{{ queueName }}{% endblock %}
+
+{% block title_override %}
+
+    <section class="grid-row">
+        <div class="column-half">
+            <header class="page-header group"><div>
+                    <h1>
+                        {{ queueName }}
+                    </h1>
+                </div>
+            </header>
+            {% if currentGroupList != null %}
+            <p>You belong to: {{ currentGroupList|join(', ') }}</p>
+            {% endif %}
+        </div>
+        <div class="column-half">
+            <ul class="blank">
+                <!--<li style="margin-left: 5px;">
+                    {% if ctsHomeFiltersForm['exportQueue'] is defined %}
+                        {% if ctsQueue|length != 0 %}
+                            {{form_widget(ctsHomeFiltersForm['exportQueue'])}}
+                        {% endif %}
+                    {% endif %}
+
+                </li>-->
+                <li style="margin-left: 5px;"><div>
+                        <a class="button right" style="margin-left: 5px; margin-right: 5px;" href="{{ path('homeoffice_cts_case_createsimple') }}">Create</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+
+{% block phasebanner %}
+{% endblock %}
+
+{% block content %}
+
+    {% if errorMsg != null or successMsg %}
+    <section class="grid-row">
+        <article class="column-full">
+            {% if errorMsg != null %}
+                <div class="global error">{{ errorMsg }}</div>
+            {% endif %}
+            {% if successMsg %}
+                <div class="global success">{{ successMsg }}</div>
+            {% endif %}
+        </article>
+    </section>
+    {% endif %}
+    <section class="grid-row">
+        <article class="column-third">
+            <p><a href="#" class="expandTrigger down-arrow-after button-secondary">Filter</a></p>
+        </article>
+        <article class="column-two-thirds">
+            <ul class="right blank inline" id="queue_selector">
+                <li>View queue:</li>
+                <li{% if (queueValue == 'todoQueue') %} class="selected"{% endif %}>
+                    {% if (queueValue == 'todoQueue') %}
+                        To do queue
+                    {% else %}
+                        <a href="{{ path('homeoffice_cts_home_home', {'filterQueue[queue]': 'todoQueue'}) }}">To do queue</a>
+                    {% endif %}
+                </li>
+                <li{% if (queueValue == 'teamQueue') %} class="selected"{% endif %}>
+                    {% if (queueValue == 'teamQueue') %}
+                        Team queue
+                    {% else %}
+                        <a href="{{ path('homeoffice_cts_home_home', {'filterQueue[queue]': 'teamQueue'}) }}">Team queue</a>
+                    {% endif %}
+                </li>
+
+                <li{% if (queueValue == 'unitQueue') %} class="selected"{% endif %}>
+                    {% if (queueValue == 'unitQueue') %}
+                        Unit queue
+                    {% else %}
+                        <a href="{{ path('homeoffice_cts_home_home', {'filterQueue[queue]': 'unitQueue'}) }}">Unit queue</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </article>
+    </section>
+    <section class="grid-row">
+    {{ form_start(ctsHomeFiltersForm, {'attr': {'novalidate' : 'novalidate' }} ) }}
+    {% include "HomeOfficeCtsBundle:Queue:guftQueueFilter.html.twig" %}
+    {% include "HomeOfficeCtsBundle:Queue:guftCaseTable.html.twig" with { 'summary' : 'Table showing the ' ~ queueName|lower } %}
+    {{ form_end(ctsHomeFiltersForm) }}
+    </section>
+{% endblock %}

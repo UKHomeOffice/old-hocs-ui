@@ -1,0 +1,21 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Detailed Document List{% endblock %}
+
+{% block bodyClass %}detailed-document{% endblock %}
+
+{% block primary_controls %}
+    <a class ="action default" id ="add_new_document_button"><span>Add new document</span></a>
+{% endblock %}
+
+{% block breadcrumb_trail %}
+    <li><a href="{{ path('homeoffice_cts_case_view', {'nodeRef' : ctsCase.getNodeId } ) }}">{{ ctsCase.getUrn }}</a></li>
+    <li> Detailed document list </li>
+{% endblock %}
+
+{% block body %}
+    <div id="detailed_document_list" class="detailed-document-table">
+        {% include "HomeOfficeCtsBundle:Document:documentUploadView.html.twig" %}
+        {% include "HomeOfficeCtsBundle:DetailedDocuments:_documentTable.html.twig" %}
+    </div>
+{% endblock %}

@@ -1,0 +1,74 @@
+<div class="form-group">
+    {{ form_label(form.secondaryTypeOfCorrespondent) }}
+    {{ form_widget(form.secondaryTypeOfCorrespondent, {'attr': {'class': 'chosen secondaryTypeOfRepresentativeTrigger'}}) }}
+</div>
+
+<div class="secondaryTypeOfRepresentativeToggle">
+    <div class="form-group">
+        {{ form_label(form.secondaryCorrespondentTypeOfRepresentative) }}
+        {{ form_widget(form.secondaryCorrespondentTypeOfRepresentative) }}
+    </div>
+    <div class="secondaryConsentToggle">
+        <div class="form-group">
+            {{ form_label(form.secondaryCorrespondentConsentAttached) }}
+            {{ form_widget(form.secondaryCorrespondentConsentAttached) }}
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    {{ form_label(form.secondaryCorrespondentReplyTo) }}
+    {{ form_widget(form.secondaryCorrespondentReplyTo) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.secondaryCorrespondentTitle) }}
+    {{ form_widget(form.secondaryCorrespondentTitle) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.secondaryCorrespondentForename) }}
+    {{ form_widget(form.secondaryCorrespondentForename) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.secondaryCorrespondentSurname) }}
+    {{ form_widget(form.secondaryCorrespondentSurname) }}
+</div>
+
+<div class="form-group">
+    <a href="#" class="copyAddress" data-source="correspondent" data-form="{{ form.vars.name }}" data-target="secondaryCorrespondent">Same as first address</a>
+</div>
+
+<div class="form-group">
+    {{ form_label(form.secondaryCorrespondentPostcode) }}
+    {{ form_widget(form.secondaryCorrespondentPostcode) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.secondaryCorrespondentAddressLine1) }}
+    {{ form_widget(form.secondaryCorrespondentAddressLine1) }}
+</div>
+
+<div class="form-group">
+    {{ form_widget(form.secondaryCorrespondentAddressLine2) }}
+</div>
+
+<div class="form-group">
+    {{ form_widget(form.secondaryCorrespondentAddressLine3) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.secondaryCorrespondentCountry) }}
+    {{ form_widget(form.secondaryCorrespondentCountry) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.secondaryCorrespondentTelephone) }}
+    {{ form_widget(form.secondaryCorrespondentTelephone) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.secondaryCorrespondentEmail) }}
+    {{ form_widget(form.secondaryCorrespondentEmail) }}
+</div>

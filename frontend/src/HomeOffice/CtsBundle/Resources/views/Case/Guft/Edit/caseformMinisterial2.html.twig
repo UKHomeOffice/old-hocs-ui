@@ -1,0 +1,33 @@
+{% include 'HomeOfficeCtsBundle:Case/Guft/Edit:_caseOverview.html.twig' %}
+
+<div id="deadline">
+    <h3>Deadlines</h3>
+    <p>
+        Response Deadline
+        <span class="right"><strong>{{ form_widget(ctsCaseForm['caseResponseDeadline']) }}</strong></span>
+    </p>
+    {% if ctsCase.correspondenceType != 'TRO'
+        and ctsCase.correspondenceType != 'DTEN'
+        and ctsCase.correspondenceType != 'UTEN' %}
+
+        <p>
+           Allocate
+           <span class="right"><strong>{{ form_widget(ctsCaseForm['allocateTarget']) }}</strong></span>
+        </p>
+        <p>
+            Draft Response
+            <span class="right"><strong>{{ form_widget(ctsCaseForm['draftResponseTarget']) }}</strong></span>
+        </p>
+        <p>
+            Private Office
+            <span class="right"><strong>{{ form_widget(ctsCaseForm['poTarget']) }}</strong></span>
+        </p>
+        <p>
+            Dispatch
+            <span class="right"><strong>{{ form_widget(ctsCaseForm['dispatchTarget']) }}</strong></span>
+        </p>
+    {% endif %}
+</div>
+
+{% include "HomeOfficeCtsBundle:Case/Script:_memberStopListScript.html.twig" %}
+{% include "HomeOfficeCtsBundle:Case/Script:_topicListScript.html.twig" %}

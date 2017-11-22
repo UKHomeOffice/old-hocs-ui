@@ -1,0 +1,15 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% block title %}{% endblock %}
+
+{% block bc %}{% endblock  %}
+
+{% block content %}
+    <section class="grid-row">
+        {% include 'HomeOfficeCtsBundle:CaseElements:progressbar.html.twig' with {step: 'create'} %}
+    </section>
+
+    <section class="grid-row">
+        {{ render(controller('HomeOfficeCtsBundle:CaseElements:minutes', { 'nodeRef': nodeRef })) }}
+    </section>
+{% endblock %}

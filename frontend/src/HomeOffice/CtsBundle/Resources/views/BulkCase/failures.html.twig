@@ -1,0 +1,50 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Bulk create case errors{% endblock %}
+
+{% block bodyClass %}bulk-create-case-errors{% endblock %}
+
+{% block searchButton %}
+{% endblock %}
+
+{% block breadcrumb_trail %}
+    <li><a href="{{ path('homeoffice_cts_bulkcase_create') }}">Bulk case creation</a></li>
+    <li>Failures</li>
+{% endblock %}
+
+{% block primary_controls %}
+{% endblock %}
+
+{% block body %}
+    {% if bulkDocumentError %}
+        <div>{{ bulkDocumentError }}</div>
+    {% endif %}
+    
+    <h2>Auto create case failures</h2>
+    {% if bulkDocuments|length > 0 %}
+        <p class="error-instructions">Documents shown here failed during the create case processing. It is recommended that you review these, delete them and try again or create the case manually.</p>
+        <table class="results-table" id="template_list" summary="Auto create case failures">
+            <tr>
+                <th>File name</th>
+                <th>Failure date</th>
+                <th>Failure message</th>
+                <th class="delete">Delete</th>
+            </tr>
+            {% for bulkDocument in bulkDocuments %}
+                <tr>
+                    <td><a href="{{ path('homeoffice_cts_bulkcase_download', { 'documentNodeRef' : bulkDocument.getNodeId }) }}">{{ bulkDocument.name }}</a></td>
+                    <td>{{ ctsHelper.formatAtomStringToDateTime(bulkDocument.autoCreateFailureDateTime) }}</td>
+                    <td>{{ bulkDocument.autoCreateFailureMessage }}</td>
+                    <td class="delete">
+                        {{ form_start(bulkDocument.getDeleteForm(), { 'action': path('homeoffice_cts_bulkcase_delete'), 'method': 'POST', 'attr': {'class': 'bulk-document-delete-form'} }) }}
+                            <input type="hidden" name="_method" value="DELETE" />
+                        {{ form_end(bulkDocument.deleteForm) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div class="no-results">No failures</div>
+    {% endif %}
+
+{% endblock %}

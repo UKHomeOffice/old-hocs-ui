@@ -1,0 +1,57 @@
+<div id="complainant_details" class="panel wide">
+    <h2>Complainant</h2>
+    <fieldset class="basic_details full_width">
+        <div class="spot-control">
+            {{ form_widget(ctsCaseForm['replyToComplainant']) }}
+            {{ form_label(ctsCaseForm['replyToComplainant']) }}
+        </div>
+    </fieldset>
+    <fieldset class="basic_details">
+        <div>
+            {{ form_label(ctsCaseForm['complainantTitle']) }}
+            {{ form_widget(ctsCaseForm['complainantTitle']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['complainantForename']) }}
+            {{ form_widget(ctsCaseForm['complainantForename']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['complainantSurname']) }}
+            {{ form_widget(ctsCaseForm['complainantSurname']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['complainantTelephone']) }}
+            {{ form_widget(ctsCaseForm['complainantTelephone']) }}
+        </div>
+        <div class="last">
+            {{ form_label(ctsCaseForm['complainantEmail']) }}
+            {{ form_widget(ctsCaseForm['complainantEmail']) }}
+        </div>
+    </fieldset>
+    <fieldset class="basic_details_2">
+        <div class="display-with-script">
+            <a id="hmpo_complainant_address_same_as_correspondent" class="populate_details_link">Same as correspondent address</a>
+        </div>
+        <div class="button-after-input">
+            {{ form_label(ctsCaseForm['complainantPostcode']) }}
+            {{ form_widget(ctsCaseForm['complainantPostcode']) }}
+            <a class="button find_address"><span>Find address</span></a>
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['complainantAddressLine1']) }}
+            {{ form_widget(ctsCaseForm['complainantAddressLine1']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['complainantAddressLine2']) }}
+            {{ form_widget(ctsCaseForm['complainantAddressLine2']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['complainantAddressLine3']) }}
+            {{ form_widget(ctsCaseForm['complainantAddressLine3']) }}
+        </div>
+        <div class="last">
+            {{ form_label(ctsCaseForm['complainantCountry']) }}
+            {{ form_widget(ctsCaseForm['complainantCountry']) }}
+        </div>
+    </fieldset>
+</div>

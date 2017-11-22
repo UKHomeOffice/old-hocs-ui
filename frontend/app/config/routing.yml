@@ -1,0 +1,35 @@
+home_office_cts:
+    resource: "@HomeOfficeCtsBundle/Controller/"
+    type:     annotation
+    prefix:   /cts
+
+login:
+    path:     /login
+    defaults: { _controller: HomeOfficeProcessManagerAuthenticatorBundle:Security:login }
+
+login_check:
+    path: /login_check
+    
+signout:
+    path:     /signout
+    defaults: { _controller: HomeOfficeProcessManagerAuthenticatorBundle:Security:signout }
+    
+reset_password:
+    path:   /cts/resetPassword
+    defaults: { _controller: HomeOfficeProcessManagerAuthenticatorBundle:Security:resetPassword }
+
+forgotten_password:
+    path:   /forgottenPassword
+    defaults: { _controller: HomeOfficeProcessManagerAuthenticatorBundle:Security:forgottenPassword }
+
+styleguide:
+    resource: "@GuftBundle/Resources/config/routing.yml"
+    prefix:   /styleguide
+
+# redirecting the root
+root:
+    path: /
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: homeoffice_cts_home_home
+        permanent: true

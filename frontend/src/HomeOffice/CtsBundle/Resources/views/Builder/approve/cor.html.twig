@@ -1,0 +1,92 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Approve{% endblock %}
+
+{% block metaTitle %}HMPO Correspondence Case {{ case.urn }}{% endblock %}
+
+{% block guftForm %}
+    <h2>Original Correspondence</h2>
+    <p>Correspondent: {{ case.correspondentFullName }}</p>
+
+    <div class="panel" data-filter-types="Original" data-allow-remove="false">
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+        'filterTypes': ['Original'],
+        'allowRemove': false
+        } %}
+    </div>
+    <hr>
+
+    <h2>Response</h2>
+
+    <label class="form-label">Document(s)</label>
+    <div class="documentTable panel"
+         data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+         data-filter-types="Original attachments,Contribution,Background note,Response,Other"
+         data-allow-remove="{{ caseIsStep(case, 'approve') ? "true" : "false" }}"
+    >
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+        'filterTypes': ['Original attachments', 'Contribution', 'Background note', 'Response', 'Other'],
+        'allowRemove': caseIsStep(case, 'approve')
+        } %}
+    </div>
+
+    {% if caseIsStep(case, 'approve') %}
+        <div class="form-group">
+            {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form['document']} %}
+        </div>
+    {% endif %}
+    <hr>
+
+    <h2>Refund</h2>
+    <div class="form-group">
+        <label class="form-label">{{ form['hmpoRefund'].vars.label }}</label>
+        {{ form_widget(form['hmpoRefund']) }}
+    </div>
+
+    <div class="hmpoRefundToggle hidden">
+        <div class="form-group">
+            {{ form_label(form['hmpoRefundAmount']) }}
+            {{ form_widget(form['hmpoRefundAmount']) }}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ form['hmpoRefundDecision'].vars.label }}</label>
+            {{ form_widget(form['hmpoRefundDecision']) }}
+        </div>
+    </div>
+    <hr>
+
+    {% if case.hmpoComplaintOutcome %}
+        <h2>Outcome</h2>
+        <div class="form-group">
+            <div class="form-read">{{ case.hmpoComplaintOutcome }}</div>
+        </div>
+        <hr>
+    {% endif %}
+
+    <h2>Approval</h2>
+    <div class="form-group">
+        {% if caseIsStep(case, 'approve') %}
+            <label class="form-label">QA</label>
+            {% include 'HomeOfficeCtsBundle:CaseElements:approveOnBehalf.html.twig' with {
+                'transition': form['SendSCSApprovalForDispatch'],
+                'transitionLabel': 'Approve',
+                'includeReject': true,
+            } %}
+        {% elseif caseIsStep(case, 'nfa') %}
+            <label class="form-label">No reply needed</label>
+            {{ form_widget(form['CompleteCase']) }}
+
+            {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+        {% elseif caseIsStep(case, 'ogd') %}
+            <label class="form-label">Transfer to OGD</label>
+            {{ form_widget(form['CompleteCase']) }}
+
+            {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+        {% else %}
+            <label class="form-label form-approved">Approved</label>
+        {% endif %}
+    </div>
+{% endblock %}

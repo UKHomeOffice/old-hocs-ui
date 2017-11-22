@@ -1,0 +1,37 @@
+/* Universals */
+
+.centre {
+  text-align: center;
+}
+
+.example-grid {
+  height: 50px;
+  border: 2px solid $govuk-blue;
+  background-color: $grey-2
+}
+
+.example-grid p {
+  text-align: center;
+}
+
+
+#ajax-overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: $grey-2;
+  height: 100%;
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+}
+
+#ajax-image {
+  width: 102px;
+  height: 102px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin: -28px 0 0 -25px;
+}

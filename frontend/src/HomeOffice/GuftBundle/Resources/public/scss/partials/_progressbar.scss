@@ -1,0 +1,33 @@
+.progressBar {
+  border-top: 2px solid $grey-1;
+  border-bottom: 2px solid $grey-1;
+  ol {
+    list-style: decimal inside;
+    padding-left: $gutter-half;
+    margin: 0;
+    li {
+      padding: $gutter-one-third $gutter-one-third 7px $gutter-one-third;
+      color: $govuk-blue;
+      border-bottom: 3px solid $white;
+      a {
+        color: $govuk-blue;
+        text-decoration: none;
+      }
+    }
+    li.disabled {
+      color: $grey-1;
+      a {
+        pointer-events: none;
+        color: $grey-1;
+      }
+    }
+    li:not(.disabled):hover, li.active {
+      border-bottom: 3px solid $govuk-blue;
+      color: $black;
+      a {
+        color: $black;
+        cursor: pointer;
+      }
+    }
+  }
+}

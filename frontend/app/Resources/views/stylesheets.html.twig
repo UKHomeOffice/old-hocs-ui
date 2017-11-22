@@ -1,0 +1,10 @@
+{% stylesheets filter='cssrewrite' output='css/compiled/main.css'
+'bundles/homeofficects/sass/base.scss'
+%}
+<link rel="stylesheet" media="screen,print" href="{{ asset_url }}" type="text/css" />
+{% endstylesheets %}
+{% stylesheets filter='cssrewrite' output='css/compiled/print.css'
+'bundles/homeofficects/sass/partials/_print.scss'
+%}
+<link rel="stylesheet" media="print" href="{{ asset_url }}" type="text/css" />
+{% endstylesheets %}

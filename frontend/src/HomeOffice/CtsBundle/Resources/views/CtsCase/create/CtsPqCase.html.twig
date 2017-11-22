@@ -1,0 +1,99 @@
+{% extends "HomeOfficeCtsBundle:CtsCase:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Create{% endblock %}
+
+{% block metaTitle %}Create PQ case {{ case.urn }}{% endblock %}
+
+{% block tab1 %}
+    <a name="form_top"></a>
+    {{ form_start(form, {'attr': {'class': 'form-ajax', 'novalidate' : 'novalidate', 'data-casetype': case.correspondenceType} }) }}
+        <h2>Case details</h2>
+        <div class="form-group">
+            <label class="form-label">Case type</label>
+            <div class="form-read correspondenceType">{{ constant('HomeOffice\\AlfrescoApiBundle\\Service\\CaseCorrespondenceSubType::'~case.correspondenceType) }}</div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form['uin']) }}
+            {{ form_widget(form['uin']) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form['questionNumber']) }}
+            {{ form_widget(form['questionNumber']) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form['opDate']) }}
+            {{ form_widget(form['opDate']) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form['woDate']) }}
+            {{ form_widget(form['woDate']) }}
+        </div>
+        <div class="form-group">
+            <label class="form-label">{{ form['receivedType'].vars.label }}</label>
+            {{ form_widget(form['receivedType']) }}
+        </div>
+        <div class="form-group hidden receivedTypeToggle">
+            {{ form_label(form['transferDepartmentName']) }}
+            {{ form_widget(form['transferDepartmentName']) }}
+        </div>
+        <div class="form-group">
+            <label class="form-label">{{ form['roundRobin'].vars.label }}</label>
+            {{ form_widget(form['roundRobin']) }}
+        </div>
+        <div class="form-group roundRobbinToggle">
+            <label class="form-label">Cabinet Office guidance</label>
+            {{ form_widget(form['cabinetOfficeGuidance']) }}
+        </div>
+
+        {% if form['linkedCases'] is defined %}
+            {% include 'HomeOfficeCtsBundle:CaseElements:linkedCases.html.twig' with { 'form': form['linkedCases'] } %}
+        {% endif %}
+
+        {% if form['groupedCases'] is defined %}
+            {% include 'HomeOfficeCtsBundle:CaseElements:groupedCases.html.twig' with { 'form': form['groupedCases']} %}
+        {% endif %}
+
+        <h2>Question</h2>
+        <div class="form-group">
+            {{ form_label(form['questionText']) }}
+            {{ form_widget(form['questionText']) }}
+        </div>
+        <hr>
+
+        {% if form['replyTo'] is defined %}
+            <h2>Reply to</h2>
+            <div class="form-group member_list">
+                {{ form_label(form['replyTo']['member']) }}
+                {{ form_widget(form['replyTo']['member']) }}
+            </div>
+
+            {% if form['replyTo']['constituency'] is defined %}
+                <div class="form-group member_constituency">
+                    {{ form_label(form['replyTo']['constituency']) }}
+                    {{ form_widget(form['replyTo']['constituency']) }}
+                </div>
+            {% endif %}
+
+            {% if form['replyTo']['party'] is defined %}
+                <div class="form-group member_party">
+                    {{ form_label(form['replyTo']['party']) }}
+                    {{ form_widget(form['replyTo']['party']) }}
+                </div>
+            {% endif %}
+
+            {% include "HomeOfficeCtsBundle:Case/Guft/Script:_memberPartyDetailsScript.html.twig" %}
+        {% endif %}
+        <hr>
+
+        {% if form['markUp'] is defined %}
+            {% include 'HomeOfficeCtsBundle:CaseElements:markUp.html.twig' with
+                { 'form': form['markUp'], 'allocate': form['allocate'], 'transitions': form['transitions'] } %}
+        {% endif %}
+
+        {% do form.markUp.setRendered %}
+        {% do form.allocate.setRendered %}
+        {% do form.transitions.setRendered %}
+    {{ form_end(form) }}
+{% endblock %}

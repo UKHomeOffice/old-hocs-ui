@@ -1,0 +1,13 @@
+{% form_theme ctsCaseForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+
+<fieldset id="panels" class="sibling-group">
+    
+    {% include 'HomeOfficeCtsBundle:Case/Edit:_caseOverview.html.twig' %}
+
+    <div id="deadline" class="panel alt2 page-chunk">
+        <h2>Deadline {{ form_widget(ctsCaseForm['caseResponseDeadline']) }}</h2>
+    </div>
+</fieldset>
+
+{% include "HomeOfficeCtsBundle:Case/Script:_memberStopListScript.html.twig" %}
+{% include "HomeOfficeCtsBundle:Case/Script:_topicListScript.html.twig" %}

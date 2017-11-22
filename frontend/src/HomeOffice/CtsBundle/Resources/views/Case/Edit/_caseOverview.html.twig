@@ -1,0 +1,15 @@
+<div id="overview" class="panel alt1 page-chunk">
+    <h2>Overview</h2>
+    <p>
+        <label>Status</label> <span class="overview_status">{{ form_widget(ctsCaseForm['caseStatus']) }}</span>
+    </p>
+    <p>
+        <label>Task</label> <span class="overview_task">{{ form_widget(ctsCaseForm['caseTask']) }}</span>
+    </p>
+    <p>
+        <label>Owner</label> <span class="overview_owner">{{ ctsHelper.wordWrap(ctsCase.caseOwner, 16)|nl2br }}</span>
+    </p>
+    <p class="URN last">
+        <label>HRN</label> <span class="overview_urn">{{ form_widget(ctsCaseForm['urn']) }}</span>
+    </p>
+</div>

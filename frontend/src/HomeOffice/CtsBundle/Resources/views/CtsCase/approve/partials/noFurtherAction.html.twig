@@ -1,0 +1,17 @@
+{% if form.transitions['ApproveNRR'] is defined %}
+    <div class="form-group">
+        <label class="form-label"><strong>No Response Required</strong></label>
+        {{ form_widget(form.transitions['ApproveNRR']) }}
+
+        {% if form['transitions']['Reject'] is defined %}
+            <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_return', { 'nodeRef': case.nodeId }) }}">
+                {{ form['transitions']['Reject'].vars.label }}
+            </button>
+        {% endif %}
+    </div>
+{% else %}
+    <div class="form-group">
+        <label class="form-label"><strong>No Response Required</strong></label>
+        <label class="form-label form-approved">Approved</label>
+    </div>
+{% endif %}

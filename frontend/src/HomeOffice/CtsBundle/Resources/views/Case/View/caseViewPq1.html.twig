@@ -1,0 +1,100 @@
+<div id="correspondence_details" class="panel wide">
+    <h2>Case details</h2>
+
+    <div class="page-chunk basic_details">
+        <p>
+            <label>UIN:</label>
+            <span>{{ ctsCase.uin }}</span>
+        </p>
+        <p>
+            <label>Question No:</label>
+            <span>{{ ctsCase.questionNumber }}</span>
+        </p>
+        <p>
+            <label>Case type:</label>
+            <span>{{ correspondenceSubTypes[ctsCase.correspondenceType] }}</span>
+        </p>
+        <p>
+            <label>OP date:</label>
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.opDate) }}</span>
+        </p>
+        <p>
+            <label>WO date:</label>
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.woDate) }}</span>
+        </p>
+    </div>
+    <div class="page-chunk basic_details_2">
+        <p>
+            <label>Received type:</label>
+            <span>{{ ctsCase.receivedType }}</span>
+        </p>
+        {% if ctsCase.receivedType == 'Transfer' %}
+            <p>
+                <label>Transfer Department:</label>
+                <span>{{ ctsCase.transferDepartmentName }}</span>
+            </p>
+        {% endif %}
+        <p>
+            <label>Round robin:</label>
+            <span>{% if ctsCase.roundRobin %}Yes{% else %}No{% endif %}</span>
+        </p>
+        {% if ctsCase.roundRobin %}
+            <p>
+                <label>Cabinet Office guidance:</label>
+                <span>{{ ctsCase.cabinetOfficeGuidance }}</span>
+            </p>
+        {% endif %}
+    </div>
+</div>
+<div class="sibling-group">
+{% include "HomeOfficeCtsBundle:Case:linkedCaseList.html.twig" with { 'editable' : false } %}
+{% include "HomeOfficeCtsBundle:Case:groupedCaseList.html.twig" with { 'editable' : false } %}
+</div>
+<div class="sibling-group">
+    <div class="panel page-chunk pq" id="reply_to">
+        <h2>Reply to</h2>
+        <p>
+            <label>Member:</label>
+            <span>{{ ctsCase.member }}</span>
+            {% if (displayMemberStopListIcon == 'true') %}
+            <div class="full_width_label">
+                <div class="stop_list_label">Stop list <b class="icon"></b></div>
+            </div>
+            {% endif %}
+        </p>
+        <p>
+            <label>Constituency:</label>
+            <span>{{ ctsCase.constituency }}</span>
+        </p>
+        <p>
+            <label>Party:</label>
+            <span>{{ ctsCase.party }}</span>
+        </p>
+    </div>
+
+    <div class="panel page-chunk pq" id="signed_reviewed_by_details">
+        <h2>Signed by</h2>
+        <p id="signed_by_home_sec">
+            <label>Home Sec:</label>
+            <span>{% if ctsCase.signedByHomeSec %}Yes{% else %}No{% endif %}</span>
+        </p>
+        <h2>Requires review by</h2>
+        <p id="reviewed_by_perm_sec">
+            <label>Perm Sec:</label>
+            <span>{% if ctsCase.reviewedByPermSec %}Yes{% else %}No{% endif %}</span>
+        </p>
+        <p id="reviewed_by_spads">
+            <label>SpAds:</label>
+            <span>{% if ctsCase.reviewedBySpads %}Yes{% else %}No{% endif %}</span>
+        </p>
+    </div>
+</div>
+
+{% include "HomeOfficeCtsBundle:Case/View:_markupView.html.twig" %}
+
+<div class="panel wide page-chunk" id="minutes_history">
+    <h2>Minutes history</h2>
+    {% include "HomeOfficeCtsBundle:Minute:minuteAdd.html.twig" with { 'minuteForm': ctsCaseMinuteForm, 'addFormTag': true } %}
+    {% include "HomeOfficeCtsBundle:Minute:minuteFilter.html.twig" %}
+    {% include "HomeOfficeCtsBundle:Minute:minuteHistory.html.twig" %}
+</div>

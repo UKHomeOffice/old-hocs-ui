@@ -1,0 +1,18 @@
+<script type="text/javascript">
+    var memberAddress = {'memberPostcode': {}, 'memberAddressLine1': {}, 'memberAddressLine2': {}, 'memberCountry': {}, 
+        'lordsPostcode': {}, 'lordsAddressLine1': {}, 'lordsAddressLine2': {}, 'lordsCountry': {}};
+    var memberSpecificDetails = {'isLords': {}, 'displayName': {}};
+
+    {% for member in memberList %}
+        memberSpecificDetails.isLords['{{member.displayName }}'] = '{{ member.isLords }}';
+    {% endfor %}
+    
+    memberAddress.memberPostcode = 'SW1A 0AA';
+    memberAddress.memberAddressLine1 = 'House of Commons';
+    memberAddress.memberAddressLine2 = 'London';
+    memberAddress.memberCountry = 'United Kingdom';
+    memberAddress.lordsPostcode = 'SW1A 0AA';
+    memberAddress.lordsAddressLine1 = 'House of Lords';
+    memberAddress.lordsAddressLine2 = 'London';
+    memberAddress.lordsCountry = 'United Kingdom';
+</script>

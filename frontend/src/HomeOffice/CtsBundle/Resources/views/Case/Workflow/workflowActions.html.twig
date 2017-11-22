@@ -1,0 +1,24 @@
+{# can remove the not null workflow check when all workflows have been implemented #}
+{% if ctsCase.canAssignUser and allocateUserForm['statusChange'] is not defined and ctsCase.caseWorkflowStatus.getTransitions is defined%}
+    {% set countNextButtons = 0 %}
+    {% for transition in ctsCase.caseWorkflowStatus.getTransitions %}
+        {% if transition.colour == 'green' %}
+            {% set actionClass = 'default' %}
+        {% elseif transition.colour == 'red' %}
+            {% set actionClass = 'return' %}
+        {% endif %}
+        {% if transition.value == 'Reallocate' or (ctsCase.assignedUser != null and isAssigned) %}
+            {% if transition.manualAllocate %}
+                <a class ="action {{ actionClass }}" href="{{ path('homeoffice_cts_case_view', { 'nodeRef' : ctsCase.getNodeId, 'actionType' : 'allocate', 'statusChange' : transition.value }) }}"><span>{{ transition.label }}</span></a>
+            {% else %}
+                {% if transition.value == 'Reject' %}
+                    <span class="action {{ actionClass }}">{{ form_widget(ctsViewCaseForm['RejectStateButton'], { 'label': transition.label }) }}</span>
+                {% else %}
+                    {% set countNextButtons = countNextButtons + 1 %}
+                    {% set test = 'NextStateButton' ~  countNextButtons %}
+                    <span class="action {{ actionClass }}">{{ form_widget(ctsViewCaseForm[test], { 'label': transition.label }) }}</span>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,123 @@
+{% extends "HomeOfficeCtsBundle:CtsCase:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Approve{% endblock %}
+
+{% block metaTitle %}Approve PQ Case {{ case.urn }}{% endblock %}
+
+{% block tab1 %}
+    <a name="form_top"></a>
+    {{ form_start(form, {'attr': {'class': 'form-ajax', 'data-casetype': case.correspondenceType}}) }}
+
+    <h2>Question</h2>
+
+    <h3>Question (asked by {{ case.member }})</h3>
+
+    <p>{{ case.questionText }}</p>
+    <hr>
+
+    <div class="editResponseToggle">
+        <h2>
+            Response
+            {% if caseIsStep(case, 'approve') %}
+                <a href="#" class="editResponseTrigger">Edit</a>
+            {% endif %}
+        </h2>
+        <p class="{% if caseIsStep(case, 'approve') %}editResponseToggle {% endif %}answerTextDisplay">{{ case.answerText }}</p>
+    </div>
+
+    {% if caseIsStep(case, 'approve') %}
+        <div class="editResponseToggle hidden">
+            <h2>Response <a href="#" class="editResponseSave">Save</a></h2>
+            <div class="form-group">
+                {{ form_widget(form.answerText) }}
+                {{ form_widget(form.editAnswer) }}
+            </div>
+        </div>
+    {% endif %}
+    {% do form.answerText.setRendered %}
+
+    <div class="documentTable panel"
+         data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+         data-allow-remove="{{ caseIsStep(case, 'approve') ? 'true' : 'false' }}"
+    >
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+            'allowRemove': caseIsStep(case, 'approve') ? true : false
+        } %}
+    </div>
+
+    {% if form['document'] is defined %}
+        {% if caseIsStep(case, 'approve') %}
+            <div class="form-group">
+                {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with {
+                    'form': form['document']
+                } %}
+            </div>
+        {% endif %}
+        {% do form['document'].setRendered %}
+    {% endif %}
+    <hr>
+
+    <h2>Approval</h2>
+
+    <div class="form-group">
+        <label class="form-label"><strong>Senior Civil Servant</strong></label>
+        {% include 'HomeOfficeCtsBundle:CaseElements:approve.html.twig' with {
+            'task': 'SCS approval',
+            'case': case,
+            'transitions': form['transitions']}
+        %}
+    </div>
+
+    {% if case.reviewedByPermSec %}
+        <div class="form-group">
+            <label class="form-label"><strong>Permanent Secretary Private Office</strong></label>
+            {% include 'HomeOfficeCtsBundle:CaseElements:approve.html.twig' with {
+                'task': 'Perm Sec approval',
+                'case': case,
+                'transitions': form['transitions']}
+            %}
+        </div>
+    {% endif %}
+
+    {% if case.reviewedBySpads or case.signedByHomeSec %}
+        <div class="form-group">
+            <label class="form-label"><strong>Special Advisor</strong></label>
+            {% include 'HomeOfficeCtsBundle:CaseElements:approve.html.twig' with {
+                'task': 'SpAds approval',
+                'case': case,
+                'transitions': form['transitions']}
+            %}
+        </div>
+    {% endif %}
+
+    <h2>Parly approved</h2>
+    <h3>Parliamentary Questions Team</h3>
+
+    {% if form['markupMinister'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['markupMinister']) }}
+            {{ form_widget(form['markupMinister']) }}
+        </div>
+    {% endif %}
+
+    {% if form['lordsMinister'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['lordsMinister']) }}
+            {{ form_widget(form['lordsMinister']) }}
+        </div>
+    {% endif %}
+
+    <div class="form-group">
+        {% include 'HomeOfficeCtsBundle:CaseElements:approve.html.twig' with {
+            'task': 'Parly approval',
+            'case': case,
+            'transitions': form['transitions']}
+        %}
+    </div>
+
+    {% do form.transitions.setRendered %}
+
+    {{ form_end(form) }}
+{% endblock %}

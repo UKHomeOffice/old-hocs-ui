@@ -1,0 +1,81 @@
+{% extends "HomeOfficeCtsBundle:CtsCase:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Draft{% endblock %}
+
+{% block metaTitle %}Approve UKVI No 10 Case {{ case.urn }}{% endblock %}
+
+{% block tab1 %}
+    <a name="form_top"></a>
+    {{ form_start(form, {'attr': {'class': 'form-ajax', 'data-casetype': case.correspondenceType}}) }}
+        <h2>Original Correspondence</h2>
+        <p>Member: {{ case.member }}</p>
+
+        <div class="panel">
+            {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+                'filterTypes': ['Original']
+            } %}
+        </div>
+        <hr>
+
+        <h2>Case details</h2>
+
+        {% if form['linkedCases'] is defined %}
+            {% include 'HomeOfficeCtsBundle:CaseElements:linkedCases.html.twig' with { 'form': form['linkedCases'] } %}
+        {% else %}
+            <h3>Linked cases</h3>
+            {% if case.linkedCases %}
+                {% include 'HomeOfficeCtsBundle:CaseElements:linkedCasesTable.html.twig' with { 'case': case } %}
+            {% else %}
+                There are no linked cases
+            {% endif %}
+        {% endif %}
+        <hr />
+
+        <h2>Response</h2>
+
+        {% if form['topics'] is defined %}
+            {% include 'HomeOfficeCtsBundle:CaseElements:topics.html.twig' with { 'form': form['topics']}  %}
+        {% endif %}
+
+        {% include 'HomeOfficeCtsBundle:CaseElements:viewStandardLines.html.twig' with {
+            caseType: caseType(case.correspondenceType)|lower
+        } only %}
+
+        <label class="form-label">Document(s)</label>
+        <div class="documentTable panel"
+             data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+             data-filter-types="Original attachments,Contribution,Background note,Response,Other"
+             data-allow-remove="{{ caseIsStep(case, 'draft') ? 'true' : 'false' }}"
+        >
+            {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+                'filterTypes': ['Original attachments', 'Contribution', 'Background note', 'Response', 'Other'],
+                'allowRemove': caseIsStep(case, 'draft') ? true : false
+            } %}
+        </div>
+
+        {% if form['document'] is defined %}
+            {% if caseIsStep(case, 'draft') %}
+                <div class="form-group">
+                    {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with {
+                        'form': form['document']
+                    } %}
+                </div>
+            {% endif %}
+            {% do form['document'].setRendered %}
+        {% endif %}
+        <hr>
+
+        {% if form['allocate'] is defined and caseIsStep(case, 'draft') %}
+            {% include 'HomeOfficeCtsBundle:CaseElements:allocate.html.twig' with {
+                'form': form['allocate'], 'title': 'Allocate to QA Review', 'transitions': form['transitions']} %}
+        {% else %}
+            {% include 'HomeOfficeCtsBundle:CaseElements:transitions.html.twig' with {
+                'form': form, 'transitions': form['transitions']
+            }%}
+        {% endif %}
+
+        {% do form.transitions.setRendered %}
+    {{ form_end(form) }}
+{% endblock %}

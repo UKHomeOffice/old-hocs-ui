@@ -1,0 +1,178 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% block title %}
+    {% if dashboard %}
+        Dashboard results
+    {% else %}
+        Search results
+    {% endif %}
+{% endblock %}
+
+{% block bc %}
+    <section class="grid-row">
+        <div class="column-half">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/">Home</a></li>
+                    {% if dashboard %}
+                        <li><a href="{{ path('homeoffice_cts_dashboard_index') }}">Dashboard</a></li>
+                    {% else %}
+                        <li><a href="{{ path('homeoffice_cts_supersearch_search', queryArray) }}">Search</a></li>
+                    {% endif %}
+                    <li>Results</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="column-half">
+            <ul class="blank buttons">
+                <li>
+                    <a class="button right" href="{{ path('homeoffice_cts_supersearch_search', queryArray) }}">
+                        {% if dashboard %}
+                            Refine Results
+                        {% else %}
+                            Edit Search
+                        {% endif %}
+                    </a>
+                </li>
+                {% if dashboard %}
+                    <li>
+                        <a class="button button-secondary right" href="{{ path('homeoffice_cts_supersearch_export', queryArray) }}">Export</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    {% if search.numItems %}
+        <section class="grid-row">
+            <div class="column-full">
+                <table class="todo-queue" summary="{% if summary is defined %}{{ summary }}{% endif %}">
+                    <thead>
+                        <th>Case ID</th>
+                        <th>Final Deadline</th>
+                        <th>Name / Member</th>
+                        <th>Unit</th>
+                        <th>Topic</th>
+                        <th>Status</th>
+                        <th>Owner</th>
+                    </thead>
+                    <tbody>
+                    {% for result in search.results %}
+                        <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                            <td> 
+                                <a
+                                    href="{{ path('homeoffice_cts_case_view', { 'nodeRef' : result.caseHash }) }}"
+                                    title="View {{ result.correspondenceType }}/{{ result.urnSuffix }}" >
+                                    {{ result.correspondenceType }}/{{ result.urnSuffix }}
+                                </a>
+                            </td>
+                            <td> 
+                                {% if result.caseResponseDeadline is defined %} 
+                                {{ result.caseResponseDeadline|date('d/m/Y') }} 
+                                {% endif %} 
+                            </td>
+                            <td>{% if result.nameOrMember is defined %}
+                                    {{ result.nameOrMember }}
+                                {% endif %}
+                            </td>
+                            <td>{% if result.markupUnit is defined %}
+                                    {{ getUnitName(result.markupUnit) }}
+                                {% endif %}
+                            </td>
+                            <td>{% if result.markupTopic is defined %}
+                                    {{ result.markupTopic }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ result.caseStatus }} ({{ result.caseTask }})
+                                {% if result.caseOverdueFlag is defined and result.caseOverdueFlag == true %}
+                                    <span class="tag tag-danger">Overdue</span>
+                                {% endif %}
+                                {% if result.returnedCount is defined and result.returnedCount > 0 %}
+                                    <span class="tag tag-purple">Redraft requested</span>
+                                {% endif %}
+                                {% if result.priority is defined and result.priority == true %}
+                                    <span class="tag tag-yellow">Priority</span>
+                                {% endif %}
+
+                            </td>
+                            <td>
+                                {% if result.assignedUser is not defined or
+                                    (result.assignedUser is defined and result.assignedUser == "") %}
+                                    <p>
+                                        <a
+                                            data-username="{{ app.user.username }}"
+                                            href="{{ path('homeoffice_cts_home_allocatetome',
+                                                app.request.query.all|merge( {'nodeRef' : result.caseHash } ) ) }}"
+                                            class="allocation-link">Allocate to Me
+                                        </a>
+                                    </p>
+                                {% endif %}
+                                {% if result.assignedUser is defined %}
+                                    {{ result.assignedUser }}
+                                {% elseif result.assignedTeam is defined %}
+                                    {{ userAndTeamList[result.assignedTeam] }}
+                                {% elseif result.assignedUnit is defined %}
+                                    {{ userAndTeamList[result.assignedUnit] }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="grid-row">
+            <div class="column-third">
+                <p>
+                    {% if search.from == search.to %}
+                        Showing case {{ search.from }} of {{ search.from }}
+                    {% else %}
+                        Showing cases {{ search.from }} to {{ search.to }}
+                    {% endif %}
+                        of
+                    {{ search.getNumItems }}
+                </p>
+            </div>
+            <div class="column-third">
+                <p class="centre">
+                    {% if (queryArray['limit'] is defined and queryArray['limit']==50) %}
+                        <a class="show-10"  href="{{ path('homeoffice_cts_supersearch_results',
+                        {'offset': 0, 'limit': 10} + queryArray) }}">Show 10 per page</a>
+                    {% else %}
+                        <a class="show-50" href="{{ path('homeoffice_cts_supersearch_results',
+                        {'offset': 0, 'limit': 50} + queryArray) }}">Show 50 per page</a>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="column-third">
+                {% if search.limit != 500 %}
+                    <p class="right">
+                        {% if (search.currentPage != 1) %}
+                            <a href="{{ path('homeoffice_cts_supersearch_results',
+                            {'offset': search.previousOffset} + queryArray) }}">Prev</a>
+                        {% endif %}
+                        {% for page in range(1, search.knownPages) %}
+                            <a href="{{ path('homeoffice_cts_supersearch_results',
+                            {'offset': search.pageOffset(page)} + queryArray) }}">{{ page }}</a>
+                        {% endfor %}
+                        {% if search.hasMoreItems %}
+                            <a href="{{ path('homeoffice_cts_supersearch_results',
+                            {'offset': search.nextOffset} +  queryArray ) }}">Next</a>
+                        {% endif %}
+                    </p>
+                {% endif %}
+            </div>
+        </section>
+    {% else %}
+        <section class="grid-row">
+            <div class="column-full">
+                <p>
+                    <em>There are no cases that match your search requirements.</em>
+                </p>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}

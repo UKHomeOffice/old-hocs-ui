@@ -1,0 +1,21 @@
+security:
+    providers:
+        process_manager:
+            id: process_manager_user_provider
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        secured_area:
+            pattern: ^/(login_check|cts/.*)$
+            simple_form:
+                authenticator: process_manager_authenticator
+                check_path:    login_check
+                login_path:    login
+                default_target_path: homeoffice_cts_home_home
+        default:
+            anonymous: ~
+
+    access_control:
+        - { path: ^/cts, roles: ROLE_USER }

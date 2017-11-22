@@ -1,0 +1,21 @@
+services:
+    home_office_cts.form.builder.gnr_create:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Create\GNR
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: GNRCreate }
+    home_office_cts.form.builder.gnr_draft:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Draft\GNR
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: GNRDraft }
+    home_office_cts.form.builder.gnr_approve:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Approve\GNR
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: GNRApprove }
+    home_office_cts.form.builder.gnr_disptch:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Dispatch\GNR
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: GNRDispatch }

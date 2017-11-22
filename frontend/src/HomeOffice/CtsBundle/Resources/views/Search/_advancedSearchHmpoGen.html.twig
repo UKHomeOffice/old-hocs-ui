@@ -1,0 +1,51 @@
+<div class="advanced-search-fields GEN-search" {% if advancedSearchType != null and advancedSearchType != 'GEN' %}style="display: none;"{% endif %}>
+    <h2>Advanced search - HMPO General</h2>
+    <fieldset class="search_fields1">
+        <div class="dateField">
+            <span class="prelude">Received:</span>
+            <span class="inset-label">{{ form_label(searchByForm['genReceivedDateFrom']) }}</span>
+            {{ form_widget(searchByForm['genReceivedDateFrom'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="dateField">
+            <span class="inset-label">{{ form_label(searchByForm['genReceivedDateTo']) }}</span>
+            {{ form_widget(searchByForm['genReceivedDateTo'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="preDateField">
+            {{ form_label(searchByForm['genPassportNumber']) }}
+            {{ form_widget(searchByForm['genPassportNumber']) }}
+        </div>
+        <div class="preDateField">
+            {{ form_label(searchByForm['genApplicationNumber']) }}
+            {{ form_widget(searchByForm['genApplicationNumber']) }}
+        </div>
+    </fieldset>
+    <fieldset class="search_fields2">
+        <div class="advanced-search-sub-title">
+            <span>Correspondent / applicant details</span>
+        </div>
+        <div>
+            {{ form_label(searchByForm['genFirstName']) }}
+            {{ form_widget(searchByForm['genFirstName']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['genSurname']) }}
+            {{ form_widget(searchByForm['genSurname']) }}
+        </div>
+    </fieldset>
+    <fieldset class="search_fields3 last">
+        <div class="advanced-search-sub-title">
+        </div>
+        <div>
+            {{ form_label(searchByForm['genPostcode']) }}
+            {{ form_widget(searchByForm['genPostcode']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['genEmail']) }}
+            {{ form_widget(searchByForm['genEmail']) }}
+        </div>
+        <div class="button-holder">
+            <span class="button">{{form_widget(searchByForm['clearGen'])}}</span>
+            <span class="button default">{{ form_widget(searchByForm['searchButtonGen']) }}</span>
+        </div>
+    </fieldset>
+</div>

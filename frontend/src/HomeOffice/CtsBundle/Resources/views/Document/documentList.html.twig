@@ -1,0 +1,52 @@
+{% if ctsCase.caseDocuments|length > 0 %}
+    <div id="doc_preview_container">
+        <div id="doc_preview" class="medium"></div>
+    </div>
+{% endif %}
+
+<h2 class="standalone" id="doc_list_title">
+{% if ctsCase.caseDocuments|length > 0 %}
+    Document list preview
+    <sub>({{ ctsCase.caseDocuments|length }} of {{ ctsCase.caseDocuments|length }})</sub>
+    <span class="button-group">
+        <span class="button">
+            <a href="{{ path('homeoffice_cts_document_getdocumentlist', { 'nodeRef' : ctsCase.getNodeId }) }}"
+               target="_blank">View doc list</a>
+        </span>
+    </span>
+{% endif %}
+</h2>
+
+<div id="doc_list" class="case-table">
+{% if ctsCase.caseDocuments|length > 0 %}
+    <fieldset id="doc_case_table">
+        <table summary="Documents attached to this case">
+            <tr>
+                <th class="version">Version</th>
+                <th class="type">Type</th>
+                <th class="name">Name</th>
+                <th class="date">Added</th>
+                <th class="preview">Preview</th>
+            </tr>
+            {% for caseDocument in ctsCase.caseDocuments %}
+                <tr>
+                    <td class="version">{{ caseDocument.versionNumber }}</td>
+                    <td class="type">{{ caseDocument.documentType }}</td>
+                    <td class="name">
+                        <a href="{{ path('homeoffice_cts_document_download', { 'caseNodeRef' : ctsCase.getNodeId, 'documentNodeRef' : caseDocument.getNodeId }) }}" target="_blank">{{ caseDocument.name }}</a>
+                    </td>
+                    <td class="date">{{ ctsHelper.formatAtomStringToDateTime(caseDocument.createdDate) }}</td>
+                    <td class="preview">
+                        {% if caseDocument.canDownloadDirect %}
+                            {% set docPath = path('homeoffice_cts_document_downloaddirect', { 'documentNodeRef' : caseDocument.getNodeId }) %}
+                        {% else%}
+                            {% set docPath = path('homeoffice_cts_document_downloadpdf', { 'documentNodeRef' : caseDocument.getNodeId }) %}
+                        {% endif %}
+                        <a class="preview-image" href="{{ docPath }}"><span class="a11y">{{ caseDocument.name }}</span></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </fieldset>
+{% endif %}
+</div>

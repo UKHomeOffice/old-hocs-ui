@@ -1,0 +1,42 @@
+<span class="keep-together">
+
+    {% if ctsCase.case.isGroupedSlave is defined and ctsCase.case.isGroupedSlave %}
+        <a href="{{ path('homeoffice_cts_case_view', { 'nodeRef' : ctsCase.case.id, 'grouped' : 'true' }) }}">
+            {{ ctsCase.case.correspondenceType }}/{{ ctsCase.case.urnSuffix }}
+        </a>
+        <span title="grouped - dependent">(D)</span>
+    {% else %}
+        <a href="{{ path('homeoffice_cts_case_view', { 'nodeRef' : ctsCase.case.id }) }}">
+            {{ ctsCase.case.correspondenceType }}/{{ ctsCase.case.urnSuffix }}
+        </a>
+    {% endif %}
+
+
+    {% if ctsCase.case.isGroupedMaster is defined and ctsCase.case.isGroupedMaster %}
+        <span title="grouped - main">(M)</span>
+    {% endif %}
+
+    {% if ctsCase.case.isLinkedCase is defined and ctsCase.case.isLinkedCase %}
+        <span title="linked case">(L)</span>
+    {% endif %}
+
+    {% if ctsCase.case.priority is defined and ctsCase.case.priority %}
+        <span title="priority">(P)</span>
+    {% endif %}
+
+    {% if ctsCase.case.advice is defined and ctsCase.case.advice %}
+        <span title="advice">(A)</span>
+    {% endif %}
+
+    {% if ctsCase.case.foiIsEir is defined and ctsCase.case.foiIsEir %}
+        <span>(EIR)</span>
+    {% endif %}
+
+</span>
+
+{% if ctsCase.case.hmpoStage is defined and ctsCase.case.hmpoStage != '' %}
+    <p class ="hrn-results-block">({{ ctsCase.case.hmpoStage}})</p>
+{% endif %}
+{% if ctsCase.case.uin is defined and ctsCase.case.uin != null %}
+    <p class ="hrn-results-block">UIN: {{ ctsCase.case.uin }}</p>
+{% endif %}

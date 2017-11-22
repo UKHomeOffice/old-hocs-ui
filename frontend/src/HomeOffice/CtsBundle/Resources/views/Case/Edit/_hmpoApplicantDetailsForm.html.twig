@@ -1,0 +1,62 @@
+<div id="applicant_details" class="panel wide">
+    <h2>Applicant</h2>
+    <fieldset class="basic_details full_width">
+        <div class="spot-control">
+            {{ form_widget(ctsCaseForm['replyToApplicant']) }}
+            {{ form_label(ctsCaseForm['replyToApplicant']) }}
+        </div>
+    </fieldset>
+    <fieldset class="basic_details">
+        <div>
+            {{ form_label(ctsCaseForm['applicantTitle']) }}
+            {{ form_widget(ctsCaseForm['applicantTitle']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['applicantForename']) }}
+            {{ form_widget(ctsCaseForm['applicantForename']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['applicantSurname']) }}
+            {{ form_widget(ctsCaseForm['applicantSurname']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['applicantTelephone']) }}
+            {{ form_widget(ctsCaseForm['applicantTelephone']) }}
+        </div>
+        <div class="last">
+            {{ form_label(ctsCaseForm['applicantEmail']) }}
+            {{ form_widget(ctsCaseForm['applicantEmail']) }}
+        </div>
+    </fieldset>
+    <fieldset class="basic_details_2">
+        <div class="display-with-script" style="display: none;">
+            {% if ctsCase.correspondenceType == 'COM' %}
+                <a id="hmpo_applicant_address_same_as_correspondent_com" class="populate_details_link">Same as correspondent address</a>
+            {% endif %}
+            {% if ctsCase.correspondenceType == 'GEN' %}
+                <a id="hmpo_applicant_address_same_as_correspondent_gen" class="populate_details_link">Same as correspondent address</a>
+            {% endif %}
+        </div>
+        <div class="button-after-input">
+            {{ form_label(ctsCaseForm['applicantPostcode']) }}
+            {{ form_widget(ctsCaseForm['applicantPostcode']) }}
+            <a class="button find_address"><span>Find address</span></a>
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['applicantAddressLine1']) }}
+            {{ form_widget(ctsCaseForm['applicantAddressLine1']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['applicantAddressLine2']) }}
+            {{ form_widget(ctsCaseForm['applicantAddressLine2']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['applicantAddressLine3']) }}
+            {{ form_widget(ctsCaseForm['applicantAddressLine3']) }}
+        </div>
+        <div class="last">
+            {{ form_label(ctsCaseForm['applicantCountry']) }}
+            {{ form_widget(ctsCaseForm['applicantCountry']) }}
+        </div>
+    </fieldset>
+</div>

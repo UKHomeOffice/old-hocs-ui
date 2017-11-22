@@ -1,0 +1,45 @@
+<div id="correspondence_details" class="panel wide">
+    <h2>Case details</h2>
+    <div class="page-chunk">
+        <p>
+            <label>Case type:</label>
+            <span>{{ correspondenceSubTypes[ctsCase.correspondenceType] }}</span>
+        </p>
+        <p>
+            <label>Date received:</label>
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.dateReceived) }}</span>
+        </p>
+        <p class="last">
+            <label>Channel:</label>
+            <span>{{ ctsCase.channel }}</span>
+        </p>
+    </div>
+    <div class="page-chunk">
+        <p>
+            <label>Response:</label>
+            <span>{{ ctsCase.hmpoResponse }}</span>
+        </p>
+        <p>
+            <label>Passport number:</label>
+            <span>{{ ctsCase.passportNumber }}</span>
+        </p>
+        <p class="last">
+            <label>Application number:</label>
+            <span>{{ ctsCase.applicationNumber }}</span>
+        </p>
+    </div>
+</div>
+
+{% include "HomeOfficeCtsBundle:Case:linkedCaseList.html.twig" with { 'editable' : false, 'wide' : true } %}
+{% include 'HomeOfficeCtsBundle:Case/View:_hmpoCorrespondentDetails.html.twig' %}
+{% if ctsCase.typeOfCorrespondent == 'Third party' %}
+    {% include 'HomeOfficeCtsBundle:Case/View:_hmpoApplicantDetails.html.twig' %}
+{% endif %}
+{% include "HomeOfficeCtsBundle:Case/View:_markupView.html.twig" %}
+
+<div class="panel wide page-chunk" id="minutes_history">
+    <h2>Minutes history</h2>
+    {% include "HomeOfficeCtsBundle:Minute:minuteAdd.html.twig" with { 'minuteForm': ctsCaseMinuteForm, 'addFormTag': true }  %}
+    {% include "HomeOfficeCtsBundle:Minute:minuteFilter.html.twig" %}
+    {% include "HomeOfficeCtsBundle:Minute:minuteHistory.html.twig" %}
+</div>

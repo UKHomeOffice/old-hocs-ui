@@ -1,0 +1,21 @@
+services:
+    home_office_cts.form.builder.com2_create:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Create\COM2
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: COM2Create }
+    home_office_cts.form.builder.com2_draft:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Draft\COM2
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: COM2Draft }
+    home_office_cts.form.builder.com2_approve:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Approve\COM2
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: COM2Approve }
+    home_office_cts.form.builder.com2_dispatch:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Dispatch\COM2
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: COM2Dispatch }

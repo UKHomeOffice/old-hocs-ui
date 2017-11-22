@@ -1,0 +1,43 @@
+{% extends "HomeOfficeCtsBundle:CtsCase:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Draft{% endblock %}
+
+{% block metaTitle %}Draft PQ Case {{ case.urn }}{% endblock %}
+
+{% block tab1 %}
+    <a name="form_top"></a>
+    {{ form_start(form, {'attr': {'class': 'form-ajax', 'data-casetype': case.correspondenceType}}) }}
+        <h2>Question</h2>
+
+        <h3>Question (asked by {{ case.member }})</h3>
+        <p>{{ case.questionText }}</p>
+        <hr>
+
+        <h2>Response</h2>
+        <div class="form-group">
+            {{ form_label(form['answerText']) }}
+            {{ form_widget(form['answerText']) }}
+        </div>
+
+        {% if form['document'] is defined %}
+            {% if caseIsStep(case, 'draft') %}
+                <div class="form-group">
+                    {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with {
+                        'form': form['document']
+                    } %}
+                </div>
+                <hr>
+            {% endif %}
+            {% do form['document'].setRendered %}
+        {% endif %}
+
+        {% if form['allocate'] is defined and caseIsStep(case, 'draft') %}
+            {% include 'HomeOfficeCtsBundle:CaseElements:allocate.html.twig' with { 'form': form['allocate'], 'title': 'Allocate to SCS approval', 'transitions': form['transitions']} %}
+        {% endif %}
+        {% do form.allocate.setRendered %}
+
+        {% do form.transitions.setRendered %}
+    {{ form_end(form) }}
+{% endblock %}

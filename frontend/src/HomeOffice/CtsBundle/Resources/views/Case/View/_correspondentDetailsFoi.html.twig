@@ -1,0 +1,72 @@
+<div class="panel wide" id="constituent_details">
+    <h2>{{ title }}</h2>
+    <div class="page-chunk basic_details">
+        {% if ctsCase.mpRef is defined %}
+            <p>
+                <label>Reference:</label>
+                <span>{{ ctsCase.mpRef }}</span>
+            </p>
+        {% endif %}
+        <p>
+            <label>Title:</label>
+            <span>{{ ctsCase.correspondentTitle }}</span>
+        </p>
+        <p>
+            <label>Forename:</label>
+            <span>{{ ctsHelper.wordWrap(ctsCase.correspondentForename, 22)|nl2br }}</span>
+        </p>
+
+        <p>
+            <label>Surname:</label>
+            <span>{{ ctsHelper.wordWrap(ctsCase.correspondentSurname, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <label>Organisation:</label>
+            <span>{{ ctsCase.organisation }}</span>
+        </p>
+        <p>
+            <label>Telephone:</label>
+            <span>{{ ctsCase.correspondentTelephone }}</span>
+        </p>
+        <p class="last">
+            <label>Email:</label>
+            <span><a href="mailto:{{ ctsCase.correspondentEmail }}" title="{{ ctsCase.correspondentEmail }}">{{ ctsCase.correspondentEmail[:15] }}{% if ctsCase.correspondentEmail[16:] %}&hellip;{%  endif %}</a></span>
+        </p>
+    </div>
+    <div class="page-chunk basic_details_2">
+        <p{% if ctsCase.mpRef is defined %} class="push-down"{% endif %}>
+            <label>Address:</label>
+            <span>{{ ctsHelper.wordWrap(ctsCase.correspondentAddressLine1, 22)|nl2br }}</span>
+        </p>
+
+        <p>
+            <span class="spacer"></span>
+            <span>{{ ctsHelper.wordWrap(ctsCase.correspondentAddressLine2, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <span class="spacer"></span>
+            <span>{{ ctsHelper.wordWrap(ctsCase.correspondentAddressLine3, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <label>Postcode:</label>
+            <span>{{ ctsCase.correspondentPostcode }}</span>
+        </p>
+        {% set showCorrepondentSearch = ctsCase.correspondenceType == 'TRO' or ctsCase.correspondenceType == 'FOI' %}
+        <p {% if not showCorrepondentSearch %} class="last"{% endif %}>
+            <label>Country:</label>
+            <span>{{ ctsCase.correspondentCountry }}</span>
+        </p>
+        {% if showCorrepondentSearch %}
+            <p class="last">
+            <span class="button as-control" id="correspondent_search_button">
+                <a href="{{ path('homeoffice_cts_search_correspondentsearch', {
+                'correspondentSearchByField[replyForename]' : ctsCase.correspondentForename,
+                'correspondentSearchByField[replySurname]' : ctsCase.correspondentSurname,
+                'correspondentSearchByField[postcode]' : ctsCase.correspondentPostcode,
+                'correspondentSearchByField[email]' : ctsCase.correspondentEmail
+                }) }}" target="_blank">Correspondent record search</a>
+            </span>
+            </p>
+        {% endif %}
+    </div>
+</div>

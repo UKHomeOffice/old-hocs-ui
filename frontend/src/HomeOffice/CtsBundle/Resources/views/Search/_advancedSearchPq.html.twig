@@ -1,0 +1,51 @@
+<div class="advanced-search-fields PQ-search" {% if advancedSearchType != null and (advancedSearchType != 'LPQ' and advancedSearchType != 'NPQ' and advancedSearchType != 'OPQ' ) %}style="display: none;"{% endif %}>
+    <h2>Advanced search - PQ</h2>
+    <fieldset class="search_fields1">
+        <div class="preDateField">
+            {{ form_label(searchByForm['pqUin']) }}
+            {{ form_widget(searchByForm['pqUin']) }}
+        </div>
+        <div class="dateField single">
+            <div>
+                {{ form_label(searchByForm['pqOpDate']) }}
+                {{ form_widget(searchByForm['pqOpDate'], { 'attr' : { 'class' : 'dateSelect' } } ) }}
+            </div>
+        </div>
+        <div class="preDateField multi-selector">
+            {{ form_label(searchByForm['pqMember']) }}
+            {{ form_widget(searchByForm['pqMember']) }}
+        </div>
+    </fieldset>
+    <fieldset class="search_fields2">
+        <div>
+            {{ form_label(searchByForm['pqReceivedType']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['pqReceivedType']) }}
+            </div>
+        </div>
+        <div>
+            {{ form_label(searchByForm['pqRoundRobin']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['pqRoundRobin']) }}
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="search_fields3 last">
+        <div class="tickboxFields">
+            {{ form_label(searchByForm['pqSignedBy']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['pqSignedBy']) }}
+            </div>
+        </div>
+        <div class="tickboxFields">
+            {{ form_label(searchByForm['pqReviewedBy']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['pqReviewedBy']) }}
+            </div>
+        </div>
+        <div class="button-holder">
+            <span class="button">{{form_widget(searchByForm['clearPq'])}}</span>
+            <span class="button default">{{ form_widget(searchByForm['searchButtonPq']) }}</span>
+        </div>
+    </fieldset>
+</div>

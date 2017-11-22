@@ -1,0 +1,24 @@
+<div class="approveOnBehalf">
+    <div class="original">
+        {{ form_widget(transition, {'attr': {'label': transitionLabel}}) }}
+        {% if includeReject == true %}
+            {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+        {% endif %}
+    </div>
+
+    {{ form_widget(form['approveOnBehalf']) }}
+
+    <div class="onBehalf hidden">
+        <div class="form-group">
+            {{ form_label(form['colleagueName']) }}
+            {{ form_widget(form['colleagueName']) }}
+        </div>
+        <div class="form-group">
+            <button type="submit" name="{{ form.vars.name }}[{{ transition.vars.name }}]" class="button btn" label="Approve">{{ transitionLabel }}</button>
+
+            {% if includeReject == true %}
+                {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+            {% endif %}
+        </div>
+    </div>
+</div>

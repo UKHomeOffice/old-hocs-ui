@@ -1,0 +1,53 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% form_theme form _self %}
+
+{% block form_widget -%}
+    {% if compound %}
+        {{- block('form_widget_compound') -}}
+    {% else %}
+        {{- block('form_widget_simple') -}}
+    {% endif %}
+{%- endblock form_widget %}
+
+{% block form_widget_compound -%}
+    {%- if form.parent is empty -%}
+        {{ form_errors(form) }}
+    {%- endif -%}
+    {{- block('form_rows') -}}
+    {{- form_rest(form) -}}
+{%- endblock form_widget_compound %}
+
+{% block form_row -%}
+        {{- form_label(form) -}}
+        {{- form_errors(form) -}}
+        {{- form_widget(form) -}}
+{%- endblock form_row %}
+
+{% block button_row -%}
+        {{- form_widget(form) -}}
+{%- endblock button_row %}
+
+{% block choice_widget_expanded -%}
+    {%- for child in form %}
+        {{- form_widget(child) -}}
+    {% endfor -%}
+{% endblock choice_widget_expanded %}
+
+{% block radio_widget %}
+    {% spaceless %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        {% if 'no-block' not in attr.class|default('') %}
+            <label class="no-block" for="{{ id }}">
+        {% else %}
+                <label class="block-label" for="{{ id }}">
+        {% endif %}
+            <input type="radio" {{ block('widget_attributes') }}{% if value is defined %}
+                value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+            {{ label|trans({}, translation_domain) }}
+        </label>
+    {% endspaceless %}
+{% endblock radio_widget %}
+

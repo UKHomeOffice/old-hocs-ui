@@ -1,0 +1,25 @@
+{% if not className is defined %}
+    {% set className = 'documentTemplate' %}
+{% endif %}
+
+{% if not tableFilter is defined %}
+    {% set tableFilter = null %}
+{% endif %}
+
+<label><a class="{{ className }}Trigger noUnderline" href="#">Choose template</a></label>
+
+<div class="{{ className }}Toggle hidden panel">
+    <table class="documentTemplateTable" data-url="{{ path('homeoffice_cts_caseelements_documenttemplatetable', { 'correspondenceType': case.correspondenceType, 'nodeRef': case.nodeId, 'filter': tableFilter }) }}">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="placeholder">
+                <td colspan="2"><em>There are no document templates</em></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

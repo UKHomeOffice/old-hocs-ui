@@ -1,0 +1,24 @@
+services:
+    home_office_cts.form.create.fsc_create:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Create\FSC
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: FSCCreate }
+
+    home_office_cts.form.draft.fsc_draft:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Draft\FSC
+        parent: home_office_cts.form.basetype
+        tags:
+            - { name: form.type, alias: FSCDraft }
+
+    home_office_cts.form.approve.fsc_approve:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Approve\FSC
+        parent: home_office_cts.form.basetype
+        tags:
+            - { name: form.type, alias: FSCApprove }
+
+    home_office_cts.form.dispatch.fsc_dispatch:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Dispatch\FSC
+        parent: home_office_cts.form.basetype
+        tags:
+            - { name: form.type, alias: FSCDispatch }

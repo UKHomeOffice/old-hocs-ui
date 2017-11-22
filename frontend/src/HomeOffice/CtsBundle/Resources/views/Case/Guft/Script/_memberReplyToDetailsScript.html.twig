@@ -1,0 +1,18 @@
+<script type="text/javascript">
+    var memberAddress = {
+        'memberPostcode': 'SW1A 0AA',
+        'memberAddress1': 'House of Commons',
+        'memberAddress2': 'London',
+        'memberCountry': 'United Kingdom',
+        'lordsPostcode': 'SW1A 0AA',
+        'lordsAddress1': 'House of Lords',
+        'lordsAddress2': 'London',
+        'lordsCountry': 'United Kingdom'
+    };
+
+    var memberSpecificDetails = {'isLords': {}, 'displayName': {}};
+
+    {% for member in memberList %}
+        memberSpecificDetails.isLords['{{member.displayName }}'] = {{ member.isLords ? 'true' : 'false' }};
+    {% endfor %}
+</script>

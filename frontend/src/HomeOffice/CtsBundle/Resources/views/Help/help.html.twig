@@ -1,0 +1,34 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Help Documents{% endblock %}
+
+{% block bodyClass %}case{% endblock %}
+
+{% block breadcrumb_trail %}
+    <li>Help</li>
+{% endblock %}
+{% block helpButton %}
+{% endblock %}
+{% block dropdown %}
+{% endblock %}
+{% block searchButton %}
+{% endblock %}
+
+{% block body %}
+     <h2 class="standalone" id="help_list_title">Help</h2>
+    <div id="help_list" class="case-table">
+        {% if helpDocuments|length > 0 %}
+            <table>
+                <tr>
+                    <th class="name">Document name</th>
+                </tr>
+                {% for helpDocument in helpDocuments %}
+                    <tr>
+                        <td class="name"><a href="{{ path('homeoffice_cts_document_download', { 'caseNodeRef' : helpDocument.getNodeId, 'documentNodeRef' : helpDocument.getNodeId }) }}">{{ helpDocument.name }}</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </div>
+
+{% endblock %}

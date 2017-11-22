@@ -1,0 +1,50 @@
+{% include 'HomeOfficeCtsBundle:Case/Guft/Edit:_caseOverview.html.twig' %}
+
+<div id="deadline">
+    <h3>Deadlines</h3>
+    <p>
+        Response Deadline
+        <span class="right"><strong>{{ ctsCaseForm.vars.value.caseResponseDeadline|date('d/m/Y') }}</strong></span>
+    </p>
+    <p>
+        Draft Response
+        <span class="right"><strong>{{ ctsCaseForm.vars.value.draftResponseTarget|date('d/m/Y') }}</strong></span>
+    </p>
+</div>
+<div class="hidden">
+    {{ form_widget(ctsCaseForm['draftResponseTarget']) }}
+    {{ form_widget(ctsCaseForm['caseResponseDeadline']) }}
+</div>
+{% if ctsCase.groupedCases is defined and ctsCase.groupedCases|length > 0 %}
+    <h3>Grouped questions</h3>
+    <div>
+        <ul class="grouped_question_list">
+            {% for groupedCase in ctsCase.groupedCases %}
+                <li>
+                    <span class="grouped_uin">
+                        {{ groupedCase.uin }}:
+                    </span>
+                    <span>
+                        {% if groupedCase.questionText != '' %}
+                            {{ groupedCase.questionText }}
+                        {% else %}
+                            No question provided
+                        {% endif %}
+                    </span>
+                    <span>
+                    {% if groupedCase.member != '' %}
+                        ({{ groupedCase.member }})
+                    {% else %}
+                        (No member provided)
+                    {% endif %}
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+{% include "HomeOfficeCtsBundle:Case/Guft/Script:_memberStopListScript.html.twig" %}
+{% include "HomeOfficeCtsBundle:Case/Guft/Script:_topicStopListScript.html.twig" %}
+{% include "HomeOfficeCtsBundle:Case/Guft/Script:_memberPartyDetailsScript.html.twig" %}
+{% include "HomeOfficeCtsBundle:Case/Guft/Script:_topicListScript.html.twig" %}

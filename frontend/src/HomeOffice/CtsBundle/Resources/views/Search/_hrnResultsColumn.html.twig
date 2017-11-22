@@ -1,0 +1,29 @@
+<span class="keep-together">
+{% if ctsCase.isGroupedSlave is defined and ctsCase.isGroupedSlave %}
+    <a href="{{ path('homeoffice_cts_case_view', { 'nodeRef' : ctsCase.getMasterNodeRef, 'grouped' : 'true' }) }}">{{ ctsCase.getUrn }}</a>
+    <span title="grouped - dependent">(D)</span>
+{% else %}
+    <a href="{{ path('homeoffice_cts_case_view', { 'nodeRef' : ctsCase.getNodeId }) }}">{{ ctsCase.getUrn }}</a>
+{% endif %}
+{% if ctsCase.isGroupedMaster is defined and ctsCase.isGroupedMaster %}
+    <span title="grouped - main">(M)</span>
+{% endif %}
+{% if ctsCase.isLinkedCase is defined and ctsCase.isLinkedCase %}
+    <span title="linked case">(L)</span>
+{% endif %}
+{% if ctsCase.priority is defined and ctsCase.priority %}
+    <span title="priority">(P)</span>
+{% endif %}
+{% if ctsCase.advice is defined and ctsCase.advice %}
+    <span title="advice">(A)</span>
+{% endif %}
+{% if ctsCase.foiIsEir is defined and ctsCase.foiIsEir %}
+    <span>(EIR)</span>
+{% endif %}
+</span>
+{% if ctsCase.hmpoStage is defined %}
+    <p class ="hrn-results-block">({{ ctsCase.hmpoStage}})</p>
+{% endif %}
+{% if ctsCase.uin is defined and ctsCase.uin != null %}
+    <p class ="hrn-results-block">UIN: {{ ctsCase.uin }}</p>
+{% endif %}

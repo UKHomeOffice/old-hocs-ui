@@ -1,0 +1,56 @@
+<div class="advanced-search-fields FOI-complaint-search" {% if advancedSearchType != null and (advancedSearchType != 'FTC' and advancedSearchType != 'FTCI' and advancedSearchType != 'FSC' and advancedSearchType != 'FSCI' and advancedSearchType != 'FLT' and advancedSearchType != 'FUT' ) %}style="display: none;"{% endif %}>
+    <h2>Advanced search - FOI complaints</h2>
+    <fieldset class="search_fields1">
+        <div class="dateField">
+            <span class="prelude">Received:</span>
+            <span class="inset-label">{{ form_label(searchByForm['foiComplaintReceivedDateFrom']) }}</span>
+            {{ form_widget(searchByForm['foiComplaintReceivedDateFrom'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="dateField">
+            <span class="inset-label">{{ form_label(searchByForm['foiComplaintReceivedDateTo']) }}</span>
+            {{ form_widget(searchByForm['foiComplaintReceivedDateTo'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="dateField">
+            <span class="prelude">Response:</span>
+            <span class="inset-label">{{ form_label(searchByForm['foiComplaintResponseDateFrom']) }}</span>
+            {{ form_widget(searchByForm['foiComplaintResponseDateFrom'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="dateField">
+            <span class="inset-label">{{ form_label(searchByForm['foiComplaintResponseDateTo']) }}</span>
+            {{ form_widget(searchByForm['foiComplaintResponseDateTo'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="preDateField">
+            {{ form_label(searchByForm['foiComplaintHoCaseOfficer']) }}
+            {{ form_widget(searchByForm['foiComplaintHoCaseOfficer']) }}
+        </div>
+    </fieldset>
+    <fieldset class="search_fields2">
+        <div class="advanced-search-sub-title">
+            <span>Requestor details</span>
+        </div>
+        <div>
+            {{ form_label(searchByForm['foiComplaintRequestorFirstName']) }}
+            {{ form_widget(searchByForm['foiComplaintRequestorFirstName']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['foiComplaintRequestorSurname']) }}
+            {{ form_widget(searchByForm['foiComplaintRequestorSurname']) }}
+        </div>
+    </fieldset>
+    <fieldset class="search_fields3 last">
+        <div class="advanced-search-sub-title">
+        </div>
+        <div>
+            {{ form_label(searchByForm['foiComplaintRequestorPostcode']) }}
+            {{ form_widget(searchByForm['foiComplaintRequestorPostcode']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['foiComplaintRequestorEmail']) }}
+            {{ form_widget(searchByForm['foiComplaintRequestorEmail']) }}
+        </div>
+        <div class="button-holder">
+            <span class="button">{{form_widget(searchByForm['clearFoiComplaint'])}}</span>
+            <span class="button default">{{ form_widget(searchByForm['searchButtonFoiComplaint']) }}</span>
+        </div>
+    </fieldset>
+</div>

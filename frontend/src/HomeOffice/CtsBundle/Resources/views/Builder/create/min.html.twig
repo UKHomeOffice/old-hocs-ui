@@ -1,0 +1,117 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Create{% endblock %}
+
+{% block metaTitle %}Create DCU Ministerial Case {{ case.urn }}{% endblock %}
+
+{% block guftForm %}
+    <h2>Case details</h2>
+
+    <div class="form-group">
+        <label class="form-label">Case type</label>
+        <div class="form-read correspondenceType">{{ constant('HomeOffice\\AlfrescoApiBundle\\Service\\CaseCorrespondenceSubType::'~case.correspondenceType) }}</div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.dateReceived) }}
+        {{ form_widget(form.dateReceived) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.dateOfLetter) }}
+        {{ form_widget(form.dateOfLetter) }}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">{{ form.channel.vars.label }}</label>
+        {{ form_widget(form.channel) }}
+    </div>
+
+    {% include 'HomeOfficeCtsBundle:Builder:groups/linkedCase.html.twig' with {'form': form.linkedCases} %}
+
+    <div class="form-group">
+        {{ form_label(form.advice) }}
+        {{ form_widget(form.advice) }}
+    </div>
+    <hr>
+
+    <h2>Original correspondence</h2>
+    <div class="documentTable panel"
+         data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+         data-allow-remove="false"
+    >
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with { 'allowRemove': false } %}
+    </div>
+
+    {% if caseIsStep(case, 'create') %}
+        <div class="form-group">
+            {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form.document} %}
+        </div>
+    {% endif %}
+    <hr>
+
+    <h2>Reply to</h2>
+    <div class="group">
+        <label class="form-label">{{ form.correspondentIsMemberOfParliament.vars.label }}</label>
+        {{ form_widget(form.correspondentIsMemberOfParliament) }}
+    </div>
+
+    <div class="group">
+        {% if form.correspondentIsMemberOfParliament.vars.read_only %}
+            {% set HideMemberParliament = (form.correspondentIsMemberOfParliament.vars.data == 0) %}
+            {% set HideCorrespondent = (form.correspondentIsMemberOfParliament.vars.data == 1) %}
+        {% endif %}
+
+        <div class="{% if HideMemberParliament is defined and HideMemberParliament == true %}hidden{% else %}memberParliamentToggle{% endif %}">
+            {% include 'HomeOfficeCtsBundle:Builder:groups/memberOfParliament.html.twig' %}
+        </div>
+
+        <div class="{% if HideCorrespondent is defined and HideCorrespondent == true %}hidden{% else %}correspondentToggle{% endif %}">
+            {% include 'HomeOfficeCtsBundle:Builder:groups/correspondent.html.twig' with {'replyToTitle': 'Correspondent'} %}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.replyToNumberTenCopy) }}
+        {{ form_widget(form.replyToNumberTenCopy) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.homeSecretaryReply) }}
+        {{ form_widget(form.homeSecretaryReply) }}
+    </div>
+    <hr>
+
+    <h2>Other parties</h2>
+    {% include 'HomeOfficeCtsBundle:Builder:groups/tertiaryCorrespondent.html.twig' with {
+        'replyToTitle': 'Constituent (Optional)'
+    } %}
+
+    {% if caseIsStep(case, 'create') %}
+        <hr>
+        {% if case.caseTask == 'Create case' %}
+            <h2>Allocate for QA</h2>
+            {% include 'HomeOfficeCtsBundle:Builder:groups/allocate.html.twig' %}
+            {{ form_widget(form.Next, {'label': 'Send to QA' }) }}
+            {{ form_widget(form.save) }}
+        {% endif %}
+
+        {% if case.caseTask == 'QA case' %}
+            <h2>Approve for Markup</h2>
+            {% include 'HomeOfficeCtsBundle:Builder:groups/allocate.html.twig' %}
+            {{ form_widget(form.SendQACaseToMarkup) }}
+            {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+        {% endif %}
+
+        {% if case.caseTask == 'Mark up' %}
+            {% include 'HomeOfficeCtsBundle:Builder:groups/markup.html.twig' %}
+        {% endif %}
+    {% endif %}
+
+    {% if caseIsStep(case, 'draft') %}
+        <hr>
+        {{ form_widget(form.save) }}
+    {% endif %}
+{% endblock %}

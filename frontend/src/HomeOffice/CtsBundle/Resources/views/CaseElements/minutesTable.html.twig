@@ -1,0 +1,29 @@
+{% if minutes is not empty %}
+    <table>
+        <thead>
+        <tr>
+            <th>No.</th>
+            <th>Date</th>
+            <th>User</th>
+            <th>Action</th>
+            <th>Detail</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for key, minute in minutes %}
+            <tr class="{{ minute.minuteType }}" {% if minute.minuteType == 'system' %}style="display:none"{% endif %}>
+                <td>
+                    {{ (minutes|length) - key }}
+                </td>
+                <td>
+                    {{ minute.minuteDateTime|date("d/m/Y", "Europe/London") }}<br>
+                    {{ minute.minuteDateTime|date("H:i:s", "Europe/London") }}
+                </td>
+                <td>{{ minute.minuteUpdatedBy | removeDomain}}</td>
+                <td>&nbsp;</td>
+                <td class="two-thirds">{{ minute.minuteContent|raw|nl2br }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

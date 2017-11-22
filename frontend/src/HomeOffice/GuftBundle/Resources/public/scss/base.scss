@@ -1,0 +1,44 @@
+/* govuk_frontend_toolkit includes */
+$path: '/bundles/guft/images/';
+@import '../vendor/alphagov/govuk_frontend_toolkit/stylesheets/colours';
+@import '../vendor/alphagov/govuk_frontend_toolkit/stylesheets/conditionals';
+@import '../vendor/alphagov/govuk_frontend_toolkit/stylesheets/css3';
+@import '../vendor/alphagov/govuk_frontend_toolkit/stylesheets/device-pixels';
+@import '../vendor/alphagov/govuk_frontend_toolkit/stylesheets/typography';
+@import '../vendor/alphagov/govuk_frontend_toolkit/stylesheets/grid_layout';
+@import '../vendor/alphagov/govuk_frontend_toolkit/stylesheets/url-helpers';
+@import '../vendor/alphagov/govuk_frontend_toolkit/stylesheets/design-patterns/buttons';
+@import '../vendor/alphagov/govuk_frontend_toolkit/stylesheets/design-patterns/alpha-beta';
+@import '../vendor/alphagov/govuk_frontend_toolkit/stylesheets/design-patterns/breadcrumbs';
+
+/* govuk_frontend_toolkit extension includes */
+@import "govuk_frontend/colours";
+
+
+/* layout includes */
+@import "layout/header";
+@import "layout/footer";
+
+/* Partials */
+@import "partials/helpers";
+@import "partials/basic";
+@import "partials/accessibility";
+@import "partials/grid";
+@import "partials/typography";
+@import "partials/colours";
+@import "partials/buttons";
+@import "partials/tables";
+@import "partials/forms";
+@import "partials/forms/form-block-labels";
+@import "partials/forms/form-date";
+@import "partials/forms/form-validation";
+@import "partials/universals";
+@import "partials/progressbar";
+@import "partials/tags";
+@import "partials/panels";
+@import "partials/jquery-ui/date-picker";
+@import "partials/jquery-ui/tabs";
+@import "partials/documentPreview";
+@import "partials/percentBar";
+@import "partials/dashboard";
+@import "partials/search";

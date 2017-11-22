@@ -1,0 +1,30 @@
+services:
+    home_office_cts.form.builder.dten_create:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Create\DTEN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: DTENCreate }
+
+    home_office_cts.form.builder.dten_draft:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Draft\DTEN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: DTENDraft }
+
+    home_office_cts.form.builder.dten_approve:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Approve\DTEN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: DTENApprove }
+
+    home_office_cts.form.builder.dten_signoff:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Signoff\DTEN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: DTENSignoff }
+
+    home_office_cts.form.builder.dten_dispatch:
+        class: HomeOffice\CtsBundle\Form\Builder\Types\Dispatch\DTEN
+        parent: home_office_cts.form.basetype
+        tags:
+          - { name: form.type, alias: DTENDispatch }

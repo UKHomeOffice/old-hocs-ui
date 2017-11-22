@@ -1,0 +1,4 @@
+# This file is auto-generated during the composer install
+parameters:
+    build_id: buildidnot_set
+    git_commit: hashnot_set

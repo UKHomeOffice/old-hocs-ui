@@ -1,0 +1,24 @@
+<div id="overview">
+    <h3>Overview</h3>
+    <p>
+        Status
+        <span class="right"><strong>{{ ctsCaseForm.vars.value.caseStatus }}</strong></span>
+    </p>
+    <p>
+        Task
+        <span class="right"><strong>{{ ctsCaseForm.vars.value.caseTask }}</strong></span>
+    </p>
+    <p>
+        Owner
+        <span class="right"><strong>{{ ctsHelper.wordWrap(ctsCase.caseOwner, 16)|nl2br }}</strong></span>
+    </p>
+    <p>
+        HRN
+        <span class="right"><strong>{{ ctsCaseForm.vars.value.urn }}</strong></span>
+    </p>
+</div>
+<div class="hidden">
+    {{ form_widget(ctsCaseForm['caseStatus']) }}
+    {{ form_widget(ctsCaseForm['caseTask']) }}
+    {{ form_widget(ctsCaseForm['urn']) }}
+</div>

@@ -1,0 +1,65 @@
+<label><a class="replyToCorrespondentTrigger noUnderline" href="#">{{ replyToTitle|default('Constituent (Optional)') }}</a></label>
+
+<div class="replyToCorrespondentToggle hidden">
+    {% if form.correspondentTitle is defined %}
+        <div class="form-group">
+            {{ form_label(form.correspondentTitle) }}
+            {{ form_widget(form.correspondentTitle) }}
+        </div>
+    {% endif %}
+
+    {% if form.correspondentForename is defined %}
+        <div class="form-group">
+            {{ form_label(form.correspondentForename) }}
+            {{ form_widget(form.correspondentForename) }}
+        </div>
+    {% endif %}
+
+    {% if form.correspondentSurname is defined %}
+        <div class="form-group">
+            {{ form_label(form.correspondentSurname) }}
+            {{ form_widget(form.correspondentSurname) }}
+        </div>
+    {% endif %}
+
+    {% if form.correspondentPostcode is defined %}
+        <div class="form-group">
+            {{ form_label(form.correspondentPostcode) }}
+            {{ form_widget(form.correspondentPostcode) }}
+        </div>
+    {% endif %}
+
+    {% if form.correspondentAddressLine1 is defined %}
+        <div class="form-group">
+            {{ form_label(form.correspondentAddressLine1) }}
+            {{ form_widget(form.correspondentAddressLine1) }}
+        </div>
+        <div class="form-group">
+            {{ form_widget(form.correspondentAddressLine2) }}
+        </div>
+        <div class="form-group">
+            {{ form_widget(form.correspondentAddressLine3) }}
+        </div>
+    {% endif %}
+
+    {% if form.correspondentCountry is defined %}
+        <div class="form-group">
+            {{ form_label(form.correspondentCountry) }}
+            {{ form_widget(form.correspondentCountry) }}
+        </div>
+    {% endif %}
+
+    {% if form.correspondentTelephone is defined %}
+        <div class="form-group">
+            {{ form_label(form.correspondentTelephone) }}
+            {{ form_widget(form.correspondentTelephone) }}
+        </div>
+    {% endif %}
+
+    {% if form.correspondentEmail is defined %}
+        <div class="form-group">
+            {{ form_label(form.correspondentEmail) }}
+            {{ form_widget(form.correspondentEmail) }}
+        </div>
+    {% endif %}
+</div>

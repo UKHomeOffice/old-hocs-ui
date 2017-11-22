@@ -1,0 +1,65 @@
+<div id="panels" class="sibling-group">
+    {% include "HomeOfficeCtsBundle:Case/View:_caseOverview.html.twig" %}
+
+    <div id="deadline" class="panel alt2 page-chunk">
+        <h2>Deadline <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.caseResponseDeadline)|default('-') }}</span></h2>
+        <h3>Targets</h3>
+        {% spaceless %}{# compatibilty mode bug #}
+        <p>
+            <label>Draft date</label>
+            <span>{{ ctsHelper.formatDateTimeToDateTime(ctsCase.draftResponseTarget, true, true)|default('-')|raw }}</span>
+        </p>
+        {% endspaceless %}
+    </div>
+</div>
+
+<div id="question" class="panel medium page-chunk">
+    <h2>Question</h2>
+    <p>
+        {{ ctsCase.questionText }}
+    </p>
+</div>
+
+{% if ctsCase.groupedCases is defined and ctsCase.groupedCases|length > 0 %}
+    <div id="grouped_questions" class="panel medium page-chunk">
+        <h2>Grouped questions</h2>
+        <div>
+            <ul class="grouped_question_list">
+                {% for groupedCase in ctsCase.groupedCases %}
+                    <li>
+                        <span class="grouped_uin">
+                            {{ groupedCase.uin }}:
+                        </span>
+                        <span>
+                            {% if groupedCase.questionText != '' %}
+                                {{ groupedCase.questionText }}
+                            {% else %}
+                                No question provided
+                            {% endif %}
+                        </span>
+                        <span>
+                        {% if groupedCase.member != '' %}
+                            ({{ groupedCase.member }})
+                        {% else %}
+                            (No member provided)
+                        {% endif %}
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}
+
+<div id="answer" class="panel medium page-chunk">
+    <h2>Answer</h2>
+    <div>
+        <p>
+            {{ ctsCase.answerText }}
+        </p>
+        <p>
+            <label>Answering Minister: </label>
+            <span>{{ ctsCase.answeringMinister }}</span>
+        </p>
+    </div>
+</div>

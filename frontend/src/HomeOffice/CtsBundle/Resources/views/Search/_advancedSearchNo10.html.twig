@@ -1,0 +1,45 @@
+<div class="advanced-search-fields UTEN-search DTEN-search" {% if advancedSearchType != null and (advancedSearchType != 'UTEN' and advancedSearchType != 'DTEN') %} style="display: none;"{% endif %}>
+    <h2>Advanced search - DCU / UKVI No 10</h2>
+    <fieldset class="search_fields1">
+        <div class="dateField">
+            <span class="prelude">Received:</span>
+            <span class="inset-label">{{ form_label(searchByForm['tenReceivedDateFrom']) }}</span>
+            {{ form_widget(searchByForm['tenReceivedDateFrom'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="dateField">
+            <span class="inset-label">{{ form_label(searchByForm['tenReceivedDateTo']) }}</span>
+            {{ form_widget(searchByForm['tenReceivedDateTo'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+    </fieldset>
+    <fieldset class="search_fields2">
+        <div class="preDateField">
+            {{ form_label(searchByForm['tenPriority']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['tenPriority']) }}
+            </div>
+        </div>
+        <div class="preDateField">
+            {{ form_label(searchByForm['tenAdvice']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['tenAdvice']) }}
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="search_fields3 last">
+        <div class="advanced-search-sub-title">
+            <span>Member details</span>
+        </div>
+        <div>
+            {{ form_label(searchByForm['tenMember']) }}
+            {{ form_widget(searchByForm['tenMember']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['tenMemberRef']) }}
+            {{ form_widget(searchByForm['tenMemberRef']) }}
+        </div>
+        <div class="button-holder">
+            <span class="button">{{form_widget(searchByForm['clearTen'])}}</span>
+            <span class="button default">{{ form_widget(searchByForm['searchButtonTen']) }}</span>
+        </div>
+    </fieldset>
+</div>

@@ -1,0 +1,57 @@
+<div class="advanced-search-fields UKVI-search" {% if advancedSearchType != null and (advancedSearchType != 'IMCB' and advancedSearchType != 'IMCM') %}style="display: none;"{% endif %}>
+    <h2>Advanced search - UKVI</h2>
+    <fieldset class="search_fields1">
+        <div class="dateField">
+            <span class="prelude">Received:</span>
+            <span class="inset-label">{{ form_label(searchByForm['ukviReceivedDateFrom']) }}</span>
+            {{ form_widget(searchByForm['ukviReceivedDateFrom'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="dateField">
+            <span class="inset-label">{{ form_label(searchByForm['ukviReceivedDateTo']) }}</span>
+            {{ form_widget(searchByForm['ukviReceivedDateTo'], { 'attr' : { 'class' : 'dateSelect' } } )}}
+        </div>
+        <div class="preDateField">
+            {{ form_label(searchByForm['ukviCaseRef']) }}
+            {{ form_widget(searchByForm['ukviCaseRef']) }}
+        </div>
+        <div class="preDateField multi-selector">
+            {{ form_label(searchByForm['ukviMember']) }}
+            {{ form_widget(searchByForm['ukviMember']) }}
+        </div>
+    </fieldset>
+    <fieldset class="search_fields2">
+        <div class="advanced-search-sub-title">
+            <span>Constituent / 3rd party correspondent details</span>
+        </div>
+        <div>
+            {{ form_label(searchByForm['ukviFirstName']) }}
+            {{ form_widget(searchByForm['ukviFirstName']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['ukviSurname']) }}
+            {{ form_widget(searchByForm['ukviSurname']) }}
+        </div>
+        <div class="preDateField">
+            {{ form_label(searchByForm['ukviCopyToNo10']) }}
+            <div class="spot-control with-inner">
+                {{ form_widget(searchByForm['ukviCopyToNo10']) }}
+            </div>
+        </div>
+    </fieldset>
+    <fieldset class="search_fields3 last">
+        <div class="advanced-search-sub-title">
+        </div>
+        <div>
+            {{ form_label(searchByForm['ukviPostcode']) }}
+            {{ form_widget(searchByForm['ukviPostcode']) }}
+        </div>
+        <div>
+            {{ form_label(searchByForm['ukviEmail']) }}
+            {{ form_widget(searchByForm['ukviEmail']) }}
+        </div>
+        <div class="button-holder">
+            <span class="button">{{form_widget(searchByForm['clearUkvi'])}}</span>
+            <span class="button default">{{ form_widget(searchByForm['searchButtonUkvi']) }}</span>
+        </div>
+    </fieldset>
+</div>

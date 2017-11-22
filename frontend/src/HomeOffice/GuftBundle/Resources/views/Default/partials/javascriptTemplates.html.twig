@@ -1,0 +1,25 @@
+<script id="error-summary-template" type="text/x-jsrender">
+    <div class="error-summary" role="group" tabindex="-1">
+        <h1 class="heading-medium error-summary-heading">{$:message$}</h1>
+
+        {$if description$}
+            <p>{$:description$}</p>
+        {$/if$}
+
+        {$if errors.global && errors.global.length > 0$}
+            <ul class="error-summary-list">
+                {$for errors.global$}
+                    <li><span>{$:#data$}</span></li>
+                {$/for$}
+            </ul>
+        {$/if$}
+
+        {$if errors.fields$}
+            <ul class="error-summary-list">
+                {$props errors.fields$}
+                    <li><a href="#error_{$:key$}"><span>{$:prop$}</span></a></li>
+                {$/props$}
+            </ul>
+        {$/if$}
+    </div>
+</script>

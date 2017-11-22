@@ -1,0 +1,113 @@
+{% form_theme ctsCaseForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+
+<div id="correspondence_details" class="panel wide">
+    <h2>Case details</h2>
+    <fieldset class="basic_details">
+        <div>
+            {{ form_label(ctsCaseForm['correspondenceType']) }}
+            {{ form_widget(ctsCaseForm['correspondenceType']) }}
+            {% if ctsCase.foiIsEir %}
+                <span class="case_type_extension">(EIR)</span>
+            {% endif %}
+        </div>
+
+        <div class="dateField">
+            {{ form_label(ctsCaseForm['dateReceived']) }}
+            {{ form_widget(ctsCaseForm['dateReceived'],
+            { 'attr' : { 'class' : 'dateSelect' } }
+            ) }}
+        </div>
+        <div class="last">
+            {% if true == isCaseFieldMandatory(ctsCase, "channel") %}*{% endif %}
+            {{ form_label(ctsCaseForm['channel']) }}
+            {{ form_widget(ctsCaseForm['channel']) }}
+
+        </div>
+
+    </fieldset>
+
+    <fieldset class="basic_details_2">
+         <div>
+             {% if true == isCaseFieldMandatory(ctsCase,"hoCaseOfficer") %}
+                 *
+             {% endif %}
+            {{ form_label(ctsCaseForm['hoCaseOfficer']) }}
+            {{ form_widget(ctsCaseForm['hoCaseOfficer']) }}
+        </div>
+        <div class="spot-control extra-wide last">
+            {{ form_widget(ctsCaseForm['foiMinisterSignOff']) }}
+            {{ form_label(ctsCaseForm['foiMinisterSignOff']) }}
+        </div>
+    </fieldset>
+    {% if true == isCaseFieldMandatory(ctsCase,"hoCaseOfficer") %}
+        <br />
+        <br />
+        <span>* Mandatory Fields</span>
+    {% endif %}
+
+</div>
+
+<fieldset class="sibling-group">
+    {% include "HomeOfficeCtsBundle:Case:linkedCaseList.html.twig" with { 'allowAdd': true, 'editable' : true } %}
+
+    <div class="panel page-chunk" id="appeals">
+        <h2>Appeals</h2>
+        <div class="adder last">
+            <label>HRNs</label>
+            <input type="text">
+            <span class="button">
+                <button type="submit">Link</button>
+            </span>
+        </div>
+    </div>
+</fieldset>
+
+{% include "HomeOfficeCtsBundle:Case/Edit:_correspondentDetailsFormFoi.html.twig" with {'title': 'Requestor details' } %}
+
+<fieldset id="markup" class="panel wide">
+    <h2>Mark up</h2>
+    <div>
+        {% if true == isCaseFieldMandatory(ctsCase, "markupDecision") %}
+            *
+        {% endif %}
+        {{ form_label(ctsCaseForm['markupDecision']) }}
+        {{ form_widget(ctsCaseForm['markupDecision']) }}
+    </div>
+    <div>
+        {% if true == isCaseFieldMandatory(ctsCase, "markupUnit") %}
+            *
+        {% endif %}
+        {{ form_label(ctsCaseForm['markupUnit']) }}
+        {{ form_widget(ctsCaseForm['markupUnit']) }}
+    </div>
+    <div class="stop_list" data-stop_list_type="topics">
+        {% if true == isCaseFieldMandatory(ctsCase, "markupTopic") %}
+            *
+        {% endif %}
+        {{ form_label(ctsCaseForm['markupTopic']) }}
+        {{ form_widget(ctsCaseForm['markupTopic']) }}
+    </div>
+    <div>
+        {{ form_label(ctsCaseForm['secondaryTopic']) }}
+        {{ form_widget(ctsCaseForm['secondaryTopic']) }}
+    </div>
+    <div class="unused">
+        {{ form_label(ctsCaseForm['markupMinister']) }}
+        {{ form_widget(ctsCaseForm['markupMinister']) }}
+    </div>
+    {% if true == isCaseFieldMandatory(ctsCase, "markupTopic") %}
+        <br />
+        <br />
+        <span>* Mandatory Fields</span>
+    {% endif %}
+</fieldset>
+
+{% if (formPurpose == 'edit') %}
+    <fieldset id="minutes_history" class="panel wide">
+        <h2>Minutes history</h2>
+        {% include "HomeOfficeCtsBundle:Minute:minuteAdd.html.twig" with {'minuteForm': ctsCaseForm.newMinute, 'addFormTag': false } %}
+        {% include "HomeOfficeCtsBundle:Minute:minuteFilter.html.twig" %}
+        {% include "HomeOfficeCtsBundle:Minute:minuteHistory.html.twig" %}
+    </fieldset>
+{% endif %}
+

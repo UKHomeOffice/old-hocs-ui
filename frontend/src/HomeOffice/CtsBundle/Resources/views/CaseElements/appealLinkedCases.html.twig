@@ -1,0 +1,18 @@
+<h2>Link to an appeals case</h2>
+
+<div class="form-group">
+    {% if not form['appeals'].vars.read_only %}
+        {{ form_label(form['appeals']) }}
+        {{ form_widget(form['appeals']) }}
+        {{ form_widget(form['addAppeals']) }}
+
+    {% else %}
+        {% do form['addAppeals'].setRendered %}
+        {% do form['appeals'].setRendered %}
+
+    {% endif %}
+
+    {#<div class="linkedCaseTable">#}
+        {#{% include 'HomeOfficeCtsBundle:CaseElements:linkedCasesTable.html.twig' with { 'case': case } %}#}
+    {#</div>#}
+</div>

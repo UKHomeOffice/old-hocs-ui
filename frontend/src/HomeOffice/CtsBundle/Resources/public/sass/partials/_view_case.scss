@@ -1,0 +1,338 @@
+@mixin value-item {
+  display: table-cell;
+  margin-left: 15px;
+  position: static;
+  vertical-align: middle;
+}
+
+body.view-case {
+  .panel.wide .page-chunk {
+    display: table-cell;
+    vertical-align: top;
+    width: 352px;
+
+    + .page-chunk {
+      width: 289px;
+
+      label, .spacer {
+        width: $narrow-label;
+      }
+    }
+
+    p, > div {
+      &.push-down {
+        margin-top:26px;
+      }
+
+      label {
+        width: $smallish-label;
+      }
+    }
+  }
+
+  .page-chunk {
+    p, > div {
+      display: block;
+      margin-bottom: 8px;
+      min-height: $view-page-field-height;
+
+      &.double-height {
+        min-height: ($view-page-field-height*2)+3;
+      }
+
+      label, .spacer {
+        font-weight: bold;
+        margin-right: $standard-field-margin;
+        //position: absolute;
+        width: $smallish-label;
+      }
+
+      span {
+        a {
+          color: $link-blue;
+          font-weight: normal;
+          text-decoration: underline;
+        }
+
+        &.button a {
+          color: white;
+        }
+      }
+
+      > span {
+        display: inline-block;
+        margin-left: 0;
+
+        &.stop_list_label {
+          font-weight: normal;
+        }
+      }
+    }
+  }
+
+  #allocate {
+    fieldset {
+
+      &.basic_details {
+        width: 500px;
+
+        select {
+          width: 310px;
+        }
+      }
+    }
+
+    label, .spacer {
+      width: $narrow-label;
+    }
+
+    select, .chosen-container {
+      margin-right: $standard-field-margin;
+    }
+
+    .allocate_button {
+      margin-bottom: -7px;
+      button {
+        font-size: #{(17/$base-font-assumption)}em;
+        padding: 8px 10px;
+      }
+    }
+
+    .extra-wide {
+      width: $panel-width-wide;
+    }
+  }
+
+  #linked-cases {
+    min-height: $view-page-small-panel-height;
+    padding-top: 5px;
+
+    label, .spacer {
+      position: static;
+      vertical-align: top;
+    }
+    ul {
+      display: inline-block;
+    }
+  }
+
+  #grouped_cases {
+    min-height: $view-page-small-panel-height;
+
+    .group_cases_info {
+      color: $darker-blue;
+      border: 1px solid $darker-blue;
+      padding: $alert-padding;
+    }
+  }
+
+  #deadline label + * {
+    margin-left: 0;
+  }
+
+  #markup {
+    label, .spacer {
+      width: $smallish-label;
+    }
+
+    .standard_line_markup_expired {
+        margin-left: 10px;
+        color: $error-red;
+    }
+  }
+
+  #add_minute {
+
+    .button {
+      margin: 0 0 0 532px;
+    }
+
+    label {
+      margin-bottom: $vertical-rhythm;
+      display: block;
+      font-weight: bold;
+      width: auto !important;
+    }
+
+
+    .chosen-container {
+      width: 100% !important;
+      min-height:20px !important;
+
+      label {
+        margin-bottom: 0px;
+      }
+    }
+
+    #filter_minutes {
+      input {
+        margin-right: 20px;
+      }
+    }
+
+  }
+
+  .minutes-no-js{
+      width: 180px;
+      display: inline-block;
+  }
+
+  #question, #answer {
+    p {
+      font-size: $normal;
+      font-weight: normal;
+      line-height: 1.5;
+    }
+  }
+
+  #grouped_questions {
+    float: left;
+  }
+
+  #document-form {
+    .add_document_error {
+      color: $error-red;
+      line-height: $list-line-height;
+      border: 1px solid $error-red;
+      padding: $alert-padding;
+    }
+  }
+
+  #foi-assess, #foi-pit, #hmpo-refund {
+
+    label, .spacer {
+      display: inline-block;
+      width: $smallish-label;
+    }
+  }
+
+  #foi-consultation {
+    span {
+      margin-left: 0;
+    }
+  }
+
+  #hmpo-outcome {
+    span {
+      margin-left: 0;
+    }
+  }
+
+
+  // layout tweaks to individual case type views
+  &.MIN {
+    #constituent_details {
+      label, .spacer {
+        width: $smallish-label;
+      }
+    }
+  }
+
+  &.LPQ, &.NPQ, *.OPQ {
+    #correspondence_details {
+      .basic_details {
+        width: 352px;
+      }
+    }
+
+    #col1 {
+      .basic_details, #reply_to {
+        label, .spacer {
+          width: $medium-wide-label;
+        }
+      }
+
+      .basic_details_2, #signed_reviewed_by_details {
+        label, .spacer {
+          width: $wide-label;
+        }
+      }
+    }
+  }
+
+  &.IMCB, &.IMCM  { // UKVI
+    #constituent_details {
+      label, .spacer {
+        width: $narrow-label;
+      }
+    }
+  }
+
+  &.GEN, &.COM { // HMPO
+    #correspondence_details, #constituent_details, #markup, #applicant_details {
+      label, .spacer {
+        width: 110px;
+
+      + span {
+        vertical-align: top;
+      }
+      .page-chunk + .page-chunk {
+          label, .spacer {
+            width: $smallish-label;
+          }
+        }
+      }
+    }
+  }
+
+  &.FSC, &.FTC, &.FTCI, &.FLT, &.FUT, &.FSCI {
+    .panel.wide .page-chunk + .page-chunk {
+        label, .spacer {
+          width: 112px;
+        }
+    }
+  }
+
+  &.FSCI {
+    .panel.wide .page-chunk {
+      label, .spacer {
+        width: 152px;
+      }
+
+      > div.text-only-widget span {
+        width: 170px;
+      }
+    }
+  }
+
+  &.FTCI, &.FTC {
+    #correspondence_details > .basic_details {
+      label {
+        display: inline;
+        margin-right: 10px;
+      }
+
+      > div.text-only-widget span {
+        width: 240px;
+      }
+    }
+  }
+
+  &.FUT, &.FLT {
+    .panel.wide .page-chunk {
+      label, .spacer {
+        width: 160px;
+      }
+
+      > div.text-only-widget span {
+        width: 162px;
+      }
+    }
+  }
+
+  &.LPQ, &.OPQ, &.OPQ {
+    #reply_to {
+      &.pq {
+        .full_width_label {
+          padding-left: 154px;
+        }
+      }
+    }
+    #markup {
+      .full_width_label {
+        padding-left: 116px;
+      }
+    }
+  }
+
+}

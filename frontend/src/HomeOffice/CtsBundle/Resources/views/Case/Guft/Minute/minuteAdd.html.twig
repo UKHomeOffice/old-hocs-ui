@@ -1,0 +1,24 @@
+<div>
+    {% if addFormTag %}
+        {{ form_start(minuteForm, {'attr': {
+                                        'novalidate' : 'novalidate',
+                                        'data-ajax-message' : 'Saving minute...'
+                                    } }) }}
+    {% endif %}
+        {{ form_errors(minuteForm) }}
+        <fieldset id="add_minute">
+            <div class="form-group">
+                {{ form_widget(minuteForm.id) }}
+                {{ form_widget(minuteForm['minuteContent']) }}
+            </div>
+            {% if ctsCase.isQaEligible() %}
+                {{ form_widget(minuteForm.task) }}
+                {{ form_label(minuteForm.minuteQaReviewOutcomes) }}
+                {{ form_widget(minuteForm.minuteQaReviewOutcomes) }}
+            {% endif %}
+                {{ form_widget(minuteForm['saveMinute']) }}
+        </fieldset>
+    {% if addFormTag %}
+        {{ form_end(minuteForm) }}
+    {% endif %}
+</div>

@@ -1,0 +1,87 @@
+<div id="search_details" class="panel huge">
+
+    <h2>Global search</h2>
+        <div class="global-search-fields">
+            <fieldset id="filter_field" class="search_fields1">
+                <div class="preDateField">
+                    {{ form_label(searchByForm['urn']) }}
+                    {{ form_widget(searchByForm['urn']) }}
+                </div>
+                <div class="dateField">
+                    <span class="prelude">Created:</span>
+                    <span class="inset-label">{{ form_label(searchByForm['dateCreatedFrom']) }}</span>
+                    {{ form_widget(searchByForm['dateCreatedFrom'],
+                        { 'attr' : { 'class' : 'dateSelect' } }
+                    )}}
+                </div>
+                <div class="dateField">
+                    <span class="inset-label">{{ form_label(searchByForm['dateCreatedTo']) }}</span>
+                    {{ form_widget(searchByForm['dateCreatedTo'],
+                        { 'attr' : { 'class' : 'dateSelect' } }
+                    )}}
+                </div>
+                <div class="dateField">
+                    <span class="prelude">Deadline:</span>
+                    <span class="inset-label">{{ form_label(searchByForm['dateDeadlineFrom']) }}</span>
+                    {{ form_widget(searchByForm['dateDeadlineFrom'],
+                        { 'attr' : { 'class' : 'dateSelect' } }
+                    )}}
+                </div>
+                <div class="dateField">
+                    <span class="inset-label">{{ form_label(searchByForm['dateDeadlineTo']) }}</span>
+                    {{ form_widget(searchByForm['dateDeadlineTo'],
+                        { 'attr' : { 'class' : 'dateSelect' } }
+                    )}}
+                </div>
+            </fieldset>
+            <fieldset class="search_fields2">
+                <div>
+                    {{ form_label(searchByForm['correspondenceType']) }}
+                    {{ form_widget(searchByForm['correspondenceType']) }}
+                </div>
+                <div>
+                    {{ form_label(searchByForm['decision']) }}
+                    {{ form_widget(searchByForm['decision']) }}
+                </div>
+                <div>
+                    {{ form_label(searchByForm['unit']) }}
+                    {{ form_widget(searchByForm['unit']) }}
+                </div>
+                <div>
+                    {{ form_label(searchByForm['minister']) }}
+                    {{ form_widget(searchByForm['minister']) }}
+                </div>
+                <div>
+                    {{ form_label(searchByForm['topic']) }}
+                    {{ form_widget(searchByForm['topic']) }}
+                </div>
+            </fieldset>
+            <fieldset class="search_fields3 last">
+                <div>
+                    {{ form_label(searchByForm['status']) }}
+                    {{ form_widget(searchByForm['status']) }}
+                </div>
+                <div>
+                    {{ form_label(searchByForm['task']) }}
+                    {{ form_widget(searchByForm['task']) }}
+                </div>
+                <div>
+                    {{ form_label(searchByForm['owner']) }}
+                    {{ form_widget(searchByForm['owner']) }}
+                </div>
+                <div class="button-holder">
+                    <span class="button">{{form_widget(searchByForm['clear'])}}</span>
+                    <span class="button default">{{ form_widget(searchByForm['searchButton']) }}</span>
+                </div>
+            </fieldset>
+        </div>
+        {% include "HomeOfficeCtsBundle:Search:_advancedSearchTro.html.twig" %}
+        {% include "HomeOfficeCtsBundle:Search:_advancedSearchMin.html.twig" %}
+        {% include "HomeOfficeCtsBundle:Search:_advancedSearchFoi.html.twig" %}
+        {% include "HomeOfficeCtsBundle:Search:_advancedSearchFoiComplaints.html.twig" %}
+        {% include "HomeOfficeCtsBundle:Search:_advancedSearchPq.html.twig" %}
+        {% include "HomeOfficeCtsBundle:Search:_advancedSearchUkvi.html.twig" %}
+        {% include "HomeOfficeCtsBundle:Search:_advancedSearchNo10.html.twig" %}
+        {% include "HomeOfficeCtsBundle:Search:_advancedSearchHmpoGen.html.twig" %}
+        {% include "HomeOfficeCtsBundle:Search:_advancedSearchHmpoCom.html.twig" %}
+</div>

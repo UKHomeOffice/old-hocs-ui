@@ -1,0 +1,21 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Add template{% endblock %}
+
+{% block breadcrumb_trail %}
+    <li><a href="{{ path('homeoffice_cts_documenttemplate_manage') }}">Manage templates</a></li>
+    <li>Add template</li>
+{% endblock %}
+
+{% block body %}
+    
+    {% if errorMsg is defined %}
+        <div>{{ errorMsg }}</div>
+    {% endif %}
+    
+    {% form_theme ctsCaseDocumentTemplateForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+    {{ form_start(ctsCaseDocumentTemplateForm, {'attr': {'novalidate' : 'novalidate' } }) }} 
+
+    {% include "HomeOfficeCtsBundle:DocumentTemplate:documentTemplateForm.html.twig" %}
+    
+{% endblock %}

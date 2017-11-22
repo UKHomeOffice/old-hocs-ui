@@ -1,0 +1,27 @@
+<div id="panels" class="sibling-group">
+
+    {% include "HomeOfficeCtsBundle:Case/View:_caseOverview.html.twig" %}
+
+    <div id="deadline" class="panel alt2 page-chunk">
+        <h2>Deadline <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.caseResponseDeadline)|default('-') }}</span></h2>
+        <h3>Targets</h3>
+        {% spaceless %}{# compatibilty mode bug #}
+        <p>
+            <label>Allocate</label>
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.allocateTarget)|default('-')  }}</span>
+        </p>
+        <p class="squash">
+            <label>Draft response</label>
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.draftResponseTarget)|default('-')  }}</span>
+        </p>
+        <p>
+            <label>SCS approval</label>
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.scsApprovalTarget)|default('-')  }}</span>
+        </p>
+        <p class="last">
+            <label>Final approval</label>
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.finalApprovalTarget)|default('-')  }}</span>
+        </p>
+        {% endspaceless %}
+    </div>
+</div>

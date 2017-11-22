@@ -1,0 +1,73 @@
+{% form_theme ctsCaseForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+
+<fieldset id="panels" class="sibling-group">
+    
+    {% include 'HomeOfficeCtsBundle:Case/Edit:_caseOverview.html.twig' %}
+
+    <div id="deadline" class="panel alt2 page-chunk">
+        <h2>Deadline <span>{{ form_widget(ctsCaseForm['caseResponseDeadline']) }}</span></h2>
+        <h3>Targets</h3>
+        {% spaceless %}{# compatibilty mode bug #}
+        <div class="last">
+            {{ form_label(ctsCaseForm['draftResponseTarget']) }}
+            {{ form_widget(ctsCaseForm['draftResponseTarget']) }}
+        </div>
+        {% endspaceless %}
+    </div>
+</fieldset>
+
+<fieldset id="question" class="panel medium">
+    <h2>Question</h2>
+    <div>
+        {{ form_label(ctsCaseForm['questionText']) }}
+        {{ form_widget(ctsCaseForm['questionText']) }}
+    </div>
+</fieldset>
+
+{% if ctsCase.groupedCases is defined and ctsCase.groupedCases|length > 0 %}
+    <fieldset id="grouped_questions" class="panel medium">
+        <h2>Grouped questions</h2>
+        <div>
+            <ul class="grouped_question_list">
+                {% for groupedCase in ctsCase.groupedCases %}
+                    <li>
+                        <span class="grouped_uin">
+                            {{ groupedCase.uin }}:
+                        </span>
+                        <span>
+                            {% if groupedCase.questionText != '' %}
+                                {{ groupedCase.questionText }}
+                            {% else %}
+                                No question provided
+                            {% endif %}
+                        </span>
+                        <span>
+                        {% if groupedCase.member != '' %}
+                            ({{ groupedCase.member }})
+                        {% else %}
+                            (No member provided)
+                        {% endif %}
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </fieldset>
+{% endif %}
+
+<fieldset id="answer" class="panel medium">
+    <h2>Answer</h2>
+    <div>
+        {{ form_label(ctsCaseForm['answerText']) }}
+        {{ form_widget(ctsCaseForm['answerText']) }}
+    </div>
+    <div>
+        {{ form_label(ctsCaseForm['answeringMinister']) }}
+        {{ form_widget(ctsCaseForm['answeringMinister']) }}
+    </div>
+</fieldset>
+
+{% include "HomeOfficeCtsBundle:Case/Script:_memberStopListScript.html.twig" %}
+{% include "HomeOfficeCtsBundle:Case/Script:_topicStopListScript.html.twig" %}
+{% include "HomeOfficeCtsBundle:Case/Script:_memberPartyDetailsScript.html.twig" %}
+{% include "HomeOfficeCtsBundle:Case/Script:_topicListScript.html.twig" %}

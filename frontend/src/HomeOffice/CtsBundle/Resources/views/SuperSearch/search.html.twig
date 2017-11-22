@@ -1,0 +1,106 @@
+{% extends "GuftBundle:Default:form.html.twig" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block phasebanner %}
+<div class="phase-banner">
+    <p>
+        <strong class="phase-tag">BETA</strong>
+        <span>You are using the new fast search.
+            <a href="{{ path('homeoffice_cts_search_globalsearch') }}">Click here for the old search.</a>
+        </span>
+    </p>
+</div>
+{% endblock %}
+
+{% block bc %}
+    <section class="grid-row">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>Global search</li>
+            </ol>
+        </nav>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section class="grid-row">
+        {{ form_start(form, {'method': 'GET'}) }}
+            <article class="column-half">
+                <div class="form-group">
+                    <label class="form-label">{{ form['businessUnit'].vars.label }}</label>
+                    {{ form_widget(form['businessUnit']) }}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">{{ form['caseId'].vars.label }}<br>Enter Case ID</label>
+                    {{ form_widget(form['caseId']) }}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Created<br>{{ form_label(form['createdFrom']) }}</label>
+                    {{ form_widget(form['createdFrom']) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form['createdTo']) }}
+                    {{ form_widget(form['createdTo']) }}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Deadline<br>{{ form_label(form['deadlineFrom']) }}</label>
+                    {{ form_widget(form['deadlineFrom']) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form['deadlineTo']) }}
+                    {{ form_widget(form['deadlineTo']) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form['markupDecision']) }}
+                    {{ form_widget(form['markupDecision']) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form['markupUnit']) }}
+                    {{ form_widget(form['markupUnit']) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form['markupMinister']) }}
+                    {{ form_widget(form['markupMinister']) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form['team']) }}
+                    {{ form_widget(form['team']) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form['markupTopic']) }}
+                    {{ form_widget(form['markupTopic']) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form['status']) }}
+                    {{ form_widget(form['status']) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form['task']) }}
+                    {{ form_widget(form['task']) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_widget(form['search']) }}
+
+                    <a href="{{ path('homeoffice_cts_supersearch_search') }}" class="button button-secondary">Reset</a>
+                </div>
+            </article>
+
+            <section class="column-half advanced-search">
+                {% include 'HomeOfficeCtsBundle:SuperSearch:Advanced/'~businessUnit|lower~'.html.twig' %}
+            </section>
+            <hr>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

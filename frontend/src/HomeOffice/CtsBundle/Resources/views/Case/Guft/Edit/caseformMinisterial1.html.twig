@@ -1,0 +1,82 @@
+ <h2>Case details</h2>
+    <div>
+    <fieldset class="basic_details">
+        <div class="form-group">
+            {{ form_label(ctsCaseForm['correspondenceType']) }}
+            {{ form_widget(ctsCaseForm['correspondenceType']) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(ctsCaseForm['dateReceived']) }}
+            {{ form_widget(ctsCaseForm['dateReceived'],
+                { 'attr' : { 'class' : 'datePicker useTodayButton' } }
+            ) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(ctsCaseForm['dateOfLetter']) }}
+            {{ form_widget(ctsCaseForm['dateOfLetter'],
+                { 'attr' : { 'class' : 'datePicker useTodayButton' } }
+            ) }}
+        </div>
+    </fieldset>
+    <fieldset class="basic_details_2">
+        <div class="form-group">
+            {{ form_label(ctsCaseForm['channel']) }}
+            {{ form_widget(ctsCaseForm['channel']) }}
+        </div>
+        {% if ctsCase.correspondenceType == 'MIN' or ctsCase.correspondenceType == 'TRO'%}
+            <div class="form-group">
+                {{ form_label(ctsCaseForm['hmpoResponse']) }}
+                {{ form_widget(ctsCaseForm['hmpoResponse']) }}
+            </div>
+        {% endif %}
+        <div class="form-group inline">
+            {{ form_widget(ctsCaseForm['priority']) }}
+            {{ form_label(ctsCaseForm['priority']) }}
+            {{ form_widget(ctsCaseForm['advice']) }}
+            {{ form_label(ctsCaseForm['advice']) }}
+        </div>
+    </fieldset>
+</div>
+{% include "HomeOfficeCtsBundle:Case/Guft:linkedCaseList.html.twig" with { 'allowAdd': true, 'editable' : true, 'wide' : true } %}
+
+{% if ctsCase.correspondenceType == 'MIN' %}
+    {% include 'HomeOfficeCtsBundle:Case/Guft/Edit:_replyToConstituentDetailsForm.html.twig' %}
+{% elseif ctsCase.correspondenceType == 'DTEN' or ctsCase.correspondenceType == 'UTEN'%}
+    {% include 'HomeOfficeCtsBundle:Case/Guft/Edit:_replyToDetailsForm.html.twig' %}
+{% elseif ctsCase.correspondenceType == 'TRO' %}
+    {% include 'HomeOfficeCtsBundle:Case/Guft/Edit:_correspondentDetailsForm.html.twig' with {'title': 'Correspondent details' } %}
+{% endif %}
+<fieldset id="markup" class="wide">
+    <h2>Mark up</h2>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['markupDecision']) }}
+        {{ form_widget(ctsCaseForm['markupDecision']) }}
+    </div>
+    {% if ctsCaseForm['ogdName'] is defined %}
+        <div class="form-group medium-label wide-input ogd-name-field">
+            {{ form_label(ctsCaseForm['ogdName']) }}
+            {{ form_widget(ctsCaseForm['ogdName']) }}
+        </div>
+    {% endif %}
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['markupUnit']) }}
+        {{ form_widget(ctsCaseForm['markupUnit']) }}
+    </div>
+    <div class="form-group stop_list" data-stop_list_type="topics">
+        {{ form_label(ctsCaseForm['markupTopic']) }}
+        {{ form_widget(ctsCaseForm['markupTopic']) }}
+    </div>
+    <div class="form-group full_width_label stop_list_div{% if not displayTopicStopListIcon %} collapsed{% endif %}">
+            <div class="stop_list_label">Stop list <b class="icon"></b></div>
+    </div>
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['markupMinister']) }}
+        {{ form_widget(ctsCaseForm['markupMinister']) }}
+    </div>
+    <div class="form-group last">
+        {{ form_label(ctsCaseForm['secondaryTopic']) }}
+        {{ form_widget(ctsCaseForm['secondaryTopic']) }}
+    </div>
+
+</fieldset>
+

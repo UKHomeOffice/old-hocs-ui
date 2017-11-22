@@ -1,0 +1,67 @@
+{% extends "::base.html.twig" %}
+
+{% if (queueValue == 'todoQueue') %}
+    {% set queueName = "To do list" %}
+{% elseif (queueValue == 'teamQueue') %}
+    {% set queueName = "Team queue" %}
+{% elseif (queueValue == 'unitQueue') %}
+    {% set queueName = "Unit queue" %}
+{% endif %}
+
+{% block title %}{{ queueName }}{% endblock %}
+
+{% block bodyClass %}queue{% endblock %}
+
+{% block searchButton %}
+    <span class="action"><a href="{{ path('homeoffice_cts_search_globalsearch') }}">Search</a></span>
+{% endblock %}
+
+{% block primary_controls %}
+    {% if app.user.getCasesPermissions().getCanCreateFolder() == 'true' %}
+        <span class="default action"><a href="{{ path('homeoffice_cts_case_createsimple') }}">Create case</a></span>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% if errorMsg != null %}
+        <div class="global error">{{ errorMsg }}</div>
+    {% endif %}
+    {% if successMsg %}
+        <div class="global success">{{ successMsg }}</div>
+    {% endif %}
+    <h2>{{ queueName }}</h2>
+    {% if (queueValue == 'teamQueue' or queueValue == 'unitQueue') and currentUser != null %}
+        <div class="user-unit-team">
+            <ul>
+                <li>Unit: {{ ctsHelper.getUserUnitsTeamsForDisplay(currentUser.units) }}</li>
+                {% if queueValue == 'teamQueue' %}
+                    <li>Team: {{ ctsHelper.getUserUnitsTeamsForDisplay(currentUser.teams) }}</li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <div id="selector-panel">
+        <span>View queue:</span>
+        <ul class="selector" id="queue_selector">
+            <li{% if (queueValue == 'todoQueue') %} class="selected"{% endif %}>
+                <a href="{{ path('homeoffice_cts_home_home', {'filterQueue[queue]': 'todoQueue'}) }}">To do list</a>
+            </li>
+            {% if currentUser.isManager == true %}
+                <li{% if (queueValue == 'teamQueue') %} class="selected"{% endif %}>
+                    <a href="{{ path('homeoffice_cts_home_home', {'filterQueue[queue]': 'teamQueue'}) }}">Team queue</a>
+                </li>
+            {% endif %}
+            {% if currentUser.getUnits | length > 0 and ctsHelper.isUserInParentUnit() %}
+                <li{% if (queueValue == 'unitQueue') %} class="selected"{% endif %}>
+                    <a href="{{ path('homeoffice_cts_home_home', {'filterQueue[queue]': 'unitQueue'}) }}">Unit queue</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+    {{ form_start(ctsHomeFiltersForm, {'attr': {'novalidate' : 'novalidate' }} ) }}
+    {% include "HomeOfficeCtsBundle:Queue:queueFilter.html.twig" %}
+    {% include "HomeOfficeCtsBundle:Queue:caseTable.html.twig" with { 'summary' : 'Table showing the ' ~ queueName|lower } %}
+    {{ form_end(ctsHomeFiltersForm) }}
+
+{% endblock %}

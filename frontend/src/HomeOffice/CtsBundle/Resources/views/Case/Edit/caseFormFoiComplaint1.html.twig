@@ -1,0 +1,145 @@
+{% form_theme ctsCaseForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+
+<div id="correspondence_details" class="panel wide">
+    <h2>Case details</h2>
+    <fieldset class="basic_details">
+        <div class="text-only-widget">
+            {{ form_label(ctsCaseForm['correspondenceType']) }}
+            <span>{{ form_widget(ctsCaseForm['correspondenceType']) }} &ndash;  {{ caseTypeText }}</span>
+        </div>
+        <div class="dateField{% if ctsCase.correspondenceType == 'FTC' %} last{% endif %}">
+            {{ form_label(ctsCaseForm['dateReceived']) }}
+            {{ form_widget(ctsCaseForm['dateReceived'],
+                { 'attr' : { 'class' : 'dateSelect' } }
+            ) }}
+        </div>
+        {% if ctsCase.correspondenceType == 'FLT' or ctsCase.correspondenceType== 'FUT' %}
+        <div>
+            {{ form_label(ctsCaseForm['tsolRep']) }}
+            {{ form_widget(ctsCaseForm['tsolRep']) }}
+        </div>
+        <div>
+            {{ form_label(ctsCaseForm['tribunalOutcome']) }}
+            {{ form_widget(ctsCaseForm['tribunalOutcome']) }}
+        </div>
+        <div class="dateField last">
+            {{ form_label(ctsCaseForm['tribunalOutcomeDate']) }}
+            {{ form_widget(ctsCaseForm['tribunalOutcomeDate'],
+                { 'attr' : { 'class' : 'dateSelect' } }
+            ) }}
+        </div>
+        {% endif %}
+        {% if ctsCase.correspondenceType == 'FSC' %}
+        <div class="last long-label">
+            {{ form_label(ctsCaseForm['newInformationReleased']) }}
+            {{ form_widget(ctsCaseForm['newInformationReleased']) }}
+        </div>
+        {% endif %}
+        {% if ctsCase.correspondenceType == 'FTCI' %}
+            <div class="long-label">
+                {{ form_label(ctsCaseForm['enforcementNoticeNeeded']) }}
+                {{ form_widget(ctsCaseForm['enforcementNoticeNeeded']) }}
+            </div>
+            <div class="dateField last">
+                {{ form_label(ctsCaseForm['enforcementNoticeDeadline']) }}
+                {{ form_widget(ctsCaseForm['enforcementNoticeDeadline'],
+                    { 'attr' : { 'class' : 'dateSelect' } }
+                ) }}
+            </div>
+        {% endif %}
+        {%  if ctsCase.correspondenceType == 'FSCI' %}
+            <div>
+                {{ form_label(ctsCaseForm['icoComplaintOfficer']) }}
+                {{ form_widget(ctsCaseForm['icoComplaintOfficer']) }}
+            </div>
+            <div class="last">
+                {{ form_label(ctsCaseForm['icoOutcome']) }}
+                {{ form_widget(ctsCaseForm['icoOutcome']) }}
+            </div>
+        {% endif %}
+    </fieldset>
+    <fieldset class="basic_details_2">
+        <div class="dateField">
+            {{ form_label(ctsCaseForm['responseDate']) }}
+            {{ form_widget(ctsCaseForm['responseDate'],
+                { 'attr' : { 'class' : 'dateSelect' } }
+            ) }}
+        </div>
+        <div{% if ctsCase.correspondenceType == 'FTC' %} class="last"{% endif %}>
+            {{ form_label(ctsCaseForm['hoCaseOfficer']) }}
+            {{ form_widget(ctsCaseForm['hoCaseOfficer']) }}
+        </div>
+        {% if ctsCase.correspondenceType == 'FLT' or ctsCase.correspondenceType== 'FUT' %}
+            <div>
+                {{ form_label(ctsCaseForm['appellant']) }}
+                {{ form_widget(ctsCaseForm['appellant']) }}
+            </div>
+            <div class="last">
+                {{ form_label(ctsCaseForm['hoJoined']) }}
+                {{ form_widget(ctsCaseForm['hoJoined']) }}
+            </div>
+        {% endif %}
+        {% if ctsCase.correspondenceType == 'FSC' %}
+            <div class="last">
+                {{ form_label(ctsCaseForm['complex']) }}
+                {% if ctsCaseForm['originalComplex'].vars['value'] == 'true' %}
+                    {{ form_widget(ctsCaseForm['complex'], { 'disabled' : 'true' }) }}
+                {% else %}
+                    {{ form_widget(ctsCaseForm['complex']) }}
+                {% endif %}
+                <p class="note">Please ensure you've uploaded a copy of your manager's approval before marking as complex</p>
+            </div>
+        {% endif %}
+        {% if ctsCase.correspondenceType == 'FTCI' or ctsCase.correspondenceType == 'FSCI' %}
+            <div{% if ctsCase.correspondenceType == 'FTCI' %} class="last"{% endif %}>
+                {{ form_label(ctsCaseForm['icoReference']) }}
+                {{ form_widget(ctsCaseForm['icoReference']) }}
+            </div>
+        {% endif %}
+        {%  if ctsCase.correspondenceType == 'FSCI' %}
+            <div class="dateField last">
+                {{ form_label(ctsCaseForm['icoOutcomeDate']) }}
+                {{ form_widget(ctsCaseForm['icoOutcomeDate'],
+                    { 'attr' : { 'class' : 'dateSelect' } }
+                ) }}
+            </div>
+        {% endif %}
+    </fieldset>
+</div>
+
+{% include "HomeOfficeCtsBundle:Case:linkedCaseList.html.twig" with { 'allowAdd': true, 'editable' : true, 'wide' : true } %}
+
+{% include "HomeOfficeCtsBundle:Case/Edit:_correspondentDetailsFormFoi.html.twig" with {'title': 'Requestor details' } %}
+
+<fieldset id="markup" class="panel wide">
+    <h2>Mark up</h2>
+    <div>
+        {{ form_label(ctsCaseForm['markupDecision']) }}
+        {{ form_widget(ctsCaseForm['markupDecision']) }}
+    </div>
+    <div>
+        {{ form_label(ctsCaseForm['markupUnit']) }}
+        {{ form_widget(ctsCaseForm['markupUnit']) }}
+    </div>
+    <div class="stop_list" data-stop_list_type="topics">
+        {{ form_label(ctsCaseForm['markupTopic']) }}
+        {{ form_widget(ctsCaseForm['markupTopic']) }}
+    </div>
+    <div>
+        {{ form_label(ctsCaseForm['secondaryTopic']) }}
+        {{ form_widget(ctsCaseForm['secondaryTopic']) }}
+    </div>
+    <div class="unused">
+        {{ form_label(ctsCaseForm['markupMinister']) }}
+        {{ form_widget(ctsCaseForm['markupMinister']) }}
+    </div>
+</fieldset>
+
+{% if (formPurpose == 'edit') %}
+    <fieldset id="minutes_history" class="panel wide">
+        <h2>Minutes history</h2>
+        {% include "HomeOfficeCtsBundle:Minute:minuteAdd.html.twig" with {'minuteForm': ctsCaseForm.newMinute, 'addFormTag': false } %}
+        {% include "HomeOfficeCtsBundle:Minute:minuteFilter.html.twig" %}
+        {% include "HomeOfficeCtsBundle:Minute:minuteHistory.html.twig" %}
+    </fieldset>
+{% endif %}

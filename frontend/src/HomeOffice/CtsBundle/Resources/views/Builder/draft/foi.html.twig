@@ -1,0 +1,171 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Draft{% endblock %}
+
+{% block metaTitle %}FOI Case {{ case.urn }}{% endblock %}
+
+{% block guftForm %}
+    <h2>Original correspondence</h2>
+    <p>Correspondent: {{ case.correspondentFullName }}</p>
+
+    <div class="panel">
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+            'filterTypes': ['Original']
+        } %}
+    </div>
+    <hr>
+
+    <h2>Case Details</h2>
+    {% include 'HomeOfficeCtsBundle:CaseElements:linkedCases.html.twig' with {
+        'form': form['linkedCases']
+    } %}
+
+    {% include 'HomeOfficeCtsBundle:Builder:groups/markupTopics.html.twig' %}
+
+    <div class="form-group">
+        {{ form_label(form['hoCaseOfficer']) }}
+        {{ form_widget(form['hoCaseOfficer']) }}
+    </div>
+    <hr>
+
+    <div class="form-group hidden">
+        {{ form_widget(form['correspondentForename']) }}
+        {{ form_widget(form['correspondentSurname']) }}
+    </div>
+
+    {% if form['foiMinisterSignOff'] is defined %}
+        <div class="form-group">
+            <label class="form-label">{{ form['foiMinisterSignOff'].vars.label }}</label>
+            {% if not form['foiMinisterSignOff'].vars.read_only %}
+                {{ form_widget(form['foiMinisterSignOff']) }}
+            {% else %}
+                <div class="form-read">
+                    {% if form['answeringMinister'].vars.data %}Yes{% else %}No{% endif %}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if form['answeringMinister'] is defined %}
+        {% if not form['answeringMinister'].vars.read_only %}
+            <div class="form-group signOffMinisterToggle hidden">
+                {{ form_label(form['answeringMinister']) }}
+                {{ form_widget(form['answeringMinister']) }}
+            </div>
+        {% elseif form['answeringMinister'].vars.data %}
+            <div class="form-group">
+                {{ form_label(form['answeringMinister']) }}
+                {{ form_widget(form['answeringMinister']) }}
+            </div>
+        {% endif %}
+    {% endif %}
+    <hr>
+
+    <h2>Response</h2>
+
+    <div class="form-group">
+        <label class="form-label">Document(s)</label>
+        <div class="documentTable panel"
+             data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+             data-filter-types="Original attachments,Contribution,Background note,Response,Other"
+             data-allow-remove="{{ caseIsStep(case, 'draft') ? "true" : "false" }}"
+        >
+            {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+                'filterTypes': ['Original attachments', 'Contribution', 'Background note', 'Response', 'Other'],
+                'allowRemove': caseIsStep(case, 'draft')
+            } %}
+        </div>
+    </div>
+
+    {% if caseIsStep(case, 'draft') %}
+        <div class="form-group">
+            {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form['document']} %}
+        </div>
+    {% endif %}
+    <hr>
+
+    {% if form['foiIsEir'] is defined %}
+        <div class="form-group">
+            <label class="form-label">{{ form['foiIsEir'].vars.label }}</label>
+            {{ form_widget(form['foiIsEir'], { 'attr' : {
+                'class': 'inline foiIsEir',
+                'data-markup-decisions': path('homeoffice_cts_caseelements_refreshmarkupdecisions', { 'nodeRef': case.nodeId })
+            } }) }}
+        </div>
+    {% endif %}
+
+    <div class="form-group">
+        <label><a class="consultationTrigger noUnderline" href="#">Consultation</a></label>
+        <div class="consultationToggle hidden">
+            <p>Some FOI requests require consultation with third parties. Please indicate if you have consulted, or plan to
+                consult, with any of the following bodies</p>
+            {{ form_widget(form['acpoConsultation']) }}
+            {{ form_widget(form['cabinetOfficeConsultation']) }}
+            {{ form_widget(form['nslgConsultation']) }}
+            {{ form_widget(form['royalsConsultation']) }}
+            {{ form_widget(form['roundRobinAdviceConsultation']) }}
+        </div>
+    </div>
+
+    {% if form['pitExtension'] is defined %}
+        <div class="form-group">
+            <label class="form-label">{{ form['pitExtension'].vars.label }}</label>
+            {{ form_widget(form['pitExtension'])  }}
+        </div>
+        <div class="form-group publicInterestTestToggle hidden">
+            <div class="form-group">
+                {{ form_label(form['pitLetterSentDate']) }}
+                {{ form_widget(form['pitLetterSentDate']) }}
+                <div class="pidDeadline"></div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form['pitQualifiedExemptions']) }}
+                {{ form_widget(form['pitQualifiedExemptions']) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if form['newInformationReleased'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['newInformationReleased']) }}
+            {{ form_widget(form['newInformationReleased']) }}
+        </div>
+    {% endif %}
+
+    {% if form['complex'] is defined %}
+        <div class="form-group">
+            {{ form_label(form['complex']) }}
+            {{ form_widget(form['complex']) }}
+        </div>
+    {% endif %}
+
+    {% if form['markupDecision'] is defined %}
+        <hr>
+        {% block markup %}
+            {% include 'HomeOfficeCtsBundle:Builder:groups/markup.html.twig' with {
+                'markupTitle': 'Outcome'
+            } %}
+        {% endblock %}
+    {% else %}
+        {% if form['allocateTo'] is defined and caseIsStep(case, 'draft') %}
+            <hr>
+            <h2>Allocate to QA review</h2>
+
+            {% include 'HomeOfficeCtsBundle:Builder:groups/allocate.html.twig' %}
+
+            {% if form['Next'] is defined %}
+                {{ form_widget(form['Next'], { 'label': 'Submit for approval' }) }}
+            {% endif %}
+
+            {% if form['SendForQAReview'] is defined %}
+                {{ form_widget(form['SendForQAReview'], { 'label': 'Submit for approval' }) }}
+            {% endif %}
+
+            {% if form['save'] is defined %}
+                {{ form_widget(form['save']) }}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endblock %}

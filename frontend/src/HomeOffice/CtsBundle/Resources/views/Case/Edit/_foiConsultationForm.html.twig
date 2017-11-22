@@ -1,0 +1,23 @@
+<fieldset id="foi-consultation" class="panel medium">
+    <h2>Consultation</h2>
+    <div class="spot-control consultation-short">
+        {{ form_widget(ctsCaseForm['acpoConsultation']) }}
+        {{ form_label(ctsCaseForm['acpoConsultation']) }}
+    </div>
+    <div class="spot-control consultation-long">
+        {{ form_widget(ctsCaseForm['cabinetOfficeConsultation']) }}
+        {{ form_label(ctsCaseForm['cabinetOfficeConsultation']) }}
+    </div>
+    <div class="spot-control consultation-short">
+        {{ form_widget(ctsCaseForm['nslgConsultation']) }}
+        {{ form_label(ctsCaseForm['nslgConsultation']) }}
+    </div>
+    <div class="spot-control consultation-short">
+        {{ form_widget(ctsCaseForm['royalsConsultation']) }}
+        {{ form_label(ctsCaseForm['royalsConsultation']) }}
+    </div>
+    <div class="spot-control consultation-long last">
+        {{ form_widget(ctsCaseForm['roundRobinAdviceConsultation']) }}
+        {{ form_label(ctsCaseForm['roundRobinAdviceConsultation']) }}
+    </div>
+</fieldset>

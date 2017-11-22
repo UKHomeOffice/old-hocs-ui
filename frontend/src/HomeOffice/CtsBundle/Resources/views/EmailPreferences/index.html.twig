@@ -1,0 +1,66 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+
+{% block title %}Email Preferences{% endblock %}
+
+{% block bc %}
+    <section class="grid-row">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>Email Preferences</li>
+            </ol>
+        </nav>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <section class="grid-row">
+        <div class="column-two-thirds">
+            <p>
+                Here is a list of the Teams and Units which you belong to, select all which you would like to receive
+                email notifications for and click the confirmation button.
+            </p>
+
+            <h2>Your email address</h2>
+            <p>Your registered email address is:<br>{{ app.user.email }}</p>
+
+            <h2>Your Notifications</h2>
+
+            {{ form_start(form) }}
+                <ul>
+                    {% for group in form %}
+                        {% if group.children|length %}
+                            <li>
+                                {% for unit in group %}
+                                    {% if unit.vars.name == 'unit' %}
+                                        {{ form_widget(unit) }}
+                                        {{ form_label(unit) }}
+                                    {% endif %}
+                                    {% if unit.vars.name == 'teams' %}
+                                        <ul>
+                                            {% for team in unit %}
+                                                <li>
+                                                    {{ form_widget(team) }}
+                                                    {{ form_label(team) }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                {% endfor %}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+
+                {% if form.vars.submitted %}
+                    <p>Your email notifications have been updated.</p>
+                {% else %}
+                    {{ form_widget(form.save) }}
+                {% endif %}
+
+                {{ form_widget(form._token) }}
+            {{ form_end(form, {'render_rest': false}) }}
+        </div>
+    </section>
+{% endblock %}

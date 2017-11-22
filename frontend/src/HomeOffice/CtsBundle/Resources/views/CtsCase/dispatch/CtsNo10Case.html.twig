@@ -1,0 +1,67 @@
+{% extends "HomeOfficeCtsBundle:CtsCase:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Dispatch{% endblock %}
+
+{% block metaTitle %}Approve UKVI No 10 Case {{ case.urn }}{% endblock %}
+
+{% block overviewReturn %}{% endblock %}
+
+{% block tab1 %}
+    <a name="form_top"></a>
+    {{ form_start(form, {'attr': {'class': 'form-ajax', 'novalidate': 'novalidate', 'data-casetype': case.correspondenceType}}) }}
+    <h2>Original correspondence</h2>
+    <p>Member: {{ case.member }}</p>
+
+    <div class="panel">
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+        'filterTypes': ['Original']
+        } %}
+    </div>
+    <hr>
+
+    <h2>Response</h2>
+
+    <label class="form-label">Document(s)</label>
+    <div class="documentTable panel"
+         data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+         data-filter-types="Original attachments,Contribution,Background note,Response,Other"
+         data-allow-remove="{{ caseIsStep(case, 'dispatch') ? 'true' : 'false' }}"
+    >
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+            'filterTypes': ['Original attachments', 'Contribution', 'Background note', 'Response', 'Other'],
+            'allowRemove': caseIsStep(case, 'dispatch')
+        } %}
+    </div>
+
+    {% if form['document'] is defined %}
+        {% if caseIsStep(case, 'dispatch') %}
+            <div class="form-group">
+                {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with {
+                    'form': form['document']
+                } %}
+            </div>
+        {% endif %}
+        {% do form['document'].setRendered %}
+    {% endif %}
+    <hr>
+
+    {% if form['replyToNumberTenCopy'] is defined %}
+        <div class="form-group">
+            {{ form_widget(form['replyToNumberTenCopy']) }}
+        </div>
+    {% endif %}
+    <div class="form-group">
+        {% if form.transitions['Dispatch'] is defined %}
+            {{ form_label(form.transitions['Dispatch']) }}
+            {{ form_widget(form.transitions['Dispatch']) }}
+        {% else %}
+            <label class="form-label form-approved">Dispatched</label>
+        {% endif %}
+    </div>
+    {% do form['transitions'].setRendered %}
+
+
+    {{ form_end(form) }}
+{% endblock %}

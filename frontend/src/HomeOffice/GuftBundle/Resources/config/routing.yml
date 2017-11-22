@@ -1,0 +1,4 @@
+
+ft_test:
+    path:  /
+    defaults: { _controller: GuftBundle:StyleGuide:index }

@@ -1,0 +1,97 @@
+/* Buttons */
+ul.buttons {
+  li {
+    a {
+      margin-left: $gutter-one-quarter;;
+    }
+  }
+}
+
+.button {
+  @include button ($button-colour);
+  @include box-sizing (border-box);
+
+  vertical-align: top;
+
+  @include media (mobile) {
+    width: 100%;
+    margin-top: $gutter-half;
+  }
+}
+
+.button-secondary{
+  @include button($grey-3);
+}
+
+.button-right{
+  float: right;
+  margin-left: 5px;
+}
+
+.button-tertiary {
+  @include button($govuk-blue);
+}
+
+.button-warning{
+  @include button($red);
+}
+
+.button-link {
+  text-decoration: underline !important;
+  margin: auto 5px;
+}
+
+// Fix unwanted button padding in Firefox
+.button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+.button:focus {
+  outline: 3px solid $focus-colour;
+}
+
+.button:hover {
+  text-decoration: none;
+}
+
+// Disabled buttons
+.button[disabled="disabled"] {
+  background: $button-colour;
+}
+
+.button[disabled="disabled"]:focus {
+  outline: none;
+}
+
+// Start now buttons
+.button-start,
+.button-get-started {
+  @include bold-24;
+  background-image: url("/bundles/guft/images/icon-pointer.png");
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+  padding: em(7) em(41) em(4) em(16);
+
+  @include device-pixel-ratio {
+    background-image: url("/bundles/guft/images/icon-pointer-2x.png");
+    background-size: 30px 19px;
+  }
+
+  @include ie(6) {
+    background-image: url("/bundles/guft/images/icon-pointer-2x.png");
+  }
+}
+
+#uploadFileName { padding-left: $gutter }
+
+.button-toggle {
+  color: #000 !important;
+  @include core-19;
+  margin-bottom: $gutter-one-third;
+  display: block;
+}
+
+.button-toggle:hover {
+  text-decoration: none;
+}

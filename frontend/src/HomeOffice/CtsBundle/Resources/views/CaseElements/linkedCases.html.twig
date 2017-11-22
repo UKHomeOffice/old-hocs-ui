@@ -1,0 +1,17 @@
+<h3>Link to another case</h3>
+
+<div class="form-group">
+    {% if not form['hrnsToLink'].vars.read_only %}
+        {{ form_label(form['hrnsToLink']) }}
+        {{ form_widget(form['hrnsToLink'], {'attr': { 'class': 'reset' }}) }}
+        {{ form_widget(form['addLinkedCase']) }}
+    {% else %}
+        {% do form['addLinkedCase'].setRendered %}
+        {% do form['hrnsToLink'].setRendered %}
+        {% do form['linkedCaseToRemove'].setRendered %}
+    {% endif %}
+
+    <div class="linkedCaseTable">
+        {% include 'HomeOfficeCtsBundle:CaseElements:linkedCasesTable.html.twig' with { 'case': case } %}
+    </div>
+</div>

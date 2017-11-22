@@ -1,0 +1,19 @@
+services:
+    home_office.list_service:
+        class: HomeOffice\ListBundle\Service\ListService
+        arguments:
+            - "@home_office_list.handler"
+            - "@home_office_alfresco_api.cts_lists.repository"
+
+    home_office_list.handler:
+        class: HomeOffice\ListBundle\Service\ListHandler
+        arguments:
+            - @session
+            - @stash.default_cache
+            - %home_office_list.cache_timeout_seconds%
+            - @home_office_alfresco_api.cts_lists.repository
+            - @home_office_list.csv_parser
+            - %home_office_list.list_definitions%
+
+    home_office_list.csv_parser:
+        class: HomeOffice\ListBundle\Service\CSVParser

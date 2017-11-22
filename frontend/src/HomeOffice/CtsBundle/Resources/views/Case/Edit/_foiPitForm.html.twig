@@ -1,0 +1,41 @@
+<fieldset id="foi-pit" class="panel medium">
+    <h2>Public interest  test (PIT)</h2>
+    <div class="spot-control extra-wide">
+        {% if ctsCaseForm['originalPitExtension'].vars['value'] == 'true' %}
+            {{ form_widget(ctsCaseForm['pitExtension'], { 'disabled' : 'true' }) }}
+        {% else %}
+            {{ form_widget(ctsCaseForm['pitExtension']) }}
+        {% endif %}
+        {{ form_label(ctsCaseForm['pitExtension']) }}
+    </div>
+    <div class="dateField foi_pit_conditional_fields">
+        {% if true == isCaseFieldMandatory(ctsCase, "pitLetterSentDate") %}
+            *
+        {% endif %}
+        {{ form_label(ctsCaseForm['pitLetterSentDate']) }}
+        {% if ctsCaseForm['originalPitExtension'].vars['value'] == 'true' %}
+            {{ form_widget(ctsCaseForm['pitLetterSentDate'], { 'attr' : { 'class' : 'dateSelect' }, 'disabled' : 'true' }) }}
+        {% else %}
+            {{ form_widget(ctsCaseForm['pitLetterSentDate'], { 'attr' : { 'class' : 'dateSelect' } }) }}
+        {% endif %}
+    </div>
+    {% if ctsCaseForm['originalPitExtension'].vars['value'] == 'true' %}
+        <div class="dateField">
+            <label>Extended deadline</label>
+            <span>{{ ctsHelper.formatDateTimeToDate(ctsCase.caseResponseDeadline)|default('-') }}</span>
+        </div>
+    {% endif %}
+    <div class="last foi_pit_conditional_fields">
+        {% if true == isCaseFieldMandatory(ctsCase, "pitQualifiedExemptions") %}
+            *
+        {% endif %}
+        {{ form_label(ctsCaseForm['pitQualifiedExemptions']) }}
+        {{ form_widget(ctsCaseForm['pitQualifiedExemptions']) }}
+        {% if true == isCaseFieldMandatory(ctsCase, "pitQualifiedExemptions") %}
+            <br />
+            <br />
+            <span>* Mandatory Fields</span>
+        {% endif %}
+    </div>
+</fieldset>
+

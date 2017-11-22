@@ -1,0 +1,350 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+{% block title %}Style Guide{% endblock %}
+{% block content %}
+    <h2>Typography</h2>
+    <section class="grid-row">
+        <article class="column-half">
+        <p>This is a normal paragraph. On static pages, it's designed for readability and optimizing the number of
+            characters per line. Some more words that pad this paragraph out.  The quick brown fox jumps over the
+            lazy dog.</p>
+        </article>
+        <article class="column-half">
+            <h1>Heading Level One</h1>
+            <h2>Heading Level Two</h2>
+            <h3>Heading Level Three</h3>
+            <h4>Heading Level Four</h4>
+            <h5>Heading Level Five</h5>
+            <h6>Heading Level Six</h6>
+        </article>
+    </section>
+    <section class="grid-row">
+        <article class="column-half">
+            <blockquote>
+                This is a blockquote. While rarely used, it's designed to stand out from the main body of content
+                and provide hierarchical contrast on the page.
+            </blockquote>
+        </article>
+        <article class="column-half">
+            <span class="code-header">Example: Code Block</span>
+            <code class="code-sample">
+                This is an example of a code block. This style will be used for developer docs and in future
+                iterations of this style guide.
+            </code>
+        </article>
+    </section>
+    <section class="grid-row">
+        <article class="column-third">
+            <ul>
+                <li>This is an</li>
+                <li>unordered list</li>
+                <li>which can be used to</li>
+                <li>...you know, make lists</li>
+            </ul>
+        </article>
+        <article class="column-third">
+            <ul class="blank">
+                <li>This is a blank</li>
+                <li>unordered list</li>
+                <li>which can be used to</li>
+                <li>...you know, make lists</li>
+            </ul>
+        </article>
+        <article class="column-third">
+            <ol>
+                <li>This is an</li>
+                <li>ordered list</li>
+                <li>which has numbers in front of each item</li>
+                <li>because counting is cool</li>
+            </ol>
+        </article>
+    </section>
+    <section class="grid-row">
+        <article class="column-full">
+            <div class="centre">
+                <ul class="blank inline">
+                    <li><a href="#">Inline</a></li>
+                    <li><a href="#">lists</a></li>
+                    <li><a href="#">are</a></li>
+                    <li><a href="#">possible</a></li>
+                    <li><a href="#">too!</a></li>
+                </ul>
+            </div>
+        </article>
+
+    </section>
+    <hr />
+    <h2>Grid system</h2>
+    <div class="grid-row">
+        <div class="column-full"><div class="example-grid"><p>column-full</p></div></div>
+    </div>
+    <div class="grid-row">
+        <div class="column-half"><div class="example-grid"><p>column-half</p></div></div>
+        <div class="column-half"><div class="example-grid"><p>column-half</p></div></div>
+    </div>
+    <div class="grid-row">
+        <div class="column-third"><div class="example-grid"><p>column-third</p></div></div>
+        <div class="column-third"><div class="example-grid"><p>column-third</p></div></div>
+        <div class="column-third"><div class="example-grid"><p>column-third</p></div></div>
+    </div>
+    <section class="grid-row">
+        <div class="column-two-thirds"><div class="example-grid"><p>column-two-thirds</p></div></div>
+        <div class="column-third"><div class="example-grid"><p>column-third</p></div></div>
+    </section>
+    <section class="grid-row">
+        <div class="column-third"><div class="example-grid"><p>column-third</p></div></div>
+        <div class="column-two-thirds"><div class="example-grid"><p>column-two-thirds</p></div></div>
+    </section>
+    <section class="grid-row">
+        <div class="column-quarter"><div class="example-grid"><p>column-quarter</p></div></div>
+        <div class="column-quarter"><div class="example-grid"><p>column-quarter</p></div></div>
+        <div class="column-quarter"><div class="example-grid"><p>column-quarter</p></div></div>
+        <div class="column-quarter"><div class="example-grid"><p>column-quarter</p></div></div>
+    </section>
+    <section class="grid-row">
+        <div class="column-three-quarters"><div class="example-grid"><p>column-three-quarters</p></div></div>
+        <div class="column-quarter"><div class="example-grid"><p>column-quarter</p></div></div>
+    </section>
+    <section class="grid-row">
+        <div class="column-quarter"><div class="example-grid"><p>column-quarter</p></div></div>
+        <div class="column-half"><div class="example-grid"><p>column-half</p></div></div>
+        <div class="column-quarter"><div class="example-grid"><p>column-quarter</p></div></div>
+    </section>
+    <section class="grid-row">
+        <div class="column-quarter"><div class="example-grid"><p>column-quarter</p></div></div>
+        <div class="column-three-quarters"><div class="example-grid"><p>column-three-quarters</p></div></div>
+    </section>
+    <hr />
+    <h2>Form Elements</h2>
+    <section class="grid-row">
+        <article class="column-half">
+            <div class="form-group">
+                <label class="form-label" for="text">
+                    Text:
+                    <span class="form-hint">This is a form hint</span>
+                </label>
+                <input class="form-control" id="text" type="text" />
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="anothertext">
+                    Another Text:
+                </label>
+                <input class="form-control" id="anothertext" type="text" />
+            </div>
+        </article>
+        <article class="column-half">
+            <div class="form-group error">
+                <label class="form-label" for="select">
+                    Select:
+                    <span class="error-message" id="error-message-select">Some sort of error here</span>
+                </label>
+                <select class="form-control" id="select">
+                    <option>Please select...</option>
+                    <option name="something">something</option>
+                    <option name="somethingelse">something else</option>
+                    <option name="anotherthing">another thing</option>
+                </select>
+            </div>
+        </article>
+    </section>
+    <section class="grid-row">
+        <article class="column-full">
+            <div class="form-group">
+                <label class="form-label" for="textarea">Textarea</label>
+                <textarea class="form-control" id="textarea" class="form-control" cols="30" rows="8"></textarea>
+            </div>
+        </article>
+    </section>
+    <section class="grid-row">
+        <article class="column-quarter">
+            <input class="button" type="submit" value="button" />
+        </article>
+        <article class="column-quarter">
+            <input class="button-secondary" type="submit" value="button secondary" />
+        </article>
+        <article class="column-quarter">
+            <input class="button-tertiary" type="submit" value="button tertiary" />
+        </article>
+        <article class="column-quarter">
+            <input class="button-warning" type="submit" value="button warning" />
+        </article>
+    </section>
+    <section class="grid-row">
+        <article class="column-half">
+            <h3 class="heading-medium">Checkbox (block-label)</h3>
+            <form>
+                <fieldset>
+                    <legend class="visuallyhidden">Legendary...</legend>
+                    <label class="block-label" for="checkbox-block-one">
+                        <input id="checkbox-block-one" name="checkbox-block" type="checkbox" value="checkbox-block-one">
+                        Once
+                    </label>
+                    <label class="block-label" for="checkbox-block-two">
+                        <input id="checkbox-block-two" name="checkbox-block" type="checkbox" value="checkbox-block-two">
+                        Twice
+                    </label>
+                    <label class="block-label" for="checkbox-block-three">
+                        <input id="checkbox-block-three" name="checkbox-block" type="checkbox" value="checkbox-block-three">
+                        Three times a lady
+                    </label>
+                </fieldset>
+            </form>
+        </article>
+        <article class="column-half">
+            <h3>Checkbox</h3>
+            <p>Some instruction or other</p>
+            <label class="form-checkbox" for="checkbox-nulo">
+                <input id="checkbox-nulo" name="checkbox-plain" type="checkbox" value="true">
+                Nulo
+            </label>
+            <label class="form-checkbox" for="checkbox-unu">
+                <input id="checkbox-unu" name="checkbox-plain" type="checkbox" value="true">
+                Unu
+            </label>
+            <label class="form-checkbox" for="checkbox-du">
+                <input id="checkbox-du" name="checkbox-plain" type="checkbox" value="true">
+                Du
+            </label>
+        </article>
+    </section>
+    <section class="grid-row">
+        <article class="column-half">
+            <h3>Radio</h3>
+            <p>Another instruction.</p>
+            <form>
+                <fieldset class="inline">
+                    <legend class="visuallyhidden">What a legend...</legend>
+                    <label class="inline" for="radio-ohwell">
+                        <input class="inline" id="radio-ohwell" type="radio" name="radio-inline-group" value="ohwell">
+                        Oh well
+                    </label>
+                    <label class="inline" for="radio-whatever">
+                        <input class="inline" id="radio-whatever" type="radio" name="radio-inline-group" value="whatever">
+                        Whatever
+                    </label>
+                    <label class="inline" for="radio-nevermind">
+                        <input class="inline" id="radio-nevermind" type="radio" name="radio-inline-group" value="nevermind">
+                        Nevermind
+                    </label>
+                </fieldset>
+            </form>
+        </article>
+        <article class="column-half">
+            <h3>Radio (block-label)</h3>
+            <form>
+                <fieldset class="inline">
+                    <legend class="visuallyhidden">What a legend...</legend>
+                    <label class="block-label" for="radio-inline-yes">
+                        <input id="radio-inline-yes" type="radio" name="radio-inline-group" value="Yes">
+                        Yes
+                    </label>
+                    <label class="block-label" for="radio-inline-no">
+                        <input id="radio-inline-no" type="radio" name="radio-inline-group" value="No">
+                        No
+                    </label>
+                </fieldset>
+            </form>
+        </article>
+    </section>
+    <hr />
+    <h2>Table</h2>
+    <section class="grid-row">
+        <article class="column-full">
+            <table>
+                <thead>
+                    <tr>
+                        <th>It's been</th>
+                        <th>One week</th>
+                        <th>since you</th>
+                        <th>Looked at me</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cocked your head</td>
+                        <td>To the side and said</td>
+                        <td>"I'm angry."</td>
+                        <td>Five days since</td>
+                    </tr>
+                    <tr>
+                        <td>You laughed at</td>
+                        <td>Me saying "Get"...</td>
+                        <td>"together come back"...</td>
+                        <td>"and see me."</td>
+                    </tr>
+                    <tr>
+                        <td>Three days since</td>
+                        <td>The living room</td>
+                        <td>I realised it's</td>
+                        <td>All my fault, but</td>
+                    </tr>
+                    <tr>
+                        <td>Couldn't tell you</td>
+                        <td>Yesterday you'd forgiven</td>
+                        <td>Me, but it'll still be</td>
+                        <td>two days 'till I say</td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+    </section>
+    <hr />
+    <section class="grid-row">
+        <h2>References</h2>
+        <article class="column-third">
+            <p>
+                <a href="http://govuk-elements.herokuapp.com/" class="external-link"
+                   title="Gov UK Elements Style Guide">
+                    Hero UK Gov.uk style guide
+                </a>
+            </p>
+            <p>
+                <a href="https://github.com/PurpleBooth/govuk_frontend_toolkit_composer" class="external-link"
+                   title="Purple Booth govuk frontent toolkit composer">
+                    PurpleBooth GovUK Frontend Toolkit for Composer
+                </a>
+            </p>
+        </article>
+        <article class="column-third">
+            <p>
+                <a href="https://github.com/alphagov/govuk_elements" class="external-link"
+                   title="Gov UK Elements GitHub">
+                    Hero UK Gov.uk github source code
+                </a>
+            </p>
+            <p>
+                <a href="https://github.com/alister/GovUKFTBundle" class="external-link"
+                   title="Alister GovUKFT bundle">
+                    A bundle for Symfony2
+                </a>
+                - Unfortunately the bundle doesn't work, but it's a good reference
+            </p>
+
+        </article>
+        <article class="column-third">
+            <p>
+                <a href="https://github.com/alphagov/govuk_frontend_toolkit" class="external-link"
+                   title="AlphaGov Frontend Toolkit">
+                    AlphaGov GovUK Frontend Toolkit
+                </a>
+            </p>
+
+            <p>
+                <a href="https://www.gov.uk/service-manual/user-centred-design/resources/patterns" class="external-link"
+                   title="AlphaGov Frontend Toolkit">
+                    GovUk Design Patterns
+                </a>
+                - Link also leads to the HackPad
+            </p>
+        </article>
+    </section>
+    <section class="grid-row">
+        <h2>To do</h2>
+        <article class="column-full">
+            <ul>
+                <li>Consider print stylesheet creation</li>
+                <li>Full javascript builds from the frontend toolkit</li>
+                <li>Standards compliance?</li>
+            </ul>
+        </article>
+    </section>
+{% endblock %}

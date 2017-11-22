@@ -1,0 +1,26 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block bc %}
+    <section class="grid-row">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li><a href="{{ path('homeoffice_cts_documenttemplates_index') }}">Manage Templates</a></li>
+                <li>Edit Template</li>
+            </ol>
+        </nav>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <a name="content_top"></a>
+    <section class="grid-row">
+        <div class="column-two-thirds">
+            {{ form(form, {'attr': {'class': 'form-ajax', 'novalidate' : 'novalidate' } }) }}
+        </div>
+    </section>
+{% endblock %}

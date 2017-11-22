@@ -1,0 +1,26 @@
+{% form_theme ctsCaseForm 'HomeOfficeCtsBundle:Form:custom_widgets.html.twig' %}
+
+<fieldset id="panels" class="sibling-group">
+    
+    {% include 'HomeOfficeCtsBundle:Case/Edit:_caseOverview.html.twig' %}
+
+    <div id="deadline" class="panel alt2 page-chunk">
+        <h2>Deadline {{ form_widget(ctsCaseForm['caseResponseDeadline']) }}</h2>
+        {% if ctsCase.hmpoStage != null and ctsCase.hmpoStage == 'MP complaint' %}
+            <h3>Targets</h3>
+            {% spaceless %}{# compatibilty mode bug #}
+            <p>
+                <label>Draft</label>
+                <span>{{ form_widget(ctsCaseForm['draftResponseTarget']) }}</span>
+            </p>
+            <p>
+                <label>Dispatch</label>
+                <span>{{ form_widget(ctsCaseForm['dispatchTarget']) }}</span>
+            </p>
+            {% endspaceless %}
+        {% endif %}
+    </div>
+</fieldset>
+
+{% include "HomeOfficeCtsBundle:Case/Script:_memberStopListScript.html.twig" %}
+{% include "HomeOfficeCtsBundle:Case/Script:_topicListScript.html.twig" %}

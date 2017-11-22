@@ -1,0 +1,40 @@
+
+<h2>Linked</h2>
+{% if linkedCaseError is defined and linkedCaseError != null %}
+    <div class="cases_error">
+        <span>{{ linkedCaseError|nl2br }}</span>
+    </div>
+{% endif %}
+{% if ctsCase.linkedCases|length > 0 %}
+    <div>
+        <ul class="case_list">
+            {% for linkedCase in ctsCase.linkedCases %}
+                {% if editable %}
+                    <li class="form-group">
+                        <a href="{{ path('homeoffice_cts_case_view', { 'nodeRef' : linkedCase.getNodeId }) }}">
+                            {{ form_widget(ctsCaseForm['linkedCase' ~ '_' ~ linkedCase.nodeId]) }}
+                        </a>
+                        <span>
+                            <a href="{{ path('homeoffice_cts_case_unlink', { 'nodeRef' : ctsCase.getNodeId, 'childRef' : linkedCase.getNodeId  }) }}">
+                                Remove
+                            </a>
+                        </span>
+                    </li>
+                {% else %}
+                    <li class="form-group">
+                        <span>
+                            <a href="{{ path('homeoffice_cts_case_view', { 'nodeRef' : linkedCase.getNodeId }) }}">{{ linkedCase.getUrn }}</a>
+                        </span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{% if editable %}
+    <div class="form-group">
+        {{ form_label(ctsCaseForm['hrnsToLink']) }}
+        {{ form_widget(ctsCaseForm['hrnsToLink']) }}
+        {{ form_widget(ctsCaseForm['addLinkedCases']) }}
+    </div>
+{% endif %}

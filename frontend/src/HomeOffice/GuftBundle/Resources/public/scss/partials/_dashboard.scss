@@ -1,0 +1,39 @@
+/* Dashboard */
+
+#dashboard {
+  h2 {
+    font-size: 3em;
+  }
+
+  table {
+    margin-bottom: 100px;
+
+    th:first-child {
+      width: 50%;
+    }
+    td {
+      span.key {
+        width: 18px;
+        height: 18px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        display: block;
+        float: left;
+        margin-right: $gutter-one-quarter;
+      }
+    }
+  }
+
+  tspan {
+    font-family: "nta", Arial, sans-serif;
+  }
+  tspan.count {
+    font-size: 3em;
+    font-weight: bold;
+  }
+  tspan.state {
+    @include core-16;
+  }
+}
+

@@ -1,0 +1,9 @@
+<script type="text/javascript">
+    var topicList = {'units': {}};
+    {% for key in topicList|keys %}
+        topicList.units['{{ key }}'] = [];
+        {% for topic in topicList[key] %}
+            topicList.units['{{ key }}'].push('{{ topic }}');
+        {% endfor %}
+    {% endfor %}
+</script>

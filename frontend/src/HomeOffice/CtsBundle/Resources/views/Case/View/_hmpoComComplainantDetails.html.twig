@@ -1,0 +1,57 @@
+<div class="panel wide page-chunk" id="complainant_details">
+    <h2>Complainant</h2>
+    <div class="page-chunk basic_details">
+        <p>
+            <label>Reply to:</label>
+            <span>
+                {% if ctsCase.replyToComplainant %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </span>
+        </p>
+        <p>
+            <label>Title:</label>
+            <span>{{ ctsCase.complainantTitle }}</span>
+        </p>
+        <p>
+            <label>Forename:</label>
+            <span>{{ ctsHelper.wordWrap(ctsCase.complainantForename, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <label>Surname:</label>
+            <span>{{ ctsHelper.wordWrap(ctsCase.complainantSurname, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <label>Telephone:</label>
+            <span>{{ ctsCase.complainantTelephone }}</span>
+        </p>
+        <p>
+            <label>Email:</label>
+            <span><a href="mailto:{{ ctsCase.complainantEmail }}" title="{{ ctsCase.complainantEmail }}">{{ ctsCase.complainantEmail[:19] }}{% if ctsCase.complainantEmail[20:] %}&hellip;{%  endif %}</a></span>
+        </p>
+    </div>
+    <div class="page-chunk basic_details_2">
+        <p>
+            <label>Address:</label>
+            <span>{{ ctsHelper.wordWrap(ctsCase.complainantAddressLine1, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <span class="spacer"></span>
+            <span>{{ ctsHelper.wordWrap(ctsCase.complainantAddressLine2, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <span class="spacer"></span>
+            <span>{{ ctsHelper.wordWrap(ctsCase.complainantAddressLine3, 22)|nl2br }}</span>
+        </p>
+        <p>
+            <label>Postcode:</label>
+            <span>{{ ctsCase.complainantPostcode }}</span>
+        </p>
+        <p>
+            <label>Country:</label>
+            <span>{{ ctsCase.complainantCountry }}</span>
+        </p>
+    </div>
+</div>

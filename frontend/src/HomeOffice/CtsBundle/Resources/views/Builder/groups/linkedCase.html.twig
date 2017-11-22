@@ -1,0 +1,26 @@
+{%  if form['hrnsToLink'].vars.read_only == false %}
+    <h3>Link to another case</h3>
+
+    <div class="form-group">
+        {{ form_label(form.hrnsToLink) }}
+        {{ form_widget(form.hrnsToLink, {'attr': { 'class': 'reset' }}) }}
+        {{ form_widget(form.addLinkedCase) }}
+    </div>
+
+    <div class="linkedCaseTable">
+        {% include 'HomeOfficeCtsBundle:CaseElements:linkedCasesTable.html.twig' with { 'case': case } %}
+    </div>
+{% else %}
+    <div class="form-group">
+        <div class="form-label">Linked Cases</div>
+        <div class="form-read">
+            {% for linkedCase in case.linkedCases %}
+                <a href="{{ path('homeoffice_cts_case_view', { 'nodeRef': linkedCase.nodeId }) }}" target="_blank">
+                    {{ linkedCase.urn }}
+                </a><br>
+            {% else %}
+                There are no linked cases
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

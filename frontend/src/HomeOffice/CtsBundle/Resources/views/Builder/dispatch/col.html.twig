@@ -1,0 +1,100 @@
+{% extends "HomeOfficeCtsBundle:Builder:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Dispatch{% endblock %}
+
+{% block metaTitle %}HMPO Collective Case {{ case.urn }}{% endblock %}
+
+{% block overviewReturn %}{% endblock %}
+
+{% block guftForm %}
+    <h2>Collective passport</h2>
+    <div class="documentTable panel"
+         data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+         data-filter-types="Collective passport"
+         data-allow-remove="false"
+    >
+        {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+        'filterTypes': ['Collective passport'],
+        'allowRemove': false
+        } %}
+    </div>
+
+    <div class="form-group">
+        {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form['document']} %}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form['deferDispatch']) }}
+        {{ form_widget(form['deferDispatch']) }}
+    </div>
+
+    <div class="deferDispatchToggle hidden">
+        <div class="form-group">
+            {{ form_label(form['bringUpDate']) }}
+            {{ form_widget(form['bringUpDate']) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_widget(form['Defer']) }}
+        </div>
+    </div>
+
+    {% if caseIsStep(case, 'dispatch') and case.caseTask != 'Dispatched' %}
+
+        <div class="form-group">
+            {{ form_label(form['dispatchedDate']) }}
+            {{ form_widget(form['dispatchedDate']) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form['deliveryNumber']) }}
+            {{ form_widget(form['deliveryNumber']) }}
+        </div>
+
+        <div class="form-group">
+            {% if caseIsStep(case, 'Dispatch') %}
+                {{ form_widget(form.Dispatched, {'label': 'Dispatched'}) }}
+                {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="form-group">
+            <label class="form-label form-read">Date dispatched</label>
+            <div class="form-read">{{ case.dispatchedDate|date('d/m/Y') }}</div>
+        </div>
+        <div class="form-group">
+            <label class="form-read form-label">Delivery number</label>
+            <div class="form-read">{{ case.deliveryNumber }}</div>
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+            {#<label class="form-label">{{ form['amendments'].vars.label }}</label>#}
+            {{ form_widget(form['amendments']) }}
+        </div>
+
+        <div class="amendmentsToggle">
+            <div class="form-group">
+                {{ form_label(form['dispatchedDate']) }}
+                {{ form_widget(form['dispatchedDate'], { 'value': '' }) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form['deliveryNumber']) }}
+                {{ form_widget(form['deliveryNumber'], { 'value': '' }) }}
+            </div>
+
+            <div class="form-group">
+                {% if caseIsStep(case, 'Dispatch') %}
+                    {{ form_widget(form.Dispatched, {'label': 'Dispatched'}) }}
+                    {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
+                {% endif %}
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

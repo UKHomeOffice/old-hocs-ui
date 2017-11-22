@@ -1,0 +1,106 @@
+{% extends "GuftBundle:Default:layout.html.twig" %}
+
+{% block title %}{% endblock %}
+
+{% block bc %}
+    <section class="grid-row">
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="/">Home</a></li>
+                <li>Case flow</li>
+            </ol>
+        </nav>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <a name="content_top"></a>
+    {% block progressBar %}
+        <section class="grid-row">
+            <div class="column-two-thirds">
+                {% include 'HomeOfficeCtsBundle:CaseElements:progressbar.html.twig' %}
+            </div>
+        </section>
+    {% endblock %}
+
+    <section class="grid-row">
+        <div class="column-two-thirds">
+            <div id="tabs">
+                <ul>
+                    <li><a href="#tabs-1" data-toggle="tab">{% block CurrentTab %}Case{% endblock %}</a></li>
+                    <li><a href="#tabs-2" data-toggle="tab">Minutes</a></li>
+                    <li><a href="#tabs-3" data-toggle="tab">Documents</a></li>
+                </ul>
+
+                <div id="tabs-1">
+                    {% block tab1 %}{% endblock %}
+                </div>
+
+
+                <div id="tabs-2">
+                    {% block tab2 %}
+                        {{ render(controller('HomeOfficeCtsBundle:CaseElements:minutes', { 'case': case })) }}
+                    {% endblock %}
+                </div>
+
+                <div id="tabs-3">
+                    {% block tab3 %}
+                        {{ render(controller('HomeOfficeCtsBundle:CaseElements:documentList', { 'case': case })) }}
+                        {{ render(controller('HomeOfficeCtsBundle:CaseElements:documentTemplateList', { 'case': case })) }}
+                    {% endblock %}
+                </div>
+            </div>
+            &nbsp;
+        </div>
+
+        <div class="column-third column-sidebar">
+            {% block secondaryColumn %}
+                {{ render(controller('HomeOfficeCtsBundle:CaseElements:deadline', {'case': case})) }}
+                {{ render(controller('HomeOfficeCtsBundle:CaseElements:overview', {'case': case})) }}
+
+                <div>
+                    {% if case.caseWorkflowStatus %}
+                        {% for transition in case.caseWorkflowStatus.transitions %}
+                            {% if transition.label  == 'Reallocate' %}
+                                <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_reallocate', { 'nodeRef': case.nodeId }) }}">
+                                    {{ transition.value }}
+                                </button>
+                            {% endif %}
+
+                            {% block overviewReturn %}
+                                {% if not caseIsStep(case, 'approve') %}
+                                    {% if transition.label == 'Reject' %}
+                                        <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_reject', { 'nodeRef': case.nodeId }) }}">
+                                            {{ transition.value }}
+                                        </button>
+                                    {% endif %}
+                                    {% if transition.label == 'Return' %}
+                                        <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_reject', { 'nodeRef': case.nodeId }) }}">
+                                            {{ transition.value }}
+                                        </button>
+                                    {% endif %}
+                                {% endif %}
+                            {% endblock %}
+
+                            {% if transition.label == 'Cancel case' %}
+                                <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_cancel', { 'nodeRef': case.nodeId }) }}">
+                                    {{ transition.label }}
+                                </button>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endblock %}
+        </div>
+
+        <div class="column-two-thirds column-document-preview">
+            <h2>Document Preview <span class="right"><a href="#" class=" close-document-frame">Close</a></span></h2>
+            <div id="documentFrameContainer"></div>
+        </div>
+    </section>
+
+    {% if app.debug %}
+        {#{{ dump(case) }}#}
+        {#{{ case.caseWorkflowStatus ? dump(case.caseWorkflowStatus)|raw : '' }}#}
+    {% endif %}
+{% endblock %}

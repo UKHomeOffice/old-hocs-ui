@@ -1,0 +1,37 @@
+<div class="form-group caseAllocateGroup">
+    <div id="{{ form.vars.id }}">
+        {{ form_label(form['allocateTo']) }}
+
+        <fieldset id="{{ form['allocateTo'].vars.id }}" class="inline">
+            {% for choice in form['allocateTo'].vars.choices %}
+                <label class="block-label" for="{{ form.allocateTo[choice.data].vars.id }}">
+                    <input
+                            type="radio"
+                            id="{{ form.allocateTo[choice.data].vars.id }}"
+                            name="{{ form.allocateTo[choice.data].vars.full_name }}"
+                            {% if form.allocateTo[choice.data].vars.required %}required="required"{% endif %}
+                            value="{{ form.allocateTo[choice.data].vars.value }}"
+                            class="multiExpandTrigger caseAllocateFilter"
+                            data-target="caseAllocate{{ choice.label }}"
+                    /> {{ choice.label }}
+                </label>
+            {% endfor %}
+            {% do form.allocateTo.setRendered %}
+        </fieldset>
+    </div>
+
+    <div class="caseAllocate">
+        <div class="form-group multiExpandTarget caseAllocateColleague caseAllocateMe" style="display: none">
+            {{ form_label(form['assignedUnit']) }}
+            {{ form_widget(form['assignedUnit']) }}
+        </div>
+        <div class="form-group multiExpandTarget caseAllocateColleague caseAllocateMe" style="display: none">
+            {{ form_label(form['assignedTeam']) }}
+            {{ form_widget(form['assignedTeam']) }}
+        </div>
+        <div class="form-group multiExpandTarget caseAllocateColleague" style="display: none">
+            {{ form_label(form['assignedUser']) }}
+            {{ form_widget(form['assignedUser']) }}
+        </div>
+    </div>
+</div>

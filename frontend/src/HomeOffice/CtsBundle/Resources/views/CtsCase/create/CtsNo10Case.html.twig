@@ -1,0 +1,106 @@
+{% extends "HomeOfficeCtsBundle:CtsCase:layout.html.twig" %}
+
+{% form_theme form 'GuftBundle:Default/partials:form.html.twig' %}
+
+{% block CurrentTab %}Create{% endblock %}
+
+{% block metaTitle %}Create UKVI No 10 Case {{ case.urn }}{% endblock %}
+
+{% if caseIsStep(case, 'approve') %}
+    {#The overview return(reject) button should not appear on any cases when the case is in the approve stage.#}
+    {% block overviewReturn %}{% endblock %}
+{% endif %}
+
+{% block tab1 %}
+    <a name="form_top"></a>
+    {{ form_start(form, {'attr': {'class': 'form-ajax', 'novalidate' : 'novalidate', 'data-casetype': case.correspondenceType} }) }}
+        <h2>Case details</h2>
+        <div class="form-group">
+            <label class="form-label">Case type</label>
+            <div class="form-read correspondenceType">{{ constant('HomeOffice\\AlfrescoApiBundle\\Service\\CaseCorrespondenceSubType::'~case.correspondenceType) }}</div>
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form['dateReceived']) }}
+            {{ form_widget(form['dateReceived']) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form['dateOfLetter']) }}
+            {{ form_widget(form['dateOfLetter']) }}
+        </div>
+
+        {% if case.correspondenceType == 'DTEN' %}
+            <div class="form-group">
+                {{ form_label(form['caseResponseDeadline']) }}
+                {{ form_widget(form['caseResponseDeadline']) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form['draftDate']) }}
+                {{ form_widget(form['draftDate']) }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">{{ form['channel'].vars.label }}</label>
+                {{ form_widget(form['channel']) }}
+            </div>
+        {% endif %}
+
+        {% if form['linkedCases'] is defined %}
+            {% include 'HomeOfficeCtsBundle:CaseElements:linkedCases.html.twig' with { 'form': form['linkedCases'] } %}
+        {% endif %}
+
+        {% if case.correspondenceType == 'UTEN' %}
+        <div class="form-group">
+            {{ form_label(form['priority']) }}
+            {{ form_widget(form['priority']) }}
+        </div>
+        {% endif %}
+        <hr>
+
+        <h2>Original correspondence</h2>
+        <div class="documentTable panel"
+             data-refresh-url="{{ path('homeoffice_cts_caseelements_documenttable', { 'nodeRef': case.nodeId }) }}"
+             data-allow-remove="false"
+        >
+            {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
+                'allowRemove': false,
+            } %}
+        </div>
+
+        {% if form['document'] is defined %}
+            <div class="form-group">
+                {% include 'HomeOfficeCtsBundle:CaseElements:document.html.twig' with { 'form': form['document']} %}
+            </div>
+        {% endif %}
+        <hr>
+
+        <h2>Reply to</h2>
+
+        <div class="form-group">
+            <label class="form-label">{{ form['replyTo']['correspondentIsMemberOfParliament'].vars.label }}</label>
+            {{ form_widget(form['replyTo']['correspondentIsMemberOfParliament']) }}
+        </div>
+
+        <div class="memberParliamentToggle hidden">
+            {% if form['replyTo'] is defined %}
+                {% include 'HomeOfficeCtsBundle:CaseElements:replyTo.html.twig' with { 'form': form['replyTo']} %}
+                <hr />
+            {% endif %}
+        </div>
+
+        <div class="correspondentToggle hidden">
+            {% include 'HomeOfficeCtsBundle:CaseElements:replyToCorrespondent.html.twig' with { 'form': form['replyTo']} %}
+            <hr />
+        </div>
+
+        {% if form['markUp'] is defined and caseIsStep(case, 'create') %}
+            {% include 'HomeOfficeCtsBundle:CaseElements:markUp.html.twig' with { 'form': form['markUp'], 'allocate': form['allocate'], 'transitions': form['transitions'] } %}
+        {% endif %}
+
+        {% do form.markUp.setRendered %}
+        {% do form.allocate.setRendered %}
+        {% do form.transitions.setRendered %}
+    {{ form_end(form) }}
+
+    {% include "HomeOfficeCtsBundle:Case/Guft/Script:_memberPartyDetailsScript.html.twig" %}
+{% endblock %}

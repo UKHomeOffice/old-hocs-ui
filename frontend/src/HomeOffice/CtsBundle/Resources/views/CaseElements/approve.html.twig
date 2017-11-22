@@ -1,0 +1,17 @@
+{% if caseIsApproved(task, case) %}
+    <label class="form-label form-approved">Approved</label>
+{% else %}
+    {% if case.caseTask | lower == task | lower %}
+        {{ form_widget(form['transitions']['Approve']) }}
+
+        {% if form['transitions']['Reject'] is defined %}
+            <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_return', {
+                'nodeRef': case.nodeId }) }}">
+                {{ form['transitions']['Reject'].vars.label }}
+            </button>
+        {% endif %}
+    {% else %}
+        <input type="button" value="Approve" class="button" disabled>
+        <input type="button" value="Return" class="button button-secondary" disabled>
+    {% endif %}
+{% endif %}
