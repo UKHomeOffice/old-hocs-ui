@@ -3,17 +3,8 @@ version: '2'
 services:
     php:
         build:
-            context: php7-fpm
-            args:
-                TIMEZONE: ${TIMEZONE}
+            context: .
         volumes:
-            - ${SYMFONY_APP_PATH}:/var/www/symfony
-            - ./logs/symfony:/var/www/symfony/app/logs
-    nginx:
-        build: nginx
+            - ./out/logs/nginx/:/var/log/nginx
         ports:
             - 8080:80
-        volumes_from:
-            - php
-        volumes:
-            - ./logs/nginx/:/var/log/nginx

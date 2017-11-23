@@ -1,0 +1,44 @@
+# See https://github.com/docker-library/php/blob/master/7.1/fpm/Dockerfile
+FROM ubuntu:14.04
+ARG TIMEZONE
+
+RUN apt-get update && apt-get install -y zlib1g-dev libicu-dev g++ openssl git unzip curl \
+                                         nginx \
+	                                     php5-fpm php5-cli php5-intl php5-mcrypt php5-apcu php5-gd php5-curl
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+ADD php.ini /usr/local/etc/php/
+
+RUN rm /etc/nginx/sites-enabled/default
+ADD symfony.conf /etc/nginx/sites-available/
+RUN ln -s /etc/nginx/sites-available/symfony.conf /etc/nginx/sites-enabled/symfony
+
+ADD nginx.conf /etc/nginx/
+
+RUN usermod -u 1000 www-data
+
+# install xdebug
+#RUN pecl install xdebug
+#RUN docker-php-ext-enable xdebug
+#RUN echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+#RUN echo "display_startup_errors = On" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+#RUN echo "display_errors = On" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+#RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+#RUN echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+#RUN echo "xdebug.idekey=\"PHPSTORM\"" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+#RUN echo "xdebug.remote_port=9001" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+WORKDIR /var/www/symfony
+
+VOLUME ["/var/www"]
+
+# run nginx and php5-fpm on startup
+RUN echo "/etc/init.d/php5-fpm start" >> /etc/bash.bashrc
+RUN echo "/etc/init.d/nginx start" >> /etc/bash.bashrc
+
+CMD php5-fpm && nginx
+
+EXPOSE 80
+EXPOSE 443

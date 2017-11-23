@@ -2,7 +2,7 @@ imports:
     - { resource: config.yml }
 
 home_office_alfresco_api:
-    list_endpoint: 'http://alf-vip:8080/alfresco/'
+    list_endpoint: 'http://hocs-alfresco:8080/alfresco/'
 
 #framework:
 #    validation:
