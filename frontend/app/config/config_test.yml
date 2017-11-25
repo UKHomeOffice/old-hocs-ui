@@ -1,9 +1,6 @@
 imports:
     - { resource: config_dev.yml }
 
-home_office_alfresco_api:
-    list_endpoint: 'http://hocs-alfresco:8080/alfresco/'
-
 framework:
     test: ~
     session:
