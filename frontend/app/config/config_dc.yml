@@ -2,7 +2,7 @@ imports:
     - { resource: config.yml }
 
 home_office_alfresco_api:
-    list_endpoint: 'http://10.0.2.2:9001/'
+    list_endpoint: 'http://hocs-alfresco:8080/'
 
 parameters:
     home_office_cts.routing.ssl_redirects: false

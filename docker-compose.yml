@@ -1,10 +1,77 @@
-version: '2'
+version: '3.1'
 
 services:
-    php:
+    ui:
         build:
             context: .
         volumes:
             - ./out/logs/nginx/:/var/log/nginx
+            - ./frontend/var/:/var/www/symfony/var
         ports:
-            - 8080:80
+            - 8081:80
+            - 8443:443
+        environment:
+          SYMFONY_ENV: dc
+          APP_ENV: dc
+          APP_PHP: app_dev\.php
+        networks:
+          - sls-network
+    postgres:
+        image: postgres
+        ports:
+          - 5432:5432
+        networks:
+          - sls-network
+        environment:
+         POSTGRES_USER: root
+         POSTGRES_PASSWORD: dev
+    hocs-data-service:
+      image: quay.io/ukhomeofficedigital/hocs-data-service
+      environment:
+        spring.profiles.active: postgres
+        server.port: 8080
+        sls.db.hostname: postgres
+        sls.db.username: root
+        sls.db.password: dev
+        sls.db.name: postgres
+        sls.db.port: 5432
+        sls.schema.name: public
+        hostname: sls:8080
+      depends_on:
+        - postgres
+      ports:
+        - 8082:8080
+      networks:
+        - sls-network
+
+    mysql:
+        image: mysql
+        ports:
+          - 3306:3306
+        networks:
+          - sls-network
+        environment:
+          MYSQL_ROOT_PASSWORD: alfresco
+          MYSQL_DATABASE: alfresco
+          MYSQL_USER: alfresco
+          MYSQL_PASSWORD: alfresco
+        restart: always
+
+    hocs-alfresco:
+      image: quay.io/ukhomeofficedigital/hocs-alfresco
+      depends_on:
+        - mysql
+      environment:
+        ALF_S3_ACCESSKEY:
+        ALF_S3_SECRETKEY:
+        ALF_S3_BUCKETNAME:
+        ALF_DB_USERNAME: alfresco
+        ALF_DB_PASSWORD: alfresco
+        ALF_DB_NAME: alfresco
+        ALF_DB_HOST: mysql:3306
+      ports:
+        - 8080:8080
+      networks:
+        - sls-network
+networks:
+  sls-network:

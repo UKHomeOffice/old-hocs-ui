@@ -24,6 +24,7 @@
         "mikey179/vfsStream": "v1.3.0",
         "tedivm/stash-bundle": "v0.4.1",
         "alphagov/govuk_frontend_toolkit": "dev-master#8e614da3482f7ee728b097f8ae6394f4fffcb23e",
+        "sentry/sentry-symfony": "^0.7.1",
         "phpoffice/phpword": "^0.13.0"
     },
     "require-dev": {

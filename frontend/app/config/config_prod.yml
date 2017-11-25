@@ -26,6 +26,3 @@ monolog:
             level: debug
         console:
             type:  console
-
-parameters:
-    home_office_cts.routing.ssl_redirects: false
