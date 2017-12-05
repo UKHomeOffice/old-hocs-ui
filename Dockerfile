@@ -27,4 +27,4 @@ RUN chmod -R 777 /var/www/symfony/var/cache /var/www/symfony/var/logs
 
 CMD php5-fpm && nginx
 
-EXPOSE 80
+EXPOSE 8080
