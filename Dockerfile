@@ -21,10 +21,6 @@ COPY assets/entrypoint.sh entrypoint.sh
 RUN chmod +x  entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
 
-RUN usermod -u 1000 www-data
-RUN chown -R www-data:www-data /var/www/symfony/var/cache /var/www/symfony/var/logs
-RUN chmod -R 777 /var/www/symfony/var/cache /var/www/symfony/var/logs
-
 CMD php5-fpm && nginx
 
 EXPOSE 8080
