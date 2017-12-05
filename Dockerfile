@@ -23,4 +23,4 @@ ENTRYPOINT ["./entrypoint.sh"]
 
 CMD php5-fpm && nginx
 
-EXPOSE 8080
+EXPOSE 80
