@@ -123,7 +123,7 @@ home_office_list:
             prepare_method_name: 'prepareUnitList'
 
 home_office_alfresco_api:
-    endpoint: 'http://hocs-alfresco:8080/alfresco/'
+    endpoint: 'https://hocs-alfresco:443/alfresco/'
     workspace: 'workspace'
     store: 'SpacesStore'
     alfresco_qname_prefix: '{http://cts-beta.homeoffice.gov.uk/model/content/1.0}'

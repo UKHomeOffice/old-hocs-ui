@@ -25,10 +25,10 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('endpoint')
-                    ->defaultValue('http://hocs-alfresco:8080/alfresco/')
+                    ->defaultValue('https://hocs-alfresco:443/alfresco/')
                     ->end()
                 ->scalarNode('list_endpoint')
-                    ->defaultValue('http://hocs-alfresco:8080/alfresco/')
+                    ->defaultValue('https://hocs-alfresco:443/alfresco/')
                     ->end()
                 ->scalarNode('workspace')
                     ->defaultValue('workspace')
