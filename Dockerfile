@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y zlib1g-dev libicu-dev g++ openssl git u
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY assets/symfony.conf /etc/nginx/sites-available/
-COPY assets/php.ini /usr/local/etc/php/
+COPY assets/php.ini /etc/php5/cli/
 COPY assets/nginx.conf /etc/nginx/
 
 RUN rm /etc/nginx/sites-enabled/default
