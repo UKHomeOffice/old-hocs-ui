@@ -12,4 +12,6 @@ usermod -u 1000 www-data
 chown -R www-data:www-data /var/www/symfony/var/cache /var/www/symfony/var/logs
 chmod -R 777 /var/www/symfony/var/cache /var/www/symfony/var/logs
 
+cat /data/hocs-ui-ca.pem >> /etc/sslcerts/cacert.pem
+
 exec "$@"
