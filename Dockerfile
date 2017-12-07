@@ -4,7 +4,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 RUN rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 RUN yum update -y
 
-RUN yum -y install php56w php56w-fpm php56w-opcache php56w-intl php56w-common php56w-pdo php56w-dom git nginx
+RUN yum -y install php56w php56w-fpm php56w-opcache php56w-intl php56w-common php56w-pear php56w-pdo php56w-dom git nginx
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN curl https://curl.haxx.se/ca/cacert.pem > /etc/ssl/certs/cacert.pem
@@ -26,4 +26,4 @@ ENTRYPOINT ["./entrypoint.sh"]
 
 CMD php-fpm && nginx
 
-EXPOSE 80
+EXPOSE 8080
