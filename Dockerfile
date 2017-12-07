@@ -1,16 +1,18 @@
-FROM ubuntu:14.04
+FROM quay.io/ukhomeofficedigital/openjdk8
 
-RUN apt-get update && apt-get install -y zlib1g-dev libicu-dev g++ openssl git unzip curl \
-                                         nginx \
-	                                     php5-fpm php5-cli php5-intl php5-mcrypt php5-apcu php5-gd php5-curl
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+RUN rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+#RUN yum update -y
+
+RUN yum -y install php56w php56w-fpm php56w-opcache php56w-intl php56w-common php56w-pdo php56w-dom nginx
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY assets/symfony.conf /etc/nginx/sites-available/
-COPY assets/php.ini /etc/php5/fpm/php.ini
+COPY assets/php.ini /etc/php.ini
 COPY assets/nginx.conf /etc/nginx/
 
-RUN rm /etc/nginx/sites-enabled/default
+RUN mkdir /etc/nginx/sites-enabled
 RUN ln -s /etc/nginx/sites-available/symfony.conf /etc/nginx/sites-enabled/symfony
 
 COPY frontend /var/www/symfony
@@ -21,6 +23,6 @@ COPY assets/entrypoint.sh entrypoint.sh
 RUN chmod +x  entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
 
-CMD php5-fpm && nginx
+CMD php-fpm && nginx
 
 EXPOSE 80
