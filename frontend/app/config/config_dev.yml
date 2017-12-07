@@ -2,7 +2,7 @@ imports:
     - { resource: config.yml }
 
 home_office_alfresco_api:
-    list_endpoint: 'https://hocs-alfresco:443/alfresco/'
+    list_endpoint: 'https://hocs-alfresco.hocs-dev.svc.cluster.local:443/alfresco/'
 
 framework:
     router:
