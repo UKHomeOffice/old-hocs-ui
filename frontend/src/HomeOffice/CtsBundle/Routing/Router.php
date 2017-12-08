@@ -55,9 +55,10 @@ class Router implements RouterInterface
     public function generate($name, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
     {
         $url = $this->router->generate($name, $parameters, $referenceType);
-        // Hack to work with ACP - We always want HTTPS
+        // Hack to work with ACP - Strip the port
         $url = preg_replace('/\:[0-9]{2,5}/','', $url);
-        return preg_replace('/^http\:\/\//', 'https://', $url);
+
+        return $this->sslRedirects ? preg_replace('/^http\:\/\//', 'https://', $url) : $url;
     }
 
     /**

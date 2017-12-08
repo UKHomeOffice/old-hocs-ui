@@ -38,5 +38,5 @@ home_office_list:
     cache_timeout_seconds: 60
 
 parameters:
-    home_office_cts.routing.ssl_redirects: false
+    home_office_cts.routing.ssl_redirects: true
 

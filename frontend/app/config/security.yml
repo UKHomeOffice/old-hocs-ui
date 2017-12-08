@@ -18,4 +18,4 @@ security:
             anonymous: ~
 
     access_control:
-        - { path: ^/cts, roles: ROLE_USER, requires_channel: http }
+        - { path: ^/cts, roles: ROLE_USER }
