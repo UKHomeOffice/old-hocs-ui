@@ -6,6 +6,7 @@ RUN yum update -y
 RUN yum -y install php56w php56w-fpm php56w-opcache php56w-intl php56w-common php56w-pear php56w-pdo php56w-dom git nginx
 
 RUN curl https://curl.haxx.se/ca/cacert.pem > /etc/ssl/certs/cacert.pem
+RUN echo >> /etc/ssl/certs/cacert.pem
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -33,10 +34,14 @@ RUN usermod -u 1000 www-data
 RUN chown -R www-data:www-data /var/www/symfony/var/cache /var/www/symfony/var/logs
 RUN chmod -R 777 /var/www/symfony/var/cache /var/www/symfony/var/logs
 
+# Dummy file to work in docker-compose
+RUN mkdir /data
+RUN touch /data/hocs-ui-ca.pem
+
 COPY assets/entrypoint.sh entrypoint.sh
 RUN chmod +x  entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
 
-CMD php-fpm && nginx
+CMD cat /data/hocs-ui-ca.pem >> /etc/ssl/certs/cacert.pem && php-fpm && nginx
 
 EXPOSE 8080
