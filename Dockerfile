@@ -24,14 +24,14 @@ COPY frontend /var/www/symfony
 
 WORKDIR /var/www/symfony
 
+RUN composer install
+RUN bin/console assets:install --symlink
+RUN bin/console assetic:dump
+
 RUN useradd www-data
 RUN usermod -u 1000 www-data
 RUN chown -R www-data:www-data /var/www/symfony/var/cache /var/www/symfony/var/logs
 RUN chmod -R 777 /var/www/symfony/var/cache /var/www/symfony/var/logs
-
-RUN composer install
-RUN bin/console assets:install --symlink
-RUN bin/console assetic:dump
 
 COPY assets/entrypoint.sh entrypoint.sh
 RUN chmod +x  entrypoint.sh
