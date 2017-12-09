@@ -2,7 +2,8 @@ imports:
     - { resource: config.yml }
 
 home_office_alfresco_api:
-    list_endpoint: 'https://hocs-alfresco.hocs-prod.svc.cluster.local:443/alfresco/'
+    list_endpoint: 'https://hocs-alfresco.hocs-prod.svc.cluster.local/alfresco/'
+    endpoint: 'https://hocs-alfresco.hocs-prod.svc.cluster.local/alfresco/'
 
 #framework:
 #    validation:
@@ -18,3 +19,6 @@ monolog:
     handlers:
         console:
             type:  console
+
+parameters:
+    home_office_cts.routing.ssl_redirects: true

@@ -4,7 +4,6 @@ parameters:
     home_office_cts.form.cts_form.resolved_type_factory.class: HomeOffice\CtsBundle\Form\CtsResolvedFormTypeFactory
     home_office_cts.form.cts_form.factory.class: Symfony\Component\Form\FormFactory
     home_office_cts.controller.cts_controller.class: HomeOffice\CtsBundle\Controller\CtsController
-    home_office_cts.routing.ssl_redirects: true
 
 services:
 

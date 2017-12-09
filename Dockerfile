@@ -25,10 +25,6 @@ COPY frontend /var/www/symfony
 
 WORKDIR /var/www/symfony
 
-RUN composer install
-RUN bin/console assets:install --symlink
-RUN bin/console assetic:dump
-
 RUN useradd www-data
 RUN usermod -u 1000 www-data
 RUN chown -R www-data:www-data /var/www/symfony/var/cache /var/www/symfony/var/logs
