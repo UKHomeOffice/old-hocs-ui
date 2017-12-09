@@ -23,16 +23,11 @@ RUN ln -s /etc/nginx/sites-available/symfony.conf /etc/nginx/sites-enabled/symfo
 
 COPY frontend /var/www/symfony
 
-WORKDIR /var/www/symfony
-
-RUN useradd www-data
-RUN usermod -u 1000 www-data
-RUN chown -R www-data:www-data /var/www/symfony/var/cache /var/www/symfony/var/logs
-RUN chmod -R 777 /var/www/symfony/var/cache /var/www/symfony/var/logs
-
 # Dummy file to work in docker-compose
 RUN mkdir /data
 RUN touch /data/hocs-ui-ca.pem
+
+WORKDIR /var/www/symfony
 
 COPY assets/entrypoint.sh entrypoint.sh
 RUN chmod +x  entrypoint.sh

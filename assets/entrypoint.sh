@@ -7,4 +7,9 @@ composer install
 bin/console assets:install --symlink
 bin/console assetic:dump
 
+useradd www-data
+usermod -u 1000 www-data
+chown -R www-data:www-data /var/www/symfony/var/cache /var/www/symfony/var/logs
+chmod -R 777 /var/www/symfony/var/cache /var/www/symfony/var/logs
+
 exec "$@"
