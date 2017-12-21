@@ -25,7 +25,7 @@ if (getenv("APP_ENV") !== false) {
 
 $debugMode = true;
 
-if ($appEnv != "dev") {
+if (!($appEnv == "dev" || $appEnv == "qa")) {
     $debugMode = false;
 }
 
