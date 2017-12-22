@@ -3,7 +3,7 @@ imports:
 
 home_office_alfresco_api:
     list_endpoint: 'https://hocs-alfresco.hocs-qa.svc.cluster.local/alfresco/'
-    endpoint: 'https://hocs-alfresco.hocs-dev.qa.cluster.local/alfresco/'
+    endpoint:      'https://hocs-alfresco.hocs-qa.svc.cluster.local/alfresco/'
 
 framework:
     router:
