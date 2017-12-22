@@ -3,7 +3,7 @@ FROM quay.io/ukhomeofficedigital/openjdk8
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 RUN yum update -y
-RUN yum -y install php56w php56w-fpm php56w-opcache php56w-intl php56w-common php56w-pear php56w-pdo php56w-dom php56w-redis git nginx
+RUN yum -y install php56w php56w-fpm php56w-opcache php56w-intl php56w-common php56w-pear php56w-pdo php56w-dom php56w-pecl-redis git nginx
 
 RUN curl https://curl.haxx.se/ca/cacert.pem > /etc/ssl/certs/cacert.pem
 RUN echo >> /etc/ssl/certs/cacert.pem
