@@ -17,6 +17,7 @@ RUN ln -s /usr/local/bin/compass /usr/bin/compass
 COPY assets/symfony.conf /etc/nginx/sites-available/
 COPY assets/php.ini /etc/php.ini
 COPY assets/nginx.conf /etc/nginx/
+COPY assets/www.conf /etc/php-fpm.d/www.conf
 
 RUN mkdir /etc/nginx/sites-enabled
 RUN ln -s /etc/nginx/sites-available/symfony.conf /etc/nginx/sites-enabled/symfony
