@@ -28,7 +28,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue('https://hocs-alfresco.hocs-prod.svc.cluster.local/alfresco/')
                     ->end()
                 ->scalarNode('list_endpoint')
-                    ->defaultValue('https://hocs-alfresco.hocs-prod.svc.cluster.local/alfresco/')
+                    ->defaultValue('https://hocs-data-service.hocs-prod.svc.cluster.local/')
                     ->end()
                 ->scalarNode('workspace')
                     ->defaultValue('workspace')

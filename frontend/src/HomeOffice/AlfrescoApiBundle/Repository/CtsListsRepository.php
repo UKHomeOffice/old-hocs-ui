@@ -64,7 +64,7 @@ class CtsListsRepository
     }
  
     /**
-     *
+     * Implemented in hocs-data-service - NM
      * @return array
      */
     public function getUnitsAndTeams()
@@ -119,6 +119,7 @@ class CtsListsRepository
     }
  
     /**
+     * Implemented in hocs-data-service - NM
      * @param string $group
      *
      * @return Person[]
