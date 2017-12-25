@@ -44,8 +44,6 @@ class UKVI extends SuperSearch
             ->correspondentForename($builder)
             ->correspondentSurname($builder)
             ->correspondentPostCode($builder)
-            ->correspondentEmail($builder)
-            ->replyToNumberTenCopy($builder, false)
-        ;
+            ->correspondentEmail($builder);
     }
 }

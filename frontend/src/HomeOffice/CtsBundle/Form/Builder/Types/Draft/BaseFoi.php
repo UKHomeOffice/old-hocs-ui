@@ -48,6 +48,6 @@ abstract class BaseFoi extends AbstractDraftType
      */
     protected function getMinisterList()
     {
-        return $this->getListService()->getMemberArray(false);
+        return $this->getListService()->getMinisterArray();
     }
 }

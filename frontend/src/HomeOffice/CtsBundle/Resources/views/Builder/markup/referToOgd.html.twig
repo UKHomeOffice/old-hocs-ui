@@ -2,14 +2,14 @@
 
 {% if caseIsStep(case, 'ogd') %}
     <div class="form-group">
-        <label class="form-label">Refer to OGD<br>{{ case.ogdName }}</label>
+        <label class="form-label">Refer to {{ case.ogdName }}</label><br>
         {{ form_widget(form.ApproveNRR) }}
 
         {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
     </div>
 {% else %}
     <div class="form-group">
-        <label class="form-label">Refer to OGD<br>{{ case.ogdName }}</label>
+        <label class="form-label">Refer to an Other Government Department<br>{{ case.ogdName }}</label>
         <label class="form-label form-approved">Transferred</label>
     </div>
 {% endif %}

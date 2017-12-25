@@ -74,11 +74,6 @@
                                             {{ transition.value }}
                                         </button>
                                     {% endif %}
-                                    {% if transition.label == 'Return' %}
-                                        <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_reject', { 'nodeRef': case.nodeId }) }}">
-                                            {{ transition.value }}
-                                        </button>
-                                    {% endif %}
                                 {% endif %}
                             {% endblock %}
 

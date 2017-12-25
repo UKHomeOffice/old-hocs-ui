@@ -67,6 +67,7 @@ abstract class AbstractConsumer
 
         $this->api->setDefaultOption('version', ["CURLOPT_HTTP_VERSION" => "CURL_HTTP_VERSION_1_0"]);
         $this->api->setDefaultOption('exceptions', false);
+        $this->api->setDefaultOption('verify', true);
         $this->setStandardQueryFields();
     }
 

@@ -18,8 +18,8 @@
 </div>
 
 <div class="form-group">
-    {{ form_label(form['hoCaseOfficer']) }}
-    {{ form_widget(form['hoCaseOfficer']) }}
+    <label class="form-label">{{ form['foiIsEir'].vars.label }}</label>
+    {{ form_widget(form['foiIsEir']) }}
 </div>
 
 <h2>Requestor details</h2>
@@ -44,17 +44,3 @@
     {{ form_widget(form['correspondentEmail']) }}
 </div>
 
-<div class="form-group">
-    <label class="form-label">{{ form['foiIsEir'].vars.label }}</label>
-    {{ form_widget(form['foiIsEir']) }}
-</div>
-
-<div class="form-group">
-    <label class="form-label">{{ form['foiMinisterSignOff'].vars.label }}</label>
-    {{ form_widget(form['foiMinisterSignOff']) }}
-</div>
-
-<div class="form-group">
-    <label class="form-label">{{ form['suitableForDisclosure'].vars.label }}</label>
-    {{ form_widget(form['suitableForDisclosure']) }}
-</div>

@@ -34,11 +34,9 @@
                         {% endif %}
                     </a>
                 </li>
-                {% if dashboard %}
-                    <li>
-                        <a class="button button-secondary right" href="{{ path('homeoffice_cts_supersearch_export', queryArray) }}">Export</a>
-                    </li>
-                {% endif %}
+                <li>
+                    <a class="button button-secondary right" href="{{ path('homeoffice_cts_supersearch_export', queryArray) }}">Export</a>
+                </li>
             </ul>
         </div>
     </section>

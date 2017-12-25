@@ -8,8 +8,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use HomeOffice\ListBundle\Service\ListService;
 
 /**
  * Class SuperSearchController
@@ -18,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SuperSearchController extends CtsController
 {
+
     /**
      * Results Action
      *
@@ -87,18 +90,32 @@ class SuperSearchController extends CtsController
      */
     public function searchAction(Request $request)
     {
-        $businessUnit = $request->get('businessUnit');
+
+        /** @var ListService $listService */
+        $listService = $this->get('home_office.list_service');
+
+        $businessUnit = $request->query->get('businessUnit');
+        $assignedUnit = $request->query->get('assignedUnit');
+
+        $businessUnit = $businessUnit == null ? 'all' : $businessUnit;
+
         $form = $this->getForm($businessUnit, $this->tidyRequestValues($request));
 
         if ($request->isXmlHttpRequest()) {
-            return $this->render('HomeOfficeCtsBundle:SuperSearch:Advanced/'.$businessUnit.'.html.twig', [
-                'form' => $form->createView(),
-            ]);
+            if($assignedUnit == null) {
+                return $this->render('HomeOfficeCtsBundle:SuperSearch:Advanced/'.$businessUnit.'.html.twig', [
+                    'form' => $form->createView(),
+                ]);
+            } else {
+                $teams = $listService->getTeamArrayForUnit(strtoupper($assignedUnit));
+                return new JsonResponse($teams);
+            }
         }
 
         return [
             'form'         => $form->createView(),
             'businessUnit' => $businessUnit,
+            'assignedUnit' => $assignedUnit,
             'title'        => 'Search',
             'breadcrumb'   => [
                 'Home'          => 'homeoffice_cts_home_home',

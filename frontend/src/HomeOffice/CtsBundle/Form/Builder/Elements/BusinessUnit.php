@@ -23,12 +23,15 @@ trait BusinessUnit
         $choices = array_merge(['' => 'All'], CaseCorrespondenceType::getCorrespondenceArray());
 
         $builder->add('businessUnit', 'choice', [
-            'label'      => 'Select business unit',
-            'choices'    => $choices,
-            'multiple'   => false,
-            'expanded'   => true,
-            'label_attr' => ['class' => 'no-block'],
-            'data'       => $selected ? array_search($selected, $choices) : null,
+            'choices'     => $choices,
+            'empty_value' => '',
+            'label'       => 'Select business unit',
+            'label_attr'  => ['class' => 'form-label'],
+            'data'        => null,
+            'attr'        => [
+                'class'            => 'chosen form-control form-allocate-unit',
+                'data-placeholder' => 'Please select a unit',
+            ],
         ]);
 
         return $this;

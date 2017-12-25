@@ -47,16 +47,16 @@ class Member
        
     /**
      *
-     * @param array $val
+     * @param array $entity
      */
-    public function __construct($val)
+    public function __construct($entity)
     {
-        $this->setListName($val[0]);
-        $this->setDisplayName($val[1]);
-        $this->setParty($val[2]);
-        $this->setConstituency($val[3]);
-        $this->setMemberId($val[4]);
-        $this->setIsLords($val[6]);
+        $this->setListName($entity->value);
+        $this->setDisplayName($entity->text);
+        $this->setParty('');
+        $this->setConstituency('');
+        $this->setMemberId('');
+        $this->setIsLords($entity->properties->house == 'Lords');
     }
  
     /**

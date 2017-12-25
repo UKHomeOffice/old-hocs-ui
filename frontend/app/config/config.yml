@@ -80,34 +80,16 @@ home_office_list:
             alfresco_list_name: 'topicList'
             storage: 'cache'
             prepare_method_name: 'preparePqTopicStopList'
-        pq_correspondent_stop_list:
-            name: 'pqCorrespondentStopList'
-            type: 'csv'
-            file_name: 'CorrespondentStopList.csv'
-            storage: 'cache'
-            prepare_method_name: 'preparePqCorrespondentStopList'
-        dcu_correspondent_stop_list:
-            name: 'dcuCorrespondentStopList'
-            type: 'csv'
-            file_name: 'CorrespondentStopList.csv'
-            storage: 'cache'
-            prepare_method_name: 'prepareDcuCorrespondentStopList'
-        ukvi_correspondent_stop_list:
-            name: 'ukviCorrespondentStopList'
-            type: 'csv'
-            file_name: 'CorrespondentStopList.csv'
-            storage: 'cache'
-            prepare_method_name: 'prepareUkviCorrespondentStopList'
         member_list:
             name: 'ctsMemberList'
-            type: 'csv'
-            file_name: 'CorrespondentStopList.csv'
+            type: 'dataList'
+            alfresco_list_name: 'ukvi_member_list'
             storage: 'cache'
             prepare_method_name: 'prepareMemberList'
         minister_list:
             name: 'ctsMinisterList'
-            type: 'csv'
-            file_name: 'MinisterList.csv'
+            type: 'dataList'
+            alfresco_list_name: 'MinisterList'
             storage: 'cache'
             prepare_method_name: 'prepareMinisterList'
         unit_and_team_list:

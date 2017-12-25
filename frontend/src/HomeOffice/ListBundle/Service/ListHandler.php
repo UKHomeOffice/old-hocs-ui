@@ -6,9 +6,9 @@ use HomeOffice\AlfrescoApiBundle\Entity\Cases\CtsCase;
 use HomeOffice\AlfrescoApiBundle\Entity\Person;
 use HomeOffice\AlfrescoApiBundle\Entity\Team;
 use HomeOffice\AlfrescoApiBundle\Entity\Unit;
-use Symfony\Component\HttpFoundation\Session\Session;
+use HomeOffice\AlfrescoApiBundle\Entity\Member;
 use HomeOffice\AlfrescoApiBundle\Repository\CtsListsRepository;
-use HomeOffice\ListBundle\Service\CSVParser;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Tedivm\StashBundle\Service\CacheService;
 
 class ListHandler
@@ -99,9 +99,6 @@ class ListHandler
     public function loadListsOnLogin()
     {
         $this->getList('ctsMemberList');
-        $this->getList('pqCorrespondentStopList');
-        $this->getList('dcuCorrespondentStopList');
-        $this->getList('ukviCorrespondentStopList');
     }
  
     /**
@@ -176,38 +173,6 @@ class ListHandler
         }
     }
 
-    /**
-     *
-     * @param array $ctsCorrespondentList
-     * @return array
-     */
-    private function preparePqCorrespondentStopList($ctsCorrespondentList)
-    {
-        $list = $this->csvParser->toArray($ctsCorrespondentList);
-        return $this->csvParser->extractFromList($list, 1, 7, 'true');
-    }
-
-    /**
-     *
-     * @param array $ctsCorrespondentList
-     * @return array
-     */
-    private function prepareDcuCorrespondentStopList($ctsCorrespondentList)
-    {
-        $list = $this->csvParser->toArray($ctsCorrespondentList);
-        return $this->csvParser->extractFromList($list, 1, 8, 'true');
-    }
-
-    /**
-     *
-     * @param array $ctsCorrespondentList
-     * @return array
-     */
-    private function prepareUkviCorrespondentStopList($ctsCorrespondentList)
-    {
-        $list = $this->csvParser->toArray($ctsCorrespondentList);
-        return $this->csvParser->extractFromList($list, 1, 9, 'true');
-    }
 
     /**
      *
@@ -216,8 +181,17 @@ class ListHandler
      */
     private function prepareMemberList($ctsCorrespondentList)
     {
-        $list = $this->csvParser->toArray($ctsCorrespondentList);
-        return $this->csvParser->extractMembersFromList($list);
+        $members = json_decode($ctsCorrespondentList);
+        $membersList = array();
+
+        foreach ($members->entities as $entity) {
+
+            $membersList[$entity->value] = new Member($entity);
+
+        }
+
+
+        return $membersList;
     }
  
     /**
@@ -227,8 +201,16 @@ class ListHandler
      */
     private function prepareMinisterList($ctsMinisterList)
     {
-        $list = $this->csvParser->toArray($ctsMinisterList);
-        return $this->csvParser->collapseCsvArray($list, 1, 0);
+        $ministers = json_decode($ctsMinisterList);
+        $ministerList = array();
+
+        foreach($ministers->entities as $entity) {
+
+            $ministerList[$entity->value] = $entity->text;
+
+        }
+
+        return $ministerList;
     }
  
     //TODO - create a minister list with the ids
@@ -395,97 +377,6 @@ class ListHandler
         } elseif ($assignedUnit != null) {
             // else if the unit is set, then we need to get users in the unit
             $this->session->set('groupForPersonQuery', $assignedUnit);
-        }
-    }
- 
-    /**
-     *
-     * @param $formTypeClass
-     * @param CtsCase $ctsCase
-     * @return boolean
-     *
-     * @deprecated No longer in use
-     */
-    public function isSelectedMemberOnCorrespondentStopList($formTypeClass, $ctsCase)
-    {
-        $pqCorrespondentStopList = $this->getList('pqCorrespondentStopList');
-        $dcuCorrespondentStopList = $this->getList('dcuCorrespondentStopList');
-        $ukviCorrespondentStopList = $this->getList('ukviCorrespondentStopList');
-
-        if ($formTypeClass == '\HomeOffice\CtsBundle\Form\Type\CtsPqCaseType'
-                && $pqCorrespondentStopList != null) {
-            foreach ($pqCorrespondentStopList as $value) {
-                if ($value == $ctsCase->getMember()) {
-                    return true;
-                }
-            }
-        } elseif ($formTypeClass == '\HomeOffice\CtsBundle\Form\Type\CtsDcuCaseType'
-                && $dcuCorrespondentStopList != null) {
-            foreach ($dcuCorrespondentStopList as $value) {
-                if ($value == $ctsCase->getMember()) {
-                    return true;
-                }
-            }
-        } elseif ($formTypeClass == '\HomeOffice\CtsBundle\Form\Type\CtsUkviCaseType'
-                && $ukviCorrespondentStopList != null) {
-            foreach ($ukviCorrespondentStopList as $value) {
-                if ($value == $ctsCase->getMember()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
- 
-     /**
-      * find out if selected topic is on the PQ topic list
-      * @param $formTypeClass
-      * @param CtsCase $ctsCase
-      *
-      * @return boolean
-      *
-      * @deprecated No longer in use
-      */
-    public function isSelectedTopicOnPqTopicStopList($formTypeClass, $ctsCase)
-    {
-        $pqTopicStopList = $this->getList('pqTopicStopList');
-        if ($formTypeClass == '\HomeOffice\CtsBundle\Form\Type\CtsPqCaseType'
-                && $pqTopicStopList != null) {
-            foreach ($pqTopicStopList as $value) {
-                if ($value == $ctsCase->getMarkupTopic()) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
- 
-     /**
-      * set the ID of the answering minister based on who is selected
-      * @param $formTypeClass
-      * @param CtsCase $ctsCase
-      *
-      * @return boolean
-      *
-      * @deprecated No longer in use
-      */
-    public function calculatePqAnsweringMinisiterId($formTypeClass, $ctsCase)
-    {
-        $ctsMemberList = $this->getList('ctsMemberList');
-        if ($formTypeClass == '\HomeOffice\CtsBundle\Form\Type\CtsPqCaseType') {
-            if ($ctsCase->getAnsweringMinister() != null) {
-                foreach ($ctsMemberList as $member) {
-                    if ($member->getDisplayName() == $ctsCase->getAnsweringMinister()) {
-                        $ctsCase->setAnsweringMinisterId($member->getMemberId());
-                        return;
-                    }
-                }
-            }
-            //set to null if unselected
-            if ($ctsCase->getAnsweringMinister() == null && $ctsCase->getAnsweringMinisterId() != null) {
-                $ctsCase->setAnsweringMinisterId(null);
-            }
         }
     }
 }

@@ -31,6 +31,7 @@ final class CaseCorrespondenceSubType extends ConstantHelper
     const DGEN = 'Director General';
     const GNR = 'General';
     const COL = 'HMPO Collective';
+    const COR = 'HMPO Correspondence';
 
     /**
      * Returns an array of all the constants in the class.
@@ -81,7 +82,7 @@ final class CaseCorrespondenceSubType extends ConstantHelper
         return [
             'MIN'  => self::MIN,
             'TRO'  => self::TRO,
-            'DTEN' => self::DTEN,
+            'DTEN' => self::DTEN
         ];
     }
 
@@ -97,9 +98,7 @@ final class CaseCorrespondenceSubType extends ConstantHelper
             'FTC'  => self::FTC,
             'FSC'  => self::FSC,
             'FTCI' => self::FTCI,
-            'FSCI' => self::FSCI,
-//            'FLT' => self::FLT,
-//            'FUT' => self::FUT
+            'FSCI' => self::FSCI
         ];
     }
 
@@ -144,7 +143,7 @@ final class CaseCorrespondenceSubType extends ConstantHelper
             'COM2' => self::COM2,
             'DGEN' => self::DGEN,
             'GNR'  => self::GNR,
-            'COL'  => self::COL,
+            'COL'  => self::COL
         ];
     }
 
@@ -159,7 +158,7 @@ final class CaseCorrespondenceSubType extends ConstantHelper
             'COM1' => self::COM1,
             'COM2' => self::COM2,
             'DGEN' => self::DGEN,
-            'GNR'  => self::GNR,
+            'GNR'  => self::GNR
         ];
     }
 }

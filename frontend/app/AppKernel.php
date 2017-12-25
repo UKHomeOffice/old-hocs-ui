@@ -26,7 +26,7 @@ class AppKernel extends Kernel
             new HomeOffice\GuftBundle\GuftBundle(),
         );
 
-        if (in_array($this->getEnvironment(), ['dev', 'qa', 'test'])) {
+        if (in_array($this->getEnvironment(), ['dev', 'test'])) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
@@ -34,7 +34,7 @@ class AppKernel extends Kernel
         }
 
         if (in_array($this->getEnvironment(), ['prod'])) {
-
+            $bundles[] = new Sentry\SentryBundle\SentryBundle();
         }
 
         return $bundles;

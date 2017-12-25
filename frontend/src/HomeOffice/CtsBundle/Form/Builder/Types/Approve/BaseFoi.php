@@ -2,7 +2,6 @@
 
 namespace HomeOffice\CtsBundle\Form\Builder\Types\Approve;
 
-use HomeOffice\AlfrescoApiBundle\Entity\Member;
 use HomeOffice\CtsBundle\Form\Builder\Groups;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -23,8 +22,7 @@ abstract class BaseFoi extends AbstractApproveType
     {
         $this
             ->documentForm($builder)
-            ->documentRemoval($builder)
-        ;
+            ->documentRemoval($builder);
     }
 
     /**
@@ -34,6 +32,6 @@ abstract class BaseFoi extends AbstractApproveType
      */
     protected function getMinisterList()
     {
-        return $this->getListService()->getMemberArray(false);
+        return $this->getListService()->getMinisterArray();
     }
 }

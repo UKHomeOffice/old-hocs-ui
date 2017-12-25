@@ -12,17 +12,15 @@
 
     <div class="panel">
         {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
-            'filterTypes': ['Original']
+        'filterTypes': ['Original']
         } %}
     </div>
     <hr>
 
-    {% if case.markupDecision == constant('HomeOffice\\AlfrescoApiBundle\\Service\\MarkupDecisions::REFER_TO_OGD') %}
+    {% if case.markupDecision == constant('HomeOffice\\AlfrescoApiBundle\\Service\\MarkupDecisions::REFER_TO_DCU') %}
         {% include 'HomeOfficeCtsBundle:Builder:markup/referToOgd.html.twig' %}
-
     {% elseif case.markupDecision == constant('HomeOffice\\AlfrescoApiBundle\\Service\\MarkupDecisions::NO_REPLY_NEEDED') %}
         {% include 'HomeOfficeCtsBundle:Builder:markup/noReplyNeeded.html.twig' %}
-
     {% else %}
         <h2>Response</h2>
 
@@ -33,8 +31,8 @@
              data-allow-remove="{{ caseIsStep(case, 'approve') ? "true" : "false" }}"
         >
             {% include 'HomeOfficeCtsBundle:CaseElements:uploadedDocuments.html.twig' with {
-                'filterTypes': ['Original attachments', 'Contribution', 'Background note', 'Response', 'Other'],
-                'allowRemove': caseIsStep(case, 'approve')
+            'filterTypes': ['Original attachments', 'Contribution', 'Background note', 'Response', 'Other'],
+            'allowRemove': caseIsStep(case, 'approve')
             } %}
         </div>
 
@@ -45,61 +43,83 @@
         {% endif %}
         <hr>
 
-        {% if form['foiMinisterSignOff'] is defined %}
-            <h2>Approval</h2>
-            <div class="form-group">
-                <label class="form-label">{{ form['foiMinisterSignOff'].vars.label }}</label>
-                {% if not form['foiMinisterSignOff'].vars.read_only %}
-                    {{ form_widget(form['foiMinisterSignOff']) }}
+        {% if case.caseTask in ['QA review', 'Head of unit approval','SCS approval', 'Press Office review'] %}
+
+            {% if form['foiMinisterSignOff'] is defined %}
+                <h2>Approval</h2>
+                <div class="form-group">
+                    <label class="form-label">{{ form['foiMinisterSignOff'].vars.label }}</label>
+                    {% if not form['foiMinisterSignOff'].vars.read_only %}
+                        {{ form_widget(form['foiMinisterSignOff']) }}
+                    {% else %}
+                        <div class="form-read">
+                            {% if form['answeringMinister'].vars.data %}Yes{% else %}No{% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if form['answeringMinister'] is defined %}
+                {% if not form['answeringMinister'].vars.read_only %}
+                    <div class="form-group signOffMinisterToggle hidden">
+                        {{ form_label(form['answeringMinister']) }}
+                        {{ form_widget(form['answeringMinister']) }}
+                    </div>
                 {% else %}
-                    <div class="form-read">
-                        {% if form['answeringMinister'].vars.data %}Yes{% else %}No{% endif %}
+                    <div class="form-group">
+                        {{ form_label(form['answeringMinister']) }}
+                        {{ form_widget(form['answeringMinister']) }}
                     </div>
                 {% endif %}
+            {% endif %}
+
+            <div class="form-group">
+                <label class="form-label">QA review</label>
+                {% include 'HomeOfficeCtsBundle:CaseElements:foiApprove.html.twig' with {'task': 'QA Review'} %}
             </div>
+
+            {% if case.getCorrespondenceType == 'FSC' %}
+                <div class="form-group">
+                    <label class="form-label">Head of unit</label>
+                    {% include '@HomeOfficeCts/CaseElements/foiApprove.html.twig' with {'task': 'Head of unit approval'} %}
+                </div>
+            {% endif %}
+
+            {% if case.getShortName == 'CtsFoiCase' or case.getCorrespondenceType == 'FSC' %}
+                <div class="form-group">
+                    <label class="form-label">Senior Civil Servant</label>
+                    {% include 'HomeOfficeCtsBundle:CaseElements:foiApprove.html.twig' with {'task': 'SCS Approval'} %}
+                </div>
+            {% endif %}
+
+            {% if case.getShortName == 'CtsFoiCase' or case.getCorrespondenceType == 'FSC' %}
+                <div class="form-group">
+                    <label class="form-label">Press Office</label>
+                    {% include 'HomeOfficeCtsBundle:CaseElements:foiApprove.html.twig' with {'task': 'Press Office Review', 'buttonValue': 'Noted'} %}
+                </div>
+            {% endif %}
+
         {% endif %}
 
-        {% if form['answeringMinister'] is defined %}
-            {% if not form['answeringMinister'].vars.read_only %}
-                <div class="form-group signOffMinisterToggle hidden">
-                    {{ form_label(form['answeringMinister']) }}
-                    {{ form_widget(form['answeringMinister']) }}
+        {% if case.caseTask in ['FOI Minister sign-off', 'SpAds approval'] %}
+
+            <div class="hidden">
+                <div class="form-group">
+                    <label class="form-label">{{ form['foiMinisterSignOff'].vars.label }}</label>
+                    {% if not form['foiMinisterSignOff'].vars.read_only %}
+                        {{ form_widget(form['foiMinisterSignOff']) }}
+                    {% else %}
+                        <div class="form-read">
+                            {% if form['answeringMinister'].vars.data %}Yes{% else %}No{% endif %}
+                        </div>
+                    {% endif %}
                 </div>
-            {% else %}
                 <div class="form-group">
                     {{ form_label(form['answeringMinister']) }}
                     {{ form_widget(form['answeringMinister']) }}
                 </div>
-            {% endif %}
-        {% endif %}
-
-        <div class="form-group">
-            <label class="form-label">QA review</label>
-            {% include 'HomeOfficeCtsBundle:CaseElements:foiApprove.html.twig' with {'task': 'QA Review'} %}
-        </div>
-
-        {% if case.getCorrespondenceType == 'FSC' %}
-            <div class="form-group">
-                <label class="form-label">Head of unit</label>
-                {% include '@HomeOfficeCts/CaseElements/foiApprove.html.twig' with {'task': 'Head of unit approval'} %}
             </div>
-        {% endif %}
 
-        {% if case.getShortName == 'CtsFoiCase' or case.getCorrespondenceType == 'FSC' %}
-            <div class="form-group">
-                <label class="form-label">Senior Civil Servant</label>
-                {% include 'HomeOfficeCtsBundle:CaseElements:foiApprove.html.twig' with {'task': 'SCS Approval'} %}
-            </div>
-        {% endif %}
-
-        {% if case.getShortName == 'CtsFoiCase' or case.getCorrespondenceType == 'FSC' %}
-            <div class="form-group">
-                <label class="form-label">Press Office</label>
-                {% include 'HomeOfficeCtsBundle:CaseElements:foiApprove.html.twig' with {'task': 'Press Office Review', 'buttonValue': 'Noted'} %}
-            </div>
-        {% endif %}
-
-        {% if case.foiMinisterSignOff and case.correspondenceType not in ['FTC', 'FTCI'] %}
             <div class="form-group">
                 <label class="form-label">Special Advisor (SpAds)</label>
                 {% include '@HomeOfficeCts/CaseElements/foiApprove.html.twig' with {'task': 'SpAds approval'} %}
@@ -109,6 +129,8 @@
                 <label class="form-label">FOI Minister</label>
                 {% include '@HomeOfficeCts/CaseElements/foiApprove.html.twig'  with {'task': 'FOI Minister sign-off'} %}
             </div>
+
         {% endif %}
+
     {% endif %}
 {% endblock %}

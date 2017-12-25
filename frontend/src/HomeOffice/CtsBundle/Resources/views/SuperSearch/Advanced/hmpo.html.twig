@@ -17,7 +17,28 @@
     {{ form_widget(form['dateReceivedTo']) }}
 </div>
 
+<div class="form-group">
+    {{ form_label(form['passportNumber']) }}
+    {{ form_widget(form['passportNumber']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['applicationNumber']) }}
+    {{ form_widget(form['applicationNumber']) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form['bringUpDate']) }}
+    {{ form_widget(form['bringUpDate']) }}
+</div>
+
 <h2>Correspondent / complainant / applicant details</h2>
+
+<div class="form-group">
+    {{ form_label(form['party']) }}
+    {{ form_widget(form['party']) }}
+</div>
+
 <div class="form-group">
     {{ form_label(form['correspondentForename']) }}
     {{ form_widget(form['correspondentForename']) }}
@@ -36,19 +57,4 @@
 <div class="form-group">
     {{ form_label(form['correspondentEmail']) }}
     {{ form_widget(form['correspondentEmail']) }}
-</div>
-
-<div class="form-group">
-    {{ form_label(form['correspondingName']) }}
-    {{ form_widget(form['correspondingName']) }}
-</div>
-
-<div class="form-group">
-    {{ form_label(form['passportNumber']) }}
-    {{ form_widget(form['passportNumber']) }}
-</div>
-
-<div class="form-group">
-    {{ form_label(form['applicationNumber']) }}
-    {{ form_widget(form['applicationNumber']) }}
 </div>

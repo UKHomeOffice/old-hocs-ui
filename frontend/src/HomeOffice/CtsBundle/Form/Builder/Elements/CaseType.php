@@ -19,13 +19,17 @@ trait CaseType
      */
     public function caseType(FormBuilderInterface $builder, array $types, $inline = true)
     {
+
         $builder->add('caseType', 'choice', [
-            'choices'    => array_merge(['' => 'All'], $types),
-            'multiple'   => false,
-            'expanded'   => true,
-            'attr'       => ['class' => 'inline'],
-            'label'      => 'Select case type',
-            'label_attr' => ['class' => $inline ? 'block-label' : 'block-label-clear']
+            'choices'     => array_merge(['' => 'All'], $types),
+            'empty_value' => '',
+            'label'       => 'Select case type',
+            'label_attr'  => ['class' => 'form-label'],
+            'data'        => null,
+            'attr'        => [
+                'class'            => 'chosen form-control',
+                'data-placeholder' => 'Please select a Case Types',
+            ],
         ]);
 
         return $this;

@@ -45,10 +45,14 @@ trait Transitions
                         ],
                     ];
                 } else {
+                    if ($transition->getValue() == 'Reject')
+                        $class = 'button-secondary';
+                    else
+                        $class = 'button';
                     $options = [
                         'label' => $transition->getLabel(),
                         'attr'  => [
-                            'class' => 'button',
+                            'class' => $class,
                         ],
                     ];
                 }

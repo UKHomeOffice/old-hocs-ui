@@ -18,6 +18,11 @@ class CtsListsRepository
      */
     private $apiClient;
  
+   /**
+     * @var Guzzle
+     */
+    private $listService;
+
     /**
      * @var SessionTicketStorage
      */
@@ -44,6 +49,7 @@ class CtsListsRepository
     /**
      *
      * @param \GuzzleHttp\Client $apiClient
+     * @param \GuzzleHttp\Client $listService
      * @param SessionTicketStorage $tokenStorage
      * @param PersonFactory $personFactory
      * @param UnitFactory $unitFactory
@@ -51,12 +57,15 @@ class CtsListsRepository
      */
     public function __construct(
         Guzzle $apiClient,
+        Guzzle $listService,
         SessionTicketStorage $tokenStorage,
         PersonFactory $personFactory,
         UnitFactory $unitFactory,
         TeamFactory $teamFactory
     ) {
         $this->apiClient = $apiClient;
+        $this->apiClient->setDefaultOption('verify', true);
+        $this->listService = $listService;
         $this->tokenStorage = $tokenStorage;
         $this->personFactory = $personFactory;
         $this->unitFactory = $unitFactory;
@@ -64,7 +73,7 @@ class CtsListsRepository
     }
  
     /**
-     * Implemented in hocs-data-service - NM
+     *
      * @return array
      */
     public function getUnitsAndTeams()
@@ -103,6 +112,7 @@ class CtsListsRepository
             $response = $this->apiClient->get('service/homeoffice/cts/peopleInUsersTeams', [
                 'query' => [
                     'alf_ticket' => $this->tokenStorage->getAuthenticationTicket(),
+//                    'user' => $this->getUser()->getUsername()
                 ],
             ]);
         } catch (RequestException $exception) {
@@ -119,7 +129,6 @@ class CtsListsRepository
     }
  
     /**
-     * Implemented in hocs-data-service - NM
      * @param string $group
      *
      * @return Person[]
@@ -175,12 +184,7 @@ class CtsListsRepository
      */
     public function getDataList($listName)
     {
-        $response = $this->apiClient->get("s/homeoffice/cts/$listName", [
-            'query' => [
-                'alf_ticket' => $this->tokenStorage->getAuthenticationTicket(),
-                'listName' => $listName
-            ],
-        ]);
+        $response = $this->listService->get("list/$listName", []);
      
         if ($response->getStatusCode() != '200') {
             return false;

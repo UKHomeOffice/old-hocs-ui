@@ -186,6 +186,7 @@ services:
         class: %home_office_alfresco_api.cts_lists.repository.class%
         arguments:
             - @home_office_alfresco_api.guzzle_client
+            - @home_office_alfresco_api.list_guzzle_client
             - @process_manager_token_storage
             - @home_office_alfresco_api.person.factory
             - @home_office_alfresco_api.unit.factory

@@ -21,7 +21,6 @@ class FOI extends BaseFoi
     protected function buildElements(FormBuilderInterface $builder, array $options)
     {
         parent::buildElements($builder, $options);
-
         $this
             ->foiMinisterSignOff($builder)
             ->answeringMinister(
@@ -29,8 +28,7 @@ class FOI extends BaseFoi
                 $this->getMinisterList(),
                 'Sign off Minister',
                 'Select Sign off Minister'
-            )
-        ;
+            );
     }
 
     /**

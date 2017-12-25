@@ -5,16 +5,16 @@ $('.form-search').submit(function() {
     $(this).attr('action', $(this).data('action') + '/results');
 });
 
-$('.form-search input[name="businessUnit"]').change(function() {
+$('.form-search select[name="businessUnit"]').change(function() {
     var form = $('.form-search');
 
     var businessUnit = $(this).val().toLowerCase();
-    if (businessUnit == '') {
+    if (businessUnit === '') {
         businessUnit = 'all';
     }
 
     $.ajax({
-        url: form.data('action') + '/' + businessUnit,
+        url: form.data('action') + '?businessUnit=' + businessUnit,
         type: 'GET',
         success: function(data) {
             $('.advanced-search').html(data);
@@ -28,4 +28,39 @@ $('.form-search input[name="businessUnit"]').change(function() {
             //alert("Server failure! Is the server turned off?");
         }
     });
+});
+
+$('.form-search select[name="assignedUnit"]').change(function() {
+
+    var form = $('.form-search');
+    var assignedUnit = $(this).val().toLowerCase();
+
+    if (assignedUnit !== '') {
+
+        $.ajax({
+            url: form.data('action') + '?assignedUnit=' + assignedUnit,
+            type: 'GET',
+            success: function(data) {
+
+                var $teams = $('.form-search select[name="assignedTeam"]')
+
+                $teams.find('option').remove();
+                $teams.append($("<option></option>"));
+                $.each(data, function(value, text) {
+                    $teams.append($("<option></option>").attr('value', value).text(text));
+                });
+                $teams.trigger("chosen:updated");
+
+                $teams.prop('disabled', $teams.children('option').length === 1);
+                $teams.trigger("chosen:updated");
+
+
+            },
+            cache: true,
+            error: function(e) {
+                //alert("Server failure! Is the server turned off?");
+            }
+        });
+    }
+
 });

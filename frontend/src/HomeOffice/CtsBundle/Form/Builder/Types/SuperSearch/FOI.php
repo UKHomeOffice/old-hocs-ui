@@ -41,13 +41,10 @@ class FOI extends SuperSearch
             ->caseType($builder, CaseCorrespondenceType::getCorrespondenceArrayWithSubTypes('FOI'), false)
             ->dateReceivedFrom($builder)
             ->dateReceivedTo($builder)
-            ->hoCaseOfficer($builder)
             ->correspondentForename($builder)
             ->correspondentSurname($builder)
             ->correspondentPostCode($builder)
             ->correspondentEmail($builder)
-            ->foiIsEir($builder, false)
-            ->foiMinisterSignOff($builder, false)
-            ->suitableForDisclosure($builder);
+            ->foiIsEir($builder, false);
     }
 }

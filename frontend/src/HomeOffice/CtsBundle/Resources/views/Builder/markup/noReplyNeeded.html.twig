@@ -2,7 +2,7 @@
 
 {% if caseIsStep(case, 'nfa') %}
     <div class="form-group">
-        <label class="form-label">No reply needed</label>
+        <label class="form-label">No reply needed</label><br>
         {{ form_widget(form.ApproveNRR) }}
 
         {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}

@@ -62,20 +62,6 @@
         </p>
     {% endif %}
 
-    {% if case.shortName in ['CtsFoiCase', 'CtsFoiComplaintCase'] and case.foiMinisterSignOff %}
-        <p>
-            <strong>Requires Review By</strong><br />
-            {{ case.answeringMinister }}
-        </p>
-    {% endif %}
-
-    {% if case.markupMinister is defined and case.markupMinister %}
-        <p>
-            <strong>Sign off Minister</strong><br>
-            {{ case.markupMinister }}
-        </p>
-    {% endif %}
-
     {% if case.markupTopic %}
         <p>
             <strong>Topics</strong><br />

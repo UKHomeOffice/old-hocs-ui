@@ -17,10 +17,7 @@
     {{ form_widget(form['dateReceivedTo']) }}
 </div>
 
-{#<div class="form-group">#}
-    {#{{ form_label(form['caseRef']) }}#}
-    {#{{ form_widget(form['caseRef']) }}#}
-{#</div>#}
+<h2>Reply to details</h2>
 
 <div class="form-group">
     {{ form_label(form['member']) }}
@@ -46,9 +43,4 @@
 <div class="form-group">
     {{ form_label(form['correspondentEmail']) }}
     {{ form_widget(form['correspondentEmail']) }}
-</div>
-
-<div class="form-group">
-    <label class="form-label">{{ form['replyToNumberTenCopy'].vars.label }}</label>
-    {{ form_widget(form['replyToNumberTenCopy']) }}
 </div>

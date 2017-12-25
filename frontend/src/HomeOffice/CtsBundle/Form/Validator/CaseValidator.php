@@ -57,6 +57,8 @@ class CaseValidator
                 case 'removeLinkedCase':
                 case 'addGroupedCase':
                 case 'removeGroupedCase':
+                case 'Return':
+                case 'Reject':
                     break;
 
                 case 'ManualAllocate':

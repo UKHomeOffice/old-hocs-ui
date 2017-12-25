@@ -59,5 +59,6 @@
 
     {% if form['Dispatch'] is defined %}
         {{ form_widget(form['Dispatch'], { 'label': 'Dispatched' }) }}
+        {% include 'HomeOfficeCtsBundle:CaseElements:reject.html.twig' %}
     {% endif %}
 {% endblock %}

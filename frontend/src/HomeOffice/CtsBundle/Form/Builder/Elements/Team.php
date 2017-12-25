@@ -17,7 +17,7 @@ trait Team
     public function team(FormBuilderInterface $builder, array $choices)
     {
         $builder->add('team', 'choice', [
-            'choices'     => array_combine($choices, $choices),
+            'choices'     => $choices,
             'empty_value' => '',
             'label'       => 'Team',
             'label_attr'  => ['class' => 'form-label'],

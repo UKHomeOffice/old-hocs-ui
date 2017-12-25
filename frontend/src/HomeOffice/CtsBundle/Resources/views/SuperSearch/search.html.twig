@@ -6,9 +6,6 @@
 <div class="phase-banner">
     <p>
         <strong class="phase-tag">BETA</strong>
-        <span>You are using the new fast search.
-            <a href="{{ path('homeoffice_cts_search_globalsearch') }}">Click here for the old search.</a>
-        </span>
     </p>
 </div>
 {% endblock %}
@@ -34,12 +31,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">{{ form['caseId'].vars.label }}<br>Enter Case ID</label>
+                    <label class="form-label">{{ form['caseId'].vars.label }}</label>
                     {{ form_widget(form['caseId']) }}
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Created<br>{{ form_label(form['createdFrom']) }}</label>
+                    <label class="form-label">Created {{ form_label(form['createdFrom']) }}</label>
                     {{ form_widget(form['createdFrom']) }}
                 </div>
 
@@ -49,7 +46,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Deadline<br>{{ form_label(form['deadlineFrom']) }}</label>
+                    <label class="form-label">Deadline {{ form_label(form['deadlineFrom']) }}</label>
                     {{ form_widget(form['deadlineFrom']) }}
                 </div>
 
@@ -59,13 +56,18 @@
                 </div>
 
                 <div class="form-group">
-                    {{ form_label(form['markupDecision']) }}
-                    {{ form_widget(form['markupDecision']) }}
+                    {{ form_label(form['task']) }}
+                    {{ form_widget(form['task']) }}
                 </div>
 
                 <div class="form-group">
-                    {{ form_label(form['markupUnit']) }}
-                    {{ form_widget(form['markupUnit']) }}
+                    {{ form_label(form['assignedUnit']) }}
+                    {{ form_widget(form['assignedUnit']) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form['assignedTeam']) }}
+                    {{ form_widget(form['assignedTeam']) }}
                 </div>
 
                 <div class="form-group">
@@ -74,20 +76,13 @@
                 </div>
 
                 <div class="form-group">
-                    {{ form_label(form['team']) }}
-                    {{ form_widget(form['team']) }}
+                    {{ form_label(form['markupDecision']) }}
+                    {{ form_widget(form['markupDecision']) }}
                 </div>
+
                 <div class="form-group">
                     {{ form_label(form['markupTopic']) }}
                     {{ form_widget(form['markupTopic']) }}
-                </div>
-                <div class="form-group">
-                    {{ form_label(form['status']) }}
-                    {{ form_widget(form['status']) }}
-                </div>
-                <div class="form-group">
-                    {{ form_label(form['task']) }}
-                    {{ form_widget(form['task']) }}
                 </div>
 
                 <div class="form-group">

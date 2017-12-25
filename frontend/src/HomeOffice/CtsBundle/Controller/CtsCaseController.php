@@ -223,10 +223,16 @@ class CtsCaseController extends Controller
             return $this->handleFormSubmit($form, $case)->getResponse();
         }
 
+        $minister = $case->getMarkupMinister();
+        $formattedMinister = $this->getListHandler()->getMinisterName($minister);
+
         return $this->render($template, [
             'step' => 'approve',
             'case' => $case,
             'form' => $form->createView(),
+            'helpers' => [
+                'ministerDisplay' => $formattedMinister
+            ]
         ]);
     }
 

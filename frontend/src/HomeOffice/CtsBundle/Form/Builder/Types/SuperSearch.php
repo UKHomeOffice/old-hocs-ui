@@ -14,6 +14,8 @@ use HomeOffice\ListBundle\Service\ListHandler;
 use HomeOffice\ListBundle\Service\ListService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -37,6 +39,8 @@ class SuperSearch extends AbstractType
     use Elements\MarkupTopic;
     use Elements\Status;
     use Elements\Task;
+    use Elements\AssignedUnit;
+    use Elements\AssignedTeam;
 
     /**
      * @var ListHandler
@@ -84,6 +88,7 @@ class SuperSearch extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $this
             ->businessUnit($builder)
             ->caseId($builder)
@@ -92,18 +97,35 @@ class SuperSearch extends AbstractType
             ->deadlineFrom($builder, null)
             ->deadlineTo($builder, null)
             ->markupDecision($builder, MarkupDecisions::getMarkupDecisionsArray())
-            ->markupUnit($builder, $this->listService->getUnitArray())
             ->markupMinister($builder, $this->listService->getMinisterArray())
-            ->team($builder, $this->listService->getTeamArrayForUnit())
             ->markupTopic($builder, $this->topicService->getTopicsForForm())
-            ->status($builder, CaseStatus::getStatusArray())
-            ->task($builder, TaskStatus::getTasksForFilterArray());
+            ->task($builder, TaskStatus::getTasksForFilterArray())
+            ->assignedUnit($builder, $this->listService->getUnitArray())
+            ->assignedTeam($builder);
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            $data = $event->getData();
+
+            if (isset($data['assignedUnit'])) {
+                $form->add(
+                    'assignedTeam',
+                    'choice',
+                    [
+                        'choices' => $this->listService->getTeamArrayForUnit($data['assignedUnit'])
+                    ]
+                );
+            }
+        });
 
         $builder->add('search', 'submit', [
             'attr' => [
                 'class' => 'button'
             ],
         ]);
+        
+        return $this;
+
     }
 
     /**
@@ -117,7 +139,7 @@ class SuperSearch extends AbstractType
             'attr'            => [
                 'class'       => 'form-search',
                 'data-action' => $this->router->generate('homeoffice_cts_supersearch_search'),
-                'novalidate'  => 'novalidate',
+                'novalidate'  => 'novalidate'
             ],
         ]);
     }

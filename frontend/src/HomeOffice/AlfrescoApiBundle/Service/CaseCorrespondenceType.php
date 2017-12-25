@@ -70,9 +70,7 @@ final class CaseCorrespondenceType extends ConstantHelper
                 'FTC'  => CaseCorrespondenceSubType::FTC,
                 'FSC'  => CaseCorrespondenceSubType::FSC,
                 'FTCI' => CaseCorrespondenceSubType::FTCI,
-                'FSCI' => CaseCorrespondenceSubType::FSCI,
-//                'FLT'  => CaseCorrespondenceSubType::FLT,
-//                'FUT'  => CaseCorrespondenceSubType::FUT
+                'FSCI' => CaseCorrespondenceSubType::FSCI
             ],
             CaseCorrespondenceType::PQ => [
                 'NPQ'  => CaseCorrespondenceSubType::NPQ,
@@ -85,9 +83,9 @@ final class CaseCorrespondenceType extends ConstantHelper
                 'UTEN' => CaseCorrespondenceSubType::UTEN
             ],
             CaseCorrespondenceType::HMPO => [
-                'COR' => 'HMPO Correspondence',
+                'COR' => CaseCorrespondenceSubType::COR,
                 'COL' => CaseCorrespondenceSubType::COL,
-                'COM' => CaseCorrespondenceSubType::COM,
+                'COM' => CaseCorrespondenceSubType::COM
             ],
         ];
 
@@ -112,9 +110,7 @@ final class CaseCorrespondenceType extends ConstantHelper
                 'FTC'  => CaseCorrespondenceSubType::FTC,
                 'FTCI' => CaseCorrespondenceSubType::FTCI,
                 'FSC'  => CaseCorrespondenceSubType::FSC,
-                'FSCI' => CaseCorrespondenceSubType::FSCI,
-//                'FLT'  => CaseCorrespondenceSubType::FLT,
-//                'FUT'  => CaseCorrespondenceSubType::FUT,
+                'FSCI' => CaseCorrespondenceSubType::FSCI
             ],
             CaseCorrespondenceType::PQ => [
                 'NPQ'  => CaseCorrespondenceSubType::NPQ,

@@ -25,6 +25,8 @@ class HMPO extends SuperSearch
     use Elements\ApplicationNumber;
     use Elements\CorrespondingName;
     use Elements\HmpoComplaintOutcome;
+    use Elements\Party;
+    use Elements\BringUpDate;
 
     /**
      * @param FormBuilderInterface $builder
@@ -48,6 +50,7 @@ class HMPO extends SuperSearch
             ->passportNumber($builder)
             ->applicationNumber($builder)
             ->correspondingName($builder)
-        ;
+            ->party($builder)
+            ->bringUpDate($builder);
     }
 }
