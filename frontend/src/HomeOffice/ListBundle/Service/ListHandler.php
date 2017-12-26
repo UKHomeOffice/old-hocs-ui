@@ -98,7 +98,7 @@ class ListHandler
      */
     public function loadListsOnLogin()
     {
-        $this->getList('ctsMemberList');
+        //$this->getList('ctsMemberList');
     }
  
     /**
