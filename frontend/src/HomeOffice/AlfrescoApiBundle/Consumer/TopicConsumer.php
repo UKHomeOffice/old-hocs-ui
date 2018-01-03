@@ -12,5 +12,5 @@ class TopicConsumer extends AbstractConsumer
     /**
      * @var string
      */
-    protected $url = 'service/homeoffice/ctsv2/topicList';
+    protected $url = 'topics';
 }

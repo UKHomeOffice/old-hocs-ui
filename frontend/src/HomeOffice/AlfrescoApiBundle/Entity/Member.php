@@ -56,7 +56,7 @@ class Member
         $this->setParty('');
         $this->setConstituency('');
         $this->setMemberId('');
-        $this->setIsLords($entity->properties->house == 'Lords');
+        $this->setIsLords($entity->properties->house == 'lords');
     }
  
     /**
