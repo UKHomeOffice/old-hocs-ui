@@ -3,6 +3,7 @@
 namespace HomeOffice\AlfrescoApiBundle\Service\Topic;
 
 use HomeOffice\AlfrescoApiBundle\Consumer\TopicConsumer;
+use Tedivm\StashBundle\Service\CacheService;
 
 /**
  * Class TopicService
@@ -16,14 +17,24 @@ class TopicService
      */
     protected $consumer;
 
+    protected $cacheService;
+
+    protected $cacheTimeout;
+
+    private $topicKey;
+
     /**
      * Constructor
      *
      * @param TopicConsumer $consumer
      */
-    public function __construct(TopicConsumer $consumer)
+    public function __construct(TopicConsumer $consumer, CacheService $cacheService, $cacheTimeout)
     {
         $this->consumer = $consumer;
+        $this->cacheService = $cacheService;
+        $this->cacheTimeout = $cacheTimeout;
+        $this->topicKey = "symfonyTopics";
+
     }
 
     /**
@@ -35,30 +46,8 @@ class TopicService
      * @return TopicGroup[]
      */
     public function getTopics($correspondenceType = null, $unit = null)
-    {
-        $data = $this->consumer->get();
-        if ($data === false) {
-            return [];
-        }
+    { $data = getListFromCache($this->topicKey,$correspondenceType,$unit);
 
-        $topics = [];
-        foreach ($data as $group) {
-            if (is_null($correspondenceType) || $correspondenceType == $group['caseType']) {
-                $topic = new TopicGroup($group['name'], $group['caseType']);
-                foreach ($group['topicListItems'] as $item) {
-                    if (is_null($unit) || $unit == $item['topicUnit']) {
-                        $topic->addTopic(new Topic(
-                            $item['topicName'],
-                            $item['topicUnit'],
-                            isset($item['topicTeam']) ? $item['topicTeam'] : null
-                        ));
-                    }
-                }
-                $topics[] = $topic;
-            }
-        }
-
-        return $topics;
     }
 
     /**
@@ -102,5 +91,55 @@ class TopicService
         }
 
         return $topics;
+    }
+
+    private function getListFromCache($listName, $correspondenceType, $unit)
+    {
+        $listKey = $listName + $correspondenceType + $unit;
+        $cacheItem = $this->cachePool->getItem($listKey);
+        $list = $cacheItem->get();
+        if ($cacheItem->isMiss()) {
+            $this->getTopicList($listKey, $correspondenceType, $unit);
+            $list = $cacheItem->get();
+        }
+        return $list;
+    }
+
+    private function getTopicList($listName, $correspondenceType = null, $unit = null)
+    {
+        $data = $this->consumer->get();
+        if ($data === false) {
+            return [];
+        }
+
+        $topics = [];
+        foreach ($data as $group) {
+            if (is_null($correspondenceType) || $correspondenceType == $group['caseType']) {
+                $topic = new TopicGroup($group['name'], $group['caseType']);
+                foreach ($group['topicListItems'] as $item) {
+                    if (is_null($unit) || $unit == $item['topicUnit']) {
+                        $topic->addTopic(new Topic(
+                            $item['topicName'],
+                            $item['topicUnit'],
+                            isset($item['topicTeam']) ? $item['topicTeam'] : null
+                        ));
+                    }
+                }
+                $topics[] = $topic;
+            }
+        }
+
+        storeListInCache($listName,$topics);
+    }
+
+    /**
+     *
+     * @param string $name
+     * @param array $list
+     */
+    private function storeListInCache($name, $list)
+    {
+        $cacheItem = $this->cachePool->getItem($name);
+        $cacheItem->set($list, $this->cacheTimeout);
     }
 }

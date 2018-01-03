@@ -56,8 +56,7 @@ class Router implements RouterInterface
     {
         $url = $this->router->generate($name, $parameters, $referenceType);
         // Hack to work with ACP - Strip the port
-        $url = preg_replace('/\:[0-9]{2,5}/','', $url);
-
+        $url = $this->sslRedirects ? preg_replace('/\:[0-9]{2,5}/','', $url) : $url;
         return $this->sslRedirects ? preg_replace('/^http\:\/\//', 'https://', $url) : $url;
     }
 

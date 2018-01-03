@@ -396,6 +396,8 @@ services:
       class: HomeOffice\AlfrescoApiBundle\Service\Topic\TopicService
       arguments:
         - "@home_office_alfresco_api.consumer.topic"
+        - "@stash.default_cache"
+        - 3600
 
 # Dashboard
     home_office_alfresco_api.consumer.dashboard:
