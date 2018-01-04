@@ -27,6 +27,8 @@ class TopicService
      * Constructor
      *
      * @param TopicConsumer $consumer
+     * @param CacheService $cacheService
+     * @param $cacheTimeout
      */
     public function __construct(TopicConsumer $consumer, CacheService $cacheService, $cacheTimeout)
     {
@@ -46,8 +48,8 @@ class TopicService
      * @return TopicGroup[]
      */
     public function getTopics($correspondenceType = null, $unit = null)
-    { $data = getListFromCache($this->topicKey,$correspondenceType,$unit);
-
+    {
+        return $this->getListFromCache($this->topicKey,$correspondenceType,$unit);
     }
 
     /**
@@ -96,7 +98,7 @@ class TopicService
     private function getListFromCache($listName, $correspondenceType, $unit)
     {
         $listKey = $listName + $correspondenceType + $unit;
-        $cacheItem = $this->cachePool->getItem($listKey);
+        $cacheItem = $this->cacheService->getItem($listKey);
         $list = $cacheItem->get();
         if ($cacheItem->isMiss()) {
             $this->getTopicList($listKey, $correspondenceType, $unit);
@@ -109,7 +111,7 @@ class TopicService
     {
         $data = $this->consumer->get();
         if ($data === false) {
-            return [];
+            $data = [];
         }
 
         $topics = [];
@@ -129,7 +131,7 @@ class TopicService
             }
         }
 
-        storeListInCache($listName,$topics);
+        $this->storeListInCache($listName,$topics);
     }
 
     /**
@@ -139,7 +141,7 @@ class TopicService
      */
     private function storeListInCache($name, $list)
     {
-        $cacheItem = $this->cachePool->getItem($name);
+        $cacheItem = $this->cacheService->getItem($name);
         $cacheItem->set($list, $this->cacheTimeout);
     }
 }
