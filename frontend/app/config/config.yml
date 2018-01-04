@@ -63,7 +63,7 @@ stash:
     drivers: [ Redis ]
     Redis:
         servers:
-            - { server: redis-sentinel, port: 26379 }
+            - { server: redis, port: 6379 }
 
 # Swiftmailer Configuration
 swiftmailer:
