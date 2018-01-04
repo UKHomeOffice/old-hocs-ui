@@ -16,7 +16,7 @@
     {% endif %}
 
     {% if transitions['Reject'] is defined %}
-        <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_return', { 'nodeRef': case.nodeId }) }}">
+        <button class="button button-secondary button-modal" id="button-return" data-href="{{ path('homeoffice_cts_ctscase_return', { 'nodeRef': case.nodeId }) }}">
             {{ transitions['Reject'].vars.label }}
         </button>
     {% endif %}
@@ -45,7 +45,7 @@
         {% endif %}
 
         {% if transitions['Reject'] is defined %}
-            <button class="button button-secondary button-modal" data-href="{{ path('homeoffice_cts_ctscase_return', { 'nodeRef': case.nodeId }) }}">
+            <button class="button button-secondary button-modal" id="button-return" data-href="{{ path('homeoffice_cts_ctscase_return', { 'nodeRef': case.nodeId }) }}">
                 {{ transitions['Reject'].vars.label }}
             </button>
         {% endif %}
@@ -61,7 +61,7 @@
     {% endif %}
 
     {% if transitions['Reject'] is defined %}
-        {{ form_widget(transitions['Reject'], { 'attr': { 'class': 'button-secondary' }}) }}
+        {{ form_widget(transitions['Reject'], { 'attr': { 'class': 'button-secondary' }, 'id':"CtsCaseReject_transitions_Reject"}) }}
     {% endif %}
 
 {% endif %}
@@ -76,7 +76,7 @@
     {% endif %}
 
     {% if transitions['Reject'] is defined %}
-        {{ form_widget(transitions['Reject'], { 'attr': { 'class': 'button-secondary' }}) }}
+        {{ form_widget(transitions['Reject'], { 'attr': { 'class': 'button-secondary' }, 'id':"CtsCaseReject_transitions_Reject"}) }}
     {% endif %}
 {% endif %}
 
@@ -94,14 +94,14 @@
 
 {% if step == 'return' %}
     {% if transitions['Reject'] is defined %}
-        {{ form_widget(transitions['Reject']) }}
+        {{ form_widget(transitions['Reject'], {'id':"CtsCaseReject_transitions_Reject"}) }}
     {% endif %}
 {% endif %}
 
 
 {% if step == 'reject' %}
     {% if transitions['Reject'] is defined %}
-        {{ form_widget(transitions['Reject'], { 'label': 'Reject' }) }}
+        {{ form_widget(transitions['Reject'], { 'label': 'Reject' , 'id':"CtsCaseReject_transitions_Reject"}) }}
     {% endif %}
 {% endif %}
 
