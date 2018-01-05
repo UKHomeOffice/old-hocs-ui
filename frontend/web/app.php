@@ -8,14 +8,13 @@ $loader = require_once __DIR__.'/../var/bootstrap.php.cache';
 // Use APC for autoloading to improve performance.
 // Change 'sf2' to a unique prefix in order to prevent cache key conflicts
 // with other applications also using APC.
-/*
-$apcLoader = new ApcClassLoader('sf2', $loader);
+$apcLoader = new ApcClassLoader('hocssf', $loader);
 $loader->unregister();
 $apcLoader->register(true);
-*/
+
 
 require_once __DIR__.'/../app/AppKernel.php';
-//require_once __DIR__.'/../app/AppCache.php';
+require_once __DIR__.'/../app/AppCache.php';
 
 $appEnv = "prod";
 
@@ -23,22 +22,23 @@ if (getenv("APP_ENV") !== false) {
     $appEnv = getenv("APP_ENV");
 }
 
-$debugMode = true;
+$debugMode = false;
 
-if (!($appEnv == "dev" || $appEnv == "qa")) {
-    $debugMode = false;
+if ($appEnv == "dc" || $appEnv == "dev" || $appEnv == "qa") {
+    ini_set('session.cookie_secure', false);
 }
 
-if (getenv("DEBUG") !== false) {
-    $debugMode = getenv("DEBUG") != "false";
+if ($appEnv == "dc") {
+    $debugMode = true;
+    Debug::enable();
 }
 
 $kernel = new AppKernel($appEnv, $debugMode);
 $kernel->loadClassCache();
-//$kernel = new AppCache($kernel);
+$kernel = new AppCache($kernel);
 
 // When using the HttpCache, you need to call the method in your front controller instead of relying on the configuration parameter
-//Request::enableHttpMethodParameterOverride();
+Request::enableHttpMethodParameterOverride();
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();

@@ -397,7 +397,7 @@ services:
       arguments:
         - "@home_office_alfresco_api.consumer.topic"
         - "@stash.default_cache"
-        - 3600
+        - 144000
 
 # Dashboard
     home_office_alfresco_api.consumer.dashboard:

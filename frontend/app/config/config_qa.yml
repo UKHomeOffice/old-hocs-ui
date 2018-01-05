@@ -36,7 +36,7 @@ assetic:
 #    delivery_address: me@example.com
 
 home_office_list:
-    cache_timeout_seconds: 60
+    cache_timeout_seconds: 36000
 
 parameters:
     home_office_cts.routing.ssl_redirects: true
