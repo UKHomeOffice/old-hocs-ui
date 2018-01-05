@@ -8,7 +8,7 @@ login:
     defaults: { _controller: HomeOfficeProcessManagerAuthenticatorBundle:Security:login }
 
 login_check:
-    path: /login_check
+    path: /login
     
 signout:
     path:     /signout

@@ -11,7 +11,7 @@ security:
             pattern: ^/(login_check|cts/.*)$
             simple_form:
                 authenticator: process_manager_authenticator
-                check_path:    login_check
+                check_path:    login
                 login_path:    login
                 default_target_path: homeoffice_cts_home_home
         default:
