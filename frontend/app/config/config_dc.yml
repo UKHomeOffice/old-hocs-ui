@@ -2,8 +2,8 @@ imports:
     - { resource: config.yml }
 
 home_office_alfresco_api:
-    list_endpoint: 'http://hocs-alfresco/:8081'
-    endpoint: 'http://hocs-alfresco/:8081'
+    list_endpoint: 'http://data-service:8080'
+    endpoint: 'http://alfresco:8080/alfresco/'
 
 framework:
     router:

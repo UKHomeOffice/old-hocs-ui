@@ -1,6 +1,7 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Debug\Debug;
 
 $loader = require_once __DIR__.'/../var/bootstrap.php.cache';
 

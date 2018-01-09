@@ -1,76 +1,141 @@
 version: '3.1'
 
 services:
-    ui:
-        build:
-            context: .
-        volumes:
-            - ./out/logs/nginx/:/var/log/nginx
-            - ./frontend/var/:/var/www/symfony/var
-        ports:
-            - 8081:8080
-        environment:
-          SYMFONY_ENV: dc
-          APP_ENV: dc
-          APP_PHP: app_dev\.php
-        networks:
-          - sls-network
-    postgres:
-        image: postgres
-        ports:
-          - 5432:5432
-        networks:
-          - sls-network
-        environment:
-         POSTGRES_USER: root
-         POSTGRES_PASSWORD: dev
-    hocs-data-service:
-      image: quay.io/ukhomeofficedigital/hocs-data-service
-      environment:
-        spring.profiles.active: postgres
-        server.port: 8080
-        sls.db.hostname: postgres
-        sls.db.username: root
-        sls.db.password: dev
-        sls.db.name: postgres
-        sls.db.port: 5432
-        sls.schema.name: public
-        hostname: sls:8080
-      depends_on:
-        - postgres
-      ports:
-        - 8082:8080
-      networks:
-        - sls-network
 
-    mysql:
-        image: mysql
-        ports:
-          - 3306:3306
-        networks:
-          - sls-network
-        environment:
-          MYSQL_ROOT_PASSWORD: alfresco
-          MYSQL_DATABASE: alfresco
-          MYSQL_USER: alfresco
-          MYSQL_PASSWORD: alfresco
-        restart: always
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+      - hocs-network
 
-    hocs-alfresco:
-      image: quay.io/ukhomeofficedigital/hocs-alfresco
-      depends_on:
-        - mysql
-      environment:
-        ALF_S3_ACCESSKEY:
-        ALF_S3_SECRETKEY:
-        ALF_S3_BUCKETNAME:
-        ALF_DB_USERNAME: alfresco
-        ALF_DB_PASSWORD: alfresco
-        ALF_DB_NAME: alfresco
-        ALF_DB_HOST: mysql:3306
-      ports:
-        - 8080:8080
-      networks:
-        - sls-network
+  mysql:
+   image: mysql
+   ports:
+     - 3306:3306
+   networks:
+     - hocs-network
+   environment:
+     MYSQL_ROOT_PASSWORD: alfresco
+     MYSQL_DATABASE: alfresco
+     MYSQL_USER: alfresco
+     MYSQL_PASSWORD: alfresco
+   restart: always
+   tmpfs:
+     - /var/lib/mysql
+
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    networks:
+      - hocs-network
+    environment:
+     POSTGRES_USER: root
+     POSTGRES_PASSWORD: dev
+    tmpfs:
+      - pguidata:/var/lib/postgresql
+
+  s3creator:
+    image: garland/aws-cli-docker
+    networks:
+      - hocs-network
+    entrypoint: "aws --endpoint-url http://localstack:80 s3 mb s3://UNSET"
+    environment:
+      AWS_ACCESS_KEY_ID: UNSET
+      AWS_SECRET_ACCESS_KEY: UNSET
+      AWS_DEFAULT_REGION: eu-west-1
+    depends_on:
+     - localstack
+
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - 4572:80
+      - 9080:8080
+    networks:
+      - hocs-network
+    environment:
+      HOSTNAME_EXTERNAL: localstack
+      SERVICES: s3:80
+      DEFAULT_REGION: eu-west-1
+
+  alfresco:
+    image: quay.io/ukhomeofficedigital/hocs-alfresco
+    environment:
+      ALF_S3_ACCESSKEY: UNSET
+      ALF_S3_SECRETKEY: UNSET
+      ALF_S3_BUCKETNAME: UNSET
+      ALF_S3_HOSTNAME: localstack
+      ALF_DB_USERNAME: alfresco
+      ALF_DB_PASSWORD: alfresco
+      ALF_DB_NAME: alfresco
+      ALF_DB_HOST: mysql
+      ALF_DB_PORT: 3306
+      ALF_ADMIN_INITIAL_PASSWORD: 209c6174da490caeb422f3fa5a7ae634
+      ALF_REPORTING_ENDPOINT: reporting:8080
+    depends_on:
+      - s3creator
+      - mysql
+      - reporting
+    ports:
+      - 8083:8080
+    networks:
+      - hocs-network
+
+  reporting:
+    image: quay.io/ukhomeofficedigital/hocs-reporting-service
+    environment:
+      spring.profiles.active: postgres
+      db.host: postgres
+      db.username: root
+      db.password: dev
+    depends_on:
+      - postgres
+    ports:
+      - 8082:8080
+    networks:
+      - hocs-network
+
+  data-service:
+    image: quay.io/ukhomeofficedigital/hocs-data-service
+    environment:
+      spring.profiles.active: postgres
+      db.host: postgres
+      db.username: root
+      db.password: dev
+      redis.host: redis
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - 8081:8080
+    networks:
+      - hocs-network
+    command: /app/scripts/run.sh data-service:8080 /app/data admin admin
+    volumes:
+      - ../hocs-data/data/:/app/data/
+
+  ui:
+    build:
+      context: .
+    volumes:
+      - ./out/logs/nginx/:/var/log/nginx
+      - ./frontend/var/:/var/www/symfony/var
+    ports:
+      - 8080:8080
+    environment:
+      SYMFONY_ENV: dc
+      APP_ENV: dc
+      APP_PHP: app_dev\.php
+    networks:
+      - hocs-network
+    depends_on:
+      - alfresco
+      - data-service
+
 networks:
-  sls-network:
+  hocs-network:
+
+volumes:
+  pguidata: {}
