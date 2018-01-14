@@ -9,6 +9,14 @@ services:
     networks:
       - hocs-network
 
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - hocs-network
+
   mysql:
    image: mysql
    ports:
@@ -24,7 +32,7 @@ services:
    tmpfs:
      - /var/lib/mysql
 
-  postgres:
+  postgres1:
     image: postgres
     ports:
       - 5432:5432
@@ -34,7 +42,19 @@ services:
      POSTGRES_USER: root
      POSTGRES_PASSWORD: dev
     tmpfs:
-      - pguidata:/var/lib/postgresql
+      - /var/lib/postgresql
+
+  postgres2:
+    image: postgres
+    ports:
+      - 5433:5432
+    networks:
+      - hocs-network
+    environment:
+     POSTGRES_USER: root
+     POSTGRES_PASSWORD: dev
+    tmpfs:
+      - /var/lib/postgresql
 
   s3creator:
     image: garland/aws-cli-docker
@@ -73,25 +93,30 @@ services:
       ALF_DB_HOST: mysql
       ALF_DB_PORT: 3306
       ALF_ADMIN_INITIAL_PASSWORD: 209c6174da490caeb422f3fa5a7ae634
-      ALF_REPORTING_ENDPOINT: reporting:8080
+      ALF_REPORTING_ENDPOINT: rabbitmq
     depends_on:
       - s3creator
-      - mysql
       - reporting
+      - mysql
     ports:
       - 8083:8080
     networks:
       - hocs-network
+    tmpfs:
+      /usr/local/alfresco/alf_data
 
   reporting:
     image: quay.io/ukhomeofficedigital/hocs-reporting-service
     environment:
-      spring.profiles.active: postgres
-      db.host: postgres
+      spring.profiles.active: postgres, rabbitmq
+      db.host: postgres2
       db.username: root
       db.password: dev
+      db.schema.name: public
+      rabbit.mq.host: rabbitmq
     depends_on:
-      - postgres
+      - postgres2
+      - rabbitmq
     ports:
       - 8082:8080
     networks:
@@ -101,18 +126,20 @@ services:
     image: quay.io/ukhomeofficedigital/hocs-data-service
     environment:
       spring.profiles.active: postgres
-      db.host: postgres
+      db.host: postgres1
       db.username: root
       db.password: dev
+      db.schema.name: public
       redis.host: redis
+      alf.api.host: http://alfresco:8080
     depends_on:
-      - postgres
+      - postgres1
       - redis
     ports:
       - 8081:8080
     networks:
       - hocs-network
-    command: /app/scripts/run.sh data-service:8080 /app/data admin admin
+    command: /app/scripts/run.sh data-service:8080 /app/data admin admin alfresco:8080
     volumes:
       - ../hocs-data/data/:/app/data/
 
@@ -136,6 +163,3 @@ services:
 
 networks:
   hocs-network:
-
-volumes:
-  pguidata: {}
