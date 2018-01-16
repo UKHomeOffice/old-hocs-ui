@@ -1,10 +1,7 @@
 <?php
-
 namespace HomeOffice\CtsBundle\Form\Builder\Elements;
-
 use HomeOffice\AlfrescoApiBundle\Service\CaseCorrespondenceType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 /**
  * Class BusinessUnit
  *
@@ -20,11 +17,10 @@ trait BusinessUnit
      */
     public function businessUnit(FormBuilderInterface $builder, $selected = null)
     {
-        $choices = array_merge(['' => 'All'], CaseCorrespondenceType::getCorrespondenceArray());
-
+        $choices = array_merge(['All' => 'All'], CaseCorrespondenceType::getCorrespondenceArray());
         $builder->add('businessUnit', 'choice', [
             'choices'     => $choices,
-            'empty_value' => '',
+            'placeholder' => 'All',
             'label'       => 'Select business unit',
             'label_attr'  => ['class' => 'form-label'],
             'data'        => null,
@@ -33,7 +29,6 @@ trait BusinessUnit
                 'data-placeholder' => 'Please select a unit',
             ],
         ]);
-
         return $this;
     }
 }
