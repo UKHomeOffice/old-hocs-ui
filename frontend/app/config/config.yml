@@ -60,8 +60,10 @@ assetic:
             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
 stash:
-    drivers: [ FileSystem ]
-    FileSystem: ~
+    drivers: [ Redis ]
+    Redis:
+        servers:
+            - { server: redis, port: 6379 }
 
 # Swiftmailer Configuration
 swiftmailer:

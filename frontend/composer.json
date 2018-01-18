@@ -7,7 +7,7 @@
         "psr-0": { "": "src/", "SymfonyStandard": "app/" }
     },
     "require": {
-        "php": "5.6.32",
+        "php": "~5.6",
         "symfony/symfony": "2.8.*",
         "symfony/icu": "1.1.2",
         "doctrine/orm": "2.4.8",
@@ -22,7 +22,7 @@
         "guzzlehttp/guzzle": "5.3.1",
         "guzzlehttp/guzzle-services": "0.5.0",
         "mikey179/vfsStream": "v1.3.0",
-        "tedivm/stash-bundle": "v0.4.1",
+        "tedivm/stash-bundle": "v0.4.3",
         "alphagov/govuk_frontend_toolkit": "dev-master#8e614da3482f7ee728b097f8ae6394f4fffcb23e",
         "sentry/sentry-symfony": "0.7.1",
         "phpoffice/phpword": "0.13.0"
@@ -32,7 +32,6 @@
         "squizlabs/php_codesniffer": "2.6.1",
         "sensio/generator-bundle": "~2.3",
         "polishsymfonycommunity/symfony-mocker-container": "*",
-        "johnkary/phpunit-speedtrap": "1.0.x-dev",
         "webfactory/exceptions-bundle": "@stable"
     },
     "scripts": {
