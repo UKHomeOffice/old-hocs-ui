@@ -81,9 +81,9 @@ services:
       DEFAULT_REGION: eu-west-1
 
   alfresco:
-    #build:
-    #  context: ../hocs-alfresco
-    image: quay.io/ukhomeofficedigital/hocs-alfresco
+    build:
+      context: ../hocs-alfresco
+    #image: quay.io/ukhomeofficedigital/hocs-alfresco
     environment:
       ALF_S3_ACCESSKEY: UNSET
       ALF_S3_SECRETKEY: UNSET
@@ -98,7 +98,6 @@ services:
       ALF_REPORTING_ENDPOINT: rabbitmq
     depends_on:
       - s3creator
-      - reporting
       - mysql
     ports:
       - 8083:8080
@@ -108,9 +107,9 @@ services:
       /usr/local/alfresco/alf_data
 
   reporting:
-    #build:
-    #  context: ../hocs-reporting-service
-    image: quay.io/ukhomeofficedigital/hocs-reporting-service
+    build:
+      context: ../hocs-reporting-service
+    #image: quay.io/ukhomeofficedigital/hocs-reporting-service
     environment:
       spring.profiles.active: postgres, rabbitmq
       db.host: postgres2
@@ -127,9 +126,9 @@ services:
       - hocs-network
 
   data-service:
-    #build:
-    #  context: ../hocs-data-service
-    image: quay.io/ukhomeofficedigital/hocs-data-service
+    build:
+      context: ../hocs-data-service
+    #image: quay.io/ukhomeofficedigital/hocs-data-service
     environment:
       spring.profiles.active: postgres
       db.host: postgres1
@@ -163,9 +162,6 @@ services:
       APP_PHP: app_dev\.php
     networks:
       - hocs-network
-    depends_on:
-      - alfresco
-      - data-service
 
 networks:
   hocs-network:
