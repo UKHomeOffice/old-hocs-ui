@@ -220,8 +220,12 @@ class CtsCaseDocumentRepository
      * @param string $nodeRef
      * @return boolean | CtsCaseDocument
      */
-    public function getDocument($nodeRef)
+    public function getDocument($nodeRef, $caseRef)
     {
+        if($caseRef !== "") {
+            $this->auditView($caseRef, $nodeRef);
+        }
+
         $response = $this
             ->apiClient
             ->get(
@@ -245,15 +249,50 @@ class CtsCaseDocumentRepository
         return $this->factory->build($document);
     }
 
+    public function auditView($caseNodeRef, $nodeRef)
+    {
+        $body = json_encode(
+            array(
+                'content'                => array (
+                    'content' => "Viewed Document " . $nodeRef,
+                    'minuteQaReviewOutcomes' => "",
+                    'task'                   => ""
+                )
+            )
+        );
+
+        $response = $this
+            ->apiClient
+            ->post(
+                "service/homeoffice/cts/api/node/$this->workspace/$this->store/$caseNodeRef/comments",
+                array(
+                    'query' => array(
+                        'alf_ticket' => $this->tokenStorage->getAuthenticationTicket()
+                    ),
+                    'headers' => array(
+                        'Content-Type' => 'application/json'
+                    ),
+                    'body' => $body,
+                )
+            );
+
+        if ($response->getStatusCode() != "200") {
+            $this->logger->addDebug('Non 200 Code from ' . __METHOD__ . ' returned ' . $response->getStatusCode());
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Given a CtsCaseDocument object, this function will download the file to /tmp/{nodeId}
      * and return the CtsCaseDocument object.
      * @param string $nodeRef
      * @return boolean | CtsCaseDocument
      */
-    public function getDocumentFile($nodeRef)
+    public function getDocumentFile($nodeRef, $caseRef)
     {
-        return $this->getDocumentFileByUrl($nodeRef, "");
+        return $this->getDocumentFileByUrl($nodeRef, "", $caseRef);
     }
 
     /**
@@ -263,9 +302,9 @@ class CtsCaseDocumentRepository
      * @param string $nodeRef
      * @return boolean | CtsCaseDocument
      */
-    public function getDocumentPdf($nodeRef)
+    public function getDocumentPdf($nodeRef, $caseRef)
     {
-        return $this->getDocumentFileByUrl($nodeRef, "/thumbnails/ctspreview?ph=true&c=force");
+        return $this->getDocumentFileByUrl($nodeRef, "/thumbnails/ctspreview?ph=true&c=force", $caseRef);
     }
     /**
      * Given a CtsCaseDocument object, this function will download the file to /tmp/{nodeId}
@@ -274,9 +313,9 @@ class CtsCaseDocumentRepository
      * @param string $nodeRef
      * @return boolean | CtsCaseDocument
      */
-    public function getDocumentImg($nodeRef)
+    public function getDocumentImg($nodeRef, $caseRef)
     {
-        return $this->getDocumentFileByUrl($nodeRef, "/thumbnails/imgpreview?ph=true&c=force");
+        return $this->getDocumentFileByUrl($nodeRef, "/thumbnails/imgpreview?ph=true&c=force", $caseRef);
     }
 
 
@@ -286,9 +325,9 @@ class CtsCaseDocumentRepository
      * @param string $urlEnd
      * @return boolean | CtsCaseDocument
      */
-    public function getDocumentFileByUrl($nodeRef, $urlEnd)
+    private function getDocumentFileByUrl($nodeRef, $urlEnd, $caseRef)
     {
-        $ctsCaseDocument = $this->getDocument($nodeRef);
+        $ctsCaseDocument = $this->getDocument($nodeRef, $caseRef);
         $nodeId = $ctsCaseDocument->getNodeId();
         try {
             $response = $this->apiClient->get("s/api/node/$this->workspace/$this->store/$nodeId/content$urlEnd", [

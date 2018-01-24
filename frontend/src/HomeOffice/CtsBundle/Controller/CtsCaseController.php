@@ -59,7 +59,7 @@ class CtsCaseController extends Controller
     {
         return [
             'nodeRef' => $nodeRef,
-            'case'    => $this->getCase($nodeRef)
+            'case'    => $this->getCase($nodeRef, "Viewed Case")
         ];
     }
 

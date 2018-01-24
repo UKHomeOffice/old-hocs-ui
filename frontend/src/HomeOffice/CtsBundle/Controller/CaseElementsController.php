@@ -272,8 +272,9 @@ class CaseElementsController extends Controller
                         'documentNodeRef' => $document->getNodeId(),
                     ]),
                     'nodeRef' => $document->getNodeId(),
-                    'docPath' => $this->generateUrl($document->canDownloadDirect() ? 'homeoffice_cts_document_downloaddirect' : 'homeoffice_cts_document_downloadpdf', [
-                        'documentNodeRef' => $document->getNodeId()
+                    'docPath' => $this->generateUrl('homeoffice_cts_document_download', [
+                        'documentNodeRef' => $document->getNodeId(),
+                        'caseNodeRef' => $request->get('nodeRef')
                     ])
                 ];
             }
@@ -342,7 +343,7 @@ class CaseElementsController extends Controller
     public function refreshMarkupDecisions(Request $request)
     {
         try {
-            $case = $this->getCase($request->get('nodeRef'), false);
+            $case = $this->getCase($request->get('nodeRef'),"" ,false);
 
             if ($request->get('foiIsEir') === '0' || $request->get('foiIsEir') === '1') {
                 /** @var CtsFoiCase $case */

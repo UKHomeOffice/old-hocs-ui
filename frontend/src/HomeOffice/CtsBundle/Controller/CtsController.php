@@ -186,13 +186,13 @@ class CtsController extends Controller
 
     /**
      * @param string $nodeRef
-     * @param bool   $setOwner
-     *
+     * @param $audit
+     * @param bool $setOwner
      * @return CtsCase
      */
-    protected function getCase($nodeRef, $setOwner = true)
+    protected function getCase($nodeRef, $audit = "", $setOwner = true)
     {
-        $case = $this->getCtsCaseRepository()->getCase($nodeRef);
+        $case = $this->getCtsCaseRepository()->getCase($nodeRef, $audit);
         if ($setOwner === true) {
             $this->getCtsHelper()->setCaseOwner($case);
         }
