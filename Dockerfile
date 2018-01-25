@@ -16,6 +16,9 @@ COPY assets/php.ini /etc/php.ini
 COPY assets/nginx.conf /etc/nginx/
 COPY assets/www.conf /etc/php-fpm.d/www.conf
 
+COPY assets/clammit /usr/local/bin/clammit
+COPY assets/clammit.cfg /var/www/symfony/clammit.cfg
+
 RUN mkdir /etc/nginx/sites-enabled \
  && ln -s /etc/nginx/sites-available/symfony.conf /etc/nginx/sites-enabled/symfony \
  && mkdir /data \
@@ -29,6 +32,6 @@ COPY assets/entrypoint.sh entrypoint.sh
 RUN chmod +x  entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
 
-CMD cat /data/hocs-ui-ca.pem >> /etc/ssl/certs/cacert.pem && php-fpm && nginx
+CMD cat /data/hocs-ui-ca.pem >> /etc/ssl/certs/cacert.pem & clammit -config=/var/www/symfony/clammit.cfg & php-fpm -D && nginx
 
 EXPOSE 8080

@@ -2,6 +2,13 @@ version: '3.1'
 
 services:
 
+  clamd:
+    image: mkodockx/docker-clamav
+    ports:
+      - "3310:3310/tcp"
+    networks:
+      - hocs-network
+
   redis:
     image: redis
     ports:
