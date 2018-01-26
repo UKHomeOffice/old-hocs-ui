@@ -89,7 +89,6 @@ class CtsCaseMinuteRepository
      */
     public function create($newMinute, $caseNodeRef)
     {
-
         $topicKey = "symfonyMins" . $caseNodeRef;
         $item = $this->cacheService->getItem($topicKey);
         $item->clear();
@@ -136,15 +135,15 @@ class CtsCaseMinuteRepository
     public function getMinutesForCase($caseNodeId, array $minuteTypes = array('manual'))
     {
         $topicKey = "symfonyMins" . $caseNodeId;
-        return $this->getDocumentsFromCache($topicKey, $caseNodeId, $minuteTypes);}
+        $data = $this->getDocumentsFromCache($topicKey, $caseNodeId, $minuteTypes);
+        return $this->filterMinutesByType($data, $minuteTypes);
+    }
 
     public function getDocumentsFromCache($listKey, $caseNodeId, $minuteTypes)
     {
         $cacheItem = $this->cacheService->getItem($listKey);
         $list = $cacheItem->get();
-        print "CacheGet" . $listKey;
         if ($cacheItem->isMiss()) {
-            print "CacheMiss" . $listKey;
             $this->getMinutesForCaseFromAlfresco($caseNodeId, $minuteTypes, $listKey);
             $list = $cacheItem->get();
         }
@@ -181,7 +180,7 @@ class CtsCaseMinuteRepository
             array_push($ctsMinuteArray, $this->factory->build($minute));
         }
 
-        $this->storeListInCache($listName, $this->filterMinutesByType($ctsMinuteArray, $minuteTypes));
+        $this->storeListInCache($listName, $ctsMinuteArray);
     }
 
     /**
