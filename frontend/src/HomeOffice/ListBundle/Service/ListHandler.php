@@ -79,18 +79,7 @@ class ListHandler
             throw new \Exception("List not defined: $listName");
         }
 
-        switch ($this->listDefinitions[$listName]['storage']) {
-            case 'session':
-                $list = $this->getListFromSession($listName);
-                break;
-            case 'cache':
-                $list = $this->getListFromCache($listName);
-                break;
-            default:
-                throw new \Exception("Storage not defined for list: $listName");
-        }
-
-        return $list;
+        return $this->initialiseList($listName);
     }
  
     /**
@@ -160,17 +149,8 @@ class ListHandler
         } else {
             $preparedList = $listString;
         }
-     
-        switch ($storage) {
-            case 'session':
-                $this->storeListInSession($listName, $preparedList);
-                break;
-            case 'cache':
-                $this->storeListInCache($listName, $preparedList);
-                break;
-            default:
-                throw new \Exception("Storage type not defined for list: $listName");
-        }
+
+        return $preparedList;
     }
 
 
@@ -193,7 +173,7 @@ class ListHandler
 
         return $membersList;
     }
- 
+
     /**
      *
      * @param array $ctsMinisterList
@@ -212,9 +192,7 @@ class ListHandler
 
         return $ministerList;
     }
- 
-    //TODO - create a minister list with the ids
- 
+
     /**
      *
      * @param object $ctsUnitList
@@ -227,58 +205,6 @@ class ListHandler
             $ctsUnitArray[$unit->getAuthorityName()] = $unit->getDisplayName();
         }
         return $ctsUnitArray;
-    }
-
-    /**
-     *
-     * @param string $name
-     * @param array $list
-     */
-    private function storeListInSession($name, $list)
-    {
-        $this->session->set($name, $list);
-    }
- 
-    /**
-     *
-     * @param string $name
-     * @param array $list
-     */
-    private function storeListInCache($name, $list)
-    {
-        $cacheItem = $this->cachePool->getItem($name);
-        $cacheItem->set($list, $this->cacheTimeout);
-    }
- 
-    /**
-     *
-     * @param string $listName
-     * @return array
-     */
-    private function getListFromSession($listName)
-    {
-        $list = $this->session->get($listName);
-        if ($list == null) {
-            $this->initialiseList($listName);
-            $list = $this->session->get($listName);
-        }
-        return $list;
-    }
- 
-    /**
-     *
-     * @param string $listName
-     * @return array
-     */
-    private function getListFromCache($listName)
-    {
-        $cacheItem = $this->cachePool->getItem($listName);
-        $list = $cacheItem->get();
-        if ($cacheItem->isMiss()) {
-            $this->initialiseList($listName);
-            $list = $cacheItem->get();
-        }
-        return $list;
     }
 
     /**

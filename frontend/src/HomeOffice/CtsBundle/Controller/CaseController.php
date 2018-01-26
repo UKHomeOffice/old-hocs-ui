@@ -266,7 +266,7 @@ class CaseController extends Controller
         $ctsHelper                     = $this->get('home_office_alfresco_api.cts_case.cts_helper');
         $ctsListHandler                = $this->get('home_office_list.handler');
         /** @var CtsCase $ctsCase */
-        $ctsCase = $ctsCaseRepository->getCase($nodeRef, "Viewed Case");
+        $ctsCase = $ctsCaseRepository->getCase($nodeRef);
 
 
         $featureToggle = new CtsFeaturesToggle(new Session);

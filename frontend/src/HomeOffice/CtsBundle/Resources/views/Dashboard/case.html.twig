@@ -37,11 +37,11 @@
             <tr {% if tableLimit is defined and loop.index > tableLimit %}class="hidden dashboardTableToggle"{% endif %}>
                 <td><span class="key" style="background-color:{{ chart.color(loop.index0) }}"></span>
                     {% if ((positions.open + positions.openAndOverdue + positions.returned) > 0 ) %}
-                        <a
+                       <!-- <a
                             href="{{ path('homeoffice_cts_supersearch_results',
-                            searchParams|merge({(''~groupBy): group, 'dashboard': true })) }}">
+                            searchParams|merge({(''~groupBy): group, 'dashboard': true })) }}"> -->
                             {{ group }}
-                        </a>
+                       <!-- </a> -->
                     {%  else %}
                         {{ group }}
                     {% endif %}

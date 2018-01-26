@@ -109,6 +109,8 @@ services:
     home_office_alfresco_api.cts_case_document.repository:
         class: %home_office_alfresco_api.cts_case_document.repository.class%
         arguments:
+            - "@stash.default_cache"
+            - 604800
             - @home_office_alfresco_api.guzzle_client
             - @home_office_alfresco_api.cts_case_document.factory
             - @process_manager_token_storage
@@ -185,6 +187,8 @@ services:
     home_office_alfresco_api.cts_lists.repository:
         class: %home_office_alfresco_api.cts_lists.repository.class%
         arguments:
+            - "@stash.default_cache"
+            - 604800
             - @home_office_alfresco_api.guzzle_client
             - @home_office_alfresco_api.list_guzzle_client
             - @process_manager_token_storage
@@ -195,6 +199,8 @@ services:
     home_office_alfresco_api.cts_case_minute.repository:
         class: %home_office_alfresco_api.cts_case_minute.repository.class%
         arguments:
+            - "@stash.default_cache"
+            - 604800
             - @home_office_alfresco_api.guzzle_client
             - @home_office_alfresco_api.cts_case_minute.factory
             - @process_manager_token_storage
@@ -331,20 +337,31 @@ services:
     home_office_alfresco_api.consumer.message_of_the_day:
       class: HomeOffice\AlfrescoApiBundle\Consumer\MessageOfTheDay
       parent: home_office_alfresco_api.consumer.abstract_consumer
+      arguments:
+        - "@stash.default_cache"
+        - 14400
 
     home_office_alfresco_api.consumer.cts_case:
       class: HomeOffice\AlfrescoApiBundle\Consumer\CtsCase
       parent: home_office_alfresco_api.consumer.abstract_consumer
+      arguments:
+        - "@stash.default_cache"
+        - 28800
 
     home_office_alfresco_api.consumer.cts_case.minutes:
       class: HomeOffice\AlfrescoApiBundle\Consumer\CtsCase\Minutes
       parent: home_office_alfresco_api.consumer.abstract_consumer
+      arguments:
+        - "@stash.default_cache"
+        - 28800
 
     home_office_alfresco_api.consumer.todo_list:
       class: HomeOffice\AlfrescoApiBundle\Consumer\TodoList
       parent: home_office_alfresco_api.consumer.abstract_consumer
       arguments:
         - "@home_office_alfresco_api.mapper.makup_unit"
+        - "@stash.default_cache"
+        - 120
 
     home_office_alfresco_api.consumer.forgotten_password:
       class: HomeOffice\AlfrescoApiBundle\Consumer\ForgottenPassword
@@ -397,7 +414,7 @@ services:
       arguments:
         - "@home_office_alfresco_api.consumer.topic"
         - "@stash.default_cache"
-        - 144000
+        - 28800
 
 # Dashboard
     home_office_alfresco_api.consumer.dashboard:
@@ -409,6 +426,8 @@ services:
       class: HomeOffice\AlfrescoApiBundle\Service\Dashboard\Dashboard
       arguments:
         - "@home_office_alfresco_api.consumer.dashboard"
+        - "@stash.default_cache"
+        - 28800
 
 # Reports
     home_office_alfresco_api.consumer.reports:

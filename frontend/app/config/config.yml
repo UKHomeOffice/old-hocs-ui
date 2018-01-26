@@ -74,7 +74,7 @@ swiftmailer:
     spool:     { type: memory }
 
 home_office_list:
-    cache_timeout_seconds: 36000
+    cache_timeout_seconds: 28800
     list_definitions:
         pq_topic_stop_list:
             name: 'pqTopicStopList'
@@ -97,7 +97,7 @@ home_office_list:
         unit_and_team_list:
             name: 'ctsUnitAndTeamList'
             type: 'custom'
-            storage: 'session'
+            storage: 'cache'
             retrieve_method_name: 'getUnitsAndTeams'
         unit_list:
             name: 'ctsUnitList'

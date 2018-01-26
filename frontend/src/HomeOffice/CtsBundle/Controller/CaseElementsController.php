@@ -105,8 +105,7 @@ class CaseElementsController extends Controller
 
                 $ajaxResponseBuilder
                     ->setSuccess(true)
-                    ->setMessage('The new minute has been added to the case')
-                    ->setCallback('updateNode', ['.minutesTable', json_encode($table)]);
+                    ->setMessage('The new minute has been added to the case');
             }
 
             return $ajaxResponseBuilder->createResponse();

@@ -9,6 +9,7 @@ use HomeOffice\ProcessManagerAuthenticatorBundle\Security\SessionTicketStorage;
 use HomeOffice\AlfrescoApiBundle\Service\CTSHelper;
 use HomeOffice\AlfrescoApiBundle\Factory\CtsCaseMinuteFactory;
 use Monolog\Logger;
+use Tedivm\StashBundle\Service\CacheService;
 
 class CtsCaseMinuteRepository
 {
@@ -45,6 +46,9 @@ class CtsCaseMinuteRepository
     /** @var  Logger */
     protected $logger;
 
+    protected $cacheService;
+
+    protected $cacheTimeout;
     /**
      *
      * @param \GuzzleHttp\Client $apiClient
@@ -56,6 +60,8 @@ class CtsCaseMinuteRepository
      * @param Logger $logger
      */
     public function __construct(
+        CacheService $cacheService,
+        $cacheTimeout,
         Guzzle $apiClient,
         CtsCaseMinuteFactory $ctsCaseFactory,
         SessionTicketStorage $tokenStorage,
@@ -71,6 +77,9 @@ class CtsCaseMinuteRepository
         $this->workspace = $workspace;
         $this->store = $store;
         $this->logger = $logger;
+
+        $this->cacheService = $cacheService;
+        $this->cacheTimeout = $cacheTimeout;
     }
 
     /**
@@ -80,6 +89,11 @@ class CtsCaseMinuteRepository
      */
     public function create($newMinute, $caseNodeRef)
     {
+
+        $topicKey = "symfonyMins" . $caseNodeRef;
+        $item = $this->cacheService->getItem($topicKey);
+        $item->clear();
+
         $body = json_encode(
             array(
                 'content'                => array (
@@ -121,6 +135,24 @@ class CtsCaseMinuteRepository
      */
     public function getMinutesForCase($caseNodeId, array $minuteTypes = array('manual'))
     {
+        $topicKey = "symfonyMins" . $caseNodeId;
+        return $this->getDocumentsFromCache($topicKey, $caseNodeId, $minuteTypes);}
+
+    public function getDocumentsFromCache($listKey, $caseNodeId, $minuteTypes)
+    {
+        $cacheItem = $this->cacheService->getItem($listKey);
+        $list = $cacheItem->get();
+        print "CacheGet" . $listKey;
+        if ($cacheItem->isMiss()) {
+            print "CacheMiss" . $listKey;
+            $this->getMinutesForCaseFromAlfresco($caseNodeId, $minuteTypes, $listKey);
+            $list = $cacheItem->get();
+        }
+        return $list;
+    }
+
+    public function getMinutesForCaseFromAlfresco($caseNodeId, array $minuteTypes, $listName)
+    {
         /** @var Response $response */
         $response = $this
             ->apiClient
@@ -149,7 +181,18 @@ class CtsCaseMinuteRepository
             array_push($ctsMinuteArray, $this->factory->build($minute));
         }
 
-        return $this->filterMinutesByType($ctsMinuteArray, $minuteTypes);
+        $this->storeListInCache($listName, $this->filterMinutesByType($ctsMinuteArray, $minuteTypes));
+    }
+
+    /**
+     *
+     * @param string $name
+     * @param array $list
+     */
+    private function storeListInCache($name, $list)
+    {
+        $cacheItem = $this->cacheService->getItem($name);
+        $cacheItem->set($list, $this->cacheTimeout);
     }
 
     /**

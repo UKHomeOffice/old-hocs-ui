@@ -11,6 +11,7 @@ use HomeOffice\AlfrescoApiBundle\Factory\CtsCaseDocumentFactory;
 use HomeOffice\AlfrescoApiBundle\Entity\CtsCaseDocument;
 use GuzzleHttp\Exception\RequestException;
 use Monolog\Logger;
+use Tedivm\StashBundle\Service\CacheService;
 
 class CtsCaseDocumentRepository
 {
@@ -61,6 +62,10 @@ class CtsCaseDocumentRepository
      */
     private $personRepository;
 
+    protected $cacheService;
+
+    protected $cacheTimeout;
+
     /**
      *
      * @param \GuzzleHttp\Client $apiClient
@@ -75,6 +80,8 @@ class CtsCaseDocumentRepository
      * @param Logger $logger
      */
     public function __construct(
+        CacheService $cacheService,
+        $cacheTimeout,
         Guzzle $apiClient,
         CtsCaseDocumentFactory $ctsCaseDocumentFactory,
         SessionTicketStorage $tokenStorage,
@@ -102,6 +109,10 @@ class CtsCaseDocumentRepository
         $this->caseDocumentProperties = $caseDocumentProperties;
         $this->personRepository = $personRepository;
         $this->logger = $logger;
+
+        $this->cacheService = $cacheService;
+        $this->cacheTimeout = $cacheTimeout;
+
     }
 
     /**
@@ -112,6 +123,10 @@ class CtsCaseDocumentRepository
      */
     public function create($ctsCaseDocument, $caseNodeRef, $caseNodeId)
     {
+        $topicKey = "symfonyDocs" . $caseNodeId;
+        $item = $this->cacheService->getItem($topicKey);
+        $item->clear();
+
         $ctsCaseDocument->upload($caseNodeId);
 
         $body = array(
@@ -177,6 +192,23 @@ class CtsCaseDocumentRepository
      */
     public function getDocumentsForCase($caseNodeId, $hydrate = false)
     {
+        $topicKey = "symfonyDocs" . $caseNodeId;
+        return $this->getDocumentsFromCache($topicKey, $caseNodeId);
+    }
+
+    public function getDocumentsFromCache($listKey, $caseNodeId)
+    {
+        $cacheItem = $this->cacheService->getItem($listKey);
+        $list = $cacheItem->get();
+        if ($cacheItem->isMiss()) {
+            $this->getDocumentsForCaseFromAlfresco($caseNodeId, $listKey);
+            $list = $cacheItem->get();
+        }
+        return $list;
+    }
+
+    private function getDocumentsForCaseFromAlfresco($caseNodeId, $listName, $hydrate = false)
+    {
         $response = $this->apiClient->get("s/api/node/$this->workspace/$this->store/$caseNodeId/children", [
             'query' => [
                 'alf_ticket' => $this->tokenStorage->getAuthenticationTicket(),
@@ -196,24 +228,28 @@ class CtsCaseDocumentRepository
             null
         );
 
-        if ($hydrate === false) {
+
             // @todo refactor this out.
             foreach ($documentArray as $key => $doc) {
                 $documentArray[$key]['shortDocumentNodeRef'] = preg_replace('/workspace\:\/\/SpacesStore\//', '', $doc['id']);
             }
 
-            return $documentArray;
-        }
+            $this->storeListInCache($listName, $documentArray);
 
-        $factory = new CtsCaseDocumentFactory($this->workspace, $this->store);
-
-        $documents = [];
-        foreach ($documentArray as $doc) {
-            $documents[] = $factory->build($doc);
-        }
-
-        return $documents;
     }
+
+
+    /**
+     *
+     * @param string $name
+     * @param array $list
+     */
+    private function storeListInCache($name, $list)
+    {
+        $cacheItem = $this->cacheService->getItem($name);
+        $cacheItem->set($list, $this->cacheTimeout);
+    }
+
 
     /**
      *

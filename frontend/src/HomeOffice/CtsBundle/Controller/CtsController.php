@@ -89,7 +89,6 @@ class CtsController extends Controller
      * @param ParameterBag $queryParameters
      * @param string       $pagePath
      *
-     * @param Symfony\Component\HttpFoundation\ParameterBag $queryParameters
      * @return Paginator
      */
     protected function setupPaginator($queryParameters, $pagePath)

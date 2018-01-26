@@ -9,6 +9,7 @@ use HomeOffice\AlfrescoApiBundle\Factory\PersonFactory;
 use HomeOffice\AlfrescoApiBundle\Factory\UnitFactory;
 use HomeOffice\AlfrescoApiBundle\Factory\TeamFactory;
 use HomeOffice\ProcessManagerAuthenticatorBundle\Security\SessionTicketStorage;
+use Tedivm\StashBundle\Service\CacheService;
 
 class CtsListsRepository
 {
@@ -45,6 +46,11 @@ class CtsListsRepository
      * @var TeamFactory
      */
     private $teamFactory;
+
+
+    protected $cacheService;
+
+    protected $cacheTimeout;
  
     /**
      *
@@ -56,6 +62,8 @@ class CtsListsRepository
      * @param TeamFactory $teamFactory
      */
     public function __construct(
+        CacheService $cacheService,
+        $cacheTimeout,
         Guzzle $apiClient,
         Guzzle $listService,
         SessionTicketStorage $tokenStorage,
@@ -70,6 +78,9 @@ class CtsListsRepository
         $this->personFactory = $personFactory;
         $this->unitFactory = $unitFactory;
         $this->teamFactory = $teamFactory;
+
+        $this->cacheService = $cacheService;
+        $this->cacheTimeout = $cacheTimeout;
     }
  
     /**
@@ -78,6 +89,8 @@ class CtsListsRepository
      */
     public function getUnitsAndTeams()
     {
+
+
         try {
             $response = $this->apiClient->get('s/homeoffice/cts/allTeams', [
                 'query' => ['alf_ticket' => $this->tokenStorage->getAuthenticationTicket()],
@@ -85,9 +98,9 @@ class CtsListsRepository
         } catch (RequestException $exception) {
             $response = $exception->getResponse();
         }
-     
+
         $responseBody = json_decode($response->getBody()->__toString());
-     
+
         $ctsUnitAndTeamArray = array();
         foreach ($responseBody->units as $unit) {
             $teamArray = array();

@@ -3,7 +3,7 @@ version: '3.1'
 services:
 
   clamd:
-    image: mkodockx/docker-clamav
+    image: quay.io/ukhomeofficedigital/clamav
     ports:
       - "3310:3310/tcp"
     networks:

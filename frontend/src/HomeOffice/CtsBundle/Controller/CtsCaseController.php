@@ -59,7 +59,7 @@ class CtsCaseController extends Controller
     {
         return [
             'nodeRef' => $nodeRef,
-            'case'    => $this->getCase($nodeRef, "Viewed Case")
+            'case'    => $this->getCase($nodeRef)
         ];
     }
 
@@ -121,7 +121,7 @@ class CtsCaseController extends Controller
      */
     public function createAction(Request $request, $nodeRef)
     {
-        $case = $this->getCase($nodeRef);
+        $case = $this->getCase($nodeRef, "Viewed Case - Create");
         $case->setCaseDocuments($this->getCtsCaseDocumentRepository()->getDocumentsForCase($case->getNodeId()));
 
         if ($this->getCaseProgressHelper()->isStepValid('create', $case) === false) {
@@ -162,7 +162,7 @@ class CtsCaseController extends Controller
      */
     public function draftAction(Request $request, $nodeRef)
     {
-        $case = $this->getCase($nodeRef);
+        $case = $this->getCase($nodeRef, "Viewed Case - Draft");
         $case->setCaseDocuments($this->getCtsCaseDocumentRepository()->getDocumentsForCase($case->getNodeId()));
 
         if ($this->getCaseProgressHelper()->isStepValid('draft', $case) === false) {
@@ -202,7 +202,7 @@ class CtsCaseController extends Controller
      */
     public function approveAction(Request $request, $nodeRef)
     {
-        $case = $this->getCase($nodeRef);
+        $case = $this->getCase($nodeRef,"Viewed Case - Approve");
         $case->setCaseDocuments($this->getCtsCaseDocumentRepository()->getDocumentsForCase($case->getNodeId()));
 
         if ($this->getCaseProgressHelper()->isStepValid('approve', $case) === false) {
@@ -247,7 +247,7 @@ class CtsCaseController extends Controller
      */
     public function signOffAction(Request $request, $nodeRef)
     {
-        $case = $this->getCase($nodeRef);
+        $case = $this->getCase($nodeRef, "Viewed Case - Sign Off");
         $case->setCaseDocuments($this->getCtsCaseDocumentRepository()->getDocumentsForCase($case->getNodeId()));
 
         if ($this->getCaseProgressHelper()->isStepValid('signOff', $case) === false) {
@@ -286,7 +286,7 @@ class CtsCaseController extends Controller
      */
     public function dispatchAction(Request $request, $nodeRef)
     {
-        $case = $this->getCase($nodeRef);
+        $case = $this->getCase($nodeRef, "Viewed Case - Dispatch");
         $case->setCaseDocuments($this->getCtsCaseDocumentRepository()->getDocumentsForCase($case->getNodeId()));
 
         if ($this->getCaseProgressHelper()->isStepValid('dispatch', $case) === false) {
@@ -325,7 +325,7 @@ class CtsCaseController extends Controller
      */
     public function completeAction(Request $request, $nodeRef)
     {
-        $case = $this->getCase($request->get('nodeRef'));
+        $case = $this->getCase($request->get('nodeRef'),"Viewed Case - Complete");
         if ($case->getCaseStatus() !== CaseProgressHelper::PROGRESS_COMPLETED) {
             return $this->redirect($this->generateUrl('homeoffice_cts_ctscase_jump', ['nodeRef' => $nodeRef]));
         }
