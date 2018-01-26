@@ -82,6 +82,17 @@ class CtsListsRepository
         $this->cacheService = $cacheService;
         $this->cacheTimeout = $cacheTimeout;
     }
+
+    /**
+     *
+     * @param string $name
+     * @param array $list
+     */
+    private function storeListInCache($name, $list)
+    {
+        $cacheItem = $this->cacheService->getItem($name);
+        $cacheItem->set($list, $this->cacheTimeout);
+    }
  
     /**
      *
@@ -89,8 +100,23 @@ class CtsListsRepository
      */
     public function getUnitsAndTeams()
     {
+        $topicKey = "symfonyUnitsAndTeams";
+        return $this->getUnitsAndTeamsFromCache($topicKey);
+    }
 
+    private function getUnitsAndTeamsFromCache($listKey)
+    {
+        $cacheItem = $this->cacheService->getItem($listKey);
+        $list = $cacheItem->get();
+        if ($cacheItem->isMiss()) {
+            $this->getUnitsAndTeamsFromAlfresco($listKey);
+            $list = $cacheItem->get();
+        }
+        return $list;
+    }
 
+    private function getUnitsAndTeamsFromAlfresco($listName)
+    {
         try {
             $response = $this->apiClient->get('s/homeoffice/cts/allTeams', [
                 'query' => ['alf_ticket' => $this->tokenStorage->getAuthenticationTicket()],
@@ -112,7 +138,7 @@ class CtsListsRepository
             $unit->setTeams($teamArray);
             array_push($ctsUnitAndTeamArray, $unit);
         }
-        return $ctsUnitAndTeamArray;
+        $this->storeListInCache($listName, $ctsUnitAndTeamArray);
     }
  
     /**
@@ -120,6 +146,23 @@ class CtsListsRepository
      * @return array
      */
     public function getPeopleInUsersTeams()
+    {
+        $topicKey = "symfonyPeopleInUsersTeams";
+        return $this->getPeopleTeamsFromCache($topicKey);
+    }
+
+    private function getPeopleTeamsFromCache($listKey)
+    {
+        $cacheItem = $this->cacheService->getItem($listKey);
+        $list = $cacheItem->get();
+        if ($cacheItem->isMiss()) {
+            $this->getPeopleInUsersTeamsFromAlfresco($listKey);
+            $list = $cacheItem->get();
+        }
+        return $list;
+    }
+
+    private function getPeopleInUsersTeamsFromAlfresco($listName)
     {
         try {
             $response = $this->apiClient->get('service/homeoffice/cts/peopleInUsersTeams', [
@@ -131,14 +174,14 @@ class CtsListsRepository
         } catch (RequestException $exception) {
             $response = $exception->getResponse();
         }
-     
+
         $responseBody = json_decode($response->getBody()->__toString());
         $people = array();
         foreach ((array)$responseBody->users as $value) {
             $people[] = $this->personFactory->build($value);
         }
-     
-        return $people;
+
+        $this->storeListInCache($listName, $people);
     }
  
     /**
@@ -147,6 +190,23 @@ class CtsListsRepository
      * @return Person[]
      */
     public function getPeopleFromGroup($group)
+    {
+        $topicKey = "symfonyPeopleFromGroup" . $group;
+        return $this->getPeopleFromCache($topicKey, $group);
+    }
+
+    private function getPeopleFromCache($listKey, $group)
+    {
+        $cacheItem = $this->cacheService->getItem($listKey);
+        $list = $cacheItem->get();
+        if ($cacheItem->isMiss()) {
+            $this->getPeopleFromGroupFromAlfresco($group, $listKey);
+            $list = $cacheItem->get();
+        }
+        return $list;
+    }
+
+    private function getPeopleFromGroupFromAlfresco($group, $listName)
     {
         try {
             $response = $this->apiClient->get('s/homeoffice/cts/teamUsers', [
@@ -158,7 +218,7 @@ class CtsListsRepository
         } catch (RequestException $exception) {
             $response = $exception->getResponse();
         }
-     
+
         $responseBody = json_decode($response->getBody()->__toString());
         $people = [];
         if (isset($responseBody->users)) {
@@ -166,8 +226,8 @@ class CtsListsRepository
                 $people[] = $this->personFactory->build($value);
             }
         }
-     
-        return $people;
+
+        $this->storeListInCache($listName, $people);
     }
  
     /**
@@ -197,14 +257,32 @@ class CtsListsRepository
      */
     public function getDataList($listName)
     {
+        $topicKey = "symfonyDataLIST" . $listName;
+        return $this->getDataListFromCache($topicKey, $listName);
+    }
+
+    private function getDataListFromCache($listKey, $listName)
+    {
+        $cacheItem = $this->cacheService->getItem($listKey);
+        $list = $cacheItem->get();
+        if ($cacheItem->isMiss()) {
+            $this->getDataListFromAlfresco($listName, $listKey);
+            $list = $cacheItem->get();
+        }
+        return $list;
+    }
+
+    private function getDataListFromAlfresco($listName, $keyname)
+    {
         $response = $this->listService->get("list/$listName", []);
-     
+
         if ($response->getStatusCode() != '200') {
             return false;
         }
-     
+
         $responseBody = $response->getBody()->__toString();
-     
-        return $responseBody;
+
+        $this->storeListInCache($keyname, $responseBody);
     }
+
 }

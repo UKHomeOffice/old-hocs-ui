@@ -67,6 +67,7 @@ class CaseController extends Controller
      */
     public function createSimpleAction(Request $request)
     {
+
         // @todo abstract out to middleware.
         if (false === $this->get('security.context')->isGranted('create', $this->getUser())) {
             $this->setSessionParameter('errorMsg', 'You do not have permission to create a case');

@@ -16,6 +16,7 @@ use HomeOffice\AlfrescoApiBundle\Service\CaseStatus;
 use HomeOffice\AlfrescoApiBundle\Factory\CtsCaseFactory;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Tedivm\StashBundle\Service\CacheService;
 
 /**
  * Class CtsCaseRepository
@@ -84,6 +85,10 @@ class CtsCaseRepository
      */
     private $listHandler;
 
+    protected $cacheService;
+
+    protected $cacheTimeout;
+
     /**
      * Constructor
      *
@@ -101,6 +106,8 @@ class CtsCaseRepository
      * @param ListHandler          $listHandler
      */
     public function __construct(
+        CacheService $cacheService,
+        $cacheTimeout,
         Guzzle $apiClient,
         CtsCaseFactory $ctsCaseFactory,
         SessionTicketStorage $tokenStorage,
@@ -126,6 +133,10 @@ class CtsCaseRepository
         $this->casePermissions = $casePermissions;
         $this->session = $session;
         $this->listHandler = $listHandler;
+
+        $this->cacheService = $cacheService;
+        $this->cacheTimeout = $cacheTimeout;
+
     }
 
     /**
@@ -170,6 +181,10 @@ class CtsCaseRepository
     {
         $nodeId = $ctsCase->getNodeId();
 
+        $topicKey = "symfonyCase" . $nodeId;
+        $item = $this->cacheService->getItem($topicKey);
+        $item->clear();
+
         $body = $this->atomHelper->generateAtomEntry(
             $ctsCase,
             $ctsCase->getFolderName(),
@@ -196,67 +211,6 @@ class CtsCaseRepository
         return true;
     }
 
-    /**
-     *
-     * @param array $ctsCaseStatusArray
-     * @param array $ctsTaskStatusArray
-     * @param array $ctsCaseTypeArray
-     * @param Paginator $paginator
-     * @param string $orderByField
-     * @param string $orderByDirection
-     * @return boolean|array
-     */
-    public function getTodoQueue(
-        $ctsCaseStatusArray,
-        $ctsTaskStatusArray,
-        $ctsCaseTypeArray,
-        $paginator,
-        $orderByField,
-        $orderByDirection
-    ) {
-        $query = $this->buildToDoQueueQuery(
-            $ctsCaseStatusArray,
-            $ctsTaskStatusArray,
-            $ctsCaseTypeArray,
-            $orderByField,
-            $orderByDirection
-        );
-
-        $sessionVarName =  'todoQueueQuery_' . $this->ctsHelper->getLoggedInUserName();
-        $this->session->set($sessionVarName, $query);
-
-        $response = $this->apiClient->get('s/cmis/query', [
-            'query' => [
-                'alf_ticket' => $this->tokenStorage->getAuthenticationTicket(),
-                'q' => $query,
-                'includeAllowableActions' => 'true',
-                'maxItems' => $paginator->getPageSize(),
-                'skipCount' => $paginator->calculateSkipCount()
-            ],
-        ]);
-
-        if ($response->getStatusCode() != '200') {
-            return false;
-        }
-
-        $responseBody = $response->getBody()->__toString();
-
-        $cases = $this->atomHelper->multiEntryFeedToArray(
-            $responseBody,
-            'cmisra:object',
-            $this->caseProperties,
-            'required_for_case_queue',
-            $this->casePermissons,
-            $paginator
-        );
-
-        $ctsTodoQueue = array();
-        foreach ($cases as $ctsCase) {
-            $caseClass = $this->ctsHelper->getCaseClassFromType($ctsCase['correspondenceType']);
-            array_push($ctsTodoQueue, $this->factory->build($ctsCase, $caseClass));
-        }
-        return $ctsTodoQueue;
-    }
 
     /**
      *
@@ -350,144 +304,6 @@ class CtsCaseRepository
         );
     }
 
-    /**
-     *
-     * @param Person $user
-     * @param array $ctsCaseStatusArray
-     * @param array $ctsTaskStatusArray
-     * @param array $ctsTeamArray
-     * @param array $ctsAssignedUserArray
-     * @param array $ctsCaseTypeArray
-     * @param Paginator $paginator
-     * @param string $orderByField
-     * @param string $orderByDirection
-     * @return boolean|array
-     */
-    public function getTeamQueue(
-        $user,
-        $ctsCaseStatusArray,
-        $ctsTaskStatusArray,
-        $ctsTeamArray,
-        $ctsAssignedUserArray,
-        $ctsCaseTypeArray,
-        $paginator,
-        $orderByField,
-        $orderByDirection
-    ) {
-
-        $query = $this->buildTeamQueueQuery(
-            $user,
-            $ctsCaseStatusArray,
-            $ctsTaskStatusArray,
-            $ctsTeamArray,
-            $ctsAssignedUserArray,
-            $ctsCaseTypeArray,
-            $orderByField,
-            $orderByDirection
-        );
-
-        $sessionVarName =  'teamQueueQuery_' . $this->ctsHelper->getLoggedInUserName();
-        $this->session->set($sessionVarName, $query);
-
-        $response = $this->apiClient->get('s/cmis/query', [
-            'query' => [
-                'alf_ticket' => $this->tokenStorage->getAuthenticationTicket(),
-                'q' => $query,
-                'includeAllowableActions' => 'true',
-                'maxItems' => $paginator->getPageSize(),
-                'skipCount' => $paginator->calculateSkipCount()
-            ],
-        ]);
-
-        if ($response->getStatusCode() != '200') {
-            return false;
-        }
-
-        $responseBody = $response->getBody()->__toString();
-        $cases = $this->atomHelper->multiEntryFeedToArray(
-            $responseBody,
-            'cmisra:object',
-            $this->caseProperties,
-            'required_for_case_queue',
-            $this->casePermissions,
-            $paginator
-        );
-
-        $ctsTodoQueue = array();
-        foreach ($cases as $ctsCase) {
-            $caseClass = $this->ctsHelper->getCaseClassFromType($ctsCase['correspondenceType']);
-            $case = $this->factory->build($ctsCase, $caseClass);
-            $this->ctsHelper->setCaseOwner($case);
-            array_push($ctsTodoQueue, $case);
-        }
-
-        return $ctsTodoQueue;
-    }
-
-    /**
-     *
-     * @param string $user
-     * @param array $ctsCaseStatusArray
-     * @param array $ctsTaskStatusArray
-     * @param array $ctsTeamArray
-     * @param array $ctsAssignedUserArray
-     * @param array $ctsCaseTypeArray
-     * @param string $orderByField
-     * @param string $orderByDirection
-     * @return string
-     */
-    private function buildTeamQueueQuery(
-        $user,
-        $ctsCaseStatusArray,
-        $ctsTaskStatusArray,
-        $ctsTeamArray,
-        $ctsAssignedUserArray,
-        $ctsCaseTypeArray,
-        $orderByField,
-        $orderByDirection
-    ) {
-
-        $select = $this->queryHelper->getQueueSelectStatement();
-        $from = QueryHelper::getQueueFromStatement();
-        $whereArray = array();
-
-        $userUnits = $this->queryHelper->getUnitsTeamsForQuery($user->getUnits());
-        $userTeams = $this->queryHelper->getUnitsTeamsForQuery($user->getTeams());
-
-        if ($userUnits != '' && $userTeams != '') {
-            array_push($whereArray, "( c.cts:assignedUnit IN $userUnits OR c.cts:assignedTeam IN $userTeams )");
-        } elseif ($userUnits != '') {
-            array_push($whereArray, "c.cts:assignedUnit IN $userUnits");
-        } elseif ($userTeams != '') {
-            array_push($whereArray, "c.cts:assignedTeam IN $userTeams");
-        } else {
-            array_push($whereArray, "c.cts:assignedUnit = 'NON_EXISTANT_TEAM'");
-        }
-
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:caseStatus', ' <> ', CaseStatus::COMPLETED);
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:caseStatus', ' <> ', CaseStatus::DELETED);
-        $this->queryHelper->addToWhereStatement($whereArray, 'gs.cts:isGroupedSlave', ' = ', 'false');
-        $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:caseStatus', $ctsCaseStatusArray);
-        $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:caseTask', $ctsTaskStatusArray);
-        $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:correspondenceType', $ctsCaseTypeArray);
-        $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:assignedTeam', $ctsTeamArray);
-        $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:assignedUser', $ctsAssignedUserArray);
-
-        if ($orderByField != null && $orderByDirection != null) {
-            $orderBy = $this->queryHelper->getQueueOrderByStatement($orderByField, $orderByDirection);
-        } else {
-            $orderBy = array();
-        }
-
-        return $this->queryHelper->constructQueryWithMultipleFilters(
-            $select,
-            $from,
-            $whereArray,
-            array(),
-            array(),
-            $orderBy
-        );
-    }
 
     /**
      *
@@ -523,156 +339,7 @@ class CtsCaseRepository
         return $this->exportQueueFromQuery($query, $fileName);
     }
 
-    /**
-     *
-     * @param Person $user
-     * @param array $ctsCaseStatusArray
-     * @param array $ctsTaskStatusArray
-     * @param array $ctsTeamArray
-     * @param array $ctsAssignedUserArray
-     * @param array $ctsCaseTypeArray
-     * @param Paginator $paginator
-     * @param string $orderByField
-     * @param string $orderByDirection
-     * @return boolean|array
-     */
-    public function getUnitQueue(
-        $user,
-        $ctsCaseStatusArray,
-        $ctsTaskStatusArray,
-        $ctsTeamArray,
-        $ctsAssignedUserArray,
-        $ctsCaseTypeArray,
-        $paginator,
-        $orderByField,
-        $orderByDirection
-    ) {
-        $query = $this->buildUnitQueueQuery(
-            $user,
-            $ctsCaseStatusArray,
-            $ctsTaskStatusArray,
-            $ctsTeamArray,
-            $ctsAssignedUserArray,
-            $ctsCaseTypeArray,
-            $orderByField,
-            $orderByDirection
-        );
 
-        $sessionVarName =  'unitQueueQuery_' . $this->ctsHelper->getLoggedInUserName();
-        $this->session->set($sessionVarName, $query);
-
-        $response = $this->apiClient->get('s/cmis/query', [
-            'query' => [
-                'alf_ticket' => $this->tokenStorage->getAuthenticationTicket(),
-                'q' => $query,
-                'includeAllowableActions' => 'true',
-                'maxItems' => $paginator->getPageSize(),
-                'skipCount' => $paginator->calculateSkipCount()
-            ],
-        ]);
-
-        if ($response->getStatusCode() != '200') {
-            return false;
-        }
-
-        $responseBody = $response->getBody()->__toString();
-        $cases = $this->atomHelper->multiEntryFeedToArray(
-            $responseBody,
-            'cmisra:object',
-            $this->caseProperties,
-            'required_for_case_queue',
-            $this->casePermissions,
-            $paginator
-        );
-
-        $ctsTodoQueue = array();
-        foreach ($cases as $ctsCase) {
-            $caseClass = $this->ctsHelper->getCaseClassFromType($ctsCase['correspondenceType']);
-            $case = $this->factory->build($ctsCase, $caseClass);
-            $this->ctsHelper->setCaseOwner($case);
-            array_push($ctsTodoQueue, $case);
-        }
-        return $ctsTodoQueue;
-    }
-
-    /**
-     *
-     * @param string $user
-     * @param array $ctsCaseStatusArray
-     * @param array $ctsTaskStatusArray
-     * @param array $ctsTeamArray
-     * @param array $ctsAssignedUserArray
-     * @param array $ctsCaseTypeArray
-     * @param string $orderByField
-     * @param string $orderByDirection
-     * @return string
-     */
-    private function buildUnitQueueQuery(
-        $user,
-        $ctsCaseStatusArray,
-        $ctsTaskStatusArray,
-        $ctsTeamArray,
-        $ctsAssignedUserArray,
-        $ctsCaseTypeArray,
-        $orderByField,
-        $orderByDirection
-    ) {
-        $select = $this->queryHelper->getQueueSelectStatement();
-        $from = QueryHelper::getQueueFromStatement();
-        $whereArray = array();
-
-        $caseTypes = array();
-        $stages = array();
-        $unitQueueCaseTypes = $this->queryHelper->getCaseTypesForQuery($user->getUnits());
-
-        foreach ($unitQueueCaseTypes as $group) {
-            $typesAndStages = $this->ctsHelper->getGroupCaseTypes($group);
-            if (array_key_exists("TYPES", $typesAndStages)) {
-                $caseTypes = array_merge($caseTypes, $typesAndStages["TYPES"]);
-            }
-            if (array_key_exists("STAGES", $typesAndStages)) {
-                $stages = array_merge($stages, $typesAndStages["STAGES"]);
-            }
-        }
-
-        $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:correspondenceType', $caseTypes);
-        $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:hmpoStage', $stages, true);
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:caseStatus', ' <> ', CaseStatus::COMPLETED);
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:caseStatus', ' <> ', CaseStatus::DELETED);
-        $this->queryHelper->addToWhereStatement($whereArray, 'gs.cts:isGroupedSlave', ' = ', 'false');
-        $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:caseStatus', $ctsCaseStatusArray);
-        $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:caseTask', $ctsTaskStatusArray);
-        $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:correspondenceType', $ctsCaseTypeArray);
-        $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:assignedTeam', $ctsTeamArray);
-        $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:assignedUser', $ctsAssignedUserArray);
-
-        if ($orderByField != null && $orderByDirection != null) {
-            $orderBy = $this->queryHelper->getQueueOrderByStatement($orderByField, $orderByDirection);
-        } else {
-            $orderBy = array();
-        }
-
-        return $this->queryHelper->constructQueryWithMultipleFilters(
-            $select,
-            $from,
-            $whereArray,
-            array(),
-            array(),
-            $orderBy
-        );
-    }
-
-    /**
-     *
-     * @param string $user
-     * @param array $ctsCaseStatusArray
-     * @param array $ctsTaskStatusArray
-     * @param array $ctsTeamArray
-     * @param array $ctsAssignedUserArray
-     * @param array $ctsCaseTypeArray
-     * @param string $fileName
-     * @return boolean|string
-     */
     public function exportUnitQueue(
         $user,
         $ctsCaseStatusArray,
@@ -696,12 +363,39 @@ class CtsCaseRepository
         return $this->exportQueueFromQuery($query, $fileName);
     }
 
+    public function getCase($nodeRef, $audit = "")
+    {
+        $topicKey = "symfonyCase" . $nodeRef;
+
+        $case = $this->getCaseFromCache($topicKey, $nodeRef);
+        return $this->factory->build(json_decode($case),
+            $this->ctsHelper->getCaseClassFromType(json_decode($case)->ctsCase->correspondenceType)
+        );
+    }
+
+    private function getCaseFromCache($listKey, $caseNodeId)
+    {
+        $cacheItem = $this->cacheService->getItem($listKey);
+        $list = $cacheItem->get();
+        if ($cacheItem->isMiss()) {
+            $this->getCaseFromAlfresco($caseNodeId, $listKey);
+            $list = $cacheItem->get();
+        }
+        return $list;
+    }
+
+    private function storeListInCache($name, $list)
+    {
+        $cacheItem = $this->cacheService->getItem($name);
+        $cacheItem->set($list, $this->cacheTimeout);
+    }
+
     /**
      * @param string $nodeRef
      *
      * @return CtsCase|bool
      */
-    public function getCase($nodeRef, $audit = "")
+    private function getCaseFromAlfresco($nodeRef, $listName, $audit = "")
     {
         if($audit !== "") {
             $this->auditView($audit, $nodeRef);
@@ -717,11 +411,9 @@ class CtsCaseRepository
             return false;
         }
 
-        $case = json_decode($response->getBody()->__toString());
+        $case = $response->getBody()->__toString();
 
-        return $this->factory->build($case,
-            $this->ctsHelper->getCaseClassFromType($case->ctsCase->correspondenceType)
-        );
+        $this->storeListInCache($listName, $case);
     }
 
     public function auditView($audit, $caseNodeRef)
@@ -766,6 +458,10 @@ class CtsCaseRepository
      */
     public function addGroupedCases(CtsCase $ctsCase)
     {
+        $topicKey = "symfonyCase" . $ctsCase->getId();
+        $item = $this->cacheService->getItem($topicKey);
+        $item->clear();
+
         try {
             $this->apiClient->post("s/homeoffice/cts/groupCases", [
                 'query' => [
@@ -793,9 +489,16 @@ class CtsCaseRepository
      */
     public function removeGroupedCases(CtsCase $masterCtsCase, array $slaveCtsCases)
     {
+        $topicKey = "symfonyCase" . $masterCtsCase->getId();
+        $item = $this->cacheService->getItem($topicKey);
+        $item->clear();
+
         try {
             $slaveNodeRefs = [];
             foreach ($slaveCtsCases as $slaveCtsCase) {
+                $topicKey = "symfonyCase" . $slaveCtsCase->getId();
+                $item = $this->cacheService->getItem($topicKey);
+                $item->clear();
                 array_push($slaveNodeRefs, $slaveCtsCase->getId());
             }
 
@@ -822,6 +525,10 @@ class CtsCaseRepository
      */
     public function addLinkedCases(CtsCase $ctsCase)
     {
+        $topicKey = "symfonyCase" . $ctsCase->getId();
+        $item = $this->cacheService->getItem($topicKey);
+        $item->clear();
+
         try {
             $this->apiClient->post("s/homeoffice/cts/linkCases", [
                 'query' => [
@@ -849,6 +556,13 @@ class CtsCaseRepository
      */
     public function removeLinkedCase(CtsCase $ctsCase, CtsCase $childCase)
     {
+        $topicKey = "symfonyCase" . $ctsCase->getId();
+        $item = $this->cacheService->getItem($topicKey);
+        $item->clear();
+
+        $topicKey = "symfonyCase" . $childCase->getId();
+        $item = $this->cacheService->getItem($topicKey);
+        $item->clear();
         try {
             $this->apiClient->post("s/homeoffice/cts/unlinkCases", [
                 'query' => [
@@ -878,6 +592,10 @@ class CtsCaseRepository
      */
     public function assignCaseToPerson(CtsCase $case, Person $person)
     {
+        $topicKey = "symfonyCase" . $case->getId();
+        $item = $this->cacheService->getItem($topicKey);
+        $item->clear();
+
         $team = $person->getFirstTeam();
         $unit = $person->getFirstUnit() ?: $this->listHandler->getUnitFromTeam($team);
 

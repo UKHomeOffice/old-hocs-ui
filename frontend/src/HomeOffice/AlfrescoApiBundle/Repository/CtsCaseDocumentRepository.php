@@ -196,7 +196,7 @@ class CtsCaseDocumentRepository
         return $this->getDocumentsFromCache($topicKey, $caseNodeId);
     }
 
-    public function getDocumentsFromCache($listKey, $caseNodeId)
+    private function getDocumentsFromCache($listKey, $caseNodeId)
     {
         $cacheItem = $this->cacheService->getItem($listKey);
         $list = $cacheItem->get();
@@ -228,14 +228,11 @@ class CtsCaseDocumentRepository
             null
         );
 
-
-            // @todo refactor this out.
             foreach ($documentArray as $key => $doc) {
                 $documentArray[$key]['shortDocumentNodeRef'] = preg_replace('/workspace\:\/\/SpacesStore\//', '', $doc['id']);
             }
 
             $this->storeListInCache($listName, $documentArray);
-
     }
 
 
