@@ -86,13 +86,13 @@
                 {% if form['replyTo'] is defined %}
                     {% include 'HomeOfficeCtsBundle:CaseElements:replyTo.html.twig' with { 'form': form['replyTo']} %}
                 {% endif %}
+                <h2>Other Parties</h2>
             </div>
 
+            {% include 'HomeOfficeCtsBundle:CaseElements:replyToCorrespondent.html.twig' with { 'form': form['replyTo']} %}
             <div class="form-group correspondentToggle hidden">
-                {% include 'HomeOfficeCtsBundle:CaseElements:replyToCorrespondent.html.twig' with { 'form': form['replyTo']} %}
+                <h2>Other Parties</h2>
             </div>
-
-            <h2>Other Parties</h2>
             {% include 'HomeOfficeCtsBundle:CaseElements:replyToThirdPartyCorrespondent.html.twig' with { 'form': form['replyTo']} %}
             <hr />
         {% else %}
