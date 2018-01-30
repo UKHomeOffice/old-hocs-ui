@@ -125,23 +125,17 @@
         <section class="grid-row">
             <div class="column-third">
                 <p>
-                    {% if search.from == search.to %}
-                        Showing case {{ search.from }} of {{ search.from }}
-                    {% else %}
-                        Showing cases {{ search.from }} to {{ search.to }}
-                    {% endif %}
-                        of
-                    {{ search.getNumItems }}
+
                 </p>
             </div>
             <div class="column-third">
                 <p class="centre">
-                    {% if (queryArray['limit'] is defined and queryArray['limit']==50) %}
+                    {% if (queryArray['limit'] is defined and queryArray['limit']==20) %}
                         <a class="show-10"  href="{{ path('homeoffice_cts_supersearch_results',
                         {'offset': 0, 'limit': 10} + queryArray) }}">Show 10 per page</a>
                     {% else %}
                         <a class="show-50" href="{{ path('homeoffice_cts_supersearch_results',
-                        {'offset': 0, 'limit': 50} + queryArray) }}">Show 50 per page</a>
+                        {'offset': 0, 'limit': 20} + queryArray) }}">Show 20 per page</a>
                     {% endif %}
                 </p>
             </div>
