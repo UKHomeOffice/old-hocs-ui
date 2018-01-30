@@ -365,6 +365,10 @@ class CtsCaseRepository
 
     public function getCase($nodeRef, $audit = "")
     {
+        if($audit !== "") {
+            $this->auditView($audit, $nodeRef);
+        }
+
         $topicKey = "symfonyCase" . $nodeRef;
 
         $case = $this->getCaseFromCache($topicKey, $nodeRef);
@@ -397,10 +401,6 @@ class CtsCaseRepository
      */
     private function getCaseFromAlfresco($nodeRef, $listName, $audit = "")
     {
-        if($audit !== "") {
-            $this->auditView($audit, $nodeRef);
-        }
-
         $response = $this->apiClient->get("s/homeoffice/ctsv2/case?nodeRef=$nodeRef", [
             'query' => [
                 'alf_ticket' => $this->tokenStorage->getAuthenticationTicket()
