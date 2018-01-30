@@ -123,7 +123,7 @@ class CtsCaseDocumentRepository
      */
     public function create($ctsCaseDocument, $caseNodeRef, $caseNodeId)
     {
-        $topicKey = "symfonyDocs" . $caseNodeRef;
+        $topicKey = "symfonyDocs" . $caseNodeId;
         $item = $this->cacheService->getItem($topicKey);
         $item->clear();
 
