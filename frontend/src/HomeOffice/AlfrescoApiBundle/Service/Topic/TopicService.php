@@ -100,7 +100,7 @@ class TopicService
         $listKey = $listName + $correspondenceType + $unit;
         $cacheItem = $this->cacheService->getItem($listKey);
         $list = $cacheItem->get();
-        if ($cacheItem->isMiss()) {
+        if ($cacheItem->isMiss() || sizeof($list) == 0) {
             $this->getTopicList($listKey, $correspondenceType, $unit);
             $list = $cacheItem->get();
         }
