@@ -55,8 +55,6 @@
     
     {% if ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'DCU' or ctsCase.correspondenceType == 'UTEN'%}
         {% include "HomeOfficeCtsBundle:Case/View:caseViewMinisterial1.html.twig" %}
-    {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'PQ' %}
-        {% include "HomeOfficeCtsBundle:Case/View:caseViewPq1.html.twig" %}
     {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'FOI' %}
         {% if ctsCase.correspondenceType == 'FOI' %}
             {% include "HomeOfficeCtsBundle:Case/View:caseViewFoi1.html.twig" %}
@@ -75,8 +73,6 @@
     <div id="col2">
         {% if ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'DCU' or ctsCase.correspondenceType == 'UTEN'%}
             {% include "HomeOfficeCtsBundle:Case/View:caseViewMinisterial2.html.twig" %}
-        {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'PQ' %}
-            {% include "HomeOfficeCtsBundle:Case/View:caseViewPq2.html.twig" %}
         {% elseif ctsHelper.getCorrespondenceTypeGroup(ctsCase.correspondenceType) == 'FOI' %}
             {% if ctsCase.correspondenceType == 'FOI' %}
                 {% include "HomeOfficeCtsBundle:Case/View:caseViewFoi2.html.twig" %}

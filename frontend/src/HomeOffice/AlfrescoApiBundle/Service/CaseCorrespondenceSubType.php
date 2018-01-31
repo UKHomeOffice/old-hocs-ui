@@ -19,9 +19,6 @@ final class CaseCorrespondenceSubType extends ConstantHelper
     const FSCI = 'ICO Substantive Complaint';
     const FLT = 'Lower Tribunal';
     const FUT = 'Upper Tribunal';
-    const NPQ = 'Named Day';
-    const LPQ = 'Lords Written';
-    const OPQ = 'Ordinary Written';
     const IMCB = 'UKVI B Ref';
     const IMCM = 'UKVI M Ref';
     const UTEN = 'UKVI No. 10';
@@ -60,8 +57,6 @@ final class CaseCorrespondenceSubType extends ConstantHelper
                     return 'DCU';
                 case in_array($correspondenceType, self::getFoiSubTypesArray()):
                     return 'FOI';
-                case in_array($correspondenceType, self::getPqSubTypesArray()):
-                    return 'PQ';
                 case in_array($correspondenceType, self::getUkviSubTypesArray()):
                     return 'UKVI';
                 case in_array($correspondenceType, self::getHmpoSubTypesArray()):
@@ -110,9 +105,6 @@ final class CaseCorrespondenceSubType extends ConstantHelper
     public static function getPqSubTypesArray()
     {
         return [
-            'LPQ' => self::LPQ,
-            'NPQ' => self::NPQ,
-            'OPQ' => self::OPQ
         ];
     }
 

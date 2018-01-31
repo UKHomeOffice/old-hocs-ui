@@ -21,7 +21,6 @@
             <div id="tabs">
                 <ul>
                     <li><a href="#tabs-1" data-toggle="tab">Overview</a></li>
-                    <li><a href="#tabs-2" data-toggle="tab">PQ</a></li>
                     <li><a href="#tabs-3" data-toggle="tab">UKVI</a></li>
                     <li><a href="#tabs-4" data-toggle="tab">DCU</a></li>
                     <li><a href="#tabs-5" data-toggle="tab">HMPO</a></li>
@@ -29,13 +28,6 @@
                 </ul>
 
                 <div id="tabs-1">
-                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
-                        'chart': chart,
-                        'selectBy': {'field': 'caseType', 'value': 'PQ'},
-                        'groupBy': 'status',
-                        'searchParams': {'businessUnit': 'PQ'},
-                    } only %}
-
                     {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
                         'chart': chart,
                         'selectBy': {'field': 'caseType', 'value': 'UKVI'},
@@ -65,31 +57,6 @@
                     } only %}
                 </div>
 
-                <div id="tabs-2">
-                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
-                        'chart': chart,
-                        'selectBy': {'field': 'correspondenceType', 'value': 'OPQ'},
-                        'groupBy': 'task',
-                        'tableLimit': 5,
-                        'searchParams': {'businessUnit': 'PQ', 'caseType': 'OPQ'},
-                    } only %}
-
-                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
-                        'chart': chart,
-                        'selectBy': {'field': 'correspondenceType', 'value': 'NPQ'},
-                        'groupBy': 'task',
-                        'tableLimit': 5,
-                        'searchParams': {'businessUnit': 'PQ', 'caseType': 'NPQ'},
-                    } only %}
-
-                    {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {
-                        'chart': chart,
-                        'selectBy': {'field': 'correspondenceType', 'value': 'LPQ'},
-                        'groupBy': 'task',
-                        'tableLimit': 5,
-                        'searchParams': {'businessUnit': 'PQ', 'caseType': 'LPQ'},
-                    } only %}
-                </div>
 
                 <div id="tabs-3">
                     {% include 'HomeOfficeCtsBundle:Dashboard:case.html.twig' with {

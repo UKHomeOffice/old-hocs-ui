@@ -83,23 +83,6 @@ class CtsCaseEntryType extends AbstractType
             ]);
         }
 
-        if ($this->correspondenceTypeGroup === 'PQ') {
-            $builder->add('uin', 'text', [
-                'label'       => 'UIN ref',
-                'label_attr'  => ['class' => 'form-label']
-            ])->add('caseResponseDeadline', 'date', [
-                'empty_value' => '-',
-                'attr'        => ['class' => 'datePicker todayButton futureOnly'],
-                'label'       => 'Deadline',
-                'label_attr'  => ['class' => 'form-label']
-            ])->add('opDate', 'date', [
-                'empty_value' => '-',
-                'attr'        => ['class' => 'datePicker todayButton'],
-                'label'       => 'Order Paper date',
-                'label_attr'  => ['class' => 'form-label']
-            ]);
-        }
-
         if ($this->correspondenceType === 'COR') {
             $builder->add('hmpoCorrespondenceType', 'choice', [
                 'choices'     => CaseCorrespondenceSubType::getHmpoCorrespondenceSubTypes(),

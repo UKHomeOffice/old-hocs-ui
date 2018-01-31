@@ -123,10 +123,6 @@ class CtsCaseDocumentRepository
      */
     public function create($ctsCaseDocument, $caseNodeRef, $caseNodeId)
     {
-        $topicKey = "symfonyDocs" . $caseNodeId;
-        $item = $this->cacheService->getItem($topicKey);
-        $item->clear();
-
         $ctsCaseDocument->upload($caseNodeId);
 
         $body = array(
@@ -192,23 +188,6 @@ class CtsCaseDocumentRepository
      */
     public function getDocumentsForCase($caseNodeId, $hydrate = false)
     {
-        $topicKey = "symfonyDocs" . $caseNodeId;
-        return $this->getDocumentsFromCache($topicKey, $caseNodeId);
-    }
-
-    private function getDocumentsFromCache($listKey, $caseNodeId)
-    {
-        $cacheItem = $this->cacheService->getItem($listKey);
-        $list = $cacheItem->get();
-        if ($cacheItem->isMiss()) {
-            $this->getDocumentsForCaseFromAlfresco($caseNodeId, $listKey);
-            $list = $cacheItem->get();
-        }
-        return $list;
-    }
-
-    private function getDocumentsForCaseFromAlfresco($caseNodeId, $listName, $hydrate = false)
-    {
         $response = $this->apiClient->get("s/api/node/$this->workspace/$this->store/$caseNodeId/children", [
             'query' => [
                 'alf_ticket' => $this->tokenStorage->getAuthenticationTicket(),
@@ -228,25 +207,24 @@ class CtsCaseDocumentRepository
             null
         );
 
+        if ($hydrate === false) {
+            // @todo refactor this out.
             foreach ($documentArray as $key => $doc) {
                 $documentArray[$key]['shortDocumentNodeRef'] = preg_replace('/workspace\:\/\/SpacesStore\//', '', $doc['id']);
             }
 
-            $this->storeListInCache($listName, $documentArray);
+            return $documentArray;
+        }
+
+        $factory = new CtsCaseDocumentFactory($this->workspace, $this->store);
+
+        $documents = [];
+        foreach ($documentArray as $doc) {
+            $documents[] = $factory->build($doc);
+        }
+
+        return $documents;
     }
-
-
-    /**
-     *
-     * @param string $name
-     * @param array $list
-     */
-    private function storeListInCache($name, $list)
-    {
-        $cacheItem = $this->cacheService->getItem($name);
-        $cacheItem->set($list, $this->cacheTimeout);
-    }
-
 
     /**
      *

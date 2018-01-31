@@ -264,12 +264,6 @@ final class MarkupDecisions extends ConstantHelper
     public static function getGuftDecisionList(CtsCase $case)
     {
         switch ($case->getShortName()) {
-            case 'CtsPqCase':
-                return [
-                    self::ALLOCATE_TO_POLICY_UNIT => 'Allocate to draft',
-                    self::WITHDRAW_QUESTION => self::NO_REPLY_NEEDED,
-                    self::REFER_TO_OGD => self::REFER_TO_OGD,
-                ];
             case 'CtsUkviCase':
                 return [
                     self::ALLOCATE_TO_POLICY_UNIT => 'Allocate to draft',

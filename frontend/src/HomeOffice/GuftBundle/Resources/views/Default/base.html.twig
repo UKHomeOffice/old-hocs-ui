@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="HOCS - Home Office Correspondence Service">
 
-    {% stylesheets filter="cssrewrite" output='css/compiled/guft.css'
+    {% stylesheets filter='yui_css' filter="cssrewrite" output='css/compiled/guft.css'
         'bundles/guft/css/jquery-modal.min.css'
         'bundles/guft/css/chosen.min.css'
         'bundles/guft/scss/base.scss'
@@ -16,7 +16,7 @@
         <link rel="stylesheet" media="screen,print" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
 
-    <link href="{{  asset("bundles/guft/scss/fonts.css") }}" media="all" rel="stylesheet" type="text/css" />
+    <!-- <link href="{{  asset("bundles/guft/scss/fonts.css") }}" media="all" rel="stylesheet" type="text/css" /> -->
     <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
     <title>{{ site_title }}: {{ block('title') }} {{ block('metaTitle') }}</title>
 </head>
@@ -32,18 +32,6 @@
 
 {% block body %}
     <main id="page-container" role="main">
-        {% block phasebanner %}
-            {% if case is defined and not case.shortName in ['CtsHmpoComCase', 'CtsHmpoGenCase'] %}
-                <div class="phase-banner">
-                    <p>
-                        <strong class="phase-tag">BETA</strong>
-                        <span>You are using the new features - to switch off click
-                            <a href="{{ path('homeoffice_cts_featuretoggle_edit') }}">here</a>
-                        .</span>
-                    </p>
-                </div>
-            {% endif %}
-        {% endblock %}
         {% block bc %}
             {% if ft_config['hide_breadcrumb'] is not defined or ft_config['hide_breadcrumb'] == false %}
 
@@ -51,9 +39,6 @@
                 <ol>
                     <li>
                         <a href="/">Home</a>
-                    </li>
-                    <li>
-                        Style Guide
                     </li>
                 </ol>
             </nav>
@@ -140,6 +125,5 @@
     {% endblock %}
     {% block pageJavascript %}{% endblock %}
 {% endblock %}
-<!-- BUILD: {{ build_id }} HASH: {{ git_commit }} -->
 </body>
 </html>

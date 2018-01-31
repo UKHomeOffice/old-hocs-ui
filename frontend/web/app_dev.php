@@ -20,8 +20,8 @@ if ($appEnv == "dc" || $appEnv == "dev" || $appEnv == "qa") {
 }
 
 if ($appEnv == "dc") {
-    $debugMode = true;
-    Debug::enable();
+    $debugMode = false;
+    //Debug::enable();
 }
 
 $kernel = new AppKernel($appEnv, $debugMode);

@@ -30,9 +30,6 @@ abstract class GroupTypeMaps extends ConstantHelper
             case self::FOI:
                 $typesAndStages["TYPES"] = ['FOI', 'FTC', 'FTCI', 'FSC', 'FSCI', 'FLT', 'FUT'];
                 break;
-            case self::PQ:
-                $typesAndStages["TYPES"] = ['LPQ', 'NPQ', 'OPQ'];
-                break;
             case self::UKVI:
                 $typesAndStages["TYPES"] = ['IMCM', 'IMCB', 'UTEN'];
                 break;

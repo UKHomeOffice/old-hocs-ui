@@ -53,11 +53,6 @@ class MinuteController extends Controller
 
         if ($ctsCaseMinuteForm->isValid()) {
             $ctsCaseMinuteRepository->create($ctsCaseMinute, $ctsCase->getNodeId());
-        } else {
-            // if the minute is not valid, add it to the session to the entered values can be re-shown
-            $this->setSessionParameter('ctsCaseMinute', $ctsCaseMinute);
-            $this->get('logger')->addDebug('Validation failed', (array)$ctsCaseMinuteForm->getErrors());
-            $this->get('logger')->addDebug('extra fields', $ctsCaseMinuteForm->getExtraData())  ;
         }
             return $this->redirect($this->generateUrl(
                 'homeoffice_cts_case_view',

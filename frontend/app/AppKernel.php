@@ -27,14 +27,14 @@ class AppKernel extends Kernel
         );
 
         if (in_array($this->getEnvironment(), ['dev', 'dc', 'qa'])) {
-            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-            $bundles[] = new Webfactory\Bundle\ExceptionsBundle\WebfactoryExceptionsBundle();
+            //$bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+           // $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
+           // $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+           // $bundles[] = new Webfactory\Bundle\ExceptionsBundle\WebfactoryExceptionsBundle();
         }
 
         if (in_array($this->getEnvironment(), ['prod'])) {
-            $bundles[] = new Sentry\SentryBundle\SentryBundle();
+           // $bundles[] = new Sentry\SentryBundle\SentryBundle();
         }
 
         return $bundles;

@@ -136,13 +136,6 @@ class DocumentController extends Controller
             if (is_string($result)) {
                 $this->setSessionParameter('documentErrorMsg', $result);
             }
-        } else {
-            // if the document is not valid, add it to the session to the entered values can be re-shown
-            if ($ctsCaseDocument->getFile() != null) {
-                $ctsCaseDocument->setName($ctsCaseDocument->getFile()->getClientOriginalName());
-                $ctsCaseDocument->setFile(null);
-            }
-            $this->setSessionParameter('ctsCaseDocument', $ctsCaseDocument);
         }
      
         if ($redirect == 'detailedDocument') {

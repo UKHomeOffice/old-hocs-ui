@@ -94,7 +94,7 @@ services:
         class: %home_office_alfresco_api.cts_case.repository.class%
         arguments:
             - "@stash.default_cache"
-            - 28800
+            - 36000
             - @home_office_alfresco_api.guzzle_client
             - @home_office_alfresco_api.cts_case.factory
             - @process_manager_token_storage
@@ -112,7 +112,7 @@ services:
         class: %home_office_alfresco_api.cts_case_document.repository.class%
         arguments:
             - "@stash.default_cache"
-            - 28800
+            - 36000
             - @home_office_alfresco_api.guzzle_client
             - @home_office_alfresco_api.cts_case_document.factory
             - @process_manager_token_storage
@@ -190,7 +190,7 @@ services:
         class: %home_office_alfresco_api.cts_lists.repository.class%
         arguments:
             - "@stash.default_cache"
-            - 28800
+            - 36000
             - @home_office_alfresco_api.guzzle_client
             - @home_office_alfresco_api.list_guzzle_client
             - @process_manager_token_storage
@@ -202,7 +202,7 @@ services:
         class: %home_office_alfresco_api.cts_case_minute.repository.class%
         arguments:
             - "@stash.default_cache"
-            - 28800
+            - 36000
             - @home_office_alfresco_api.guzzle_client
             - @home_office_alfresco_api.cts_case_minute.factory
             - @process_manager_token_storage
@@ -348,14 +348,14 @@ services:
       parent: home_office_alfresco_api.consumer.abstract_consumer
       arguments:
         - "@stash.default_cache"
-        - 28800
+        - 36000
 
     home_office_alfresco_api.consumer.cts_case.minutes:
       class: HomeOffice\AlfrescoApiBundle\Consumer\CtsCase\Minutes
       parent: home_office_alfresco_api.consumer.abstract_consumer
       arguments:
         - "@stash.default_cache"
-        - 28800
+        - 36000
 
     home_office_alfresco_api.consumer.todo_list:
       class: HomeOffice\AlfrescoApiBundle\Consumer\TodoList
@@ -416,7 +416,7 @@ services:
       arguments:
         - "@home_office_alfresco_api.consumer.topic"
         - "@stash.default_cache"
-        - 28800
+        - 36000
 
 # Dashboard
     home_office_alfresco_api.consumer.dashboard:
@@ -429,7 +429,7 @@ services:
       arguments:
         - "@home_office_alfresco_api.consumer.dashboard"
         - "@stash.default_cache"
-        - 28800
+        - 36000
 
 # Reports
     home_office_alfresco_api.consumer.reports:

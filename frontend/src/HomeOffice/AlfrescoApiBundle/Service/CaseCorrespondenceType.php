@@ -11,7 +11,6 @@ final class CaseCorrespondenceType extends ConstantHelper
 {
     const DCU  = 'DCU';
     const FOI  = 'FOI';
-    const PQ   = 'PQ';
     const UKVI = 'UKVI';
     const HMPO = 'HMPO';
 
@@ -46,7 +45,6 @@ final class CaseCorrespondenceType extends ConstantHelper
         $correspondenceTypes = [
             CaseCorrespondenceType::DCU  => CaseCorrespondenceSubType::getDcuSubTypesArray(),
             CaseCorrespondenceType::FOI  => CaseCorrespondenceSubType::getFoiSubTypesArray(),
-            CaseCorrespondenceType::PQ   => CaseCorrespondenceSubType::getPqSubTypesArray(),
             CaseCorrespondenceType::UKVI => CaseCorrespondenceSubType::getUkviSubTypesArray(),
             CaseCorrespondenceType::HMPO => CaseCorrespondenceSubType::getHmpoSubTypesArray(),
         ];
@@ -71,11 +69,6 @@ final class CaseCorrespondenceType extends ConstantHelper
                 'FSC'  => CaseCorrespondenceSubType::FSC,
                 'FTCI' => CaseCorrespondenceSubType::FTCI,
                 'FSCI' => CaseCorrespondenceSubType::FSCI
-            ],
-            CaseCorrespondenceType::PQ => [
-                'NPQ'  => CaseCorrespondenceSubType::NPQ,
-                'LPQ'  => CaseCorrespondenceSubType::LPQ,
-                'OPQ'  => CaseCorrespondenceSubType::OPQ
             ],
             CaseCorrespondenceType::UKVI => [
                 'IMCB' => CaseCorrespondenceSubType::IMCB,
@@ -111,11 +104,6 @@ final class CaseCorrespondenceType extends ConstantHelper
                 'FTCI' => CaseCorrespondenceSubType::FTCI,
                 'FSC'  => CaseCorrespondenceSubType::FSC,
                 'FSCI' => CaseCorrespondenceSubType::FSCI
-            ],
-            CaseCorrespondenceType::PQ => [
-                'NPQ'  => CaseCorrespondenceSubType::NPQ,
-                'LPQ'  => CaseCorrespondenceSubType::LPQ,
-                'OPQ'  => CaseCorrespondenceSubType::OPQ,
             ],
             CaseCorrespondenceType::UKVI => [
                 'IMCB' => CaseCorrespondenceSubType::IMCB,

@@ -17,9 +17,6 @@ abstract class CtsCaseType extends AbstractType
      * @var array
      */
     protected static $validCaseTypesForOGD = array(
-        'NPQ',
-        'LPQ',
-        'OPQ',
         'IMCB',
         'IMCM',
         'COM',

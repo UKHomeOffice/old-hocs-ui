@@ -24,9 +24,6 @@ class TypeClassMaps
         'FSCI' => [ 'FOI',  'FOI ICO Substantive Complaint' ],
         'FLT'  => [ 'FOI',  'FOI Lower Tribunal' ],
         'FUT'  => [ 'FOI',  'FOI Upper Tribunal' ],
-        "NPQ"  => [ 'PQ',   'Named Day' ],
-        "LPQ"  => [ 'PQ',   'Lords Written' ],
-        "OPQ"  => [ 'PQ',   'Ordinary Written' ],
         "IMCB" => [ 'UKVI', 'UKVI B Ref' ],
         "IMCM" => [ 'UKVI', 'UKVI M Ref' ],
         "UTEN" => [ 'UKVI', 'UKVI No. 10' ],
@@ -51,9 +48,6 @@ class TypeClassMaps
         'FSCI' => 'FOIC',
         'FLT'  => 'FOIC',
         'FUT'  => 'FOIC',
-        'NPQ'  => 'PQ',
-        'LPQ'  => 'PQ',
-        'OPQ'  => 'PQ',
         'IMCB' => 'UKVI',
         'IMCM' => 'UKVI',
         'COM'  => 'COM',
@@ -83,21 +77,6 @@ class TypeClassMaps
         'DTEN' => [
             '\HomeOffice\AlfrescoApiBundle\Entity\Cases\CtsNo10Case',
             '\HomeOffice\CtsBundle\Form\%s\CtsNo10CaseType',
-            true
-        ],
-        'NPQ'  => [
-            '\HomeOffice\AlfrescoApiBundle\Entity\Cases\CtsPqCase',
-            '\HomeOffice\CtsBundle\Form\%s\CtsPqCaseType',
-            true
-        ],
-        'LPQ'  => [
-            '\HomeOffice\AlfrescoApiBundle\Entity\Cases\CtsPqCase',
-            '\HomeOffice\CtsBundle\Form\%s\CtsPqCaseType',
-            true
-        ],
-        'OPQ'  => [
-            '\HomeOffice\AlfrescoApiBundle\Entity\Cases\CtsPqCase',
-            '\HomeOffice\CtsBundle\Form\%s\CtsPqCaseType',
             true
         ],
         'FOI'  => [

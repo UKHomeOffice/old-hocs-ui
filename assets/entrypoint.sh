@@ -5,7 +5,7 @@ sed -i  's/${APP_PHP}/'"$APP_PHP"'/' /etc/nginx/sites-enabled/symfony
 
 composer install
 bin/console assets:install --symlink
-bin/console assetic:dump
+bin/console assetic:dump --no-debug
 
 useradd www-data
 usermod -u 1000 www-data

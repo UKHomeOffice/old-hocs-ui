@@ -3,7 +3,7 @@ version: '3.1'
 services:
 
   clamd:
-    image: quay.io/ukhomeofficedigital/clamav
+    image: quay.io/ukhomeofficedigital/clamav:v1.4.0
     ports:
       - "3310:3310/tcp"
     networks:
@@ -162,7 +162,7 @@ services:
       - ./out/logs/nginx/:/var/log/nginx
       - ./frontend/var/:/var/www/symfony/var
     ports:
-      - 8080:8080
+      - 8080:8081
     environment:
       SYMFONY_ENV: dc
       APP_ENV: dc
