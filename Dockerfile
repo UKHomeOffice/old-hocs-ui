@@ -32,6 +32,6 @@ COPY assets/entrypoint.sh entrypoint.sh
 RUN chmod +x  entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
 
-CMD cat /data/hocs-ui-ca.pem >> /etc/ssl/certs/cacert.pem & clammit -config=/var/www/symfony/clammit.cfg & php-fpm -D && nginx
+CMD cat /data/hocs-ui-ca.pem >> /etc/ssl/certs/cacert.pem & clammit -config=/var/www/symfony/clammit.cfg & php-fpm -R -D && nginx
 
 EXPOSE 8080
