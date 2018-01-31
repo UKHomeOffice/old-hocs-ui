@@ -5,10 +5,6 @@ home_office_alfresco_api:
     list_endpoint: 'https://hocs-data-service.hocs-dev.svc.cluster.local'
     endpoint: 'https://hocs-alfresco.hocs-dev.svc.cluster.local/alfresco/'
 
-web_profiler:
-#    toolbar: %debug_toolbar%
-    intercept_redirects: %debug_redirects%
-
 monolog:
     handlers:
         console:
