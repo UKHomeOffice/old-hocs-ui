@@ -16,7 +16,7 @@ abstract class BaseFoi extends AbstractCreateType
 {
     use Elements\CorrespondenceType;
     use Elements\DateReceived;
-    use Elements\HOCaseOfficer;
+    use Elements\HoCaseOfficer;
     use Groups\LinkedCase;
     use Elements\Priority;
     use Groups\Document;

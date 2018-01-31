@@ -19,7 +19,7 @@ abstract class BaseFoi extends AbstractDraftType
     use Elements\CorrespondentForename;
     use Elements\CorrespondentSurname;
     use Groups\MarkupTopics;
-    use Elements\HOCaseOfficer;
+    use Elements\HoCaseOfficer;
     use Groups\Consultations;
     use Elements\Save;
 
