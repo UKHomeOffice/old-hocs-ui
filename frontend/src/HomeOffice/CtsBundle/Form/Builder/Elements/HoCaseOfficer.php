@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
  *
  * @package HomeOffice\CtsBundle\Form\Builder\Elements
  */
-trait HOCaseOfficer
+trait HoCaseOfficer
 {
     /**
      * @param FormBuilderInterface $builder
