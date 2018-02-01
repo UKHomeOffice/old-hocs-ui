@@ -8,6 +8,7 @@ use HomeOffice\AlfrescoApiBundle\Entity\Cases\CtsCase;
 use HomeOffice\ProcessManagerAuthenticatorBundle\Security\SessionTicketStorage;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Tedivm\StashBundle\Service\CacheService;
 
 class CtsWorkflowRepository
 {
@@ -39,7 +40,10 @@ class CtsWorkflowRepository
      * @param string               $qnamePrefix
      * @param LoggerInterface      $logger
      */
-    public function __construct(Guzzle $apiClient,
+    public function __construct(
+        CacheService $cacheService,
+        $cacheTimeout,
+        Guzzle $apiClient,
         SessionTicketStorage $tokenStorage,
         $qnamePrefix,
         LoggerInterface $logger = null
@@ -49,6 +53,9 @@ class CtsWorkflowRepository
         $this->qnamePrefix = $qnamePrefix;
 
         $this->logger = $logger ?: new NullLogger();
+
+        $this->cacheService = $cacheService;
+        $this->cacheTimeout = $cacheTimeout;
     }
  
     /**
@@ -59,6 +66,9 @@ class CtsWorkflowRepository
      */
     public function updateWorkflow($ctsCase, $transition)
     {
+        $topicKey = "symfonyCase" . $ctsCase->getNodeId();
+        $item = $this->cacheService->getItem($topicKey);
+        $item->clear();
         try {
             $response = $this->apiClient->post('service/homeoffice/cts/updateWorkflow', [
                 'headers' => ['Content-Type' => 'application/atom+xml;type=entry'],

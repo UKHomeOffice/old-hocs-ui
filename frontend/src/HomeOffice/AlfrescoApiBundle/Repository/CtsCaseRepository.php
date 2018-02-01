@@ -458,7 +458,7 @@ class CtsCaseRepository
      */
     public function addGroupedCases(CtsCase $ctsCase)
     {
-        $topicKey = "symfonyCase" . $ctsCase->getId();
+        $topicKey = "symfonyCase" . $ctsCase->getNodeId();
         $item = $this->cacheService->getItem($topicKey);
         $item->clear();
 
@@ -468,7 +468,7 @@ class CtsCaseRepository
                     'alf_ticket' => $this->tokenStorage->getAuthenticationTicket()
                 ],
                 'body' => [
-                    'masterNodeRef' => $ctsCase->getId(),
+                    'masterNodeRef' => $ctsCase->getNodeId(),
                     'slaveUinList' => $ctsCase->getUinsToGroup()
                 ],
             ]);
@@ -489,23 +489,23 @@ class CtsCaseRepository
      */
     public function removeGroupedCases(CtsCase $masterCtsCase, array $slaveCtsCases)
     {
-        $topicKey = "symfonyCase" . $masterCtsCase->getId();
+        $topicKey = "symfonyCase" . $masterCtsCase->getNodeId();
         $item = $this->cacheService->getItem($topicKey);
         $item->clear();
 
         try {
             $slaveNodeRefs = [];
             foreach ($slaveCtsCases as $slaveCtsCase) {
-                $topicKey = "symfonyCase" . $slaveCtsCase->getId();
+                $topicKey = "symfonyCase" . $slaveCtsCase->getNodeId();
                 $item = $this->cacheService->getItem($topicKey);
                 $item->clear();
-                array_push($slaveNodeRefs, $slaveCtsCase->getId());
+                array_push($slaveNodeRefs, $slaveCtsCase->getNodeId());
             }
 
             $this->apiClient->post("s/homeoffice/cts/ungroupCases", [
                 'query' => ['alf_ticket' => $this->tokenStorage->getAuthenticationTicket()],
                 'body' => [
-                    'masterNodeRef' => $masterCtsCase->getId(),
+                    'masterNodeRef' => $masterCtsCase->getNodeId(),
                     'slaveNodeRefList' => implode($slaveNodeRefs, ',')
                 ],
             ]);
@@ -525,7 +525,7 @@ class CtsCaseRepository
      */
     public function addLinkedCases(CtsCase $ctsCase)
     {
-        $topicKey = "symfonyCase" . $ctsCase->getId();
+        $topicKey = "symfonyCase" . $ctsCase->getNodeId();
         $item = $this->cacheService->getItem($topicKey);
         $item->clear();
 
@@ -535,7 +535,7 @@ class CtsCaseRepository
                     'alf_ticket' => $this->tokenStorage->getAuthenticationTicket()
                 ],
                 'body' => [
-                    'masterNodeRef' => $ctsCase->getId(),
+                    'masterNodeRef' => $ctsCase->getNodeId(),
                     'linkedHrnList' => $ctsCase->getHrnsToLink()
                 ],
             ]);
@@ -556,11 +556,11 @@ class CtsCaseRepository
      */
     public function removeLinkedCase(CtsCase $ctsCase, CtsCase $childCase)
     {
-        $topicKey = "symfonyCase" . $ctsCase->getId();
+        $topicKey = "symfonyCase" . $ctsCase->getNodeId();
         $item = $this->cacheService->getItem($topicKey);
         $item->clear();
 
-        $topicKey = "symfonyCase" . $childCase->getId();
+        $topicKey = "symfonyCase" . $childCase->getNodeId();
         $item = $this->cacheService->getItem($topicKey);
         $item->clear();
         try {
@@ -569,8 +569,8 @@ class CtsCaseRepository
                     'alf_ticket' => $this->tokenStorage->getAuthenticationTicket(),
                 ],
                 'body' => [
-                    'masterNodeRef' => $ctsCase->getId(),
-                    'linkedHrnList' => $childCase->getId()
+                    'masterNodeRef' => $ctsCase->getNodeId(),
+                    'linkedHrnList' => $childCase->getNodeId()
                 ],
             ]);
         } catch (RequestException $ex) {
@@ -592,7 +592,7 @@ class CtsCaseRepository
      */
     public function assignCaseToPerson(CtsCase $case, Person $person)
     {
-        $topicKey = "symfonyCase" . $case->getId();
+        $topicKey = "symfonyCase" . $case->getNodeId();
         $item = $this->cacheService->getItem($topicKey);
         $item->clear();
 
