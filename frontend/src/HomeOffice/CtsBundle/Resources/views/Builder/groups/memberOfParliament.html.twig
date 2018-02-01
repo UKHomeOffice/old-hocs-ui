@@ -1,6 +1,6 @@
-<label><a class="replyToMemberTrigger noUnderline" href="#">{{ memberTitle|default('Member') }}</a></label>
+<h3>{{ memberTitle|default('Member') }}</h3>
 
-<div class="replyToMemberToggle hidden">
+<div class="replyToMemberToggle">
     <div class="form-group member_list">
         {{ form_widget(form.member) }}
     </div>

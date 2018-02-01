@@ -2,9 +2,9 @@
     {% set documentToggleName = 'document' %}
 {% endif %}
 
-<label><a class="upload{{ documentToggleName }}Trigger noUnderline" href="#">Upload Document</a></label>
+<h3>Upload Document</h3>
 
-<div class="upload{{ documentToggleName }}Toggle hidden">
+<div class="upload{{ documentToggleName }}Toggle">
     <div class="form-group">
         {{ form_label(form['documentType']) }}
         {{ form_widget(form['documentType']) }}
