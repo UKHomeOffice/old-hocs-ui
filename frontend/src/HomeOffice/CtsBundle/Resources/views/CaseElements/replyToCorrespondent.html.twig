@@ -1,6 +1,6 @@
-<label><a class="replyToCorrespondentTrigger noUnderline" href="#">{{ replyToTitle|default('Constituent (Optional)') }}</a></label>
+<h3>{{ replyToTitle|default('Constituent (Optional)') }}</h3>
 
-<div class="replyToCorrespondentToggle hidden">
+<div class="replyToCorrespondentToggle">
     {% if form['correspondentTitle'] is defined %}
         <div class="form-group">
             {{ form_label(form['correspondentTitle']) }}
