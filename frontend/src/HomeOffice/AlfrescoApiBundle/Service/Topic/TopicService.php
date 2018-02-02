@@ -61,8 +61,6 @@ class TopicService
      */
     public function getTopicsForForm($correspondenceType = null, $unit = null)
     {
-        var_dump($correspondenceType);
-        var_dump($unit);
         $topics = [];
         foreach ($this->getTopics($correspondenceType, $unit) as $group) {
             if ($group->hasTopics()) {
