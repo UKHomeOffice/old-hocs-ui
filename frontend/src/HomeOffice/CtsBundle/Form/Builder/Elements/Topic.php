@@ -20,15 +20,15 @@ trait Topic
     protected function topic(FormBuilderInterface $builder, array $choices = [])
     {
         $builder->add('markupTopic', 'choice', [
-            'choices'     => $choices,
-            'empty_value' => '',
-            'required'    => false,
-            'label'       => 'Topic',
-            'attr'        => [
-                'class'            => 'chosen',
-                'data-placeholder' => 'Select topic',
+            'choices'               => $choices,
+            'empty_value'           => '',
+            'required'              => false,
+            'label'                 => 'Topic',
+            'attr'                  => [
+                'class'                 => 'chosen',
+                'data-placeholder'      => 'Select topic',
             ],
-            'label_attr'  => ['class' => 'form-label']
+            'label_attr'            => ['class' => 'form-label']
         ]);
 
         return $this;
