@@ -86,12 +86,8 @@ ul.buttons {
 #uploadFileName { padding-left: $gutter }
 
 .button-toggle {
-  color: #000 !important;
+  //color: #000 !important;
   @include core-19;
   margin-bottom: $gutter-one-third;
   display: block;
-}
-
-.button-toggle:hover {
-  text-decoration: none;
 }

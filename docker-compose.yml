@@ -90,7 +90,7 @@ services:
   alfresco:
     build:
       context: ../hocs-alfresco
-    #image: quay.io/ukhomeofficedigital/hocs-alfresco
+#    image: quay.io/ukhomeofficedigital/hocs-alfresco
     environment:
       ALF_S3_ACCESSKEY: UNSET
       ALF_S3_SECRETKEY: UNSET
@@ -116,14 +116,15 @@ services:
   reporting:
     build:
       context: ../hocs-reporting-service
-    #image: quay.io/ukhomeofficedigital/hocs-reporting-service
+#    image: quay.io/ukhomeofficedigital/hocs-reporting-service
     environment:
-      spring.profiles.active: postgres, rabbitmq
-      db.host: postgres2
-      db.username: root
-      db.password: dev
-      db.schema.name: public
-      env.rabbit.mq.host: rabbitmq
+      SPRING_PROFILES_ACTIVE: postgres, rabbitmq
+      DB_HOST: postgres2
+      DB_USERNAME: root
+      DB_PASSWORD: dev
+      DB_NAME: postgres
+      DB_SCHEMA_NAME: public
+      RABBIT_MQ_HOST: rabbitmq
     depends_on:
       - postgres2
       - rabbitmq
@@ -135,15 +136,17 @@ services:
   data-service:
     build:
       context: ../hocs-data-service
-    #image: quay.io/ukhomeofficedigital/hocs-data-service
+#    image: quay.io/ukhomeofficedigital/hocs-data-service
     environment:
-      spring.profiles.active: postgres
-      db.host: postgres1
-      db.username: root
-      db.password: dev
-      db.schema.name: public
-      redis.host: redis
-      alf.api.host: http://alfresco:8080
+      SPRING_PROFILES_ACTIVE: postgres
+      DB_HOST: postgres1
+      DB_PORT: 5432
+      DB_NAME: postgres
+      DB_SCHEMA_NAME: public
+      DB_USERNAME: root
+      DB_PASSWORD: dev
+      REDIS_HOST: redis
+      ALF_API_HOST: http://alfresco:8080
     depends_on:
       - postgres1
       - redis
