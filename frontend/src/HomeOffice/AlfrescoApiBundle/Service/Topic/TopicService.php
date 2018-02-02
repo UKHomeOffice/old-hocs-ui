@@ -65,7 +65,7 @@ class TopicService
         foreach ($this->getTopics($correspondenceType, $unit) as $group) {
             if ($group->hasTopics()) {
                 foreach ($group->getTopics() as $topic) {
-                    $topics[$group->getName()][$topic->getName()] = $topic->getName();
+                    $topics[$group->getName()][$group->getName().' - '.$topic->getName()] = $topic->getName();
                 }
             }
         }
@@ -97,7 +97,7 @@ class TopicService
 
     private function getListFromCache($listName, $correspondenceType, $unit)
     {
-        $listKey = $listName + $correspondenceType + $unit;
+        $listKey = $listName.$correspondenceType.$unit;
         $cacheItem = $this->cacheService->getItem($listKey);
         $list = $cacheItem->get();
         if ($cacheItem->isMiss() || sizeof($list) == 0) {
