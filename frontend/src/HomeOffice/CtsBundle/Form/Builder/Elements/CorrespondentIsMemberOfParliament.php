@@ -21,6 +21,7 @@ trait CorrespondentIsMemberOfParliament
     {
         /** @var CtsCase $case */
         $case = $builder->getData();
+        $member = method_exists($case, 'getCorrespondentIsMemberOfParliament') ? $case->getCorrespondentIsMemberOfParliament() : null;
         $builder->add('correspondentIsMemberOfParliament', 'choice', [
             'label'      => 'Is the correspondent a Member of Parliament?',
             'choices'    => ['1' => 'Yes', '0' => 'No'],
@@ -28,7 +29,7 @@ trait CorrespondentIsMemberOfParliament
             'expanded'   => true,
             'attr'       => ['class' => 'memberParliamentTrigger inline'],
             'label_attr' => ['class' => 'block-label inline'],
-            'data'       => $case->getCorrespondentForeName() ? 0 : 1,
+            'data'       => $member == true || $member == null ? 1 : 0
         ]);
 
         return $this;

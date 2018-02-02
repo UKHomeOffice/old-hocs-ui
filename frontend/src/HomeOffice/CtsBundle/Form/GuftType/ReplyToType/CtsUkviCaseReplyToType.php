@@ -22,6 +22,8 @@ class CtsUkviCaseReplyToType extends CtsCaseReplyToType
     {
         parent::buildForm($builder, $options);
 
+        $case = $builder->getData();
+        $member = $case->getCorrespondentIsMemberOfParliament();
         if ($builder->getData()->getCorrespondenceType() === 'IMCM') {
                 $builder->add('correspondentIsMemberOfParliament', 'choice', [
                     'label' => 'Is the correspondent a Member of Parliament?',
@@ -30,6 +32,7 @@ class CtsUkviCaseReplyToType extends CtsCaseReplyToType
                     'expanded' => true,
                     'attr' => ['class' => 'memberParliamentTrigger inline'],
                     'label_attr' => ['class' => 'block-label inline'],
+                    'data'       => $member == true || $member == null ? 1 : 0
                 ]);
         }
 
