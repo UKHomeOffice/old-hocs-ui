@@ -175,6 +175,8 @@ services:
     home_office_alfresco_api.cts_workflow.repository:
         class: %home_office_alfresco_api.cts_workflow.repository.class%
         arguments:
+            - "@stash.default_cache"
+            - 36000
             - @home_office_alfresco_api.guzzle_client
             - @process_manager_token_storage
             - %home_office_alfresco_api.alfresco_qname_prefix%
