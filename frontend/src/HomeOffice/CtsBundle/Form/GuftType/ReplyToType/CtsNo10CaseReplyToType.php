@@ -22,13 +22,15 @@ class CtsNo10CaseReplyToType extends CtsCaseReplyToType
     {
         parent::buildForm($builder, $options);
 
+        $case = $builder->getData();
+        $member = $case->getCorrespondentIsMemberOfParliament();
         $builder->add('correspondentIsMemberOfParliament', 'choice', [
             'label'      => 'Is the correspondent a Member of Parliament?',
             'choices'    => ['1' => 'Yes', '0' => 'No'],
             'multiple'   => false,
             'expanded'   => true,
             'attr'       => ['class' => 'memberParliamentTrigger inline'],
-            'label_attr' => ['class' => 'block-label inline'],
+            'data'       => $member == true || $member == null ? 1 : 0
         ]);
 
         $builder
