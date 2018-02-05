@@ -29,7 +29,7 @@ trait CorrespondentIsMemberOfParliament
             'expanded'   => true,
             'attr'       => ['class' => 'memberParliamentTrigger inline'],
             'label_attr' => ['class' => 'block-label inline'],
-            'data'       => $member == true || $member == null ? 1 : 0
+            'data'       => $member == false ? 0 : 1
         ]);
 
         return $this;
