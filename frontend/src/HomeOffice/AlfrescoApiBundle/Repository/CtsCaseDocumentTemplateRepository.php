@@ -192,7 +192,7 @@ class CtsCaseDocumentTemplateRepository
         $from = 'cts:caseDocumentTemplate';
         $where = array();
         if ($correspondenceType != null) {
-            array_push($where, "cts:appliesToCorrespondenceType = '$correspondenceType'");
+            array_push($where, "cts:appliesToCorrespondenceType LIKE '".$correspondenceType."'");
         }
         if ($restrictToValidToday) {
             $today = DateHelper::now()->midnight()->toIso();
@@ -234,7 +234,6 @@ class CtsCaseDocumentTemplateRepository
         foreach ($this->getDocumentTemplates($correspondentType, $restrictToValidToday) as $template) {
             array_push($documentTemplates, $this->factory->build($template));
         }
-
         return $documentTemplates;
     }
 
