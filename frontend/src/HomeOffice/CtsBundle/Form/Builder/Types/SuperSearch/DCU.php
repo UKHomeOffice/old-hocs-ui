@@ -45,7 +45,7 @@ class DCU extends SuperSearch
             ->dateReceivedTo($builder)
             ->priority($builder, false)
             ->advice($builder, false)
-            ->member($builder, $this->listService->getMemberArray(), true)
+            ->member($builder, array_merge([null => 'Any'], $this->listService->getMemberArray()), true)
             ->correspondentForename($builder)
             ->correspondentSurname($builder)
             ->correspondentPostCode($builder)

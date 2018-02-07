@@ -92,7 +92,7 @@ class Mapper extends Statement
     private function loop(array $parameters)
     {
         foreach($parameters as $field => $value) {
-            if (is_null($value)) {
+            if (is_null($value) || $value == '') {
                 continue;
             }
             $this->object($field, $value);
