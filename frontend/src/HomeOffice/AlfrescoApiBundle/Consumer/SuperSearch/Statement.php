@@ -78,7 +78,7 @@ class Statement
      * @param  string          $boolean
      * @return $this|Statement
      */
-    public function where($column, $value = null, $operator = '=', $boolean = 'AND')
+    public function where($column, $value = null, $operator = 'LIKE', $boolean = 'AND')
     {
         if ($column instanceof \Closure) {
             return $this->whereNested($column, $boolean);
@@ -128,7 +128,7 @@ class Statement
      * @param  string    $operator
      * @return Statement
      */
-    public function orWhere($column, $value = null, $operator = '=')
+    public function orWhere($column, $value = null, $operator = 'LIKE')
     {
         return $this->where($column, $value, $operator, 'OR');
     }

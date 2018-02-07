@@ -358,7 +358,7 @@ class CtsCaseSearchRepository
 
         $urnForQuery = $this->queryHelper->extractUrnForQuery($urnSearch);
         //@codingStandardsIgnoreStart
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondenceType', ' = ', $urnForQuery["urnPrefix"]);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondenceType', ' LIKE ', $urnForQuery["urnPrefix"]);
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:urnSuffix', ' LIKE ', $urnForQuery["urnSuffix"], true);
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cmis:creationDate', ' >= ',
             DateHelper::fromNativeOrNullToIso($dateCreatedFromSearch));
@@ -471,7 +471,7 @@ class CtsCaseSearchRepository
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentForename', ' LIKE ', $advancedSearchFields['troCorrespondentFirstName'], false, true);
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentSurname', ' LIKE ', $advancedSearchFields['troCorrespondentSurname'], false, true);
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentPostcode', ' LIKE ', $advancedSearchFields['troCorrespondentPostcode'], false, true);
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentEmail', ' = ', $advancedSearchFields['troCorrespondentEmail']);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentEmail', ' LIKE ', $advancedSearchFields['troCorrespondentEmail']);
         //@codingStandardsIgnoreEnd
     }
  
@@ -491,11 +491,11 @@ class CtsCaseSearchRepository
         $this->queryHelper->generateWhereForYesNoBoolean($advancedSearchFields['minAdvice'], 'c.cts:advice', $whereArray);
         $this->queryHelper->generateWhereForYesNoBoolean($advancedSearchFields['minHomeSecReply'], 'c.cts:homeSecretaryReply', $whereArray);
         $this->queryHelper->generateWhereForYesNoBoolean($advancedSearchFields['minCopyToNo10'], 'c.cts:replyToNumberTenCopy', $whereArray);
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:mpRef', ' = ', $advancedSearchFields['minMpRef']);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:mpRef',' LIKE ', $advancedSearchFields['minMpRef']);
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentForename', ' LIKE ', $advancedSearchFields['minConstituentFirstName'], false, true);
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentSurname', ' LIKE ', $advancedSearchFields['minConstituentSurname'], false, true);
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentPostcode', ' LIKE ', $advancedSearchFields['minConstituentPostcode'], false, true);
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentEmail', ' = ', $advancedSearchFields['minConstituentEmail']);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentEmail',' LIKE ', $advancedSearchFields['minConstituentEmail']);
         $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:member', $advancedSearchFields['minMember']);
         //@codingStandardsIgnoreEnd
     }
@@ -519,7 +519,7 @@ class CtsCaseSearchRepository
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentSurname', ' LIKE ', $advancedSearchFields['foiRequestorSurname'], false, true);
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentPostcode', ' LIKE ', $advancedSearchFields['foiRequestorPostcode'], false, true);
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:hoCaseOfficer', ' LIKE ', $advancedSearchFields['foiHoCaseOfficer'], false, true);
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentEmail', ' = ', $advancedSearchFields['foiRequestorEmail']);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentEmail',' LIKE ', $advancedSearchFields['foiRequestorEmail']);
         //@codingStandardsIgnoreEnd
     }
  
@@ -543,7 +543,7 @@ class CtsCaseSearchRepository
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentSurname', ' LIKE ', $advancedSearchFields['foiComplaintRequestorSurname'], false, true);
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentPostcode', ' LIKE ', $advancedSearchFields['foiComplaintRequestorPostcode'], false, true);
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:hoCaseOfficer', ' LIKE ', $advancedSearchFields['foiComplaintHoCaseOfficer'], false, true);
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentEmail', ' = ', $advancedSearchFields['foiComplaintRequestorEmail']);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:correspondentEmail',' LIKE ', $advancedSearchFields['foiComplaintRequestorEmail']);
         //@codingStandardsIgnoreEnd
     }
 
@@ -559,7 +559,7 @@ class CtsCaseSearchRepository
             DateHelper::fromNativeOrNullToIso($advancedSearchFields['ukviReceivedDateFrom']));
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:dateReceived', ' < ',
             DateHelper::fromNativeOrNullToIso($advancedSearchFields['ukviReceivedDateTo'], true));
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:caseRef', ' = ', $advancedSearchFields['ukviCaseRef']);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:caseRef',' LIKE ', $advancedSearchFields['ukviCaseRef']);
         $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:member', $advancedSearchFields['ukviMember']);
         $this->queryHelper->generateWhereForYesNoBoolean($advancedSearchFields['ukviCopyToNo10'], 'c.cts:replyToNumberTenCopy', $whereArray);
         if ($advancedSearchFields['ukviFirstName'] != '') {
@@ -593,33 +593,33 @@ class CtsCaseSearchRepository
         // For some reason opDate only works with the following style of query TIMESTAMP '2013-05-15T00:00:00.000+00:00'
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:opDate', ' = TIMESTAMP ',
             DateHelper::fromNativeOrNullToIso($advancedSearchFields['pqOpDate'], false, true));
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:receivedType', ' = ', $advancedSearchFields['pqReceivedType']);
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:uin', ' = ', $advancedSearchFields['pqUin']);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:receivedType',' LIKE ', $advancedSearchFields['pqReceivedType']);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:uin',' LIKE ', $advancedSearchFields['pqUin']);
         $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:member', $advancedSearchFields['pqMember']);
         $this->queryHelper->generateWhereForYesNoBoolean($advancedSearchFields['pqRoundRobin'], 'c.cts:roundRobin', $whereArray);
         //@codingStandardsIgnoreEnd
         if (!in_array('ANY_ALLOWED', $advancedSearchFields['pqSignedBy'])) {
             if (in_array('Home Sec', $advancedSearchFields['pqSignedBy'])) {
-                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:signedByHomeSec', ' = ', 'true');
+                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:signedByHomeSec',' LIKE ', 'true');
             } else {
-                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:signedByHomeSec', ' = ', 'false');
+                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:signedByHomeSec',' LIKE ', 'false');
             }
             if (in_array('Lords Minister', $advancedSearchFields['pqSignedBy'])) {
-                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:signedByLordsMinister', ' = ', 'true');
+                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:signedByLordsMinister',' LIKE ', 'true');
             } else {
-                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:signedByLordsMinister', ' = ', 'false');
+                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:signedByLordsMinister',' LIKE ', 'false');
             }
         }
         if (!in_array('ANY_ALLOWED', $advancedSearchFields['pqReviewedBy'])) {
             if (in_array('Perm Sec', $advancedSearchFields['pqReviewedBy'])) {
-                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:reviewedByPermSec', ' = ', 'true');
+                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:reviewedByPermSec',' LIKE ', 'true');
             } else {
-                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:reviewedByPermSec', ' = ', 'false');
+                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:reviewedByPermSec',' LIKE ', 'false');
             }
             if (in_array('SpAds', $advancedSearchFields['pqReviewedBy'])) {
-                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:reviewedBySpads', ' = ', 'true');
+                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:reviewedBySpads',' LIKE ', 'true');
             } else {
-                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:reviewedBySpads', ' = ', 'false');
+                $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:reviewedBySpads',' LIKE ', 'false');
             }
         }
     }
@@ -638,7 +638,7 @@ class CtsCaseSearchRepository
             DateHelper::fromNativeOrNullToIso($advancedSearchFields['tenReceivedDateTo'], true));
         $this->queryHelper->generateWhereForYesNoBoolean($advancedSearchFields['tenPriority'], 'c.cts:priority', $whereArray);
         $this->queryHelper->generateWhereForYesNoBoolean($advancedSearchFields['tenAdvice'], 'c.cts:advice', $whereArray);
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:mpRef', ' = ', $advancedSearchFields['tenMemberRef']);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:mpRef',' LIKE ', $advancedSearchFields['tenMemberRef']);
         $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:member', $advancedSearchFields['tenMember']);
         //@codingStandardsIgnoreEnd
     }
@@ -655,8 +655,8 @@ class CtsCaseSearchRepository
             DateHelper::fromNativeOrNullToIso($advancedSearchFields['genReceivedDateFrom']));
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:dateReceived', ' < ',
             DateHelper::fromNativeOrNullToIso($advancedSearchFields['genReceivedDateTo'], true));
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:hmpoPassportNumber', ' = ', $advancedSearchFields['genPassportNumber']);
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:hmpoApplicationNumber', ' = ', $advancedSearchFields['genApplicationNumber']);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:hmpoPassportNumber',' LIKE ', $advancedSearchFields['genPassportNumber']);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:hmpoApplicationNumber',' LIKE ', $advancedSearchFields['genApplicationNumber']);
         if ($advancedSearchFields['genFirstName'] != '') {
             $firstNameSearch = addslashes($advancedSearchFields['genFirstName']);
             array_push($whereArray, "(c.cts:correspondentForename LIKE '$firstNameSearch%' OR c.cts:applicantForename LIKE '$firstNameSearch%')");
@@ -688,8 +688,8 @@ class CtsCaseSearchRepository
             DateHelper::fromNativeOrNullToIso($advancedSearchFields['comReceivedDateFrom']));
         $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:dateReceived', ' < ',
             DateHelper::fromNativeOrNullToIso($advancedSearchFields['comReceivedDateTo'], true));
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:hmpoPassportNumber', ' = ', $advancedSearchFields['comPassportNumber']);
-        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:hmpoApplicationNumber', ' = ', $advancedSearchFields['comApplicationNumber']);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:hmpoPassportNumber',' LIKE ', $advancedSearchFields['comPassportNumber']);
+        $this->queryHelper->addToWhereStatement($whereArray, 'c.cts:hmpoApplicationNumber',' LIKE ', $advancedSearchFields['comApplicationNumber']);
         $this->queryHelper->addWhereInToWhereStatement($whereArray, 'c.cts:hmpoStage', $advancedSearchFields['comComplaintStage']);
         if ($advancedSearchFields['comFirstName'] != '') {
             $firstNameSearch = addslashes($advancedSearchFields['comFirstName']);
@@ -751,9 +751,9 @@ class CtsCaseSearchRepository
      
         //@codingStandardsIgnoreStart
         $this->queryHelper->addToWhereStatement($corrrespondentOrArray, 'c.cts:correspondentPostcode', ' LIKE ', $postcodeSearch, true, true);
-        $this->queryHelper->addToWhereStatement($corrrespondentOrArray, 'c.cts:correspondentEmail', ' = ', $emailSearch);
-        $this->queryHelper->addToWhereStatement($corrrespondentAndArray, 'c.cts:correspondentForename', ' = ', $forenameSearch);
-        $this->queryHelper->addToWhereStatement($corrrespondentAndArray, 'c.cts:correspondentSurname', ' = ', $surnameSearch);
+        $this->queryHelper->addToWhereStatement($corrrespondentOrArray, 'c.cts:correspondentEmail',' LIKE ', $emailSearch);
+        $this->queryHelper->addToWhereStatement($corrrespondentAndArray, 'c.cts:correspondentForename',' LIKE ', $forenameSearch);
+        $this->queryHelper->addToWhereStatement($corrrespondentAndArray, 'c.cts:correspondentSurname',' LIKE ', $surnameSearch);
         //@codingStandardsIgnoreEnd
      
         if (count($corrrespondentOrArray) > 0) {

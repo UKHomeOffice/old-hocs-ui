@@ -28,7 +28,7 @@ trait Priority
                 'choices'    => [
                     true  => 'Yes',
                     false => 'No',
-                    ''    => 'Either',
+                    null    => 'Either',
                 ],
                 'multiple'   => false,
                 'expanded'   => true,
