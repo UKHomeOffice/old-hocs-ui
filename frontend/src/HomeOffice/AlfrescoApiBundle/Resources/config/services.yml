@@ -94,7 +94,7 @@ services:
         class: %home_office_alfresco_api.cts_case.repository.class%
         arguments:
             - "@stash.default_cache"
-            - 36000
+            - 60
             - @home_office_alfresco_api.guzzle_client
             - @home_office_alfresco_api.cts_case.factory
             - @process_manager_token_storage
