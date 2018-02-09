@@ -146,6 +146,12 @@ class CtsCaseRepository
      */
     public function create(CtsCase $ctsCase)
     {
+        $nodeId = $ctsCase->getNodeId();
+
+        $topicKey = "symfonyCase" . $nodeId;
+        $item = $this->cacheService->getItem($topicKey);
+        $item->clear();
+
         $response = $this->apiClient->post('s/cmis/p/CTS/Cases/children', [
             'headers' => ['Content-Type' => 'application/atom+xml;type=entry'],
             'query'   => ['alf_ticket' => $this->tokenStorage->getAuthenticationTicket()],
