@@ -1,5 +1,8 @@
 FROM quay.io/ukhomeofficedigital/openjdk8
 
+ENV USER ui
+ENV GROUP ui
+
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
  && rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm  \
  && yum update -y \
@@ -30,7 +33,25 @@ WORKDIR /var/www/symfony
 
 COPY assets/entrypoint.sh entrypoint.sh
 RUN chmod +x  entrypoint.sh
+
+RUN groupadd -r ${GROUP} && \
+    useradd -r -g ${GROUP} ${USER} -d /var/www/symfony && \
+    chown -R ${USER}:${GROUP} /var/www/symfony
+
 ENTRYPOINT ["./entrypoint.sh"]
+
+RUN useradd www-data && \
+    usermod -u 1000 www-data && \
+    chown -R www-data:www-data /var/www/symfony/var/cache /var/www/symfony/var/logs && \
+    chmod -R 777 /var/www/symfony/var/cache /var/www/symfony/var/logs && \
+    chmod -R 777 /var/lib/nginx/ && \
+    chmod -R 777 /var/run/php-fpm/ && \
+    chmod -R 777 /etc/ssl/certs/ && \
+    chmod -R 777 /var/log/ && \
+    chmod -R 777 /run/ && \
+    chmod -R 777 /etc/nginx/
+
+USER ${USER}
 
 CMD cat /data/hocs-ui-ca.pem >> /etc/ssl/certs/cacert.pem & clammit -config=/var/www/symfony/clammit.cfg & php-fpm -R -D && nginx
 
