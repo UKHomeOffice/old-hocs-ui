@@ -21,6 +21,10 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "reporting"
+      RABBITMQ_DEFAULT_PASS: "reporting"
+      RABBITMQ_DEFAULT_VHOST: "/"
     networks:
       - hocs-network
 
@@ -88,9 +92,9 @@ services:
       DEFAULT_REGION: eu-west-1
 
   alfresco:
-    build:
-      context: ../hocs-alfresco
-#    image: quay.io/ukhomeofficedigital/hocs-alfresco
+#    build:
+#      context: ../hocs-alfresco
+    image: quay.io/ukhomeofficedigital/hocs-alfresco
     environment:
       ALF_S3_ACCESSKEY: UNSET
       ALF_S3_SECRETKEY: UNSET
@@ -114,12 +118,13 @@ services:
       /usr/local/alfresco/alf_data
 
   reporting:
-    build:
-      context: ../hocs-reporting-service
-#    image: quay.io/ukhomeofficedigital/hocs-reporting-service
+#    build:
+#      context: ../hocs-reporting-service
+    image: quay.io/ukhomeofficedigital/hocs-reporting-service
     environment:
       SPRING_PROFILES_ACTIVE: postgres, rabbitmq
       DB_HOST: postgres2
+      DB_PORT: 5432
       DB_USERNAME: root
       DB_PASSWORD: dev
       DB_NAME: postgres
@@ -134,9 +139,9 @@ services:
       - hocs-network
 
   data-service:
-    build:
-      context: ../hocs-data-service
-#    image: quay.io/ukhomeofficedigital/hocs-data-service
+#    build:
+#      context: ../hocs-data-service
+    image: quay.io/ukhomeofficedigital/hocs-data-service
     environment:
       SPRING_PROFILES_ACTIVE: postgres
       DB_HOST: postgres1
