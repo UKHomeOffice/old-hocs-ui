@@ -389,8 +389,8 @@ class CtsCaseRepository
         $list = $cacheItem->get();
         if ($cacheItem->isMiss()) {
             $cacheItem->lock();
-            $this->getCaseFromAlfresco($caseNodeId, $listKey);
-            $list = $cacheItem->get();
+            $list = getCaseFromAlfresco($caseNodeId, $listKey);
+            //$list = $cacheItem->get();
         }
         return $list;
     }
@@ -419,8 +419,8 @@ class CtsCaseRepository
         }
 
         $case = $response->getBody()->__toString();
-
-        $this->storeListInCache($listName, $case);
+        return $case;
+        //$this->storeListInCache($listName, $case);
     }
 
     public function auditView($audit, $caseNodeRef)
