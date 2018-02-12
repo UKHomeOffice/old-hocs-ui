@@ -365,7 +365,7 @@ services:
       arguments:
         - "@home_office_alfresco_api.mapper.makup_unit"
         - "@stash.default_cache"
-        - 60
+        - 30
 
     home_office_alfresco_api.consumer.forgotten_password:
       class: HomeOffice\AlfrescoApiBundle\Consumer\ForgottenPassword

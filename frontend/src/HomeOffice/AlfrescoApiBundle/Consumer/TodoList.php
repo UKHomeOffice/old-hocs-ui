@@ -55,6 +55,7 @@ class TodoList extends AbstractConsumer
         $cacheItem = $this->cacheService->getItem($listKey);
         $list = $cacheItem->get();
         if ($cacheItem->isMiss()) {
+            $cacheItem->lock();
             $this->getFromAlfresco($listKey, $options, $listHandler);
             $list = $cacheItem->get();
         }

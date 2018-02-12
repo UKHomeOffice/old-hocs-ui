@@ -388,6 +388,7 @@ class CtsCaseRepository
         $cacheItem = $this->cacheService->getItem($listKey);
         $list = $cacheItem->get();
         if ($cacheItem->isMiss()) {
+            $cacheItem->lock();
             $this->getCaseFromAlfresco($caseNodeId, $listKey);
             $list = $cacheItem->get();
         }
