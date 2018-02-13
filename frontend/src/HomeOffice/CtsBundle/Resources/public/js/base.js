@@ -681,7 +681,7 @@ function searchComplete(data, skip){
     clearResultsTable();
 
     /* Get target path for UIN link to case */
-    var path = '/cts/cases/create/';
+    var path = '/cts/cases/view/';
 
     if (data.length > 0){
 
