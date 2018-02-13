@@ -146,11 +146,6 @@ class CtsCaseRepository
      */
     public function create(CtsCase $ctsCase)
     {
-        $nodeId = $ctsCase->getNodeId();
-
-        $topicKey = "symfonyCase" . $nodeId;
-        $item = $this->cacheService->getItem($topicKey);
-        $item->clear();
 
         $response = $this->apiClient->post('s/cmis/p/CTS/Cases/children', [
             'headers' => ['Content-Type' => 'application/atom+xml;type=entry'],
@@ -186,10 +181,6 @@ class CtsCaseRepository
     public function update(CtsCase $ctsCase)
     {
         $nodeId = $ctsCase->getNodeId();
-
-        $topicKey = "symfonyCase" . $nodeId;
-        $item = $this->cacheService->getItem($topicKey);
-        $item->clear();
 
         $body = $this->atomHelper->generateAtomEntry(
             $ctsCase,
@@ -389,8 +380,8 @@ class CtsCaseRepository
         $list = $cacheItem->get();
         if ($cacheItem->isMiss()) {
             $cacheItem->lock();
-            $list = $this->getCaseFromAlfresco($caseNodeId, $listKey);
-            //$list = $cacheItem->get();
+            $this->getCaseFromAlfresco($caseNodeId, $listKey);
+            $list = $cacheItem->get();
         }
         return $list;
     }
@@ -419,8 +410,8 @@ class CtsCaseRepository
         }
 
         $case = $response->getBody()->__toString();
-        return $case;
-        //$this->storeListInCache($listName, $case);
+
+        $this->storeListInCache($listName, $case);
     }
 
     public function auditView($audit, $caseNodeRef)
@@ -465,17 +456,13 @@ class CtsCaseRepository
      */
     public function addGroupedCases(CtsCase $ctsCase)
     {
-        $topicKey = "symfonyCase" . $ctsCase->getNodeId();
-        $item = $this->cacheService->getItem($topicKey);
-        $item->clear();
-
         try {
             $this->apiClient->post("s/homeoffice/cts/groupCases", [
                 'query' => [
                     'alf_ticket' => $this->tokenStorage->getAuthenticationTicket()
                 ],
                 'body' => [
-                    'masterNodeRef' => $ctsCase->getNodeId(),
+                    'masterNodeRef' => $ctsCase->getId(),
                     'slaveUinList' => $ctsCase->getUinsToGroup()
                 ],
             ]);
@@ -496,23 +483,17 @@ class CtsCaseRepository
      */
     public function removeGroupedCases(CtsCase $masterCtsCase, array $slaveCtsCases)
     {
-        $topicKey = "symfonyCase" . $masterCtsCase->getNodeId();
-        $item = $this->cacheService->getItem($topicKey);
-        $item->clear();
 
         try {
             $slaveNodeRefs = [];
             foreach ($slaveCtsCases as $slaveCtsCase) {
-                $topicKey = "symfonyCase" . $slaveCtsCase->getNodeId();
-                $item = $this->cacheService->getItem($topicKey);
-                $item->clear();
-                array_push($slaveNodeRefs, $slaveCtsCase->getNodeId());
+                array_push($slaveNodeRefs, $slaveCtsCase->getId());
             }
 
             $this->apiClient->post("s/homeoffice/cts/ungroupCases", [
                 'query' => ['alf_ticket' => $this->tokenStorage->getAuthenticationTicket()],
                 'body' => [
-                    'masterNodeRef' => $masterCtsCase->getNodeId(),
+                    'masterNodeRef' => $masterCtsCase->getId(),
                     'slaveNodeRefList' => implode($slaveNodeRefs, ',')
                 ],
             ]);
@@ -532,9 +513,6 @@ class CtsCaseRepository
      */
     public function addLinkedCases(CtsCase $ctsCase)
     {
-        $topicKey = "symfonyCase" . $ctsCase->getNodeId();
-        $item = $this->cacheService->getItem($topicKey);
-        $item->clear();
 
         try {
             $this->apiClient->post("s/homeoffice/cts/linkCases", [
@@ -542,7 +520,7 @@ class CtsCaseRepository
                     'alf_ticket' => $this->tokenStorage->getAuthenticationTicket()
                 ],
                 'body' => [
-                    'masterNodeRef' => $ctsCase->getNodeId(),
+                    'masterNodeRef' => $ctsCase->getId(),
                     'linkedHrnList' => $ctsCase->getHrnsToLink()
                 ],
             ]);
@@ -563,21 +541,14 @@ class CtsCaseRepository
      */
     public function removeLinkedCase(CtsCase $ctsCase, CtsCase $childCase)
     {
-        $topicKey = "symfonyCase" . $ctsCase->getNodeId();
-        $item = $this->cacheService->getItem($topicKey);
-        $item->clear();
-
-        $topicKey = "symfonyCase" . $childCase->getNodeId();
-        $item = $this->cacheService->getItem($topicKey);
-        $item->clear();
         try {
             $this->apiClient->post("s/homeoffice/cts/unlinkCases", [
                 'query' => [
                     'alf_ticket' => $this->tokenStorage->getAuthenticationTicket(),
                 ],
                 'body' => [
-                    'masterNodeRef' => $ctsCase->getNodeId(),
-                    'linkedHrnList' => $childCase->getNodeId()
+                    'masterNodeRef' => $ctsCase->getId(),
+                    'linkedHrnList' => $childCase->getId()
                 ],
             ]);
         } catch (RequestException $ex) {
@@ -599,9 +570,6 @@ class CtsCaseRepository
      */
     public function assignCaseToPerson(CtsCase $case, Person $person)
     {
-        $topicKey = "symfonyCase" . $case->getNodeId();
-        $item = $this->cacheService->getItem($topicKey);
-        $item->clear();
 
         $team = $person->getFirstTeam();
         $unit = $person->getFirstUnit() ?: $this->listHandler->getUnitFromTeam($team);

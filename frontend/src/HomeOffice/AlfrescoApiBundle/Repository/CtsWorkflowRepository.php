@@ -66,9 +66,7 @@ class CtsWorkflowRepository
      */
     public function updateWorkflow($ctsCase, $transition)
     {
-        $topicKey = "symfonyCase" . $ctsCase->getNodeId();
-        $item = $this->cacheService->getItem($topicKey);
-        $item->clear();
+
         try {
             $response = $this->apiClient->post('service/homeoffice/cts/updateWorkflow', [
                 'headers' => ['Content-Type' => 'application/atom+xml;type=entry'],
