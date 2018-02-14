@@ -129,27 +129,40 @@ class CtsCaseDocumentRepository
      */
     public function create($ctsCaseDocument, $caseNodeRef, $caseNodeId)
     {
+
         $ctsCaseDocument->upload($caseNodeId);
 
+        $myFile = fopen($ctsCaseDocument->getWebPath($caseNodeId), 'r');
+        $myFile2 = fopen($ctsCaseDocument->getWebPath($caseNodeId), 'r');
+
         //Virus scan
-        if ($this->environment != 'dc') {
+        if ($this->environment != "dc") {
+
+            $virusBody = array(
+                'file' => $myFile,
+                'name' => $this->versionFileName($caseNodeId, $ctsCaseDocument)
+            );
+
+            $virusClient = new Guzzle();
+
             try {
-                $virusResponse = $this->apiClient->post('https://clamav.virus-scan.svc.cluster.local/scan', [
-                    'file' => fopen($ctsCaseDocument->getWebPath($caseNodeId), 'r'),
-                    'name' => $this->versionFileName($caseNodeId, $ctsCaseDocument)
+                $virusResponse = $virusClient->post('https://clamav.virus-scan.svc.cluster.local/scan',  [
+                    'body' => $virusBody
                 ]);
+
+                if (strpos($virusResponse, 'Everything ok : false')) {
+                    fclose($myFile);
+                    return "A Virus was found in the file. Do not try again.";
+                }
             } catch (RequestException $exception) {
-                $virusResponse = json_decode($exception->getResponse()->getBody()->__toString());
-                print "FAILED";
-                return $virusResponse->message;
-            }
-            if($virusResponse->getStatusCode() != 200){
+                $virusResponse = $exception->getResponse()->getBody()->__toString();
+                fclose($myFile);
                 return $virusResponse->message;
             }
         }
 
         $body = array(
-            'file' => fopen($ctsCaseDocument->getWebPath($caseNodeId), 'r'),
+            'file' => $myFile2,
             'name' => $this->versionFileName($caseNodeId, $ctsCaseDocument),
             'destination' => $caseNodeRef,
             'documenttype' => $ctsCaseDocument->getDocumentType(),
@@ -159,14 +172,18 @@ class CtsCaseDocumentRepository
         try {
             $response = $this->apiClient->post('s/homeoffice/cts/document', [
                 'query' => ['alf_ticket' => $this->tokenStorage->getAuthenticationTicket()],
-                'body' => $body,
+                'body' => $body
             ]);
         } catch (RequestException $exception) {
             $response = json_decode($exception->getResponse()->getBody()->__toString());
+            fclose($myFile2);
             return $response->message;
         }
         $responseBody = json_decode($response->getBody()->__toString());
         $ctsCaseDocument->setId($responseBody->id);
+
+        fclose($myFile);
+        fclose($myFile2);
         return true;
     }
 

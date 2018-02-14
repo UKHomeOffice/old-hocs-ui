@@ -9,6 +9,15 @@ services:
     networks:
       - hocs-network
 
+  clamav-rest:
+     image: lokori/clamav-rest
+     environment:
+       - CLAMD_HOST=clamd
+     ports:
+       - "8086:8080"
+     networks:
+       - hocs-network
+
   redis:
     image: redis
     ports:
@@ -106,7 +115,7 @@ services:
       ALF_DB_HOST: mysql
       ALF_DB_PORT: 3306
       ALF_ADMIN_INITIAL_PASSWORD: 209c6174da490caeb422f3fa5a7ae634
-      ALF_REPORTING_ENDPOINT: rabbitmq
+      ALF_REPORTING_ENDPOINT: http:\/\/reporting:8080
     depends_on:
       - s3creator
       - mysql
@@ -122,7 +131,7 @@ services:
 #      context: ../hocs-reporting-service
     image: quay.io/ukhomeofficedigital/hocs-reporting-service
     environment:
-      SPRING_PROFILES_ACTIVE: postgres, rabbitmq
+      SPRING_PROFILES_ACTIVE: postgres
       DB_HOST: postgres2
       DB_PORT: 5432
       DB_USERNAME: root
@@ -132,16 +141,15 @@ services:
       RABBIT_MQ_HOST: rabbitmq
     depends_on:
       - postgres2
-      - rabbitmq
     ports:
       - 8082:8080
     networks:
       - hocs-network
 
   data-service:
-#    build:
-#      context: ../hocs-data-service
-    image: quay.io/ukhomeofficedigital/hocs-data-service
+    build:
+      context: ../hocs-data-service
+    #image: quay.io/ukhomeofficedigital/hocs-data-service
     environment:
       SPRING_PROFILES_ACTIVE: postgres
       DB_HOST: postgres1

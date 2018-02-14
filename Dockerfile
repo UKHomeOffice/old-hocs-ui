@@ -53,6 +53,6 @@ RUN useradd www-data && \
 
 USER ${USER}
 
-CMD cat /data/hocs-ui-ca.pem >> /etc/ssl/certs/cacert.pem & clammit -config=/var/www/symfony/clammit.cfg & php-fpm -R -D && nginx
+CMD cat /data/hocs-ui-ca.pem >> /etc/ssl/certs/cacert.pem && php-fpm && nginx
 
 EXPOSE 8080

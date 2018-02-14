@@ -98,6 +98,11 @@ class CtsCaseStandardLineRepository
         CtsCaseDocumentRepository $ctsCaseDocumentRepository
     ) {
         $this->apiClient = $apiClient;
+        $this->apiClient->setDefaultOption('version', [
+            'CURLOPT_HTTP_VERSION' => 'CURL_HTTP_VERSION_1_0',
+            "CURLOPT_SSL_VERIFYHOST" => "0",
+            "CURLOPT_SSL_VERIFYPEER" => "0"
+        ]);
         $this->factory = $ctsCaseStandardLineFactory;
         $this->tokenStorage = $tokenStorage;
         $this->atomHelper = $atomHelper;
