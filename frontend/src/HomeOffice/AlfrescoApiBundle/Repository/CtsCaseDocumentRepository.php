@@ -105,7 +105,6 @@ class CtsCaseDocumentRepository
                 "CURLOPT_SSL_VERIFYPEER" => "0"
             )
         );
-        $this->apiClient->
         $this->factory = $ctsCaseDocumentFactory;
         $this->tokenStorage = $tokenStorage;
         $this->atomHelper = $atomHelper;
