@@ -132,7 +132,7 @@ class CtsCaseDocumentRepository
         $ctsCaseDocument->upload($caseNodeId);
 
         //Virus scan
-        if ($this->environment == 'dc') {
+        if ($this->environment != 'dc') {
             try {
                 $virusResponse = $this->apiClient->post('https://clamav.virus-scan.svc.cluster.local/scan', [
                     'file' => fopen($ctsCaseDocument->getWebPath($caseNodeId), 'r'),
