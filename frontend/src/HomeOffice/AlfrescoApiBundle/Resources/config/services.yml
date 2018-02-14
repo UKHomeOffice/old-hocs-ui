@@ -111,6 +111,7 @@ services:
     home_office_alfresco_api.cts_case_document.repository:
         class: %home_office_alfresco_api.cts_case_document.repository.class%
         arguments:
+            - %kernel.environment%
             - "@stash.default_cache"
             - 3600
             - @home_office_alfresco_api.guzzle_client

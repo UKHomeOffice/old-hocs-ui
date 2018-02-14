@@ -66,6 +66,8 @@ class CtsCaseDocumentRepository
 
     protected $cacheTimeout;
 
+    private  $environment;
+
     /**
      *
      * @param \GuzzleHttp\Client $apiClient
@@ -80,6 +82,7 @@ class CtsCaseDocumentRepository
      * @param Logger $logger
      */
     public function __construct(
+        $env,
         CacheService $cacheService,
         $cacheTimeout,
         Guzzle $apiClient,
@@ -97,9 +100,12 @@ class CtsCaseDocumentRepository
         $this->apiClient->setDefaultOption(
             'version',
             array(
-                "CURLOPT_HTTP_VERSION" => "CURL_HTTP_VERSION_1_0"
+                "CURLOPT_HTTP_VERSION" => "CURL_HTTP_VERSION_1_0",
+                "CURLOPT_SSL_VERIFYHOST" => "0",
+                "CURLOPT_SSL_VERIFYPEER" => "0"
             )
         );
+        $this->apiClient->
         $this->factory = $ctsCaseDocumentFactory;
         $this->tokenStorage = $tokenStorage;
         $this->atomHelper = $atomHelper;
@@ -112,6 +118,7 @@ class CtsCaseDocumentRepository
 
         $this->cacheService = $cacheService;
         $this->cacheTimeout = $cacheTimeout;
+        $this->environment = $env;
 
     }
 
@@ -126,7 +133,7 @@ class CtsCaseDocumentRepository
         $ctsCaseDocument->upload($caseNodeId);
 
         //Virus scan
-        if (!in_array($this->getEnvironment(), ['dc'])) {
+        if ($this->environment == 'dc') {
             try {
                 $virusResponse = $this->apiClient->post('https://clamav.virus-scan.svc.cluster.local/scan', [
                     'file' => fopen($ctsCaseDocument->getWebPath($caseNodeId), 'r'),
@@ -135,6 +142,9 @@ class CtsCaseDocumentRepository
             } catch (RequestException $exception) {
                 $virusResponse = json_decode($exception->getResponse()->getBody()->__toString());
                 print "FAILED";
+                return $virusResponse->message;
+            }
+            if($virusResponse->getStatusCode() != 200){
                 return $virusResponse->message;
             }
         }
