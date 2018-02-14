@@ -125,6 +125,20 @@ class CtsCaseDocumentRepository
     {
         $ctsCaseDocument->upload($caseNodeId);
 
+        //Virus scan
+        if (!in_array($this->getEnvironment(), ['dc'])) {
+            try {
+                $virusResponse = $this->apiClient->post('https://clamav.virus-scan.svc.cluster.local/scan', [
+                    'file' => fopen($ctsCaseDocument->getWebPath($caseNodeId), 'r'),
+                    'name' => $this->versionFileName($caseNodeId, $ctsCaseDocument)
+                ]);
+            } catch (RequestException $exception) {
+                $virusResponse = json_decode($exception->getResponse()->getBody()->__toString());
+                print "FAILED";
+                return $virusResponse->message;
+            }
+        }
+
         $body = array(
             'file' => fopen($ctsCaseDocument->getWebPath($caseNodeId), 'r'),
             'name' => $this->versionFileName($caseNodeId, $ctsCaseDocument),
