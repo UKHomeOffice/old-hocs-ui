@@ -152,7 +152,8 @@ class CtsCaseDocumentRepository
 
             try {
                 $virusResponse = $virusClient->post('https://clamav.virus-scan.svc.cluster.local/scan',  [
-                    'body' => $virusBody
+                    'body' => $virusBody,
+                    'verify' => false
                 ]);
 
                 if (strpos($virusResponse, 'Everything ok : false')) {
