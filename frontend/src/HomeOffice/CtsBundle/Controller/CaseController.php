@@ -168,11 +168,6 @@ class CaseController extends Controller
                             $ctsCase->getId(),
                             $ctsCase->getNodeId()
                         );
-
-                        if( $return == "virus")
-                        {
-                            throw new \HttpException("A Virus was found in the file. Do not try again.");
-                        }
                     }
 
                     return $this->redirect($this->generateUrl(
