@@ -17,7 +17,7 @@ class FOI extends SuperSearch
     use Elements\CaseType;
     use Elements\DateReceivedFrom;
     use Elements\DateReceivedTo;
-    use Elements\HOCaseOfficer;
+    use Elements\HoCaseOfficer;
     use Elements\CorrespondentForename;
     use Elements\CorrespondentSurname;
     use Elements\CorrespondentPostCode;
