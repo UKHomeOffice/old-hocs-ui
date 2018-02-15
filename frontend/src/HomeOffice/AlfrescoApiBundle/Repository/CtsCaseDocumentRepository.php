@@ -144,6 +144,11 @@ class CtsCaseDocumentRepository
             );
 
             $virusClient = new Guzzle();
+            $virusClient->setDefaultOption('version', [
+                'CURLOPT_HTTP_VERSION' => 'CURL_HTTP_VERSION_1_0',
+                "CURLOPT_SSL_VERIFYHOST" => "0",
+                "CURLOPT_SSL_VERIFYPEER" => "0"
+            ]);
 
             try {
                 $virusResponse = $virusClient->post('https://clamav.virus-scan.svc.cluster.local/scan',  [
