@@ -140,14 +140,12 @@ class CtsCaseDocumentTemplateRepository
                 ]);
 
                 if (strpos($virusResponse, 'Everything ok : false')) {
-                    fclose($file1);
                     return $responseArray = [
                         'code' => 500,
                         'message' => BulkDocumentRepository::VIRUS_ERROR
                     ];
                 }
             } catch (RequestException $exception) {
-                fclose($file1);
                 return $responseArray = [
                     'code' => 500,
                     'message' => BulkDocumentRepository::DEFAULT_ERROR
