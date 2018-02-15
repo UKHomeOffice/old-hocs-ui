@@ -20,6 +20,7 @@ class CtsCaseDocumentTemplateRepository
 
     const FILE_ALREADY_EXISTS_ERROR = 'A template with that filename already exists.';
     const DEFAULT_ERROR = 'An error occurred trying to add the template, please try again later.';
+    const VIRUS_ERROR = "A Virus was found in the file. Do not try again.";
 
     /**
      * @var Guzzle
@@ -113,8 +114,49 @@ class CtsCaseDocumentTemplateRepository
     public function create($ctsCaseDocumentTemplate)
     {
         $ctsCaseDocumentTemplate->upload();
+
+        $file1 = fopen($ctsCaseDocumentTemplate->getWebPath(), 'r');
+        $file2 = fopen($ctsCaseDocumentTemplate->getWebPath(), 'r');
+
+        //Virus scan
+        if ($this->environment != "dc") {
+
+            $virusBody = array(
+                'file' => $file1,
+                'name' => $ctsCaseDocumentTemplate->getName()
+            );
+
+            $virusClient = new Guzzle();
+            $virusClient->setDefaultOption('version', [
+                'CURLOPT_HTTP_VERSION' => 'CURL_HTTP_VERSION_1_0',
+                "CURLOPT_SSL_VERIFYHOST" => "0",
+                "CURLOPT_SSL_VERIFYPEER" => "0"
+            ]);
+
+            try {
+                $virusResponse = $virusClient->post('https://clamav.virus-scan.svc.cluster.local/scan',  [
+                    'body' => $virusBody,
+                    'verify' => false
+                ]);
+
+                if (strpos($virusResponse, 'Everything ok : false')) {
+                    fclose($file1);
+                    return $responseArray = [
+                        'code' => 500,
+                        'message' => BulkDocumentRepository::VIRUS_ERROR
+                    ];
+                }
+            } catch (RequestException $exception) {
+                fclose($file1);
+                return $responseArray = [
+                    'code' => 500,
+                    'message' => BulkDocumentRepository::DEFAULT_ERROR
+                ];
+            }
+        }
+
         $body = array(
-            'file' => fopen($ctsCaseDocumentTemplate->getWebPath(), 'r'),
+            'file' => fopen($file2, 'r'),
             'name' => $ctsCaseDocumentTemplate->getName(),
             'appliesToCorrespondenceType' => $ctsCaseDocumentTemplate->getAppliesToCorrespondenceType(),
             'templateName' => $ctsCaseDocumentTemplate->getTemplateName(),

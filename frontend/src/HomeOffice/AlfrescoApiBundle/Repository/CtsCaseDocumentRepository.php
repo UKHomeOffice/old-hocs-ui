@@ -158,12 +158,12 @@ class CtsCaseDocumentRepository
 
                 if (strpos($virusResponse, 'Everything ok : false')) {
                     fclose($myFile);
-                    return "A Virus was found in the file. Do not try again.";
+                    return "virus";
                 }
             } catch (RequestException $exception) {
                 $virusResponse = $exception->getResponse()->getBody()->__toString();
                 fclose($myFile);
-                return $virusResponse->message;
+                return false;
             }
         }
 
@@ -183,7 +183,7 @@ class CtsCaseDocumentRepository
         } catch (RequestException $exception) {
             $response = json_decode($exception->getResponse()->getBody()->__toString());
             fclose($myFile2);
-            return $response->message;
+            return false;
         }
         $responseBody = json_decode($response->getBody()->__toString());
         $ctsCaseDocument->setId($responseBody->id);

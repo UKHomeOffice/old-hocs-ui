@@ -20,6 +20,7 @@ use GuzzleHttp\Exception\RequestException;
 class CtsCaseStandardLineRepository
 {
     const DEFAULT_ERROR = 'An error occurred trying to add the standard line, please try again later.';
+    const VIRUS_ERROR = "A Virus was found in the file. Do not try again.";
  
     /**
      * @var Guzzle
@@ -126,12 +127,52 @@ class CtsCaseStandardLineRepository
         try {
             $standardLine->upload();
 
+            $file1 = fopen($standardLine->getWebPath(), 'r');
+            $file2 = fopen($standardLine->getWebPath(), 'r');
+
+            //Virus scan
+            if ($this->environment != "dc") {
+
+                $virusBody = array(
+                    'file' => $file1,
+                    'name' => $standardLine->getName()
+                );
+
+                $virusClient = new Guzzle();
+                $virusClient->setDefaultOption('version', [
+                    'CURLOPT_HTTP_VERSION' => 'CURL_HTTP_VERSION_1_0',
+                    "CURLOPT_SSL_VERIFYHOST" => "0",
+                    "CURLOPT_SSL_VERIFYPEER" => "0"
+                ]);
+
+                try {
+                    $virusResponse = $virusClient->post('https://clamav.virus-scan.svc.cluster.local/scan',  [
+                        'body' => $virusBody,
+                        'verify' => false
+                    ]);
+
+                    if (strpos($virusResponse, 'Everything ok : false')) {
+                        fclose($file1);
+                        return $responseArray = [
+                            'code' => 500,
+                            'message' => BulkDocumentRepository::VIRUS_ERROR
+                        ];
+                    }
+                } catch (RequestException $exception) {
+                    fclose($file1);
+                    return $responseArray = [
+                        'code' => 500,
+                        'message' => BulkDocumentRepository::DEFAULT_ERROR
+                    ];
+                }
+            }
+
             $response = $this->apiClient->post('s/homeoffice/cts/standardLine', [
                 'query' => [
                     'alf_ticket' => $this->tokenStorage->getAuthenticationTicket()
                 ],
                 'body'  => [
-                    'file'            => fopen($standardLine->getWebPath(), 'r'),
+                    'file'            => $file2,
                     'name'            => rawurlencode($standardLine->getName()),
                     'associatedUnit'  => rawurlencode($standardLine->getAssociatedUnit()),
                     'associatedTopic' => rawurlencode($standardLine->getAssociatedTopic()),

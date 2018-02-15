@@ -15,6 +15,7 @@ class BulkDocumentRepository
 
     const FILE_ALREADY_EXISTS_ERROR = 'An auto create file with that filename already exists, please check errors.';
     const DEFAULT_ERROR = 'An error occurred trying to add the file, please try again later.';
+    const VIRUS_ERROR = "A Virus was found in the file. Do not try again.";
 
     /**
      * @var Guzzle
@@ -109,8 +110,48 @@ class BulkDocumentRepository
     ) {
         $document->upload();
 
+        $file1 = fopen($document->getWebPath(), 'r');
+        $file2 = fopen($document->getWebPath(), 'r');
+
+        //Virus scan
+        if ($this->environment != "dc") {
+
+            $virusBody = array(
+                'file' => $file1,
+                'name' => $document->getName()
+            );
+
+            $virusClient = new Guzzle();
+            $virusClient->setDefaultOption('version', [
+                'CURLOPT_HTTP_VERSION' => 'CURL_HTTP_VERSION_1_0',
+                "CURLOPT_SSL_VERIFYHOST" => "0",
+                "CURLOPT_SSL_VERIFYPEER" => "0"
+            ]);
+
+            try {
+                $virusResponse = $virusClient->post('https://clamav.virus-scan.svc.cluster.local/scan',  [
+                    'body' => $virusBody,
+                    'verify' => false
+                ]);
+
+                if (strpos($virusResponse, 'Everything ok : false')) {
+                    fclose($file1);
+                    return $responseArray = [
+                        'code' => 500,
+                        'message' => BulkDocumentRepository::VIRUS_ERROR
+                    ];
+                }
+            } catch (RequestException $exception) {
+                fclose($file1);
+                return $responseArray = [
+                    'code' => 500,
+                    'message' => BulkDocumentRepository::DEFAULT_ERROR
+                ];
+            }
+        }
+
         $body = [
-            'file'         => fopen($document->getWebPath(), 'r'),
+            'file'         => $file2,
             'name'         => $document->getName(),
             'caseType'     => $caseType,
             'assignedUnit' => $assignedUnit,

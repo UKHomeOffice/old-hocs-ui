@@ -163,11 +163,16 @@ class CaseController extends Controller
                         $caseDocumentFile = $ctsCase->getNewDocument()->getFile();
                     }
                     if (isset($caseDocumentFile)) {
-                        $this->getCtsCaseDocumentRepository()->create(
+                        $return = $this->getCtsCaseDocumentRepository()->create(
                             $ctsCase->getNewDocument(),
                             $ctsCase->getId(),
                             $ctsCase->getNodeId()
                         );
+
+                        if( $return == "virus")
+                        {
+                            throw new \HttpException("A Virus was found in the file. Do not try again.");
+                        }
                     }
 
                     return $this->redirect($this->generateUrl(
