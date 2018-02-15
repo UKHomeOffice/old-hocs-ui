@@ -180,7 +180,7 @@ class CtsCaseDocumentRepository
             ]);
         } catch (RequestException $exception) {
             $response = json_decode($exception->getResponse()->getBody()->__toString());
-            return false;
+            return $response->message;
         }
         $responseBody = json_decode($response->getBody()->__toString());
         $ctsCaseDocument->setId($responseBody->id);
