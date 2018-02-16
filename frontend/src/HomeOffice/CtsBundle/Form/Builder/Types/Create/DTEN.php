@@ -129,7 +129,7 @@ class DTEN extends AbstractCreateType
                             $builder,
                             $this->getListService(),
                             $this->getTopicsService(),
-                            ['topics' => true, 'minister' => true, 'standardLines' => true],
+                            ['topics' => true, 'team' => true, 'minister' => true, 'standardLines' => true],
                             false,
                             'Responsible unit'
                         )
