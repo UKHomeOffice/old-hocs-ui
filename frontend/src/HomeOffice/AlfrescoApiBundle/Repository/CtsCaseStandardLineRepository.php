@@ -21,7 +21,7 @@ class CtsCaseStandardLineRepository
 {
     const DEFAULT_ERROR = 'An error occurred trying to add the standard line, please try again later.';
     const VIRUS_ERROR = "A Virus was found in the file. Do not try again.";
- 
+
     /**
      * @var Guzzle
      */
@@ -41,12 +41,12 @@ class CtsCaseStandardLineRepository
      * @var AtomHelper
      */
     private $atomHelper;
- 
+
     /**
      * @var QueryHelper
      */
     private $queryHelper;
- 
+
     /**
      * @var CTSHelper
      */
@@ -61,12 +61,12 @@ class CtsCaseStandardLineRepository
      * @var string
      */
     private $store;
- 
+
     /**
      * @var array
      */
     private $caseStandardLineProperties;
- 
+
     /**
      * @var CtsCaseDocumentRepository
      */
@@ -243,8 +243,8 @@ class CtsCaseStandardLineRepository
         $where = $orWhere = $andWhere = [];
      
         $this->queryHelper
-            ->addToWhereStatement($where, 'cts:associatedUnit', '=', $unit)
-            ->addToWhereStatement($where, 'cts:associatedTopic', '=', $topic)
+            ->addToWhereStatement($where, 'cts:associatedUnit', ' LIKE ', $unit)
+            ->addToWhereStatement($where, 'cts:associatedTopic', ' LIKE ', $topic)
             ->addToWhereStatement($where, 'cmis:name', ' LIKE ', $documentName, true, true);
 
         $orderBy = $this->queryHelper->getQueueOrderByStatement('cts:reviewDate', 'ASC');

@@ -36,12 +36,20 @@
                 </div>
 
                 <div class="form-group">
-                    {{ form_label(form['associatedUnit']) }}
-                    {{ form_widget(form['associatedUnit'], {'attr': {
+                    {{ form_label(form['topicUnitList']) }}
+                    {{ form_widget(form['topicUnitList'], {'attr': {
                         'class': 'chosen associatedUnit',
                         'data-refresh-url': path('homeoffice_cts_caseelements_topicsbyunit')
                     }}) }}
                 </div>
+
+                {#<div class="form-group">#}
+                    {#{{ form_label(form['associatedUnit']) }}#}
+                    {#{{ form_widget(form['associatedUnit'], {'attr': {#}
+                        {#'class': 'chosen associatedUnit',#}
+                        {#'data-refresh-url': path('homeoffice_cts_caseelements_topicsbyunit')#}
+                    {#}}) }}#}
+                {#</div>#}
 
                 <div class="form-group">
                     {{ form_label(form['associatedTopic']) }}
