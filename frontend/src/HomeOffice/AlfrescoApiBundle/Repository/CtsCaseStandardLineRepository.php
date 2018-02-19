@@ -72,9 +72,12 @@ class CtsCaseStandardLineRepository
      */
     private $ctsCaseDocumentRepository;
 
+    private  $environment;
+
     /**
      * Constructor
      *
+     * @param String                     $env
      * @param Guzzle                     $apiClient
      * @param CtsCaseStandardLineFactory $ctsCaseStandardLineFactory
      * @param SessionTicketStorage       $tokenStorage
@@ -87,6 +90,7 @@ class CtsCaseStandardLineRepository
      * @param CtsCaseDocumentRepository  $ctsCaseDocumentRepository
      */
     public function __construct(
+        $env,
         Guzzle $apiClient,
         CtsCaseStandardLineFactory $ctsCaseStandardLineFactory,
         SessionTicketStorage $tokenStorage,
@@ -113,6 +117,7 @@ class CtsCaseStandardLineRepository
         $this->store = $store;
         $this->caseStandardLineProperties = $caseStandardLineProperties;
         $this->ctsCaseDocumentRepository = $ctsCaseDocumentRepository;
+        $this->environment = $env;
     }
 
     /**

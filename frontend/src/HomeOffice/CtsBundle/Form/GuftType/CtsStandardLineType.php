@@ -21,8 +21,7 @@ class CtsStandardLineType extends AbstractType
 {
     use Elements\StandardLineName;
     use Elements\ReviewDate;
-    use Elements\TopicUnitList;
-//    use Elements\AssociatedUnit;
+    use Elements\AssociatedUnit;
     use Elements\AssociatedTopic;
     use Elements\File;
     use Elements\NewFile;
@@ -71,8 +70,7 @@ class CtsStandardLineType extends AbstractType
 
         $this->standardLineName($builder)
             ->reviewDate($builder)
-            ->topicUnitList($builder, TopicUnits::getTopicUnitList())
-//            ->associatedUnit($builder, $this->listService->getUnitArray())
+            ->associatedUnit($builder, TopicUnits::getTopicUnitList())
             ->associatedTopic($builder, $topics)
             ->file($builder)
             ->save($builder);
@@ -92,7 +90,7 @@ class CtsStandardLineType extends AbstractType
                         'associatedTopic',
                         'choice',
                         [
-                            'choices' => $this->topicService->getTopicsForForm(null, $data['topicUnitList']),
+                            'choices' => $this->topicService->getTopicsForForm(null, $data['associatedUnit']),
                         ]
                     );
                 }
