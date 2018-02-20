@@ -147,9 +147,9 @@ services:
       - hocs-network
 
   data-service:
-    build:
-      context: ../hocs-data-service
-    #image: quay.io/ukhomeofficedigital/hocs-data-service
+#    build:
+#      context: ../hocs-data-service
+    image: quay.io/ukhomeofficedigital/hocs-data-service
     environment:
       SPRING_PROFILES_ACTIVE: postgres
       DB_HOST: postgres1

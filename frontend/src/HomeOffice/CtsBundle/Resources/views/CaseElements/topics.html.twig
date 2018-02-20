@@ -3,8 +3,8 @@
     {{ form_widget(form['markupTopic']) }}
 
     {% if form['markupTopic'].vars.attr['data-standard-lines'] == true %}
-        <div class="topic-standard-line">
-            <a href="" class="hidden" style="text-decoration: underline;display:none" data-url="{{ path('homeoffice_cts_standardlines_downloadfortopic') }}">
+        <div class="topic-standard-line" style="font-size:19px; margin:15px 0">
+            <a href="" class="form-read hidden" style="display:none" data-url="{{ path('homeoffice_cts_standardlines_downloadfortopic') }}">
                 Download standard line
             </a>
         </div>
@@ -15,12 +15,12 @@
     <a href="#" class="secondTopicTrigger secondTopicToggle">Add second topic</a>
     <a href="#" class="secondTopicTrigger secondTopicToggle hidden">Hide second topic</a>
 
-    <div class=" secondTopicToggle hidden">
+    <div class="secondTopicToggle hidden">
         {{ form_label(form['secondaryTopic']) }}
         {{ form_widget(form['secondaryTopic']) }}
         {% if form['secondaryTopic'].vars.attr['data-standard-lines'] == true %}
-            <div class="topic-standard-line">
-                <a href="" class=" hidden" style="text-decoration: underline;display:none" data-url="{{ path('homeoffice_cts_standardlines_downloadfortopic') }}">
+            <div class="topic-standard-line" style="font-size:19px; margin:15px 0">
+                <a href="" class="form-read hidden" style="display:none" data-url="{{ path('homeoffice_cts_standardlines_downloadfortopic') }}">
                     Download standard line
                 </a>
             </div>
