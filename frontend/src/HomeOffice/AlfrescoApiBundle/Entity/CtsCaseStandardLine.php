@@ -70,11 +70,6 @@ class CtsCaseStandardLine extends CtsNode
     private $extension;
 
     /**
-     * @var string
-     */
-    private $topicUnitList;
-
-    /**
      * Get Name
      *
      * @return string
@@ -375,22 +370,6 @@ class CtsCaseStandardLine extends CtsNode
     protected function getUploadFileName()
     {
         return 'STANDARD_LINE_'.$this->getName();
-    }
-
-    /**
-     * @return string
-     */
-    public function getTopicUnitList()
-    {
-        return $this->topicUnitList;
-    }
-
-    /**
-     * @param string $topicUnitList
-     */
-    public function setTopicUnitList($topicUnitList)
-    {
-        $this->topicUnitList = $topicUnitList;
     }
 
 
