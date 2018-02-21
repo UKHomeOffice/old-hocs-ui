@@ -7,9 +7,9 @@ abstract class TopicUnits extends ConstantHelper
 
     const topicUnitList = [
         'DCU' => 'DCU',
-        'FOI' => 'FOI',
-        'HMPO' => 'HMPO',
-        'UKVI' => 'UKVI'
+//        'FOI' => 'FOI',
+//        'HMPO' => 'HMPO',
+//        'UKVI' => 'UKVI'
     ];
 
     /**
