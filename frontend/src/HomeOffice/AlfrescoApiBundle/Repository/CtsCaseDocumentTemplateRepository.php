@@ -67,9 +67,12 @@ class CtsCaseDocumentTemplateRepository
      */
     private $caseDocumentTemplateProperties;
 
+    private  $environment;
+
     /**
      * Constructor
      *
+     * @param String                     $env
      * @param Guzzle                         $apiClient
      * @param CtsCaseDocumentTemplateFactory $ctsCaseDocumentTemplateFactory
      * @param SessionTicketStorage           $tokenStorage
@@ -81,6 +84,7 @@ class CtsCaseDocumentTemplateRepository
      * @param array                          $caseDocumentTemplateProperties
      */
     public function __construct(
+        $env,
         Guzzle $apiClient,
         CtsCaseDocumentTemplateFactory $ctsCaseDocumentTemplateFactory,
         SessionTicketStorage $tokenStorage,
@@ -105,6 +109,7 @@ class CtsCaseDocumentTemplateRepository
         $this->workspace = $workspace;
         $this->store = $store;
         $this->caseDocumentTemplateProperties = $caseDocumentTemplateProperties;
+        $this->environment = $env;
     }
 
    /**
@@ -154,7 +159,7 @@ class CtsCaseDocumentTemplateRepository
         }
 
         $body = array(
-            'file' => fopen($file2, 'r'),
+            'file' => $file2,
             'name' => $ctsCaseDocumentTemplate->getName(),
             'appliesToCorrespondenceType' => $ctsCaseDocumentTemplate->getAppliesToCorrespondenceType(),
             'templateName' => $ctsCaseDocumentTemplate->getTemplateName(),
