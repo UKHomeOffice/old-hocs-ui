@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use HomeOffice\AlfrescoApiBundle\Service\CaseCorrespondenceSubType;
 
 /**
  * Class StandardLinesController
@@ -252,7 +253,9 @@ class StandardLinesController extends Controller
      */
     public function downloadForTopicAction(Request $request)
     {
-        $standardLines = $this->getStandardLineRepository()->getStandardLines(null, $request->get('topic'));
+        $caseType = CaseCorrespondenceSubType::getCaseType($request->get('unit'));
+
+        $standardLines = $this->getStandardLineRepository()->getStandardLines($caseType, $request->get('topic'));
 
         if (count($standardLines) !== 1) {
             return new JsonResponse([], 500);

@@ -4,8 +4,8 @@ namespace HomeOffice\CtsBundle\Form\GuftType;
 
 use HomeOffice\AlfrescoApiBundle\Entity\CtsCaseStandardLine;
 use HomeOffice\AlfrescoApiBundle\Service\Topic\TopicService;
+use HomeOffice\AlfrescoApiBundle\Service\TopicUnits;
 use HomeOffice\CtsBundle\Form\Builder\Elements;
-use HomeOffice\CtsBundle\Form\Builder\Groups;
 use HomeOffice\ListBundle\Service\ListService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -38,9 +38,14 @@ class CtsStandardLineType extends AbstractType
     protected $topicService;
 
     /**
+     * @var TopicService
+     */
+    protected $topicUnitService;
+
+    /**
      * Constructor
      *
-     * @param ListService  $listService
+     * @param ListService $listService
      * @param TopicService $topicService
      */
     public function __construct(ListService $listService, TopicService $topicService)
@@ -51,7 +56,7 @@ class CtsStandardLineType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -63,29 +68,34 @@ class CtsStandardLineType extends AbstractType
             $standardLine->getAssociatedUnit()
         );
 
-        $this
-            ->standardLineName($builder)
+        $this->standardLineName($builder)
             ->reviewDate($builder)
-            ->associatedUnit($builder, $this->listService->getUnitArray())
+            ->associatedUnit($builder, TopicUnits::getTopicUnitList())
             ->associatedTopic($builder, $topics)
             ->file($builder)
-            ->save($builder)
-        ;
+            ->save($builder);
 
         if ($standardLine->isNew() === false) {
             $this->newFile($builder);
         }
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event){
-            $form = $event->getForm();
-            $data = $event->getData();
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (FormEvent $event) {
+                $form = $event->getForm();
+                $data = $event->getData();
 
-            if (!is_null($data)) {
-                $form->add('associatedTopic', 'choice', [
-                    'choices' => $this->topicService->getTopicsForForm(null, $data['associatedUnit']),
-                ]);
+                if (!is_null($data)) {
+                    $form->add(
+                        'associatedTopic',
+                        'choice',
+                        [
+                            'choices' => $this->topicService->getTopicsForForm(null, $data['associatedUnit']),
+                        ]
+                    );
+                }
             }
-        });
+        );
     }
 
     /**

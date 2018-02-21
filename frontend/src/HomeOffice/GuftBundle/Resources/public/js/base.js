@@ -372,6 +372,7 @@ standardLinesForSelectedTopic = function() {
     $('.markup-topic, .markup-secondary-topic').change(function () {
         var $topic = $(this);
         var $download = $topic.parent().find('.topic-standard-line a');
+        var correspondenceType = $('#case-type').data('case-type');
 
         $download.attr('href', '#');
         $download.addClass('hidden');
@@ -384,7 +385,8 @@ standardLinesForSelectedTopic = function() {
                     type: 'GET',
                     url: $download.data('url'),
                     data: {
-                        topic: $topic.val()
+                        topic: $topic.val(),
+                        unit: correspondenceType
                     }
                 })
                 .success(function (data) {
@@ -398,7 +400,7 @@ standardLinesForSelectedTopic = function() {
             }
         }
     }).trigger('change');
-}
+};
 
 $.fn.clearSelectWidget = function(blankValue) {
     $(this).html('');

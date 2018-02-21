@@ -162,6 +162,7 @@ services:
     home_office_alfresco_api.cts_case_standard_line.repository:
         class: %home_office_alfresco_api.cts_case_standard_line.repository.class%
         arguments:
+            - %kernel.environment%
             - @home_office_alfresco_api.guzzle_client
             - @home_office_alfresco_api.cts_case_standard_line.factory
             - @process_manager_token_storage

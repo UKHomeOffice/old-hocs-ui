@@ -368,8 +368,8 @@ class CaseElementsController extends Controller
     {
         try {
             return new JsonResponse($this->get('home_office_alfresco_api.service.topic')->getTopicsForForm(
-                null,
-                $request->get('unit') == '' ? null :$request->get('unit')
+                $request->get('unit') == '' ? null : $request->get('unit'),
+                null
             ));
         } catch (\Exception $e) {
             return new JsonResponse(null, 500);

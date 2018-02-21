@@ -3,6 +3,7 @@
 namespace HomeOffice\CtsBundle\Form\GuftType;
 
 use HomeOffice\AlfrescoApiBundle\Service\Topic\TopicService;
+use HomeOffice\AlfrescoApiBundle\Service\TopicUnits;
 use HomeOffice\CtsBundle\Form\Builder\Elements;
 use HomeOffice\ListBundle\Service\ListService;
 use Symfony\Component\Form\AbstractType;
@@ -50,7 +51,7 @@ class CtsStandardLineSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this
-            ->associatedUnit($builder, $this->listService->getUnitArray())
+            ->associatedUnit($builder, TopicUnits::getTopicUnitList())
             ->associatedTopic($builder, $this->topicService->getTopicsForForm())
             ->standardLineName($builder)
         ;
