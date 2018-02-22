@@ -116,6 +116,10 @@ services:
       ALF_DB_PORT: 3306
       ALF_ADMIN_INITIAL_PASSWORD: 209c6174da490caeb422f3fa5a7ae634
       ALF_REPORTING_ENDPOINT: http:\/\/reporting:8080
+      ALF_NOTIFY_APIKEY: notrealkeydoesnotwork-3902e8bc-1566-11e8-b642-0ed5f89f718b-a1689954-f92b-4343-99d3-f8513ea7fbef
+      ALF_NOTIFY_WF_TEMPLATE_ID: 2
+      ALF_NOTIFY_RESET_PW_TEMPLATE_ID: 3
+      ALF_NOTIFY_BULK_USER_IMPORT_TEMPLATE_ID: 4
     depends_on:
       - s3creator
       - mysql
@@ -138,7 +142,6 @@ services:
       DB_PASSWORD: dev
       DB_NAME: postgres
       DB_SCHEMA_NAME: public
-      RABBIT_MQ_HOST: rabbitmq
     depends_on:
       - postgres2
     ports:

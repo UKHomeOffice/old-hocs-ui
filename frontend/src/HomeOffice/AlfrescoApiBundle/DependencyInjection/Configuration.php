@@ -25,10 +25,10 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('endpoint')
-                    ->defaultValue('https://hocs-alfresco.hocs-prod.svc.cluster.local/alfresco/')
+                    ->defaultValue('https://hocs-alfresco.hocs.svc.cluster.local/alfresco/')
                     ->end()
                 ->scalarNode('list_endpoint')
-                    ->defaultValue('https://hocs-data-service.hocs-prod.svc.cluster.local/')
+                    ->defaultValue('https://hocs-data-service.hocs.svc.cluster.local/')
                     ->end()
                 ->scalarNode('workspace')
                     ->defaultValue('workspace')
