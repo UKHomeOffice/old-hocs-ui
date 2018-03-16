@@ -93,36 +93,6 @@ class CtsCaseMinuteRepository
         $item = $this->cacheService->getItem($topicKey);
         $item->clear();
 
-        $body = json_encode(
-            array(
-                'content'                => array (
-                    'content' =>$newMinute->getMinuteContent(),
-                    'minuteQaReviewOutcomes' => $newMinute->getMinuteQaReviewOutcomes(),
-                    'task'                   => $newMinute->getTask()
-                )
-            )
-        );
-
-        $response = $this
-            ->apiClient
-            ->post(
-                "service/homeoffice/cts/api/node/$this->workspace/$this->store/$caseNodeRef/comments",
-                array(
-                    'query' => array(
-                        'alf_ticket' => $this->tokenStorage->getAuthenticationTicket()
-                    ),
-                    'headers' => array(
-                        'Content-Type' => 'application/json'
-                    ),
-                    'body' => $body,
-                )
-            );
-
-        if ($response->getStatusCode() != "200") {
-            $this->logger->addDebug('Non 200 Code from ' . __METHOD__ . ' returned ' . $response->getStatusCode());
-            return false;
-        }
-
         return true;
     }
 
