@@ -417,6 +417,35 @@ class CtsCaseRepository
 
     public function auditView($audit, $caseNodeRef)
     {
+        $body = json_encode(
+            array(
+                'content'                => array (
+                    'content' => $audit,
+                    'minuteQaReviewOutcomes' => "",
+                    'task'                   => ""
+                )
+            )
+        );
+
+        $response = $this
+            ->apiClient
+            ->post(
+                "service/homeoffice/cts/api/node/$this->workspace/$this->store/$caseNodeRef/comments",
+                array(
+                    'query' => array(
+                        'alf_ticket' => $this->tokenStorage->getAuthenticationTicket()
+                    ),
+                    'headers' => array(
+                        'Content-Type' => 'application/json'
+                    ),
+                    'body' => $body,
+                )
+            );
+
+        if ($response->getStatusCode() != "200") {
+            $this->logger->addDebug('Non 200 Code from ' . __METHOD__ . ' returned ' . $response->getStatusCode());
+            return false;
+        }
 
         return true;
     }
