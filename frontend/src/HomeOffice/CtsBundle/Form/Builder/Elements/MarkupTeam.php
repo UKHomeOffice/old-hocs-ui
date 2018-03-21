@@ -22,19 +22,28 @@ trait MarkupTeam
      */
     public function markupTeam(FormBuilderInterface $builder, ListService $listService)
     {
-        $choices = $listService->getTeamArrayForUnit($builder->getData()->getMarkupUnit());
-
         $builder->add('markupTeam', 'choice', [
-            'choices'     => $choices,
+            'choices'     => $listService->getTeamArrayForUnit($builder->getData()->getMarkupUnit()),
             'required'    => false,
             'empty_value' => '',
             'label'       => 'Responsible Team',
-            'disabled'    => empty($choices),
+            'disabled'    => 'disabled',
             'attr'        => [
                 'class'            => 'chosen markup-team',
-                'data-placeholder' => 'Select team',
+                'data-placeholder' => 'Select team'
             ],
         ]);
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($listService) {
+            $form = $event->getForm();
+            $data = $event->getData();
+
+            if (!is_null($data)) {
+                $form->add('markupTeam', 'choice', [
+                    'choices' => $listService->getTeamArrayForUnit($data['markupUnit']),
+                ]);
+            }
+        });
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($listService) {
             $form = $event->getForm();
