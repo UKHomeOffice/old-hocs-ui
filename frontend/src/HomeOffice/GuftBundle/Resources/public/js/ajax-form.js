@@ -3,6 +3,8 @@ $.fn.ajaxForm = function(selector) {
 
     var handleSuccess = function(data) {
         clearErrors();
+        $form.find('input[type=file]').val('');
+        $form.find('.uploadFileName').empty();
         redirectForm(data);
 
         if (typeof data.message !== 'undefined' && data.message !== '') {
@@ -94,8 +96,6 @@ $.fn.ajaxForm = function(selector) {
         $form.find('.error-summary').remove();
         $form.find('.success-summary').remove();
         $form.find('.form-success').remove();
-        $form.find('#uploadFileName').empty();
-        $form.find('input[type=file]').val('');
         $form.find('.reset').val('');
     };
 
