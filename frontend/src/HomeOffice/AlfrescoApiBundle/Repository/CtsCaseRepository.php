@@ -571,25 +571,25 @@ class CtsCaseRepository
      */
     public function assignCaseToPerson(CtsCase $case, Person $person)
     {
-
-        $team = $person->getFirstTeam();
-        $unit = $person->getFirstUnit() ?: $this->listHandler->getUnitFromTeam($team);
-
-        if (is_null($unit) && is_null($team)) {
-            // Don't assign a person if they don't have a unit or team
-            return $case;
-        }
-
-        if (!is_null($unit)) {
-            $case->setAssignedUnit($unit->getAuthorityName());
-        }
-
-        if (!is_null($team)) {
-            $case->setAssignedTeam($team->getAuthorityName());
-        }
-
-        $case->setAssignedUser($person->getUserName());
-
-        return $case;
+//
+//        $team = $person->getFirstTeam();
+//        $unit = $person->getFirstUnit() ?: $this->listHandler->getUnitFromTeam($team);
+//
+//        if (is_null($unit) && is_null($team)) {
+//            // Don't assign a person if they don't have a unit or team
+//            return $case;
+//        }
+//
+//        if (!is_null($unit)) {
+//            $case->setAssignedUnit($unit->getAuthorityName());
+//        }
+//
+//        if (!is_null($team)) {
+//            $case->setAssignedTeam($team->getAuthorityName());
+//        }
+//
+//        $case->setAssignedUser($person->getUserName());
+//
+//        return $case;
     }
 }

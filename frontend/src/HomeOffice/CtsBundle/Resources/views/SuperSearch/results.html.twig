@@ -97,17 +97,17 @@
 
                             </td>
                             <td>
-                                {% if result.assignedUser is not defined or
-                                    (result.assignedUser is defined and result.assignedUser == "") %}
-                                    <p>
-                                        <a
-                                            data-username="{{ app.user.username }}"
-                                            href="{{ path('homeoffice_cts_home_allocatetome',
-                                                app.request.query.all|merge( {'nodeRef' : result.caseHash } ) ) }}"
-                                            class="allocation-link">Allocate to Me
-                                        </a>
-                                    </p>
-                                {% endif %}
+                                {#{% if result.assignedUser is not defined or#}
+                                    {#(result.assignedUser is defined and result.assignedUser == "") %}#}
+                                    {#<p>#}
+                                        {#<a#}
+                                            {#data-username="{{ app.user.username }}"#}
+                                            {#href="{{ path('homeoffice_cts_home_allocatetome',#}
+                                                {#app.request.query.all|merge( {'nodeRef' : result.caseHash } ) ) }}"#}
+                                            {#class="allocation-link">Allocate to Me#}
+                                        {#</a>#}
+                                    {#</p>#}
+                                {#{% endif %}#}
                                 {% if result.assignedUser is defined %}
                                     {{ result.assignedUser }}
                                 {% elseif result.assignedTeam is defined %}
