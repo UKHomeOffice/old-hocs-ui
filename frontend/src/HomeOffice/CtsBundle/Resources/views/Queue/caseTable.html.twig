@@ -48,22 +48,22 @@
                 </td>
                 {% if queueValue=='unitQueue' or queueValue=='teamQueue' %}
                     <td>
-                        {% if null == ctsCase.assignedUser %}
-                            <span class="lozenge green"
-                                data-allocate-to="Me"
-                                data-allocate-team="{{ ctsCase.assignedTeam }}"
-                                data-allocate-unit="{{ ctsCase.assignedUnit }}"
-                                data-id="{{ ctsCase.id }}"
-                                data-return-path="{{ path('homeoffice_cts_home_home', app.request.query.all) }}"
-                                data-target="{{ path('homeoffice_cts_status_allocate') }}"
-                                data-correspondence-type="{{ ctsCase.correspondenceType }}"
-                                data-status-change="Reallocate"
-                            >
-                                <a href="#" class="allocation-link">Allocate to Me</a>
-                            </span>
-                        {% else %}
+                        {#{% if null == ctsCase.assignedUser %}#}
+                            {#<span class="lozenge green"#}
+                                {#data-allocate-to="Me"#}
+                                {#data-allocate-team="{{ ctsCase.assignedTeam }}"#}
+                                {#data-allocate-unit="{{ ctsCase.assignedUnit }}"#}
+                                {#data-id="{{ ctsCase.id }}"#}
+                                {#data-return-path="{{ path('homeoffice_cts_home_home', app.request.query.all) }}"#}
+                                {#data-target="{{ path('homeoffice_cts_status_allocate') }}"#}
+                                {#data-correspondence-type="{{ ctsCase.correspondenceType }}"#}
+                                {#data-status-change="Reallocate"#}
+                            {#>#}
+                                {#<a href="#" class="allocation-link">Allocate to Me</a>#}
+                            {#</span>#}
+                        {#{% else %}#}
                                 {{ ctsCase.caseOwner }}
-                        {% endif %}
+                        {#{% endif %}#}
                         <p class="workflow-time">{{ ctsHelper.formatDateTimeToDateTime(ctsCase.ownerUpdatedDatetime) }}</p>
                     </td>
                 {% endif %}

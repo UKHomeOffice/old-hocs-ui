@@ -80,10 +80,10 @@
             </td>
             {% if queueValue=='unitQueue' or queueValue=='teamQueue' %}
                 <td>
-                {% if ctsCase.case.assignedUser is not defined or
-                        (ctsCase.case.assignedUser is defined and ctsCase.case.assignedUser == "") %}
-                    <p><a data-username="{{ app.user.username }}" href="{{ path('homeoffice_cts_home_allocatetome', app.request.query.all|merge( {'nodeRef' : ctsCase.case.id } ) ) }}" class="allocation-link">Allocate to Me</a></p>
-                {% endif %}
+                {#{% if ctsCase.case.assignedUser is not defined or#}
+                        {#(ctsCase.case.assignedUser is defined and ctsCase.case.assignedUser == "") %}#}
+                    {#<p><a data-username="{{ app.user.username }}" href="{{ path('homeoffice_cts_home_allocatetome', app.request.query.all|merge( {'nodeRef' : ctsCase.case.id } ) ) }}" class="allocation-link">Allocate to Me</a></p>#}
+                {#{% endif %}#}
                 {% if ctsCase.case.assignedUser is defined %}
                     {{ ctsCase.case.assignedUser }}
                 {% elseif ctsCase.case.assignedTeam is defined %}
