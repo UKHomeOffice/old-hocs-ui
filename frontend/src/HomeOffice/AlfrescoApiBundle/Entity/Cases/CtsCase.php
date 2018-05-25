@@ -85,7 +85,7 @@ class CtsCase extends CtsNode
     /**
      * @var string
      *
-     * @Assert\NotBlank(groups={"Markup-Allocate", "Case_Create_UKVI", "Case_Create_NO10"}, message="Select an answering unit")
+     * @Assert\NotBlank(groups={"Markup-Allocate", "Case_Create_UKVI", "Case_Create_NO10"}, message="Select an answering team")
      *
      */
     protected $markupTeam;
@@ -93,7 +93,7 @@ class CtsCase extends CtsNode
     /**
      * @var string
      *
-     * @Assert\NotBlank(groups={"Markup-Allocate", "Case_Create_UKVI", "Case_Create_NO10"}, message="Select an answering team")
+     * @Assert\NotBlank(groups={"Markup-Allocate", "Case_Create_UKVI", "Case_Create_NO10"}, message="Select a markup topic")
      */
     protected $markupTopic;
 
