@@ -914,16 +914,16 @@ class CtsCase extends CtsNode
             }
         }
 
-//        $mandatoryFieldArray = [];
-//        if (isset($transitions->mandatoryFields)) {
-//            foreach ($transitions->mandatoryFields as $mandatoryField) {
-//                $mandatoryFieldArray[$mandatoryField->name] = new CtsCaseWorkflowValidation(
-//                    $mandatoryField->name,
-//                    $mandatoryField->message,
-//                    isset($mandatoryField->expression) ? $mandatoryField->expression : null
-//                );
-//            }
-//        }
+        $mandatoryFieldArray = [];
+        if (isset($transitions->mandatoryFields)) {
+            foreach ($transitions->mandatoryFields as $mandatoryField) {
+                $mandatoryFieldArray[$mandatoryField->name] = new CtsCaseWorkflowValidation(
+                    $mandatoryField->name,
+                    $mandatoryField->message,
+                    isset($mandatoryField->expression) ? $mandatoryField->expression : null
+                );
+            }
+        }
         $this->caseWorkflowStatus = new CtsCaseWorkflowStatus($transitionArray, []);
     }
 
