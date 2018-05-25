@@ -1,34 +1,9 @@
 <div class="modal">
     {{ form_start(form, {
         'action': path('homeoffice_cts_ctscase_reallocate', { 'nodeRef': case.nodeId }),
-        'attr': {'class': 'form-ajax', 'novalidate' : 'novalidate' } }) }}
-    <h2>Reallocate case</h2>
-
-    <div class="form-group">
-        <div>
-            <div class="form-group multiExpandTarget">
-                {{ form_label(form['assignedUnit']) }}
-                {{ form_widget(form['assignedUnit']) }}
-            </div>
-            <div class="form-group multiExpandTarget">
-                {{ form_label(form['assignedTeam']) }}
-                {{ form_widget(form['assignedTeam']) }}
-            </div>
-            <div class="form-group multiExpandTarget">
-                {{ form_label(form['assignedUser']) }}
-                {{ form_widget(form['assignedUser']) }}
-            </div>
-        </div>
-    </div>
-
-    {% if transitions is defined %}
-        <div class="form-group">
-            {% include 'HomeOfficeCtsBundle:CaseElements:transitions.html.twig' with {
-            'transitions': transitions,
-            'step': step
-            } %}
-        </div>
-    {% endif %}
+        'attr': {'class': 'form-ajax', 'novalidate' : 'novalidate' } })
+    }}
+    {% include 'HomeOfficeCtsBundle:CaseElements:allocate.html.twig' with { 'form': form, 'title': 'Reallocate case' } %}
 
     <div class="form-group">
         {{ form_label(form['reallocationReason']) }}
