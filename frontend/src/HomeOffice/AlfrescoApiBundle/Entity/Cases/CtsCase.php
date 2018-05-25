@@ -924,7 +924,7 @@ class CtsCase extends CtsNode
                 );
             }
         }
-        $this->caseWorkflowStatus = new CtsCaseWorkflowStatus($transitionArray, []);
+        $this->caseWorkflowStatus = new CtsCaseWorkflowStatus($transitionArray, $mandatoryFieldArray);
     }
 
     /**
