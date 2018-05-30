@@ -117,14 +117,12 @@ class CtsCase extends CtsNode
     /**
      * @var string
      *
-     * @Assert\NotBlank(message="Select a unit to allocate this case to")
+     * * @Assert\NotBlank(groups={"Case_Allocate"}, message="Select a unit to allocate this case to")
      */
     protected $assignedUnit;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="Select a team to allocate this case to")
      */
     protected $assignedTeam;
 
