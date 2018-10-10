@@ -1,6 +1,7 @@
 FROM quay.io/ukhomeofficedigital/openjdk8
 
 ENV USER ui
+ENV USER_ID 1000
 ENV GROUP ui
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
@@ -35,13 +36,11 @@ COPY assets/entrypoint.sh entrypoint.sh
 RUN chmod +x  entrypoint.sh
 
 RUN groupadd -r ${GROUP} && \
-    useradd -r -g ${GROUP} ${USER} -d /var/www/symfony && \
+    useradd -r -u ${USER_ID} -g ${GROUP} ${USER} -d /var/www/symfony && \
     chown -R ${USER}:${GROUP} /var/www/symfony
 
-ENTRYPOINT ["./entrypoint.sh"]
-
 RUN useradd www-data && \
-    usermod -u 1000 www-data && \
+    usermod -u 1001 www-data && \
     chown -R www-data:www-data /var/www/symfony/var/cache /var/www/symfony/var/logs && \
     chmod -R 777 /var/www/symfony/var/cache /var/www/symfony/var/logs && \
     chmod -R 777 /var/lib/nginx/ && \
@@ -50,9 +49,11 @@ RUN useradd www-data && \
     chmod -R 777 /var/log/ && \
     chmod -R 777 /run/ && \
     chmod -R 777 /etc/nginx/
-
-USER ${USER}
-
-CMD cat /data/hocs-ui-ca.pem >> /etc/ssl/certs/cacert.pem && php-fpm && nginx
+    
+ENTRYPOINT ["./entrypoint.sh"]
 
 EXPOSE 8080
+
+USER ${USER_ID}
+
+CMD cat /data/hocs-ui-ca.pem >> /etc/ssl/certs/cacert.pem && php-fpm && nginx
