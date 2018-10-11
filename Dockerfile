@@ -1,15 +1,13 @@
-FROM quay.io/ukhomeofficedigital/openjdk8
+FROM quay.io/repository/ukhomeofficedigital/php-fpm
 
 ENV USER ui
 ENV USER_ID 1000
 ENV GROUP ui
 
-RUN yum -y --setopt=tsflags=nodocs update && yum -y --setopt=tsflags=nodocs install httpd && yum clean all
-
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
  && rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm  \
  && yum update -y \
- && yum -y install php56w php56w-fpm php56w-opcache php56w-intl php56w-common php56w-pear php56w-pdo php56w-dom php56w-pecl-redis git nginx \
+ && yum -y install git nginx \
  && curl https://curl.haxx.se/ca/cacert.pem > /etc/ssl/certs/cacert.pem \
  && echo >> /etc/ssl/certs/cacert.pem \
  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
