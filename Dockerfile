@@ -4,9 +4,7 @@ ENV USER ui
 ENV USER_ID 1000
 ENV GROUP ui
 
-RUN yum -y --setopt=tsflags=nodocs update && 
-yum -y --setopt=tsflags=nodocs install httpd && 
-yum clean all
+RUN yum -y --setopt=tsflags=nodocs update && yum -y --setopt=tsflags=nodocs install httpd && yum clean all
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
  && rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm  \
