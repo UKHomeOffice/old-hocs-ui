@@ -24,7 +24,7 @@ pipeline:
     secrets:
     - docker_password
     commands:
-    - docker login -u="ukhomeofficedigital+hocs_ui" -p=$${DOCKER_PASSWORD} quay.io
+    - docker login -u="ukhomeofficedigital+hocs" -p=$${DOCKER_PASSWORD} quay.io
     - docker tag hocs-ui quay.io/ukhomeofficedigital/hocs-ui:build-$${DRONE_BUILD_NUMBER}
     - docker tag hocs-ui quay.io/ukhomeofficedigital/hocs-ui:latest
     - docker push quay.io/ukhomeofficedigital/hocs-ui:build-$${DRONE_BUILD_NUMBER}
