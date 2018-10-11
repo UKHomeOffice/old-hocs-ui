@@ -1,4 +1,4 @@
-FROM quay.io/ukhomeofficedigital/openjdk8
+FROM quay.io/ukhomeofficedigital/hocs-pit
 
 ENV USER ui
 ENV USER_ID 1000
