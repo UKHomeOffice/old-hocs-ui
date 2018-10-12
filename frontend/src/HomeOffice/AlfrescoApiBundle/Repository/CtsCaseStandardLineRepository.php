@@ -151,7 +151,7 @@ class CtsCaseStandardLineRepository
                 ]);
 
                 try {
-                    $virusResponse = $virusClient->post('https://clamav.virus-scan.svc.cluster.local/scan',  [
+                    $virusResponse = $virusClient->post('https://clam/scan',  [
                         'body' => $virusBody,
                         'verify' => false
                     ]);
