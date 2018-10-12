@@ -2,8 +2,8 @@ imports:
     - { resource: config.yml }
 
 home_office_alfresco_api:
-    list_endpoint: 'https://hocs-data-service.hocs.svc.cluster.local'
-    endpoint: 'https://hocs-alfresco.hocs.svc.cluster.local/alfresco/'
+    list_endpoint: 'https://hocs-data-service.alf.svc.cluster.local'
+    endpoint: 'https://hocs-alfresco.alf.svc.cluster.local/alfresco/'
 
 #framework:
 #    validation:
