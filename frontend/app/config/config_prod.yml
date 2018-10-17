@@ -19,6 +19,8 @@ monolog:
     handlers:
         console:
             type:  console
+            level: debug
+            bubble: true
 
 parameters:
     home_office_cts.routing.ssl_redirects: true
