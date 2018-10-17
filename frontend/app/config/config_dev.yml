@@ -7,13 +7,13 @@ home_office_alfresco_api:
 
 monolog:
     handlers:
+        main:
+             type:   stream
+             path:   "%kernel.logs_dir%/%kernel.environment%.log"
+             level:  debug
         console:
-            type:   console
-            level: debug
-            bubble: true
-        error_log:
-            message_type: 0
-            level: debug
+             type:   console
+             bubble: false
         # uncomment to get logging in your browser
         # you may have to allow bigger header sizes in your Web server configuration
         #firephp:
