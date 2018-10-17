@@ -17,10 +17,13 @@ home_office_alfresco_api:
 
 monolog:
     handlers:
+        main:
+            type:   stream
+            path:   "%kernel.logs_dir%/%kernel.environment%.log"
+            level:  debug
         console:
-            type:  console
-            level: debug
-            bubble: true
+            type:   console
+            bubble: false
 
 parameters:
     home_office_cts.routing.ssl_redirects: true
