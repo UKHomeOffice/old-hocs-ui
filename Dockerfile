@@ -45,4 +45,4 @@ EXPOSE 8080
 
 USER ${USER_ID}
 
-CMD cat /certs/hocs-ui-ca.pem >> /etc/ssl/certs/cacert.pem && php-fpm && nginx
+CMD cat /certs/tls/tls.pem >> /etc/ssl/certs/cacert.pem && php-fpm && nginx
