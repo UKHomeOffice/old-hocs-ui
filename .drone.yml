@@ -74,7 +74,7 @@ pipeline:
     environment:
     - KUBE_NAMESPACE=hocs-${DRONE_DEPLOY_TO}
     - ENVIRONMENT=${DRONE_DEPLOY_TO}
-    - KUBE_SERVER=https://kube-dev.dsp.notprod.homeoffice.gov.uk
+    - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
     secrets:
     - hocs_ui_dev
     - hocs_ui_qa
