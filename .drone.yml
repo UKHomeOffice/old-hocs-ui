@@ -90,7 +90,6 @@ pipeline:
     environment:
     - KUBE_NAMESPACE=alf-prod
     - ENVIRONMENT=prod
-    - VERSION=build-${DRONE_BUILD_NUMBER}
     - KUBE_SERVER=https://kube-api-prod.prod.acp.homeoffice.gov.uk
     secrets:
     - hocs_ui_prod
