@@ -5,6 +5,7 @@ home_office_alfresco_api:
     list_endpoint: 'https://hocs-data-service.alf-prod.svc.cluster.local'
     endpoint: 'https://hocs-alfresco.alf-prod.svc.cluster.local/alfresco/'
 
+
 #framework:
 #    validation:
 #        cache: apc
