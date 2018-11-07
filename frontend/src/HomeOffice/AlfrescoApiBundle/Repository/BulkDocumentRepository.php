@@ -129,7 +129,7 @@ class BulkDocumentRepository
             ]);
 
             try {
-                $virusResponse = $virusClient->post('https://clam/scan',  [
+                $virusResponse = $virusClient->post('https://clamav.alf-prod.svc.cluster.local/scan',  [
                     'body' => $virusBody,
                     'verify' => false
                 ]);
