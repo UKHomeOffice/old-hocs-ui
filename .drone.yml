@@ -78,6 +78,7 @@ pipeline:
     secrets:
     - hocs_ui_dev
     - hocs_ui_qa
+    - poise_whitelist
     commands:
     - cd kube-hocs-ui
     - ./deploy.sh
@@ -94,6 +95,7 @@ pipeline:
     - KUBE_SERVER=https://kube-api-prod.prod.acp.homeoffice.gov.uk
     secrets:
     - hocs_ui_prod
+    - poise_whitelist
     commands:
     - cd kube-hocs-ui
     - ./deploy.sh
