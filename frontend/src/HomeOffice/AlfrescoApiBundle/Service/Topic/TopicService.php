@@ -142,6 +142,6 @@ class TopicService
     private function storeListInCache($name, $list)
     {
         $cacheItem = $this->cacheService->getItem($name);
-        $cacheItem->set($list, $this->cacheTimeout);
+        $cacheItem->set($list, 3600);
     }
 }
